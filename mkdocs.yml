@@ -1,0 +1,32 @@
+site_name: TSSR · Mon espace de révision
+site_url: https://Maqi25.github.io/TSSR-COURS/
+repo_url: https://github.com/Maqi25/TSSR-COURS
+
+theme:
+  name: material
+  language: fr
+  palette:
+    - scheme: default
+      toggle:
+        icon: material/brightness-7
+        name: Mode sombre
+    - scheme: slate
+      toggle:
+        icon: material/brightness-4
+        name: Mode clair
+  features:
+    - navigation.sections
+    - search.highlight
+    - content.code.copy
+
+nav:
+  - Accueil: index.md
+  - Cours: cours/index.md
+  - Travaux pratiques: travaux-pratiques/index.md
+  - Commandes: commandes/index.md
+  - Glossaire: glossaire/index.md
+
+markdown_extensions:
+  - admonition
+  - pymdownx.highlight
+  - pymdownx.superfences
