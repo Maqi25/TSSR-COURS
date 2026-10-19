@@ -4,7 +4,7 @@ Mes cours, TP, fiches de révision, mémos de commandes et glossaire pour la for
 
 **Site en ligne : <https://maqi25.github.io/TSSR-COURS/>**
 
-Le site est construit avec [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) et publié automatiquement sur GitHub Pages à chaque `git push` sur `main`. Le moteur (thème, vignettes, quiz, filtres de recherche) est repris du projet [Kass-19/tssr-cours](https://github.com/Kass-19/tssr-cours).
+Le site est construit avec [MkDocs Material](https://squidfunk.github.io/mkdocs-material/) et publié automatiquement sur GitHub Pages à chaque `git push` sur `main`. Le moteur (thème, vignettes, quiz, filtres de recherche) est repris du projet [Maqi-25/tssr-cours](https://github.com/Maqi25/tssr-cours).
 
 ## Structure
 
