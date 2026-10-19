@@ -3,7 +3,7 @@
 !!! abstract "Informations pratiques"
     **Dates :**19/10/2026
 
-    **Formateur(s) :** _à compléter_
+    **Formateur(s) :**Cédric RICHEZ
 
 Retrouve ici l'ensemble des modules de ce cours.
 
