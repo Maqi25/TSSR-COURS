@@ -1,7 +1,7 @@
 # Cours 1 - Bases des réseaux
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :**12/10/2026
 
     **Formateur(s) :** _à compléter_
 
