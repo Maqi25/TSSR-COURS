@@ -51,11 +51,13 @@ theme:
 extra_css:
   - stylesheets/extra.css
   - stylesheets/animations.css
+  - stylesheets/home.css
 
 extra_javascript:
   - javascripts/filter.js
   - javascripts/quiz.js
   - javascripts/animations.js
+  - javascripts/home.js
 
 markdown_extensions:
   - attr_list

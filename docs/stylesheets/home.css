@@ -1,0 +1,437 @@
+/* ==========================================================================
+   home.css — tableau de bord de la page d'accueil : bandeau avec horloge,
+   raccourcis colorés, progression, pages récentes, modules et mémos.
+   Le comportement est dans javascripts/home.js.
+   ========================================================================== */
+
+:root {
+  --tssr-home-cyan: #0891b2;
+  --tssr-home-green: #10b981;
+  --tssr-home-violet: #8b5cf6;
+  --tssr-home-orange: #f59e0b;
+  --tssr-home-pink: #ec4899;
+  --tssr-home-track: rgba(8, 51, 68, 0.12);
+}
+
+[data-md-color-scheme="slate"] {
+  --tssr-home-cyan: #22d3ee;
+  --tssr-home-green: #34d399;
+  --tssr-home-violet: #a78bfa;
+  --tssr-home-orange: #fbbf24;
+  --tssr-home-pink: #f472b6;
+  --tssr-home-track: rgba(236, 254, 255, 0.12);
+}
+
+/* Le titre "Accueil" de Material est remplacé par le bandeau */
+.md-typeset .tssr-home {
+  display: grid;
+  gap: 1rem;
+}
+
+.md-typeset .tssr-home a {
+  color: inherit;
+  text-decoration: none;
+}
+
+/* --------------------------------------------------------------------
+   Bandeau d'accueil
+   -------------------------------------------------------------------- */
+.md-typeset .tssr-home-hero {
+  position: relative;
+  overflow: hidden;
+  padding: 1.8rem 2rem;
+  border-radius: 20px;
+  color: #fff;
+  background:
+    linear-gradient(105deg, rgba(5, 3, 26, 0.94) 0%, rgba(29, 11, 63, 0.86) 45%, rgba(255, 46, 136, 0.35) 100%),
+    repeating-linear-gradient(90deg, rgba(34, 211, 238, 0.12) 0 1px, transparent 1px 42px);
+  border: 1px solid rgba(34, 211, 238, 0.3);
+  box-shadow: 0 12px 32px -14px rgba(255, 46, 136, 0.55);
+}
+
+/* Soleil rétro décoratif à droite du bandeau */
+.md-typeset .tssr-home-hero::after {
+  content: "";
+  position: absolute;
+  right: -40px;
+  bottom: -90px;
+  width: 260px;
+  height: 260px;
+  border-radius: 50%;
+  background: linear-gradient(#ffe14d, #ff2e88);
+  opacity: 0.55;
+  -webkit-mask-image: linear-gradient(#000 45%, transparent 45% 50%, #000 50% 60%, transparent 60% 66%, #000 66%);
+          mask-image: linear-gradient(#000 45%, transparent 45% 50%, #000 50% 60%, transparent 60% 66%, #000 66%);
+  pointer-events: none;
+}
+
+.md-typeset .tssr-home-hero > * {
+  position: relative;
+  z-index: 1;
+  max-width: 34rem;
+}
+
+.md-typeset .tssr-home-date {
+  font-size: 0.8rem;
+  color: #cffafe;
+  text-transform: capitalize;
+}
+
+.md-typeset .tssr-home-clock {
+  font-size: 1.6rem;
+  font-weight: 800;
+  margin: 0.2rem 0 0.4rem;
+  font-variant-numeric: tabular-nums;
+  text-shadow: 0 0 14px rgba(34, 211, 238, 0.6);
+}
+
+.md-typeset .tssr-home-title {
+  margin: 0.4rem 0 0.1rem;
+  font-size: 2.2rem;
+  font-weight: 800;
+  color: #fff;
+}
+
+.md-typeset .tssr-home-title::before {
+  content: none;
+}
+
+.md-typeset .tssr-home-subtitle {
+  margin: 0 0 0.6rem;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+}
+
+.md-typeset .tssr-home-hero .tssr-hero-typing {
+  color: #a5f3fc;
+}
+
+.md-typeset .tssr-home-lead {
+  margin: 0.4rem 0 0;
+  font-size: 0.8rem;
+  color: #e0e7ff;
+}
+
+/* --------------------------------------------------------------------
+   Raccourcis colorés
+   -------------------------------------------------------------------- */
+.md-typeset .tssr-home-shortcuts {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.8rem;
+}
+
+.md-typeset .tssr-home-shortcut {
+  --c: var(--tssr-home-cyan);
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  min-width: 0;
+  padding: 0.9rem 0.8rem;
+  border-radius: 15px;
+  border: 1px solid color-mix(in srgb, var(--c) 35%, transparent);
+  background: color-mix(in srgb, var(--c) 14%, var(--tssr-glass));
+  -webkit-backdrop-filter: blur(10px);
+          backdrop-filter: blur(10px);
+  transition: transform 0.2s var(--tssr-ease), box-shadow 0.2s var(--tssr-ease);
+}
+
+.md-typeset .tssr-home-shortcut:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 10px 24px -12px var(--c);
+}
+
+.md-typeset .tssr-home-shortcut.is-fiches { --c: var(--tssr-home-green); }
+.md-typeset .tssr-home-shortcut.is-tp     { --c: var(--tssr-home-orange); }
+.md-typeset .tssr-home-shortcut.is-cmd    { --c: var(--tssr-home-violet); }
+
+.md-typeset .tssr-home-shortcut > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+
+.md-typeset .tssr-home-shortcut b,
+.md-typeset .tssr-home-shortcut small {
+  display: block;
+}
+
+.md-typeset .tssr-home-shortcut b {
+  font-size: 0.8rem;
+}
+
+.md-typeset .tssr-home-shortcut small {
+  margin-top: 0.2rem;
+  font-size: 0.62rem;
+  line-height: 1.4;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .tssr-home-shortcut-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 12px;
+  font-size: 1.3rem;
+  background: var(--c);
+}
+
+.md-typeset .tssr-home-arrow {
+  color: var(--c);
+  font-weight: 900;
+}
+
+/* --------------------------------------------------------------------
+   Panneaux
+   -------------------------------------------------------------------- */
+.md-typeset .tssr-home-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+}
+
+.md-typeset .tssr-home-panel {
+  padding: 1rem 1.1rem;
+  border-radius: 17px;
+  border: 1px solid var(--tssr-glass-border);
+  background: var(--tssr-glass);
+  box-shadow: var(--tssr-shadow);
+}
+
+.md-typeset .tssr-home-panelhead {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  gap: 0.6rem;
+  margin-bottom: 0.8rem;
+}
+
+.md-typeset .tssr-home-panelhead h2 {
+  margin: 0;
+  font-size: 0.95rem;
+  font-weight: 700;
+}
+
+.md-typeset .tssr-home-panelhead h2::before {
+  content: none;
+}
+
+.md-typeset .tssr-home-panelhead > a {
+  flex: none;
+  font-size: 0.7rem;
+  font-weight: 700;
+  color: var(--md-accent-fg-color) !important;
+}
+
+.md-typeset .tssr-home-label,
+.md-typeset .tssr-home-sub {
+  margin: 0.2rem 0 0;
+  font-size: 0.65rem;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .tssr-home-empty {
+  margin: 0;
+  font-size: 0.7rem;
+  color: var(--md-default-fg-color--light);
+}
+
+/* Progression */
+.md-typeset .tssr-home-progress {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.md-typeset .tssr-home-ring {
+  --pct: 0%;
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 6.2rem;
+  height: 6.2rem;
+  border-radius: 50%;
+  background: conic-gradient(var(--tssr-home-cyan) 0, var(--tssr-home-pink) var(--pct), var(--tssr-home-track) 0);
+}
+
+.md-typeset .tssr-home-ring::before {
+  content: "";
+  position: absolute;
+  inset: 0.65rem;
+  border-radius: 50%;
+  background: var(--md-default-bg-color);
+}
+
+.md-typeset .tssr-home-ring strong {
+  position: relative;
+  font-size: 1.25rem;
+}
+
+.md-typeset .tssr-home-metrics {
+  flex: 1;
+  min-width: 0;
+}
+
+.md-typeset .tssr-home-metrics p {
+  display: flex;
+  justify-content: space-between;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0.4rem 0;
+  font-size: 0.68rem;
+  color: var(--md-default-fg-color--light);
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.md-typeset .tssr-home-metrics p:last-child {
+  border-bottom: 0;
+}
+
+.md-typeset .tssr-home-metrics b {
+  color: var(--md-default-fg-color);
+}
+
+/* Pages récentes, modules et mémos : même gabarit de "tuile" */
+.md-typeset .tssr-home-recent {
+  display: grid;
+  gap: 0.5rem;
+}
+
+.md-typeset .tssr-home-recent-item,
+.md-typeset .tssr-home-module,
+.md-typeset .tssr-home-memo {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  min-width: 0;
+  padding: 0.6rem 0.7rem;
+  border-radius: 12px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  background: color-mix(in srgb, var(--md-default-bg-color) 55%, transparent);
+  transition: border-color 0.2s ease, transform 0.2s var(--tssr-ease);
+}
+
+.md-typeset .tssr-home-recent-item:hover,
+.md-typeset .tssr-home-module:hover,
+.md-typeset .tssr-home-memo:hover {
+  border-color: var(--md-accent-fg-color);
+  transform: translateY(-2px);
+}
+
+.md-typeset .tssr-home-recent-item > span:nth-child(2),
+.md-typeset .tssr-home-memo > span:nth-child(2) {
+  flex: 1;
+  min-width: 0;
+}
+
+.md-typeset .tssr-home-recent-item b,
+.md-typeset .tssr-home-recent-item small,
+.md-typeset .tssr-home-memo b,
+.md-typeset .tssr-home-memo small {
+  display: block;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.md-typeset .tssr-home-recent-item b,
+.md-typeset .tssr-home-memo b {
+  font-size: 0.72rem;
+}
+
+.md-typeset .tssr-home-recent-item small,
+.md-typeset .tssr-home-memo small {
+  margin-top: 0.15rem;
+  font-size: 0.6rem;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .tssr-home-recent-icon,
+.md-typeset .tssr-home-memo-icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 9px;
+  color: #fff;
+  background: var(--md-primary-fg-color);
+}
+
+.md-typeset .tssr-home-chevron {
+  color: var(--md-default-fg-color--light);
+  font-weight: 700;
+}
+
+/* Modules */
+.md-typeset .tssr-home-modules {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(11rem, 1fr));
+  gap: 0.6rem;
+}
+
+.md-typeset .tssr-home-module b {
+  flex: 1;
+  min-width: 0;
+  font-size: 0.68rem;
+  line-height: 1.3;
+}
+
+.md-typeset .tssr-home-num {
+  flex: none;
+  font-family: var(--md-code-font-family);
+  font-size: 0.65rem;
+  font-weight: 700;
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset .tssr-home-micon {
+  flex: none;
+  font-size: 1.05rem;
+}
+
+/* Mémos */
+.md-typeset .tssr-home-memos {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 0.6rem;
+}
+
+.md-typeset .tssr-home-memo.is-ps   .tssr-home-memo-icon { background: var(--tssr-home-violet); }
+.md-typeset .tssr-home-memo.is-bash .tssr-home-memo-icon { background: var(--tssr-home-green); }
+.md-typeset .tssr-home-memo.is-glo  .tssr-home-memo-icon { background: var(--tssr-home-orange); }
+.md-typeset .tssr-home-memo.is-add  .tssr-home-memo-icon { background: var(--tssr-home-pink); }
+
+/* --------------------------------------------------------------------
+   Petits écrans
+   -------------------------------------------------------------------- */
+@media screen and (max-width: 60em) {
+  .md-typeset .tssr-home-shortcuts {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .md-typeset .tssr-home-row {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media screen and (max-width: 30em) {
+  .md-typeset .tssr-home-hero {
+    padding: 1.3rem 1.1rem;
+  }
+  .md-typeset .tssr-home-title {
+    font-size: 1.7rem;
+  }
+  .md-typeset .tssr-home-shortcuts {
+    grid-template-columns: 1fr;
+  }
+  .md-typeset .tssr-home-progress {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .md-typeset .tssr-home-ring {
+    align-self: center;
+  }
+}
