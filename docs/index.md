@@ -2,9 +2,15 @@
 title: Accueil
 ---
 
+<div class="tssr-hero" markdown>
+
 # Mon espace de révision TSSR
 
+<p class="tssr-hero-typing"><span class="tssr-prompt">$</span> réviser <span class="tssr-typing" data-words="les réseaux|Windows Server|Linux et Bash|PowerShell|Active Directory|la virtualisation|la sécurité">les réseaux</span></p>
+
 Bienvenue sur ton espace personnel de cours et de révision pour la formation **Technicien Support et Services Réseaux (TSSR)**. Retrouve ici l'ensemble de tes cours, tes travaux pratiques, tes mémos de commandes et ton glossaire — accessibles depuis n'importe quel appareil, y compris en stage.
+
+</div>
 
 <div class="tssr-grid">
   <a class="tssr-card" href="cours/">

@@ -14,16 +14,16 @@ theme:
     # Mode clair
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: green
-      accent: green
+      primary: cyan
+      accent: cyan
       toggle:
         icon: material/weather-night
         name: Passer en mode sombre
     # Mode sombre
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: green
-      accent: light-green
+      primary: cyan
+      accent: cyan
       toggle:
         icon: material/weather-sunny
         name: Passer en mode clair
@@ -50,10 +50,12 @@ theme:
 
 extra_css:
   - stylesheets/extra.css
+  - stylesheets/animations.css
 
 extra_javascript:
   - javascripts/filter.js
   - javascripts/quiz.js
+  - javascripts/animations.js
 
 markdown_extensions:
   - attr_list
@@ -247,7 +249,10 @@ nav:
   - Travaux pratiques:
       - travaux-pratiques/index.md
       - "TP - Plan d'adressage IP": travaux-pratiques/cours-01-bases-des-reseaux/tp-plan-adressage.md
-  - Révisions: revisions/index.md
+  - Révisions:
+      - revisions/index.md
+      - "Bases des réseaux": revisions/fiche-bases-des-reseaux.md
+      - "Utilisation de GNU/Linux": revisions/fiche-utilisation-gnu-linux.md
   - Commandes:
       - commandes/index.md
       - PowerShell: commandes/powershell/index.md

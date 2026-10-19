@@ -1,6 +1,6 @@
 /* ==========================================================================
    extra.css — personnalisation visuelle du site TSSR
-   Style "informatique" : accents verts, touches monospace, cartes nettes.
+   Style "informatique" : accents cyan néon, touches monospace, cartes nettes.
    ========================================================================== */
 
 /* --------------------------------------------------------------------
@@ -8,51 +8,52 @@
    -------------------------------------------------------------------- */
 /* Material for MkDocs ne connaît qu'une liste fixe de noms de couleurs
    (green, teal, indigo...) dans mkdocs.yml. Pour utiliser TES couleurs
-   exactes (les 5 codes hexadécimaux que tu as fournis), on garde
-   "green" comme réglage de base dans mkdocs.yml (obligatoire), puis on
-   écrase ici les variables CSS que Material utilise réellement pour
-   dessiner l'interface. C'est la méthode officielle pour personnaliser
-   les couleurs au-delà de la liste proposée.
+   exactes, on garde "cyan" comme réglage de base dans mkdocs.yml
+   (obligatoire), puis on écrase ici les variables CSS que Material
+   utilise réellement pour dessiner l'interface. C'est la méthode
+   officielle pour personnaliser les couleurs au-delà de la liste proposée.
 
-   Les 5 couleurs fournies, du plus clair au plus foncé :
-     #E6FCDD  très clair   (fond d'accent)
-     #A1C991  clair        (accent doux)
-     #63964E  moyen        (couleur principale)
-     #336320  foncé        (accent fort / liens)
-     #133306  très foncé   (texte sur fond clair, ou fond en mode sombre)
+   Palette cyan néon (assortie au décor "Retour vers le futur"),
+   du plus clair au plus foncé :
+     #ECFEFF  très clair   (fond d'accent)
+     #67E8F9  clair        (accent doux)
+     #22D3EE  néon         (accent / liens en mode sombre)
+     #0891B2  moyen        (couleur principale)
+     #0E7490  foncé        (accent fort / liens en mode clair)
+     #083344  très foncé   (texte sur fond clair, ou fond en mode sombre)
 */
 
 /* Mode clair */
 [data-md-color-scheme="default"] {
-  --md-primary-fg-color: #63964e;
-  --md-primary-fg-color--light: #a1c991;
-  --md-primary-fg-color--dark: #336320;
-  --md-accent-fg-color: #336320;
-  --md-accent-fg-color--transparent: rgba(51, 99, 32, 0.1);
-  --md-typeset-a-color: #336320;
+  --md-primary-fg-color: #0891b2;
+  --md-primary-fg-color--light: #67e8f9;
+  --md-primary-fg-color--dark: #0e7490;
+  --md-accent-fg-color: #0e7490;
+  --md-accent-fg-color--transparent: rgba(14, 116, 144, 0.1);
+  --md-typeset-a-color: #0e7490;
 
-  --tssr-tag-bg: #a1c991;
-  --tssr-tag-fg: #133306;
-  --tssr-highlight-bg: #e6fcdd;
+  --tssr-tag-bg: #a5f3fc;
+  --tssr-tag-fg: #083344;
+  --tssr-highlight-bg: #ecfeff;
 }
 
 /* Mode sombre */
 [data-md-color-scheme="slate"] {
-  --md-primary-fg-color: #336320;
-  --md-primary-fg-color--light: #63964e;
-  --md-primary-fg-color--dark: #133306;
-  --md-accent-fg-color: #a1c991;
-  --md-accent-fg-color--transparent: rgba(161, 201, 145, 0.15);
-  --md-typeset-a-color: #a1c991;
+  --md-primary-fg-color: #0e7490;
+  --md-primary-fg-color--light: #22d3ee;
+  --md-primary-fg-color--dark: #083344;
+  --md-accent-fg-color: #22d3ee;
+  --md-accent-fg-color--transparent: rgba(34, 211, 238, 0.15);
+  --md-typeset-a-color: #22d3ee;
 
-  --tssr-tag-bg: #336320;
-  --tssr-tag-fg: #e6fcdd;
-  --tssr-highlight-bg: #1b2e14;
+  --tssr-tag-bg: #155e75;
+  --tssr-tag-fg: #ecfeff;
+  --tssr-highlight-bg: #0b2a33;
 }
 
 /* --------------------------------------------------------------------
    Recolorer l'encadré "abstract" (utilisé pour "Informations pratiques"
-   sur chaque page de cours) en vert plutôt qu'en bleu par défaut.
+   sur chaque page de cours) en cyan (couleur du thème) plutôt qu'en bleu par défaut.
    Material for MkDocs colore chaque type d'encadré ("admonition") avec
    une couleur fixe câblée dans sa feuille de style ; pour la changer, on
    réécrit ici les mêmes règles avec nos propres couleurs (celles du

@@ -1,0 +1,166 @@
+/**
+ * animations.js
+ * ---------------------------------------------------------------------
+ * Petits effets visuels du site (les styles sont dans animations.css) :
+ *   - apparition des blocs au défilement de la page ;
+ *   - cartes et couches de schéma qui arrivent en cascade ;
+ *   - halo lumineux qui suit la souris sur les cartes ;
+ *   - barre de progression de lecture en haut de l'écran ;
+ *   - texte "tapé au clavier" dans le bandeau d'accueil.
+ * Rien à modifier ici pour ajouter du contenu.
+ * ---------------------------------------------------------------------
+ */
+
+(function () {
+  var reduceMotion =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+  // Blocs qui apparaissent quand on les fait défiler à l'écran
+  var REVEAL_SELECTOR = [
+    ".md-typeset > h2",
+    ".md-typeset > h3",
+    ".md-typeset > .admonition",
+    ".md-typeset > details",
+    ".md-typeset > .highlight",
+    ".md-typeset > .md-typeset__scrollwrap",
+    ".md-typeset > .tabbed-set",
+    ".md-typeset > .mermaid",
+    ".md-typeset > .tssr-layers",
+    ".md-typeset > .tssr-quiz",
+    ".md-typeset .tssr-layers",
+  ].join(",");
+
+  function numberChildren(parent, childSelector) {
+    parent.querySelectorAll(childSelector).forEach(function (el, i) {
+      el.style.setProperty("--i", i);
+    });
+  }
+
+  function setupReveal() {
+    if (reduceMotion || !("IntersectionObserver" in window)) return;
+    document.documentElement.classList.add("tssr-anim");
+
+    var observer = new IntersectionObserver(
+      function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            entry.target.classList.add("is-visible");
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { rootMargin: "0px 0px -8% 0px", threshold: 0.05 }
+    );
+
+    document.querySelectorAll(REVEAL_SELECTOR).forEach(function (el) {
+      if (!el.classList.contains("tssr-layers")) el.classList.add("tssr-reveal");
+      observer.observe(el);
+    });
+  }
+
+  function setupStagger() {
+    document.querySelectorAll(".tssr-grid").forEach(function (grid) {
+      numberChildren(grid, ":scope > .tssr-card");
+    });
+    document.querySelectorAll(".tssr-layers").forEach(function (layers) {
+      numberChildren(layers, ":scope > .tssr-layer");
+    });
+
+    // Les cartes du glossaire / des commandes sont recréées à chaque filtre
+    document.querySelectorAll(".tssr-result-grid").forEach(function (grid) {
+      numberChildren(grid, ":scope > .tssr-result-card");
+      new MutationObserver(function () {
+        numberChildren(grid, ":scope > .tssr-result-card");
+      }).observe(grid, { childList: true });
+    });
+  }
+
+  function setupSpotlight() {
+    document.addEventListener("pointermove", function (e) {
+      var card = e.target.closest && e.target.closest(".tssr-card, .tssr-result-card");
+      if (!card) return;
+      var rect = card.getBoundingClientRect();
+      card.style.setProperty("--mx", e.clientX - rect.left + "px");
+      card.style.setProperty("--my", e.clientY - rect.top + "px");
+    });
+  }
+
+  // Décor "Retour vers le futur" en arrière-plan (styles : animations.css § 1)
+  function setupBackdrop() {
+    var scene = document.createElement("div");
+    scene.className = "tssr-bttf";
+    scene.setAttribute("aria-hidden", "true");
+    ["stars", "glow", "sun", "floor", "veil"].forEach(function (part) {
+      var el = document.createElement("div");
+      el.className = "tssr-bttf__" + part;
+      if (part === "floor") {
+        var plane = document.createElement("div");
+        plane.className = "tssr-bttf__plane";
+        el.appendChild(plane);
+      }
+      scene.appendChild(el);
+    });
+    document.body.insertBefore(scene, document.body.firstChild);
+  }
+
+  function setupProgress() {
+    var bar = document.createElement("div");
+    bar.className = "tssr-progress";
+    document.body.appendChild(bar);
+
+    var ticking = false;
+    function update() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var ratio = max > 0 ? Math.min(window.scrollY / max, 1) : 0;
+      bar.style.transform = "scaleX(" + ratio + ")";
+      ticking = false;
+    }
+    window.addEventListener(
+      "scroll",
+      function () {
+        if (!ticking) {
+          ticking = true;
+          window.requestAnimationFrame(update);
+        }
+      },
+      { passive: true }
+    );
+    window.addEventListener("resize", update);
+    update();
+  }
+
+  function setupTyping() {
+    document.querySelectorAll(".tssr-typing[data-words]").forEach(function (el) {
+      var words = el.getAttribute("data-words").split("|");
+      if (reduceMotion || words.length < 2) {
+        el.textContent = words[0];
+        return;
+      }
+      var w = 0, c = 0, deleting = false;
+      (function tick() {
+        var word = words[w];
+        c += deleting ? -1 : 1;
+        el.textContent = word.slice(0, c);
+        var delay = deleting ? 45 : 90;
+        if (!deleting && c === word.length) {
+          deleting = true;
+          delay = 1600;
+        } else if (deleting && c === 0) {
+          deleting = false;
+          w = (w + 1) % words.length;
+          delay = 350;
+        }
+        setTimeout(tick, delay);
+      })();
+    });
+  }
+
+  document.addEventListener("DOMContentLoaded", function () {
+    setupBackdrop();
+    setupStagger();
+    setupReveal();
+    setupSpotlight();
+    setupProgress();
+    setupTyping();
+  });
+})();
