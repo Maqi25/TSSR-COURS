@@ -115,8 +115,24 @@
     });
   }
 
+  // Page Programme : repère l'étape en cours et celles déjà passées
+  function markProgramme() {
+    var steps = document.querySelectorAll(".tssr-prog-step[data-start]");
+    if (!steps.length) return;
+    var today = new Date();
+    today.setHours(0, 0, 0, 0);
+    steps.forEach(function (step) {
+      var start = parseDate(step.dataset.start);
+      var end = parseDate(step.dataset.end);
+      end.setHours(23, 59, 59);
+      if (today > end) step.classList.add("is-done");
+      else if (today >= start) step.classList.add("is-current");
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     rememberPage();
+    markProgramme();
     if (!document.querySelector(".tssr-home")) return;
     updateClock();
     setInterval(updateClock, 15000);

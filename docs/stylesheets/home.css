@@ -435,3 +435,56 @@
     align-self: center;
   }
 }
+
+/* --------------------------------------------------------------------
+   Page Programme : étapes de la formation (état calculé par home.js)
+   -------------------------------------------------------------------- */
+.md-typeset .tssr-prog-step {
+  position: relative;
+  margin: 0 0 0.8rem;
+  padding: 0.2rem 1rem 0.4rem 1.2rem;
+  border-radius: 14px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-left: 4px solid var(--md-primary-fg-color);
+  background: color-mix(in srgb, var(--md-default-bg-color) 55%, transparent);
+}
+
+.md-typeset .tssr-prog-step h3 {
+  margin-top: 0.8rem;
+}
+
+.md-typeset .tssr-prog-meta {
+  font-size: 0.7rem;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .tssr-prog-step.is-done {
+  opacity: 0.6;
+  border-left-color: var(--md-default-fg-color--lighter);
+}
+
+.md-typeset .tssr-prog-step.is-done h3::after {
+  content: " ✓";
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset .tssr-prog-step.is-current {
+  border-color: var(--md-accent-fg-color);
+  border-left-color: #ff2e88;
+  box-shadow: 0 0 0 3px var(--md-accent-fg-color--transparent), 0 10px 26px -14px #ff2e88;
+}
+
+.md-typeset .tssr-prog-step.is-current::before {
+  content: "EN COURS";
+  position: absolute;
+  top: 0.7rem;
+  right: 0.8rem;
+  padding: 0.1rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  color: #fff;
+  background: linear-gradient(90deg, #0891b2, #ff2e88);
+}
+.md-typeset .tssr-home-memo.is-prog .tssr-home-memo-icon { background: var(--tssr-home-cyan); }

@@ -42,7 +42,7 @@ hide:
   <section class="tssr-home-panel">
     <div class="tssr-home-panelhead">
       <h2>◉ Ma progression</h2>
-      <span class="tssr-home-label">Formation du 12/10/2026 au 28/05/2027</span>
+      <a href="programme/">Voir le programme →</a>
     </div>
     <div class="tssr-home-progress" data-home-progress data-start="2026-10-12" data-stage="2027-04-05" data-end="2027-05-28">
       <div class="tssr-home-ring" data-home-ring><strong data-home-pct>0 %</strong></div>
@@ -107,6 +107,7 @@ hide:
     <a class="tssr-home-memo is-ps" href="commandes/powershell/"><span class="tssr-home-memo-icon">⚡</span><span><b>PowerShell</b><small>Cmdlets et exemples</small></span><span class="tssr-home-chevron">›</span></a>
     <a class="tssr-home-memo is-bash" href="commandes/bash/"><span class="tssr-home-memo-icon">🐧</span><span><b>Bash</b><small>Commandes Linux</small></span><span class="tssr-home-chevron">›</span></a>
     <a class="tssr-home-memo is-glo" href="glossaire/"><span class="tssr-home-memo-icon">🔎</span><span><b>Glossaire</b><small>Termes et acronymes</small></span><span class="tssr-home-chevron">›</span></a>
+    <a class="tssr-home-memo is-prog" href="programme/"><span class="tssr-home-memo-icon">🗓️</span><span><b>Programme</b><small>Planning et dates</small></span><span class="tssr-home-chevron">›</span></a>
     <a class="tssr-home-memo is-add" href="ajouter-du-contenu/"><span class="tssr-home-memo-icon">＋</span><span><b>Ajouter du contenu</b><small>Mode d'emploi du site</small></span><span class="tssr-home-chevron">›</span></a>
   </div>
 </section>

@@ -95,6 +95,7 @@ plugins:
 
 nav:
   - Accueil: index.md
+  - Programme: programme/index.md
   - Cours:
       - cours/index.md
       - "Cours 1 · Bases des réseaux":
