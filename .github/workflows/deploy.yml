@@ -2,7 +2,8 @@ name: Publier le site
 
 on:
   push:
-    branches: [main]
+    branches:
+      - main
   workflow_dispatch:
 
 permissions:
@@ -11,20 +12,29 @@ permissions:
   id-token: write
 
 concurrency:
-  group: pages
-  cancel-in-progress: true
+  group: "pages"
+  cancel-in-progress: false
 
 jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - uses: actions/setup-python@v5
+      - name: Récupérer le code du dépôt
+        uses: actions/checkout@v4
+
+      - name: Installer Python
+        uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -r requirements.txt
-      - run: mkdocs build
-      - uses: actions/upload-pages-artifact@v3
+
+      - name: Installer les dépendances (MkDocs Material)
+        run: pip install -r requirements.txt
+
+      - name: Construire le site
+        run: mkdocs build --strict
+
+      - name: Préparer la publication GitHub Pages
+        uses: actions/upload-pages-artifact@v3
         with:
           path: site
 
@@ -35,5 +45,6 @@ jobs:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
     steps:
-      - id: deployment
+      - name: Publier sur GitHub Pages
+        id: deployment
         uses: actions/deploy-pages@v4
