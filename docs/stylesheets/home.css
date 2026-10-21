@@ -173,6 +173,13 @@
   color: #e0e7ff;
 }
 
+/* Laisser de la place au personnage à droite du bandeau */
+@media screen and (min-width: 60em) {
+  .md-typeset .tssr-home-hero > .tssr-home-lead {
+    max-width: 28rem;
+  }
+}
+
 /* --------------------------------------------------------------------
    Raccourcis colorés
    -------------------------------------------------------------------- */
