@@ -90,7 +90,7 @@
     .s2     { animation-delay: 1.3s; }
     .sym    { animation: float 4s ease-out infinite; opacity: 0; font: 700 15px "JetBrains Mono", Consolas, monospace; }
     .d1 { animation-delay: 1s; } .d2 { animation-delay: 2s; } .d3 { animation-delay: 3s; }
-    .bubble { animation: bubble 8s ease-in-out infinite; transform-box: view-box; transform-origin: 360px 72px; opacity: 0; }
+    .bubble { animation: bubble 16s ease-in-out infinite; transform-box: view-box; transform-origin: 360px 72px; opacity: 0; }
     @keyframes bob    { 50% { transform: translateY(1.6px) rotate(-1.4deg); } }
     @keyframes blink  { 0%, 91%, 100% { transform: scaleY(1); } 94% { transform: scaleY(0.08); } }
     @keyframes type   { to { transform: translateY(-3.5px); } }
@@ -101,7 +101,11 @@
     @keyframes sway   { from { transform: rotate(-2.5deg); } to { transform: rotate(2.5deg); } }
     @keyframes steam  { 0% { opacity: 0; transform: translateY(8px); } 35% { opacity: 0.8; } 100% { opacity: 0; transform: translateY(-22px); } }
     @keyframes float  { 0% { opacity: 0; transform: translateY(0); } 15% { opacity: 0.95; } 100% { opacity: 0; transform: translateY(-60px); } }
-    @keyframes bubble { 0%, 60%, 100% { opacity: 0; transform: scale(0.3); } 66%, 90% { opacity: 1; transform: scale(1); } }
+    @keyframes bubble { 0%, 30%, 45%, 80%, 95%, 100% { opacity: 0; transform: scale(0.3); } 33%, 42%, 83%, 92% { opacity: 1; transform: scale(1); } }
+    .msg1 { animation: msg1 16s steps(1) infinite; }
+    .msg2 { animation: msg2 16s steps(1) infinite; opacity: 0; }
+    @keyframes msg1 { 0% { opacity: 1; } 60% { opacity: 0; } }
+    @keyframes msg2 { 0% { opacity: 0; } 60% { opacity: 1; } }
     @media (prefers-reduced-motion: reduce) { * { animation: none !important; } .bubble, .sym, .steam { opacity: 0; } }
   </style>
 
@@ -276,6 +280,7 @@
   <g class="bubble">
     <rect x="312" y="38" width="128" height="36" rx="18" fill="#ffffff"/>
     <path d="M330 72 L322 88 L346 73 Z" fill="#ffffff"/>
-    <text x="376" y="61" text-anchor="middle" font-family="Roboto, Arial, sans-serif" font-weight="700" font-size="15" fill="#c0166b">ça marche ! 🎉</text>
+    <text x="376" y="61" text-anchor="middle" font-family="Roboto, Arial, sans-serif" font-weight="700" font-size="15" fill="#c0166b" class="msg1">ça marche ! 🎉</text>
+    <text x="376" y="61" text-anchor="middle" font-family="Roboto, Arial, sans-serif" font-weight="700" font-size="15" fill="#c0166b" class="msg2">sawfè !</text>
   </g>
 </svg>
