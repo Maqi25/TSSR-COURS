@@ -4,23 +4,143 @@
 
 ## 🎯 Objectif du module
 
-_À compléter._
+- Utiliser le **menu GRUB** pour démarrer autrement.
+- Démarrer en **mode secours** (*rescue*) et en mode **urgence** (*emergency*).
+- **Réinitialiser le mot de passe root** oublié.
+- Réparer un système de l'extérieur avec un **live CD** et **`chroot`**.
+
+!!! abstract "En clair"
+    Un jour, un serveur ne démarrera plus (mauvaise configuration, disque abîmé), ou tu auras **oublié le mot de passe root**. Comme pour Windows avec WinRE ([cours 2, module 10](../../cours-02-systeme-client-microsoft/module-10-maintenance-du-systeme/index.md)), Linux a des **modes de secours**. Il faut un **accès à la console** de la machine : c'est l'un des rares cas où SSH ne suffit pas.
 
 ## 🖼️ Résumé visuel
 
-_À compléter. Tu peux utiliser un diagramme Mermaid ou un schéma « en couches » : voir les exemples sur la page [+ Ajouter du contenu](../../../ajouter-du-contenu.md#schemas-et-diagrammes)._
+**Le serveur ne démarre plus : quelle porte de secours ?**
+
+```mermaid
+flowchart TD
+    P(["⚠️ Problème au démarrage"]) --> G["📋 Menu GRUB<br/>Options avancées →<br/><b>mode de dépannage</b>"]
+    G -->|"ça marche"| R["🛟 <b>rescue</b><br/>root seul, disques montés<br/>→ réparer la config"]
+    G -->|"ça bloque encore"| E["e = modifier la ligne linux<br/><b>systemd.unit=emergency.target</b><br/>ou <b>init=/bin/bash</b>"]
+    E -->|"ça ne suffit pas"| L["💿 <b>Live CD / ISO</b><br/>monter le disque<br/>+ <b>chroot</b>"]
+```
 
 ## 📖 Cours consolidé
 
-_À compléter._
+### 1. Le menu GRUB
+
+Au démarrage, GRUB affiche son menu quelques secondes (sur une VM, appuie sur ++shift++ ou ++esc++ s'il passe trop vite).
+
+| Entrée | Rôle |
+|---|---|
+| **Debian GNU/Linux** | Démarrage normal |
+| **Options avancées** → *(mode de dépannage)* / *(recovery mode)* | Démarre en **mode secours** |
+| Options avancées → **ancien noyau** | Démarrer sur le **noyau précédent** si une mise à jour du noyau pose problème |
+
+| Touche dans GRUB | Effet |
+|---|---|
+| ++e++ | **Modifier** l'entrée sélectionnée (pour **ce** démarrage seulement) |
+| ++ctrl+x++ ou ++f10++ | **Démarrer** avec la ligne modifiée |
+
+---
+
+### 2. Les modes secours et urgence
+
+| Mode | Ce qui démarre | Quand ? |
+|---|---|---|
+| **rescue** (secours) | Le minimum : disques **montés**, **réseau coupé**, **root seul** | Corriger une configuration, un service qui bloque le démarrage |
+| **emergency** (urgence) | **Encore moins** : disque `/` monté **en lecture seule**, rien d'autre | Un problème de disque, de `/etc/fstab` (module 9) |
+
+**Comment y entrer :** dans GRUB, ++e++, puis à la fin de la ligne qui commence par **`linux`**, ajouter :
+
+```text
+linux /boot/vmlinuz-6.12.0-1-amd64 root=UUID=… ro quiet  systemd.unit=rescue.target
+                                                          └──── ajouté (ou emergency.target)
+```
+
+Puis ++ctrl+x++ : Linux démarre dans ce mode et demande le **mot de passe root**.
+
+⚠️ Si root est **désactivé** (mot de passe vide à l'installation), ces modes refusent l'accès : utilise la méthode suivante.
+
+---
+
+### 3. Réinitialiser le mot de passe root (ou d'un utilisateur)
+
+!!! warning "Une méthode puissante, donc à protéger"
+    Cette méthode montre qu'**un accès physique à la console = un accès root**. En entreprise, on protège la console (salle serveur fermée, mot de passe GRUB, chiffrement du disque).
+
+| # | Action |
+|---|---|
+| ① | Dans GRUB, sélectionner Debian et appuyer sur ++e++ |
+| ② | Sur la ligne **`linux`**, ajouter à la fin : **`init=/bin/bash`** |
+| ③ | ++ctrl+x++ → on arrive sur un shell root, **sans mot de passe** |
+| ④ | Le disque est en lecture seule : **`mount -o remount,rw /`** |
+| ⑤ | **`passwd root`** (ou `passwd tech` pour un utilisateur) → taper 2 fois le nouveau mot de passe |
+| ⑥ | **`sync`** puis **`exec /sbin/init`** (ou `reboot -f`) pour redémarrer normalement |
+
+---
+
+### 4. Réparer depuis un live CD avec `chroot`
+
+Quand **GRUB lui-même** est cassé, on démarre sur une **ISO Debian** (mode *Rescue* de l'installateur, ou une image « live ») et on **entre dans le système installé** :
+
+```bash
+lsblk                                   # repérer la partition du système (ex. /dev/sda1)
+mount /dev/sda1 /mnt                    # la monter
+for d in dev proc sys; do mount --bind /$d /mnt/$d; done   # donner accès au matériel
+chroot /mnt                             # « entrer » dans le système installé
+grub-install /dev/sda && update-grub    # ex. : réinstaller GRUB
+exit ; reboot
+```
+
+!!! abstract "En clair : chroot"
+    **`chroot`** (*change root*) fait croire au shell que `/mnt` est la racine `/`. Toutes les commandes s'appliquent alors **au système installé sur le disque**, et non au live CD. C'est comme **entrer dans la maison** pour la réparer de l'intérieur.
+
+---
+
+### 5. Vérifier un système de fichiers : `fsck`
+
+Après un **arrêt brutal** (coupure de courant), le système de fichiers peut être abîmé. **`fsck`** le vérifie et le répare (comme `chkdsk` sous Windows).
+
+```bash
+fsck -f /dev/sda1        # ⚠️ sur une partition NON montée (ou montée en lecture seule)
+```
+
+⚠️ **Jamais de `fsck` sur une partition montée en écriture** : risque de tout casser. On le lance depuis le mode **emergency**, ou depuis un **live CD**.
 
 ## ✅ Points clés à retenir
 
-_À compléter._
+- **GRUB** : ++e++ pour modifier une entrée (temporairement), ++ctrl+x++ pour démarrer ; « Options avancées » pour le **mode de dépannage** ou un **ancien noyau**.
+- **rescue.target** = minimum, disques montés, réseau coupé ; **emergency.target** = encore moins, `/` en lecture seule. Ajout sur la ligne `linux` : `systemd.unit=rescue.target`.
+- **Mot de passe root oublié** : `init=/bin/bash` → `mount -o remount,rw /` → `passwd root` → `exec /sbin/init`.
+- **GRUB cassé** : live CD → monter le disque → **`chroot /mnt`** → réparer (`grub-install`, `update-grub`).
+- **`fsck`** répare un système de fichiers **non monté**.
+- Accès à la console = accès root → protéger la **salle serveur**.
 
 ## 📝 Fiche de révision
 
-_À compléter._
+| Situation | Solution |
+|---|---|
+| Service qui bloque le démarrage | Mode **rescue** (GRUB → mode de dépannage) |
+| Problème de disque / fstab | `systemd.unit=emergency.target` |
+| Mot de passe root oublié | `init=/bin/bash` → `mount -o remount,rw /` → `passwd root` |
+| Nouveau noyau qui plante | GRUB → Options avancées → **ancien noyau** |
+| GRUB cassé | Live CD + `mount` + **`chroot`** + `grub-install` |
+| Système de fichiers abîmé | **`fsck`** sur une partition **démontée** |
+
+**⚠️ Les pièges**
+
+- La modification faite avec ++e++ dans GRUB ne vaut **que pour ce démarrage**.
+- Après `init=/bin/bash`, sans **`remount,rw`**, `passwd` échoue (disque en lecture seule).
+- **`fsck` sur une partition montée** = danger.
+
+??? question "1. Tu as oublié le mot de passe root d'une VM. Écris la procédure."
+    GRUB → ++e++ → ajouter `init=/bin/bash` à la ligne `linux` → ++ctrl+x++ → `mount -o remount,rw /` → `passwd root` → `exec /sbin/init`.
+
+??? question "2. Depuis une mise à jour du noyau, le serveur plante au démarrage. Solution rapide ?"
+    Dans GRUB : **Options avancées** → démarrer sur l'**ancien noyau**. Ensuite, chercher la cause tranquillement.
+
+??? question "3. Pourquoi faut-il chroot après avoir démarré sur un live CD ?"
+    Pour que les commandes (`grub-install`, `apt`, `passwd`…) s'appliquent au **système installé sur le disque**, et pas au live CD.
 
 ## 🧠 Quiz — entraîne-toi
 
@@ -29,10 +149,81 @@ _À compléter._
 <script type="application/json" id="quiz-cours-04-administration-d-une-distribution-gnu-linux-module-4-debian-en-mode-maintenance-data">
 [
   {
-    "question": "Exemple de question à remplacer",
-    "options": ["Réponse A", "Réponse B", "Réponse C"],
-    "correctIndex": 0,
-    "explanation": "Explique ici pourquoi cette réponse est correcte."
+    "question": "Dans le menu GRUB, quelle touche permet de modifier temporairement une entrée de démarrage ?",
+    "options": [
+      "Entrée",
+      "e",
+      "Échap",
+      "F1"
+    ],
+    "correctIndex": 1,
+    "explanation": "La touche e (edit) ouvre l'entrée en modification. Les changements ne valent que pour ce démarrage ; on démarre avec Ctrl + X ou F10."
+  },
+  {
+    "question": "Que démarre le mode rescue (rescue.target) ?",
+    "options": [
+      "Le système complet avec interface graphique",
+      "Le minimum : disques montés, réseau coupé, root seul",
+      "Uniquement le réseau",
+      "Windows"
+    ],
+    "correctIndex": 1,
+    "explanation": "Le mode secours démarre le strict minimum pour réparer une configuration, avec un shell root."
+  },
+  {
+    "question": "Quel ajout sur la ligne linux de GRUB permet d'obtenir un shell root sans mot de passe ?",
+    "options": [
+      "root=nopass",
+      "init=/bin/bash",
+      "single-user=yes",
+      "passwd=0"
+    ],
+    "correctIndex": 1,
+    "explanation": "init=/bin/bash remplace systemd par un simple shell root. C'est la méthode pour réinitialiser un mot de passe oublié."
+  },
+  {
+    "question": "Après init=/bin/bash, pourquoi passwd root échoue-t-il d'abord ?",
+    "options": [
+      "Parce que root n'existe pas",
+      "Parce que le disque / est monté en lecture seule",
+      "Parce qu'il faut Internet",
+      "Parce que passwd est interdit"
+    ],
+    "correctIndex": 1,
+    "explanation": "Le système de fichiers racine est monté en lecture seule : il faut d'abord mount -o remount,rw / pour pouvoir écrire le nouveau mot de passe."
+  },
+  {
+    "question": "À quoi sert la commande chroot depuis un live CD ?",
+    "options": [
+      "À formater le disque",
+      "À « entrer » dans le système installé pour que les commandes s'y appliquent",
+      "À changer le mot de passe du live CD",
+      "À redémarrer"
+    ],
+    "correctIndex": 1,
+    "explanation": "chroot /mnt fait de /mnt la nouvelle racine : grub-install, apt ou passwd agissent alors sur le système installé sur le disque."
+  },
+  {
+    "question": "Quand peut-on lancer fsck sans danger ?",
+    "options": [
+      "Sur une partition montée en écriture",
+      "Sur une partition non montée (ou en lecture seule)",
+      "N'importe quand",
+      "Seulement sous Windows"
+    ],
+    "correctIndex": 1,
+    "explanation": "fsck modifie directement le système de fichiers : il ne doit jamais tourner sur une partition montée en écriture. On le lance depuis le mode emergency ou un live CD."
+  },
+  {
+    "question": "Un nouveau noyau fait planter le serveur au démarrage. Solution la plus rapide ?",
+    "options": [
+      "Réinstaller Debian",
+      "Dans GRUB, Options avancées, démarrer sur l'ancien noyau",
+      "Supprimer GRUB",
+      "Lancer fsck"
+    ],
+    "correctIndex": 1,
+    "explanation": "Debian garde le noyau précédent : on peut le choisir dans les options avancées de GRUB, puis chercher la cause."
   }
 ]
 </script>
