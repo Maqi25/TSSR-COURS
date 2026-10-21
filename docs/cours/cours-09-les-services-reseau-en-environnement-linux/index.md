@@ -1,7 +1,9 @@
 # Cours 9 - Les services réseau en environnement Linux
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 25/01/2027 → 29/01/2027
+
+    **Durée :** 35 h
 
     **Formateur(s) :** _à compléter_
 

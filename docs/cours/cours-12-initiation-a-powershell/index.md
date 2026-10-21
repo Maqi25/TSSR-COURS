@@ -1,7 +1,9 @@
 # Cours 12 - Initiation à PowerShell
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 15/02/2027 → 19/02/2027
+
+    **Durée :** 35 h
 
     **Formateur(s) :** _à compléter_
 

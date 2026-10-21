@@ -1,7 +1,9 @@
 # Cours 15 - Sauvegarde et restauration
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 08/03/2027 → 12/03/2027
+
+    **Durée :** 35 h
 
     **Formateur(s) :** _à compléter_
 

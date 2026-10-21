@@ -1,9 +1,13 @@
 # Cours 3 - Utilisateur d'une distribution GNU/Linux
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 09/11/2026 → 13/11/2026
 
-    **Formateur(s) :** _à compléter_
+    **Durée :** 28 h
+
+    **Lieu :** En ligne (Campus en ligne)
+
+    **Formateur(s) :** Alexandre CHAUSSIER
 
 Retrouve ici l'ensemble des modules de ce cours.
 

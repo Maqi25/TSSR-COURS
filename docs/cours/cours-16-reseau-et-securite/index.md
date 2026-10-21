@@ -1,7 +1,9 @@
 # Cours 16 - Réseau et sécurité
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 15/03/2027 → 26/03/2027
+
+    **Durée :** 70 h (2 semaines)
 
     **Formateur(s) :** _à compléter_
 

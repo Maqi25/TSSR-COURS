@@ -1,9 +1,13 @@
 # Cours 5 - Mise en situation professionnelle : système client
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 30/11/2026 → 04/12/2026
 
-    **Formateur(s) :** _à compléter_
+    **Durée :** 35 h
+
+    **Lieu :** En ligne (Campus en ligne)
+
+    **Formateur(s) :** Alexandre CHAUSSIER
 
 ## 🎯 Contexte
 

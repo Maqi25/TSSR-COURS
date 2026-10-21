@@ -1,7 +1,9 @@
 # Cours 7 - Les infrastructures réseau
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 21/12/2026 → 08/01/2027 (avec la pause des fêtes)
+
+    **Durée :** 63 h (2 semaines)
 
     **Formateur(s) :** _à compléter_
 

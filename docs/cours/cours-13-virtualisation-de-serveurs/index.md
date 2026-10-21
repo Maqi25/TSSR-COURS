@@ -1,7 +1,9 @@
 # Cours 13 - Virtualisation de serveurs
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 22/02/2027 → 26/02/2027
+
+    **Durée :** 35 h
 
     **Formateur(s) :** _à compléter_
 

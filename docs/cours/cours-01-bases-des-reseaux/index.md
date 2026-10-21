@@ -1,9 +1,13 @@
 # Cours 1 - Bases des réseaux
 
 !!! abstract "Informations pratiques"
-    **Dates :**19/10/2026
+    **Dates :** 19/10/2026 → 23/10/2026
 
-    **Formateur(s) :**Cédric RICHEZ
+    **Durée :** 35 h
+
+    **Lieu :** En ligne (Campus en ligne)
+
+    **Formateur(s) :** Cédric RICHEZ
 
 Retrouve ici l'ensemble des modules de ce cours.
 

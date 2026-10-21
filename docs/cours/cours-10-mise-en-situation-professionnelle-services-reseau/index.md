@@ -1,7 +1,9 @@
 # Cours 10 - Mise en situation professionnelle : services réseau
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 01/02/2027 → 05/02/2027
+
+    **Durée :** 35 h
 
     **Formateur(s) :** _à compléter_
 

@@ -1,9 +1,13 @@
 # Cours 4 - Administration d'une distribution GNU/Linux
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 16/11/2026 → 27/11/2026
 
-    **Formateur(s) :** _à compléter_
+    **Durée :** 70 h (2 semaines)
+
+    **Lieu :** En ligne (Campus en ligne)
+
+    **Formateur(s) :** Hasan KURTULUS (1/2 et 2/2)
 
 Retrouve ici l'ensemble des modules de ce cours.
 

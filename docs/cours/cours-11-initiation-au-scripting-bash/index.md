@@ -1,7 +1,9 @@
 # Cours 11 - Initiation au scripting Bash
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 08/02/2027 → 12/02/2027
+
+    **Durée :** 35 h
 
     **Formateur(s) :** _à compléter_
 

@@ -1,7 +1,9 @@
 # Cours 8 - Les services réseau en environnement Microsoft
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 11/01/2027 → 22/01/2027
+
+    **Durée :** 70 h (2 semaines)
 
     **Formateur(s) :** _à compléter_
 

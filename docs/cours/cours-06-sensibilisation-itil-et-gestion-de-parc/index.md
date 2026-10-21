@@ -1,9 +1,13 @@
 # Cours 6 - Sensibilisation ITIL et gestion de parc
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 07/12/2026 → 18/12/2026
 
-    **Formateur(s) :** _à compléter_
+    **Durée :** 70 h (2 semaines)
+
+    **Lieu :** En ligne (Campus en ligne)
+
+    **Formateur(s) :** Cédric RICHEZ (1/2 et 2/2)
 
 Retrouve ici l'ensemble des modules de ce cours.
 

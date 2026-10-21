@@ -1,7 +1,9 @@
 # Cours 17 - Services transverses Microsoft (RDS/WDS)
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 29/03/2027 → 02/04/2027
+
+    **Durée :** 28 h
 
     **Formateur(s) :** _à compléter_
 

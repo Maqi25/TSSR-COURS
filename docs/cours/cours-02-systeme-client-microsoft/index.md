@@ -3,7 +3,11 @@
 !!! abstract "Informations pratiques"
     **Dates :** 26/10/2026 → 06/11/2026
 
-    **Formateur(s) :** _à compléter_
+    **Durée :** 70 h (2 semaines)
+
+    **Lieu :** En ligne (Campus en ligne)
+
+    **Formateur(s) :** Alexandre CHAUSSIER (1/2, du 26/10 au 30/10) · Paul HUVELIN (2/2, du 02/11 au 06/11)
 
 Retrouve ici l'ensemble des modules de ce cours.
 

@@ -1,7 +1,9 @@
 # Cours 14 - Messagerie Cloud
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 01/03/2027 → 05/03/2027
+
+    **Durée :** 35 h
 
     **Formateur(s) :** _à compléter_
 
