@@ -96,6 +96,27 @@
   content: none;
 }
 
+/* Petit bonhomme animé à droite du bandeau (assets/images/bonhomme-ordi.svg) */
+.md-typeset .tssr-home-hero > .tssr-home-buddy {
+  position: absolute;
+  right: 2rem;
+  bottom: 0.4rem;
+  z-index: 2;
+  width: min(240px, 34%);
+  height: auto;
+  max-width: none;
+  filter: drop-shadow(0 8px 18px rgba(255, 46, 136, 0.35));
+}
+
+@media screen and (max-width: 60em) {
+  .md-typeset .tssr-home-hero > .tssr-home-buddy {
+    position: static;
+    display: block;
+    width: 170px;
+    margin: 0.6rem auto 0;
+  }
+}
+
 /* Salutation multilingue (home.js) : sort vers la gauche, revient par la droite */
 .md-typeset .tssr-greet {
   display: inline-block;
