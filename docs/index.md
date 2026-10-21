@@ -9,7 +9,7 @@ hide:
 <section class="tssr-home-hero">
   <div class="tssr-home-date" data-home-date>&nbsp;</div>
   <div class="tssr-home-clock" data-home-clock>&nbsp;</div>
-  <h1 class="tssr-home-title"><span data-home-greeting>Bonjour</span> ! 👋</h1>
+  <h1 class="tssr-home-title"><span class="tssr-greet" data-home-greeting>Bonjour !</span> <span class="tssr-home-wave">👋</span></h1>
   <p class="tssr-home-subtitle">Bienvenue sur ton espace TSSR</p>
   <p class="tssr-hero-typing"><span class="tssr-prompt">$</span> réviser <span class="tssr-typing" data-words="les réseaux|Windows Server|Linux et Bash|PowerShell|Active Directory|la virtualisation|la sécurité">les réseaux</span></p>
   <p class="tssr-home-lead">Tous tes cours, fiches, quiz et mémos au même endroit pour progresser efficacement — accessibles depuis n'importe quel appareil, y compris en stage.</p>

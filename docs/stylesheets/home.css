@@ -96,6 +96,44 @@
   content: none;
 }
 
+/* Salutation multilingue (home.js) : sort vers la gauche, revient par la droite */
+.md-typeset .tssr-greet {
+  display: inline-block;
+  background: linear-gradient(90deg, #ffffff, #a5f3fc 60%, #f9a8d4);
+  -webkit-background-clip: text;
+          background-clip: text;
+  color: transparent;
+}
+
+.md-typeset .tssr-greet.is-out {
+  animation: tssr-greet-out 0.45s ease-in forwards;
+}
+
+.md-typeset .tssr-greet.is-in {
+  animation: tssr-greet-in 0.55s cubic-bezier(0.2, 0.8, 0.2, 1.2);
+}
+
+.md-typeset .tssr-home-wave {
+  display: inline-block;
+  transform-origin: 70% 70%;
+  animation: tssr-wave 3.5s ease-in-out infinite;
+}
+
+@keyframes tssr-greet-out {
+  to { opacity: 0; transform: translateX(-2.5rem) skewX(-8deg); filter: blur(6px); }
+}
+
+@keyframes tssr-greet-in {
+  from { opacity: 0; transform: translateX(2.5rem) skewX(8deg); filter: blur(6px); }
+  to   { opacity: 1; transform: none; filter: none; }
+}
+
+@keyframes tssr-wave {
+  0%, 60%, 100% { transform: rotate(0deg); }
+  10%, 30%      { transform: rotate(14deg); }
+  20%, 40%      { transform: rotate(-8deg); }
+}
+
 .md-typeset .tssr-home-subtitle {
   margin: 0 0 0.6rem;
   font-size: 1.2rem;

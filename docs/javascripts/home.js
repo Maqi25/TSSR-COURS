@@ -52,7 +52,6 @@
     var now = new Date();
     var date = document.querySelector("[data-home-date]");
     var clock = document.querySelector("[data-home-clock]");
-    var greet = document.querySelector("[data-home-greeting]");
     if (date) {
       date.textContent = "▣ " + now.toLocaleDateString("fr-FR", {
         weekday: "long", day: "numeric", month: "long", year: "numeric",
@@ -61,7 +60,44 @@
     if (clock) {
       clock.textContent = "◷ " + now.toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" });
     }
-    if (greet) greet.textContent = now.getHours() >= 18 || now.getHours() < 5 ? "Bonsoir" : "Bonjour";
+  }
+
+  // Salutation qui défile : français → japonais → chinois → anglais.
+  // Bonjour la journée, bonsoir à partir de 18 h (et jusqu'à 5 h).
+  var GREETINGS = [
+    { lang: "fr", day: "Bonjour !", evening: "Bonsoir !" },
+    { lang: "ja", day: "こんにちは！", evening: "こんばんは！" },
+    { lang: "zh", day: "你好！", evening: "晚上好！" },
+    { lang: "en", day: "Hello!", evening: "Good evening!" },
+  ];
+  var GREET_DELAY = 3500;   // temps d'affichage de chaque langue (ms)
+  var GREET_SWAP = 450;     // durée de l'animation de sortie (ms), voir home.css
+
+  function greetingText(i) {
+    var h = new Date().getHours();
+    var g = GREETINGS[i];
+    return h >= 18 || h < 5 ? g.evening : g.day;
+  }
+
+  function setupGreeting() {
+    var el = document.querySelector("[data-home-greeting]");
+    if (!el) return;
+    var i = 0;
+    el.textContent = greetingText(i);
+    el.lang = GREETINGS[i].lang;
+
+    setInterval(function () {
+      el.classList.remove("is-in");
+      el.classList.add("is-out");
+      setTimeout(function () {
+        i = (i + 1) % GREETINGS.length;
+        el.textContent = greetingText(i);
+        el.lang = GREETINGS[i].lang;
+        el.classList.remove("is-out");
+        void el.offsetWidth;          // relance l'animation d'entrée
+        el.classList.add("is-in");
+      }, GREET_SWAP);
+    }, GREET_DELAY);
   }
 
   function updateProgress() {
@@ -136,6 +172,7 @@
     if (!document.querySelector(".tssr-home")) return;
     updateClock();
     setInterval(updateClock, 15000);
+    setupGreeting();
     updateProgress();
     renderRecent();
   });
