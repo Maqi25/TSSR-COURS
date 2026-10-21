@@ -13,7 +13,7 @@ hide:
   <p class="tssr-home-subtitle">Bienvenue sur ton espace TSSR</p>
   <p class="tssr-hero-typing"><span class="tssr-prompt">$</span> réviser <span class="tssr-typing" data-words="les réseaux|Windows Server|Linux et Bash|PowerShell|Active Directory|la virtualisation|la sécurité">les réseaux</span></p>
   <p class="tssr-home-lead">Tous tes cours, fiches, quiz et mémos au même endroit pour progresser efficacement — accessibles depuis n'importe quel appareil, y compris en stage.</p>
-  <img class="tssr-home-buddy" src="assets/images/bonhomme-ordi.svg" alt="Un petit bonhomme au casque tape sur son ordinateur, un café fume à côté" width="240" height="210">
+  <img class="tssr-home-buddy" src="assets/images/bonhomme-ordi.svg" alt="Un technicien au casque tape sur son clavier devant un écran plein de code, avec un café et une plante sur le bureau" width="480" height="400">
 </section>
 
 <div class="tssr-home-shortcuts">
