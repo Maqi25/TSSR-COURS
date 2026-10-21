@@ -520,3 +520,120 @@
   text-decoration: none;
   color: var(--ip-host);
 }
+
+/* --------------------------------------------------------------------
+   Schéma "saut par saut" (.tssr-hop) : trajet PC → routeur → PC et
+   contenu des trames sur chaque segment (MAC réécrites, IP identiques).
+   Utilisé dans cours-01 / module 4.
+   -------------------------------------------------------------------- */
+.md-typeset .tssr-hop {
+  --hop-mac: #db2777;
+  --hop-ip: #0891b2;
+  margin: 1rem 0 1.4rem;
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  background: color-mix(in srgb, var(--md-default-bg-color) 60%, transparent);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tssr-hop {
+  --hop-mac: #f472b6;
+  --hop-ip: #22d3ee;
+}
+
+.md-typeset .tssr-hop-path {
+  display: grid;
+  grid-template-columns: 1fr auto 1.4fr auto 1fr;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.md-typeset .tssr-hop-node {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  background: var(--md-code-bg-color);
+  font-size: 1.1rem;
+  text-align: center;
+}
+
+.md-typeset .tssr-hop-node.is-router {
+  border-color: var(--md-accent-fg-color);
+}
+
+.md-typeset .tssr-hop-node b {
+  font-size: 0.75rem;
+}
+
+.md-typeset .tssr-hop-node small {
+  font-family: var(--md-code-font-family);
+  font-size: 0.58rem;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .tssr-hop-link {
+  font-size: 1.3rem;
+  font-weight: 700;
+  color: var(--md-accent-fg-color);
+}
+
+.md-typeset .tssr-hop-frames {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
+  margin-top: 0.8rem;
+}
+
+.md-typeset .tssr-hop-frame {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  padding: 0.6rem 0.7rem;
+  border-radius: 10px;
+  border: 1px dashed var(--md-default-fg-color--lighter);
+}
+
+.md-typeset .tssr-hop-frame small {
+  font-size: 0.62rem;
+  font-weight: 700;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .tssr-hop-frame span {
+  font-size: 0.68rem;
+  padding-left: 0.5rem;
+  border-left: 3px solid var(--c);
+}
+
+.md-typeset .tssr-hop-frame .is-mac { --c: var(--hop-mac); }
+.md-typeset .tssr-hop-frame .is-ip  { --c: var(--hop-ip); }
+
+.md-typeset .tssr-hop-frame b {
+  font-family: var(--md-code-font-family);
+  color: var(--c);
+}
+
+.md-typeset .tssr-hop-frame em {
+  font-size: 0.58rem;
+  font-style: normal;
+  padding: 0 0.35rem;
+  border-radius: 20px;
+  color: #fff;
+  background: var(--c);
+}
+
+@media screen and (max-width: 44em) {
+  .md-typeset .tssr-hop-path {
+    grid-template-columns: 1fr;
+  }
+  .md-typeset .tssr-hop-link {
+    justify-self: center;
+    transform: rotate(90deg);
+  }
+  .md-typeset .tssr-hop-frames {
+    grid-template-columns: 1fr;
+  }
+}
