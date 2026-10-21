@@ -8,34 +8,34 @@ Le planning complet de la formation TSSR, dans l'ordre : **25 étapes**, **1085 
 
 ## 🗓️ Vue d'ensemble
 
-| N° | Dates | Module | Durée |
-|---|---|---|---|
-| 01 | 12/10 → 16/10/2026 | **Microsoft 365 – Outils collaboratifs** | 35 h |
-| 02 | 19/10 → 23/10/2026 | **Bases des réseaux** | 35 h |
-| 03 | 26/10 → 30/10/2026 | **Systèmes clients Microsoft (1/2)** | 35 h |
-| 04 | 02/11 → 06/11/2026 | **Systèmes clients Microsoft (2/2)** | 35 h |
-| 05 | 09/11 → 13/11/2026 | **Utilisation d'une distribution GNU/Linux** | 28 h |
-| 06 | 16/11 → 20/11/2026 | **Administration GNU/Linux (1/2)** | 35 h |
-| 07 | 23/11 → 27/11/2026 | **Administration GNU/Linux (2/2)** | 35 h |
-| 08 | 30/11 → 04/12/2026 | **Mise en situation pro : systèmes clients** | 35 h |
-| 09 | 07/12 → 11/12/2026 | **ITIL et Gestion de parc (1/2)** | 35 h |
-| 10 | 14/12 → 18/12/2026 | **ITIL et Gestion de parc (2/2)** | 35 h |
-| 11 | 21/12 → 25/12/2026 | **Les infrastructures réseaux (1/2)** | 28 h |
-| 12 | 04/01 → 08/01/2027 | **Les infrastructures réseaux (2/2)** | 35 h |
-| 13 | 11/01 → 15/01/2027 | **Services réseau Microsoft (1/2)** | 35 h |
-| 14 | 18/01 → 22/01/2027 | **Services réseau Microsoft (2/2)** | 35 h |
-| 15 | 25/01 → 29/01/2027 | **Services réseau en environnement Linux** | 35 h |
-| 16 | 01/02 → 05/02/2027 | **Mise en situation pro : services réseau** | 35 h |
-| 17 | 08/02 → 12/02/2027 | **Initiation au scripting Bash** | 35 h |
-| 18 | 15/02 → 19/02/2027 | **Initiation à PowerShell** | 35 h |
-| 19 | 22/02 → 26/02/2027 | **Virtualisation de serveurs** | 35 h |
-| 20 | 01/03 → 05/03/2027 | **Messagerie Cloud** | 35 h |
-| 21 | 08/03 → 12/03/2027 | **Sauvegarde et Restauration** | 35 h |
-| 22 | 15/03 → 19/03/2027 | **Réseau et Sécurité (1/2)** | 35 h |
-| 23 | 22/03 → 26/03/2027 | **Réseau et Sécurité (2/2)** | 35 h |
-| 24 | 29/03 → 02/04/2027 | **Services transverses Microsoft (RDS/WDS)** | 28 h |
-| 25 | 05/04 → 28/05/2027 | **Stage en entreprise** | 266 h |
-| | | **Total** | **1085 h** |
+| N° | Dates | Module | Durée | Formateur |
+|---|---|---|---|---|
+| 01 | 12/10 → 16/10/2026 | **Microsoft 365 – Outils collaboratifs** | 35 h | — |
+| 02 | 19/10 → 23/10/2026 | **Bases des réseaux** | 35 h | Cédric RICHEZ |
+| 03 | 26/10 → 30/10/2026 | **Systèmes clients Microsoft (1/2)** | 35 h | Alexandre CHAUSSIER |
+| 04 | 02/11 → 06/11/2026 | **Systèmes clients Microsoft (2/2)** | 35 h | Paul HUVELIN |
+| 05 | 09/11 → 13/11/2026 | **Utilisation d'une distribution GNU/Linux** | 28 h | Alexandre CHAUSSIER |
+| 06 | 16/11 → 20/11/2026 | **Administration GNU/Linux (1/2)** | 35 h | Hasan KURTULUS |
+| 07 | 23/11 → 27/11/2026 | **Administration GNU/Linux (2/2)** | 35 h | Hasan KURTULUS |
+| 08 | 30/11 → 04/12/2026 | **Mise en situation pro : systèmes clients** | 35 h | Alexandre CHAUSSIER |
+| 09 | 07/12 → 11/12/2026 | **ITIL et Gestion de parc (1/2)** | 35 h | Cédric RICHEZ |
+| 10 | 14/12 → 18/12/2026 | **ITIL et Gestion de parc (2/2)** | 35 h | Cédric RICHEZ |
+| 11 | 21/12 → 25/12/2026 | **Les infrastructures réseaux (1/2)** | 28 h | — |
+| 12 | 04/01 → 08/01/2027 | **Les infrastructures réseaux (2/2)** | 35 h | — |
+| 13 | 11/01 → 15/01/2027 | **Services réseau Microsoft (1/2)** | 35 h | — |
+| 14 | 18/01 → 22/01/2027 | **Services réseau Microsoft (2/2)** | 35 h | — |
+| 15 | 25/01 → 29/01/2027 | **Services réseau en environnement Linux** | 35 h | — |
+| 16 | 01/02 → 05/02/2027 | **Mise en situation pro : services réseau** | 35 h | — |
+| 17 | 08/02 → 12/02/2027 | **Initiation au scripting Bash** | 35 h | — |
+| 18 | 15/02 → 19/02/2027 | **Initiation à PowerShell** | 35 h | — |
+| 19 | 22/02 → 26/02/2027 | **Virtualisation de serveurs** | 35 h | — |
+| 20 | 01/03 → 05/03/2027 | **Messagerie Cloud** | 35 h | — |
+| 21 | 08/03 → 12/03/2027 | **Sauvegarde et Restauration** | 35 h | — |
+| 22 | 15/03 → 19/03/2027 | **Réseau et Sécurité (1/2)** | 35 h | — |
+| 23 | 22/03 → 26/03/2027 | **Réseau et Sécurité (2/2)** | 35 h | — |
+| 24 | 29/03 → 02/04/2027 | **Services transverses Microsoft (RDS/WDS)** | 28 h | — |
+| 25 | 05/04 → 28/05/2027 | **Stage en entreprise** | 266 h | — |
+| | | **Total** | **1085 h** | |
 
 ## 📚 Contenu détaillé
 
@@ -59,7 +59,7 @@ Le planning complet de la formation TSSR, dans l'ordre : **25 étapes**, **1085 
 
 ### 02 · Bases des réseaux
 
-<span class="tssr-prog-meta">📅 19/10 → 23/10/2026 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 19/10 → 23/10/2026 · ⏱️ 35 h · 👤 Cédric RICHEZ</span>
 
 - Le modèle OSI
 - Les unités informatiques
@@ -73,7 +73,7 @@ Le planning complet de la formation TSSR, dans l'ordre : **25 étapes**, **1085 
 
 ### 03 · Systèmes clients Microsoft (1/2)
 
-<span class="tssr-prog-meta">📅 26/10 → 30/10/2026 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 26/10 → 30/10/2026 · ⏱️ 35 h · 👤 Alexandre CHAUSSIER</span>
 
 - Présentation matériel / Initiation VMware Workstation
 - Présentation de l'écosystème Microsoft
@@ -93,7 +93,7 @@ Le planning complet de la formation TSSR, dans l'ordre : **25 étapes**, **1085 
 
 ### 04 · Systèmes clients Microsoft (2/2)
 
-<span class="tssr-prog-meta">📅 02/11 → 06/11/2026 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 02/11 → 06/11/2026 · ⏱️ 35 h · 👤 Paul HUVELIN</span>
 
 - Suite du module précédent
 
@@ -103,7 +103,7 @@ Le planning complet de la formation TSSR, dans l'ordre : **25 étapes**, **1085 
 
 ### 05 · Utilisation d'une distribution GNU/Linux
 
-<span class="tssr-prog-meta">📅 09/11 → 13/11/2026 · ⏱️ 28 h</span>
+<span class="tssr-prog-meta">📅 09/11 → 13/11/2026 · ⏱️ 28 h · 👤 Alexandre CHAUSSIER</span>
 
 - Caractéristiques générales des systèmes GNU/Linux
 - Syntaxe des commandes
@@ -124,7 +124,7 @@ Le planning complet de la formation TSSR, dans l'ordre : **25 étapes**, **1085 
 
 ### 06 · Administration GNU/Linux (1/2)
 
-<span class="tssr-prog-meta">📅 16/11 → 20/11/2026 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 16/11 → 20/11/2026 · ⏱️ 35 h · 👤 Hasan KURTULUS</span>
 
 - Installation d'une distribution Debian
 - Gestion des paquets
@@ -143,7 +143,7 @@ Le planning complet de la formation TSSR, dans l'ordre : **25 étapes**, **1085 
 
 ### 07 · Administration GNU/Linux (2/2)
 
-<span class="tssr-prog-meta">📅 23/11 → 27/11/2026 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 23/11 → 27/11/2026 · ⏱️ 35 h · 👤 Hasan KURTULUS</span>
 
 - Suite du module précédent
 
@@ -153,7 +153,7 @@ Le planning complet de la formation TSSR, dans l'ordre : **25 étapes**, **1085 
 
 ### 08 · Mise en situation pro : systèmes clients
 
-<span class="tssr-prog-meta">📅 30/11 → 04/12/2026 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 30/11 → 04/12/2026 · ⏱️ 35 h · 👤 Alexandre CHAUSSIER</span>
 
 - Bases des réseaux
 - Systèmes clients Microsoft
@@ -166,7 +166,7 @@ Le planning complet de la formation TSSR, dans l'ordre : **25 étapes**, **1085 
 
 ### 09 · ITIL et Gestion de parc (1/2)
 
-<span class="tssr-prog-meta">📅 07/12 → 11/12/2026 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 07/12 → 11/12/2026 · ⏱️ 35 h · 👤 Cédric RICHEZ</span>
 
 - ITIL : principes, vocabulaire
 - Centre de support
@@ -184,7 +184,7 @@ Le planning complet de la formation TSSR, dans l'ordre : **25 étapes**, **1085 
 
 ### 10 · ITIL et Gestion de parc (2/2)
 
-<span class="tssr-prog-meta">📅 14/12 → 18/12/2026 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 14/12 → 18/12/2026 · ⏱️ 35 h · 👤 Cédric RICHEZ</span>
 
 - Suite du module précédent
 
