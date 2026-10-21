@@ -10,7 +10,7 @@ Le planning complet de la formation TSSR, dans l'ordre : **25 étapes**, **1085 
 
 | N° | Dates | Module | Durée | Formateur |
 |---|---|---|---|---|
-| 01 | 12/10 → 16/10/2026 | **Microsoft 365 – Outils collaboratifs** | 35 h | — |
+| 01 | 12/10 → 16/10/2026 | **Microsoft 365 – Outils collaboratifs** | 35 h | Hasan KURTULUS |
 | 02 | 19/10 → 23/10/2026 | **Bases des réseaux** | 35 h | Cédric RICHEZ |
 | 03 | 26/10 → 30/10/2026 | **Systèmes clients Microsoft (1/2)** | 35 h | Alexandre CHAUSSIER |
 | 04 | 02/11 → 06/11/2026 | **Systèmes clients Microsoft (2/2)** | 35 h | Paul HUVELIN |
@@ -43,7 +43,7 @@ Le planning complet de la formation TSSR, dans l'ordre : **25 étapes**, **1085 
 
 ### 01 · Microsoft 365 – Outils collaboratifs
 
-<span class="tssr-prog-meta">📅 12/10 → 16/10/2026 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 12/10 → 16/10/2026 · ⏱️ 35 h · 👤 Hasan KURTULUS</span>
 
 - Découverte de l'environnement Microsoft 365
 - Installation et paramétrage
