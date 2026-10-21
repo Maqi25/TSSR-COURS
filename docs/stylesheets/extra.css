@@ -414,3 +414,109 @@
   border-radius: 0.5rem;
   margin: 1rem 0;
 }
+
+/* --------------------------------------------------------------------
+   Schéma d'une adresse IPv4 (.tssr-ip) : octets colorés réseau / hôte,
+   masque en dessous, puis les résultats (réseau, plage, broadcast).
+   Utilisé dans cours-01 / module 3.
+   -------------------------------------------------------------------- */
+.md-typeset .tssr-ip {
+  --ip-net: #0891b2;
+  --ip-host: #db2777;
+  margin: 1rem 0 1.4rem;
+  padding: 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  background: color-mix(in srgb, var(--md-default-bg-color) 60%, transparent);
+  overflow-x: auto;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tssr-ip {
+  --ip-net: #22d3ee;
+  --ip-host: #f472b6;
+}
+
+.md-typeset .tssr-ip-grid {
+  display: grid;
+  grid-template-columns: 6.5rem repeat(4, minmax(5.2rem, 1fr));
+  gap: 0.4rem;
+  min-width: 29rem;
+  align-items: center;
+}
+
+.md-typeset .tssr-ip-label {
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .tssr-ip-oct {
+  --c: var(--ip-net);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 0.4rem 0.2rem;
+  border-radius: 10px;
+  border: 2px solid var(--c);
+  background: color-mix(in srgb, var(--c) 14%, transparent);
+}
+
+.md-typeset .tssr-ip-oct.is-host { --c: var(--ip-host); }
+.md-typeset .tssr-ip-oct.is-mask { --c: var(--ip-net); border-style: dashed; }
+.md-typeset .tssr-ip-oct.is-zero { --c: var(--ip-host); border-style: dashed; }
+
+.md-typeset .tssr-ip-oct b {
+  font-size: 1.1rem;
+}
+
+.md-typeset .tssr-ip-oct code {
+  padding: 0;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  background: none;
+}
+
+.md-typeset .tssr-ip-brace {
+  padding: 0.25rem 0.4rem;
+  border-top: 3px solid var(--ip-net);
+  font-size: 0.64rem;
+  text-align: center;
+  color: var(--ip-net);
+}
+
+.md-typeset .tssr-ip-brace.is-net  { grid-column: span 3; }
+.md-typeset .tssr-ip-brace.is-host { border-top-color: var(--ip-host); color: var(--ip-host); }
+
+.md-typeset .tssr-ip-results {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
+  margin-top: 0.9rem;
+  min-width: 29rem;
+}
+
+.md-typeset .tssr-ip-results > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.1rem;
+  padding: 0.5rem 0.6rem;
+  border-radius: 10px;
+  border-left: 4px solid var(--md-accent-fg-color);
+  background: var(--md-code-bg-color);
+}
+
+.md-typeset .tssr-ip-results small,
+.md-typeset .tssr-ip-results span {
+  font-size: 0.6rem;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .tssr-ip-results b {
+  font-family: var(--md-code-font-family);
+  font-size: 0.78rem;
+}
+
+.md-typeset .tssr-ip-results u {
+  text-decoration: none;
+  color: var(--ip-host);
+}
