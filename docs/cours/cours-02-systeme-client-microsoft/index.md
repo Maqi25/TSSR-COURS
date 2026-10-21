@@ -1,7 +1,7 @@
 # Cours 2 - Système client Microsoft
 
 !!! abstract "Informations pratiques"
-    **Dates :** _à compléter_
+    **Dates :** 26/10/2026 → 06/11/2026
 
     **Formateur(s) :** _à compléter_
 
