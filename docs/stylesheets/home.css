@@ -92,8 +92,9 @@
   color: #fff;
 }
 
-.md-typeset .tssr-home-title::before {
-  content: none;
+.md-typeset .tssr-home-title::before,
+.md-typeset .tssr-home-title::after {
+  content: none;   /* ni « > » ni curseur clignotant : la salutation suffit */
 }
 
 /* Petit bonhomme animé à droite du bandeau (assets/images/bonhomme-ordi.svg) */
