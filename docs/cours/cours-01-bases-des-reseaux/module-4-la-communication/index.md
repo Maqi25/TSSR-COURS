@@ -12,6 +12,26 @@
 - lire une **table de routage** et distinguer routage **statique** / **dynamique** ;
 - **regrouper** plusieurs réseaux en un **sur-réseau** (supernetting).
 
+## 🚀 Jamais fait de réseau ? Commence ici
+
+Avant le cours, voici **les 8 mots** utilisés partout dans ce module, expliqués avec une image de la vie de tous les jours : **un réseau, c'est comme la poste**.
+
+| Mot | Ce que c'est, en clair | Dans la vie de tous les jours |
+|---|---|---|
+| **Adresse IP** | Le numéro d'une machine sur le réseau, ex. `192.168.1.10`. Elle peut changer si la machine déménage de réseau. | L'**adresse postale** d'une maison |
+| **Adresse MAC** | Le numéro **gravé** dans la carte réseau, ex. `AA:BB:CC:11:22:33`. Il ne change jamais. | Le **nom** écrit sur la boîte aux lettres |
+| **Réseau** | Un groupe de machines qui peuvent se parler **directement**, ex. `192.168.1.0/24`. | Une **rue** |
+| **Switch** (commutateur) | La « multiprise » qui relie les machines d'un même réseau entre elles. | Le **facteur du quartier**, qui ne distribue que dans sa rue |
+| **Routeur** | L'appareil qui relie **deux réseaux différents** (ex. ta maison et Internet : c'est ta box). | Le **centre de tri** qui envoie le courrier vers les autres villes |
+| **Passerelle** | L'adresse du routeur que ta machine utilise pour **sortir** de son réseau. | « Pour tout ce qui sort de la rue, je le donne au **bureau de poste** du coin » |
+| **Broadcast** (diffusion) | Un message envoyé **à toutes** les machines du réseau à la fois. | Une **annonce au haut-parleur** dans la rue |
+| **Ping** | Une petite commande pour tester si une machine répond : `ping 192.168.1.20`. | « **Toc toc**, tu es là ? » « Oui ! » |
+
+!!! tip "L'idée de tout le module en 3 phrases"
+    1. Pour parler à une machine **de sa rue**, il faut connaître son **nom sur la boîte aux lettres** (la MAC). Si on ne le connaît pas, on **crie dans la rue** : « Qui habite au numéro 20 ? » (c'est **ARP**, en broadcast).
+    2. Pour parler à une machine **d'une autre rue**, on ne la contacte pas directement : on confie le courrier au **bureau de poste** (la **passerelle** / le routeur), qui s'occupe de la suite.
+    3. Le **haut-parleur** (broadcast) ne s'entend que **dans la rue** : le routeur ne le laisse jamais passer dans une autre rue.
+
 ## 🖼️ Résumé visuel
 
 **① Le routeur coupe le réseau en domaines de diffusion**
@@ -74,6 +94,9 @@ flowchart TD
 
 ### 1. Le domaine de diffusion (broadcast domain)
 
+!!! abstract "En clair"
+    Un **domaine de diffusion**, c'est « **jusqu'où porte le haut-parleur** ». Toutes les machines reliées par des switchs l'entendent ; le **routeur** est le mur qui l'arrête.
+
 Un **domaine de diffusion** est la zone du réseau dans laquelle un message de **diffusion (broadcast)** est reçu par **toutes** les machines. C'est l'équivalent d'une annonce au haut-parleur : tout le monde dans la pièce l'entend, même si elle ne le concerne pas.
 
 | Couche | Adresse de broadcast | Exemple |
@@ -97,12 +120,15 @@ Un **domaine de diffusion** est la zone du réseau dans laquelle un message de *
 
 ### 2. Communication dans le même réseau : ARP
 
+!!! abstract "En clair"
+    Ta machine connaît l'**adresse IP** de la cible (tu l'as tapée), mais pour envoyer réellement le message sur le câble il lui faut son **adresse MAC**. **ARP** sert uniquement à ça : demander à voix haute « **qui a l'IP 192.168.1.20 ? Donne-moi ta MAC** ». La bonne machine répond, et on note la réponse dans un carnet (la **table ARP**) pour ne pas redemander la prochaine fois.
+
 **Situation** : A (`192.168.1.10/24`, MAC `AA`) fait un `ping 192.168.1.20` vers B (MAC `BB`).
 
 | # | A se demande… | Réponse dans l'exemple |
 |---|---|---|
 | ① | Est-ce ma propre adresse (`127.0.0.1`) ? | Non → on continue |
-| ② | Quel est mon réseau et celui de B ? (IP **ET** masque) | 192.168.1.10 → **192.168.1.0** · 192.168.1.20 → **192.168.1.0** |
+| ② | Quel est mon réseau et celui de B ? (IP **ET** masque, le calcul vu au [module 3](../module-3-l-adressage-ipv4/index.md#3-le-masque-de-sous-reseau-et-le-et-logique)) | 192.168.1.10 → **192.168.1.0** · 192.168.1.20 → **192.168.1.0** |
 | ③ | Sommes-nous dans le même réseau ? | **Oui** → envoi direct à B (sinon → passerelle, section 3) |
 | ④ | Ma **table ARP** connaît-elle la MAC de B ? | Non → **requête ARP en broadcast**, le ping attend |
 | ⑤ | B a-t-il répondu ? | Oui → table ARP mise à jour, **le ping part** (sinon : erreur, « hôte inaccessible ») |
@@ -126,13 +152,16 @@ sequenceDiagram
 | Message | MAC destination | MAC source | IP recherchée / cible | IP source |
 |---|---|---|---|---|
 | **Requête ARP** (broadcast) | `FF:FF:FF:FF:FF:FF` | AA | 192.168.1.20 | 192.168.1.10 |
-| **Réponse ARP** (unicast) | AA | BB | 192.168.1.10 | 192.168.1.20 |
+| **Réponse ARP** (unicast = envoyée à **une seule** machine) | AA | BB | 192.168.1.10 | 192.168.1.20 |
 
 💡 Pour voir la table ARP de ton poste : `arp -a` (Windows et Linux).
 
 ---
 
 ### 3. Communication entre deux réseaux : la passerelle
+
+!!! abstract "En clair"
+    Si la cible n'est **pas dans ta rue**, ta machine ne cherche même pas à la joindre : elle remet le paquet à la **passerelle** (le routeur), comme on dépose une lettre au bureau de poste. Le routeur, lui, sait vers quelle rue l'envoyer. À chaque étape, on change l'**enveloppe extérieure** (les MAC), mais l'**adresse finale écrite sur la lettre** (les IP) ne change jamais.
 
 **Situation** : A (`192.168.1.10/24`, passerelle `192.168.1.254`) fait un ping vers D (`192.168.2.20/24`, passerelle `192.168.2.254`).
 
@@ -157,6 +186,9 @@ Même raisonnement que la section 2, mais à l'étape ③ : `192.168.1.0 ≠ 192
 ---
 
 ### 4. Le routage
+
+!!! abstract "En clair"
+    Le routeur a une **liste d'itinéraires** (la **table de routage**) : « pour aller vers tel réseau, passer par telle porte ». Pour chaque paquet, il regarde l'IP de destination dans sa liste ; s'il ne trouve rien, il l'envoie sur la **route par défaut** (en général : vers Internet).
 
 Le **routage** consiste à choisir le **chemin** d'un paquet à travers un ou plusieurs réseaux. Il se fait à la **couche 3** par les **routeurs**. Le switch, lui, ne fait que faire circuler les trames **dans** un réseau.
 
@@ -189,6 +221,9 @@ Pour chaque paquet, le routeur lit l'IP de destination et consulte sa **table de
 ---
 
 ### 5. Le sur-réseau (supernetting)
+
+!!! abstract "En clair"
+    Au lieu d'écrire 4 lignes dans la liste d'itinéraires (« rue 0, rue 1, rue 2, rue 3 : passer par là »), on en écrit **une seule** qui les englobe toutes (« **tout le quartier** : passer par là »). C'est juste une façon de **résumer** plusieurs réseaux voisins.
 
 Le **sur-réseau** est l'**inverse du sous-réseau** : on **regroupe plusieurs réseaux contigus** en un seul, plus grand, avec un masque **plus court** (moins de bits à 1). But : **une seule ligne dans la table de routage** au lieu de plusieurs.
 
