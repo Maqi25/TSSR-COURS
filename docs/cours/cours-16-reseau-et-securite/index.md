@@ -5,41 +5,35 @@
 
     **Durée :** 70 h (2 semaines)
 
+    **Lieu :** En ligne (Campus en ligne)
+
     **Formateur(s) :** _à compléter_
 
 Retrouve ici l'ensemble des modules de ce cours.
 
 <div class="tssr-grid">
-  <a class="tssr-card" href="module-1-rappels-de-notions-sur-le-reseau/">
+  <a class="tssr-card" href="module-1-securiser-les-acces-reseau/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Module 1 : Rappels de notions sur le réseau</span>
+    <span class="tssr-card-title">Module 1 : Sécuriser les accès réseau</span>
   </a>
-  <a class="tssr-card" href="module-2-le-pare-feu/">
+  <a class="tssr-card" href="module-2-exposer-des-services-vers-l-exterieur/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Module 2 : Le pare-feu</span>
+    <span class="tssr-card-title">Module 2 : Exposer des services vers l'extérieur</span>
   </a>
-  <a class="tssr-card" href="module-3-le-nat/">
+  <a class="tssr-card" href="module-3-les-collaborateurs-et-le-teletravail/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Module 3 : Le NAT</span>
+    <span class="tssr-card-title">Module 3 : Les collaborateurs et le télétravail</span>
   </a>
-  <a class="tssr-card" href="module-4-exposer-des-services-vers-l-exterieur/">
+  <a class="tssr-card" href="module-4-relier-des-sites-distants-de-maniere-securisee/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Module 4 : Exposer des services vers l'extérieur</span>
+    <span class="tssr-card-title">Module 4 : Relier des sites distants de manière sécurisée</span>
   </a>
-  <a class="tssr-card" href="module-5-securiser-la-navigation-internet/">
+  <a class="tssr-card" href="module-5-authentifier-et-securiser-les-echanges/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Module 5 : Sécuriser la navigation Internet</span>
+    <span class="tssr-card-title">Module 5 : Authentifier et sécuriser les échanges</span>
   </a>
-  <a class="tssr-card" href="module-6-la-gestion-des-certificats/">
+  <a class="tssr-card" href="module-6-centraliser-les-informations-de-journalisation/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Module 6 : La gestion des certificats</span>
-  </a>
-  <a class="tssr-card" href="module-7-connecter-les-collaborateurs-pour-le-teletravail/">
-    <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Module 7 : Connecter les collaborateurs pour le télétravail</span>
-  </a>
-  <a class="tssr-card" href="module-8-connecter-les-collaborateurs-entre-sites/">
-    <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Module 8 : Connecter les collaborateurs entre sites</span>
+    <span class="tssr-card-title">Module 6 : Centraliser les informations de journalisation</span>
   </a>
 </div>

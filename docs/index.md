@@ -84,15 +84,15 @@ hide:
     <a class="tssr-home-module" href="cours/cours-06-sensibilisation-itil-et-gestion-de-parc/"><span class="tssr-home-num">06</span><span class="tssr-home-micon">🎫</span><b>ITIL et gestion de parc</b></a>
     <a class="tssr-home-module" href="cours/cours-07-les-infrastructures-reseau/"><span class="tssr-home-num">07</span><span class="tssr-home-micon">🔀</span><b>Infrastructures réseau</b></a>
     <a class="tssr-home-module" href="cours/cours-08-les-services-reseau-en-environnement-microsoft/"><span class="tssr-home-num">08</span><span class="tssr-home-micon">🏢</span><b>Services réseau Microsoft</b></a>
-    <a class="tssr-home-module" href="cours/cours-09-les-services-reseau-en-environnement-linux/"><span class="tssr-home-num">09</span><span class="tssr-home-micon">🖧</span><b>Services réseau Linux</b></a>
-    <a class="tssr-home-module" href="cours/cours-10-mise-en-situation-professionnelle-services-reseau/"><span class="tssr-home-num">10</span><span class="tssr-home-micon">🧩</span><b>Mise en situation : services réseau</b></a>
-    <a class="tssr-home-module" href="cours/cours-11-initiation-au-scripting-bash/"><span class="tssr-home-num">11</span><span class="tssr-home-micon">📜</span><b>Scripting Bash</b></a>
-    <a class="tssr-home-module" href="cours/cours-12-initiation-a-powershell/"><span class="tssr-home-num">12</span><span class="tssr-home-micon">⚡</span><b>PowerShell</b></a>
+    <a class="tssr-home-module" href="cours/cours-09-mise-en-situation-professionnelle-services-reseau/"><span class="tssr-home-num">09</span><span class="tssr-home-micon">🧩</span><b>Mise en situation : services réseau</b></a>
+    <a class="tssr-home-module" href="cours/cours-10-initiation-au-scripting-bash/"><span class="tssr-home-num">10</span><span class="tssr-home-micon">📜</span><b>Scripting Bash</b></a>
+    <a class="tssr-home-module" href="cours/cours-11-initiation-a-powershell/"><span class="tssr-home-num">11</span><span class="tssr-home-micon">⚡</span><b>PowerShell</b></a>
+    <a class="tssr-home-module" href="cours/cours-12-automatisation-et-ia-appliquees-au-support-et-au-mco/"><span class="tssr-home-num">12</span><span class="tssr-home-micon">🤖</span><b>Automatisation et IA</b></a>
     <a class="tssr-home-module" href="cours/cours-13-virtualisation-de-serveurs/"><span class="tssr-home-num">13</span><span class="tssr-home-micon">🖥️</span><b>Virtualisation de serveurs</b></a>
-    <a class="tssr-home-module" href="cours/cours-14-messagerie-cloud/"><span class="tssr-home-num">14</span><span class="tssr-home-micon">☁️</span><b>Messagerie Cloud</b></a>
+    <a class="tssr-home-module" href="cours/cours-14-services-cloud/"><span class="tssr-home-num">14</span><span class="tssr-home-micon">☁️</span><b>Services Cloud</b></a>
     <a class="tssr-home-module" href="cours/cours-15-sauvegarde-et-restauration/"><span class="tssr-home-num">15</span><span class="tssr-home-micon">💾</span><b>Sauvegarde et restauration</b></a>
     <a class="tssr-home-module" href="cours/cours-16-reseau-et-securite/"><span class="tssr-home-num">16</span><span class="tssr-home-micon">🛡️</span><b>Réseau et sécurité</b></a>
-    <a class="tssr-home-module" href="cours/cours-17-services-transverses-microsoft-rds-wds/"><span class="tssr-home-num">17</span><span class="tssr-home-micon">🚀</span><b>Services transverses RDS / WDS</b></a>
+    <a class="tssr-home-module" href="cours/cours-17-supervision/"><span class="tssr-home-num">17</span><span class="tssr-home-micon">📈</span><b>Supervision</b></a>
   </div>
 </section>
 

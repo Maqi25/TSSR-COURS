@@ -5,25 +5,31 @@
 
     **Durée :** 35 h
 
+    **Lieu :** En ligne (Campus en ligne)
+
     **Formateur(s) :** _à compléter_
 
 Retrouve ici l'ensemble des modules de ce cours.
 
 <div class="tssr-grid">
-  <a class="tssr-card" href="module-1-concepts-enjeux-et-definitions/">
+  <a class="tssr-card" href="module-1-concepts-enjeux-definitions/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Module 1 : Concepts, enjeux et définitions</span>
+    <span class="tssr-card-title">Module 1 : Concepts, enjeux, définitions</span>
   </a>
   <a class="tssr-card" href="module-2-types-de-sauvegarde/">
     <span class="tssr-card-icon">📗</span>
     <span class="tssr-card-title">Module 2 : Types de sauvegarde</span>
   </a>
-  <a class="tssr-card" href="module-3-gestion-du-stockage/">
+  <a class="tssr-card" href="module-3-stocker-les-sauvegardes/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Module 3 : Gestion du stockage</span>
+    <span class="tssr-card-title">Module 3 : Stocker les sauvegardes</span>
   </a>
-  <a class="tssr-card" href="module-4-la-redondance-des-donnees-raid/">
+  <a class="tssr-card" href="module-4-sauvegarder-des-machines-virtuelles/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Module 4 : La redondance des données - RAID</span>
+    <span class="tssr-card-title">Module 4 : Sauvegarder des machines virtuelles</span>
+  </a>
+  <a class="tssr-card" href="module-5-superviser-les-sauvegardes/">
+    <span class="tssr-card-icon">📗</span>
+    <span class="tssr-card-title">Module 5 : Superviser les sauvegardes</span>
   </a>
 </div>

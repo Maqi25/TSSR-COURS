@@ -43,49 +43,49 @@ Retrouve ici l'ensemble des cours de la formation TSSR. Chaque module suit toujo
     <span class="tssr-card-title">Cours 8 · Les services réseau en environnement Microsoft</span>
     <span class="tssr-card-desc">6 modules</span>
   </a>
-  <a class="tssr-card" href="cours-09-les-services-reseau-en-environnement-linux/">
-    <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Cours 9 · Les services réseau en environnement Linux</span>
-    <span class="tssr-card-desc">7 modules</span>
-  </a>
-  <a class="tssr-card" href="cours-10-mise-en-situation-professionnelle-services-reseau/">
+  <a class="tssr-card" href="cours-09-mise-en-situation-professionnelle-services-reseau/">
     <span class="tssr-card-icon">🧩</span>
-    <span class="tssr-card-title">Cours 10 · Mise en situation professionnelle : services réseau</span>
+    <span class="tssr-card-title">Cours 9 · Mise en situation professionnelle : services réseau</span>
     <span class="tssr-card-desc">Mise en situation professionnelle</span>
   </a>
-  <a class="tssr-card" href="cours-11-initiation-au-scripting-bash/">
+  <a class="tssr-card" href="cours-10-initiation-au-scripting-bash/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Cours 11 · Initiation au scripting Bash</span>
+    <span class="tssr-card-title">Cours 10 · Initiation au scripting Bash</span>
     <span class="tssr-card-desc">8 modules</span>
   </a>
-  <a class="tssr-card" href="cours-12-initiation-a-powershell/">
+  <a class="tssr-card" href="cours-11-initiation-a-powershell/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Cours 12 · Initiation à PowerShell</span>
-    <span class="tssr-card-desc">6 modules</span>
+    <span class="tssr-card-title">Cours 11 · Initiation à PowerShell</span>
+    <span class="tssr-card-desc">7 modules</span>
+  </a>
+  <a class="tssr-card" href="cours-12-automatisation-et-ia-appliquees-au-support-et-au-mco/">
+    <span class="tssr-card-icon">📗</span>
+    <span class="tssr-card-title">Cours 12 · Automatisation et IA appliquées au support et au MCO</span>
+    <span class="tssr-card-desc">Modules à venir</span>
   </a>
   <a class="tssr-card" href="cours-13-virtualisation-de-serveurs/">
     <span class="tssr-card-icon">📗</span>
     <span class="tssr-card-title">Cours 13 · Virtualisation de serveurs</span>
-    <span class="tssr-card-desc">8 modules</span>
+    <span class="tssr-card-desc">13 modules</span>
   </a>
-  <a class="tssr-card" href="cours-14-messagerie-cloud/">
+  <a class="tssr-card" href="cours-14-services-cloud/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Cours 14 · Messagerie Cloud</span>
-    <span class="tssr-card-desc">4 modules</span>
+    <span class="tssr-card-title">Cours 14 · Services Cloud</span>
+    <span class="tssr-card-desc">Modules à venir</span>
   </a>
   <a class="tssr-card" href="cours-15-sauvegarde-et-restauration/">
     <span class="tssr-card-icon">📗</span>
     <span class="tssr-card-title">Cours 15 · Sauvegarde et restauration</span>
-    <span class="tssr-card-desc">4 modules</span>
+    <span class="tssr-card-desc">8 modules</span>
   </a>
   <a class="tssr-card" href="cours-16-reseau-et-securite/">
     <span class="tssr-card-icon">📗</span>
     <span class="tssr-card-title">Cours 16 · Réseau et sécurité</span>
-    <span class="tssr-card-desc">8 modules</span>
+    <span class="tssr-card-desc">14 modules</span>
   </a>
-  <a class="tssr-card" href="cours-17-services-transverses-microsoft-rds-wds/">
+  <a class="tssr-card" href="cours-17-supervision/">
     <span class="tssr-card-icon">📗</span>
-    <span class="tssr-card-title">Cours 17 · Services transverses Microsoft (RDS/WDS)</span>
-    <span class="tssr-card-desc">6 modules</span>
+    <span class="tssr-card-title">Cours 17 · Supervision</span>
+    <span class="tssr-card-desc">Modules à venir</span>
   </a>
 </div>

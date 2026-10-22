@@ -5,6 +5,8 @@
 
     **Durée :** 63 h (2 semaines)
 
+    **Lieu :** En ligne (Campus en ligne)
+
     **Formateur(s) :** _à compléter_
 
 Retrouve ici l'ensemble des modules de ce cours.
