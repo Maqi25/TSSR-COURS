@@ -245,13 +245,13 @@ New-NetFirewallRule -DisplayName "Autoriser ping" -Direction Inbound -Protocol I
   {
     "question": "Dans quel cas le profil réseau public s'applique-t-il automatiquement ?",
     "options": [
-      "Lorsqu'aucune passerelle par défaut ou aucun domaine n'est détecté, ou si l'ordinateur est rendu invisible sur le réseau",
+      "Par défaut, sur un réseau inconnu ou non approuvé (gare, hôtel, nouveau Wi-Fi)",
       "Lorsque l'ordinateur est joint à un domaine d'entreprise",
       "Lorsque l'utilisateur active manuellement le mode avion",
       "Lorsque le pare-feu Windows est complètement désactivé"
     ],
     "correctIndex": 0,
-    "explanation": "Le profil réseau public s'applique automatiquement lorsqu'aucune passerelle par défaut ou aucun domaine n'est détecté, ou bien si l'utilisateur décide de rendre son ordinateur invisible sur le réseau ; le pare-feu bloque alors un bon nombre de communications."
+    "explanation": "Windows applique le profil Public à tout réseau qu'on ne lui a pas indiqué comme sûr : c'est le réglage le plus prudent. On passe un réseau en Privé à la main ; le profil Domaine s'applique tout seul quand le contrôleur de domaine est joignable."
   },
   {
     "question": "Quelle commande permet d'accéder rapidement aux propriétés des cartes réseau sous Windows 10 ?",

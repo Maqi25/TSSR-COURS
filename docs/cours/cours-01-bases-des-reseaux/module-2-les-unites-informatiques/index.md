@@ -214,7 +214,7 @@ Binaire → Hexadécimal :  10101111  →  1010 | 1111  →  A | F  →  AF (hex
 
 #### Les multiples de l'octet : deux systèmes à ne pas confondre
 
-Il existe **deux façons** de compter les multiples de l'octet, ce qui est une source fréquente de confusion (notamment sur les disques durs, où les fabricants utilisent le système décimal alors que les systèmes d'exploitation utilisent le système binaire) :
+Il existe **deux façons** de compter les multiples de l'octet, ce qui est une source fréquente de confusion (notamment sur les disques durs, où les fabricants utilisent le système décimal alors que **Windows** compte en binaire, tout en affichant « Go » au lieu de « Gio ») :
 
 | Système **binaire** (base 2) | Valeur | Système **décimal** (base 10) | Valeur |
 |---|---|---|---|
@@ -223,7 +223,7 @@ Il existe **deux façons** de compter les multiples de l'octet, ce qui est une s
 | **Gio** (Gibioctet) | 2³⁰ ≈ 1,07 milliard d'octets | **Go** (Gigaoctet) | 10⁹ = 1 milliard d'octets |
 | **Tio** (Tébioctet) | 2⁴⁰ ≈ 1,1 billion d'octets | **To** (Téraoctet) | 10¹² = 1 billion d'octets |
 
-⚠️ C'est pour cette raison qu'un disque dur annoncé « 1 To » par le fabricant (système décimal) apparaît toujours plus petit qu'attendu une fois branché sur un ordinateur (qui compte en Tio, système binaire).
+⚠️ C'est pour cette raison qu'un disque dur annoncé « 1 To » par le fabricant (système décimal) apparaît plus petit une fois branché sous Windows : environ **931 Go** (car Windows compte en Tio/Gio, système binaire). macOS, lui, compte en décimal et affiche bien 1 To.
 
 #### Les unités de débit (vitesse de transmission)
 

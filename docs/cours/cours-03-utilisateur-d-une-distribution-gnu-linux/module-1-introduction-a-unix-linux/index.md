@@ -372,10 +372,10 @@ Debian repose sur un **contrat social** : elle restera **totalement libre**, ne 
       "Light Terminal System, une version allégée sans interface graphique",
       "Linux Testing Server, une version réservée aux environnements de test",
       "Licensed Total Software, une version nécessitant obligatoirement une licence payante",
-      "Long Time Support, pour bénéficier de mises à jour et d'un support généralement pendant 5 ans"
+      "Long Term Support, pour bénéficier de mises à jour et d'un support généralement pendant 5 ans"
     ],
     "correctIndex": 3,
-    "explanation": "LTS signifie Long Time Support : une version LTS d'Ubuntu garantit généralement 5 ans de mises à jour et de support, contrairement aux versions intermédiaires qui ne garantissent qu'un an."
+    "explanation": "LTS signifie Long Term Support : une version LTS d'Ubuntu garantit généralement 5 ans de mises à jour et de support, contrairement aux versions intermédiaires qui ne garantissent qu'un an."
   },
   {
     "question": "Sur quel noyau le système d'exploitation Android, utilisé sur de nombreux smartphones, est-il basé ?",

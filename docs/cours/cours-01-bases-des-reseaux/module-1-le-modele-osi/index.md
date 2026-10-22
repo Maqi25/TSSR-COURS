@@ -6,6 +6,11 @@
 
 Ce module présente le modèle OSI : sa logique en 7 couches, le vocabulaire de l'encapsulation (PDU, SDU, PCI), le rôle, les protocoles et les équipements associés à chaque couche, ainsi que le déroulé concret de l'encapsulation/désencapsulation à travers l'exemple d'un envoi d'email.
 
+!!! abstract "En clair"
+    Pour qu'un message aille d'un ordinateur à un autre, il faut résoudre plein de problèmes : le câble, les adresses, le chemin, la fiabilité, le format… Le **modèle OSI** range ces problèmes en **7 étages**, chacun avec **un seul travail**. Comme à la poste : on écrit la lettre, on la met dans une enveloppe avec l'adresse, le centre de tri choisit la route, le camion la transporte.
+
+    En pratique, Internet utilise le **modèle TCP/IP** (4 couches), plus simple : il est expliqué en section 5.
+
 ## 🖼️ Résumé visuel
 
 Le modèle OSI découpe une communication en **sept responsabilités complémentaires**. À l’émission, chaque couche prépare les données pour la couche inférieure ; à la réception, le traitement se fait dans l’ordre inverse.
@@ -269,6 +274,23 @@ Le processus est exactement l'inverse : à chaque couche, l'en-tête ajouté à 
 
 📌 **À retenir** : à chaque couche, la vérification porte sur **l'information ajoutée par cette couche à l'envoi** (adresse MAC en couche 2, adresse IP en couche 3, port en couche 4...) — c'est ce qui permet à chaque couche de savoir si les données lui sont bien destinées, ou si elles doivent continuer leur chemin.
 
+### 5. Le modèle TCP/IP : celui qu'on utilise vraiment
+
+Le modèle OSI est **théorique** : il sert à **expliquer** et à **dépanner** (« le problème est en couche 2 »). Le modèle réellement utilisé par Internet est le **modèle TCP/IP**, en **4 couches**, qui regroupe certaines couches OSI.
+
+| Couches OSI | Couche TCP/IP | Protocoles | PDU |
+|---|---|---|---|
+| 7 Application · 6 Présentation · 5 Session | **4 – Application** | HTTP(S), DNS, DHCP, SMTP, SSH, FTP | Données |
+| 4 Transport | **3 – Transport** | TCP, UDP | Segment |
+| 3 Réseau | **2 – Internet** | IP, ICMP | Paquet |
+| 2 Liaison · 1 Physique | **1 – Accès réseau** | Ethernet, Wi-Fi | Trame / bits |
+
+📌 Les numéros diffèrent : la couche **Transport** est la **4** en OSI, mais la **3** en TCP/IP. Quand on parle d'un « switch de niveau 2 » ou d'un « routeur de niveau 3 », c'est la numérotation **OSI** qui est utilisée.
+
+💡 **ARP** fait le lien entre l'adresse IP (couche 3) et l'adresse MAC (couche 2) : on le place selon les cours en couche 2 ou 3 ; retiens qu'il est « **entre les deux** ».
+
+---
+
 ## ✅ Points clés à retenir
 
 - Le modèle OSI structure la communication réseau en **7 couches indépendantes**, chacune ne dialoguant qu'avec ses voisines directes.
@@ -277,6 +299,7 @@ Le processus est exactement l'inverse : à chaque couche, l'en-tête ajouté à 
 - Les couches 5, 6, 7 (Session, Présentation, Application) sont **logicielles** ; les couches 1 à 4 impliquent des équipements matériels (câbles, switches, routeurs, firewalls).
 - La couche **Transport** utilise les **ports** pour permettre à plusieurs applications de communiquer simultanément (TCP = fiable, UDP = rapide mais non garanti).
 - L'**encapsulation** se fait à l'envoi (couche 7 → 1), la **désencapsulation** à la réception (couche 1 → 7) — chaque couche ne retire que l'information qu'elle avait elle-même ajoutée côté émetteur.
+- En pratique, on utilise le **modèle TCP/IP** à **4 couches** : Application · Transport · Internet · Accès réseau.
 - **Câble droit** = appareils de types différents ; **câble croisé** = appareils de même type (sauf Auto MDI-X, qui rend cette distinction automatique aujourd'hui).
 
 
@@ -303,7 +326,21 @@ Le processus est exactement l'inverse : à chaque couche, l'en-tête ajouté à 
 | **Câble droit / croisé** | Appareils différents (PC ↔ switch) · Appareils identiques (PC ↔ PC), sauf Auto MDI-X |
 | **UTP / STP** | Non blindé, économique · Blindé, résiste mieux aux interférences |
 
-**Ports à connaître** : SSH 22 · SMTP 25 · DNS 53 · DHCP 67/68 · HTTP 80 · IMAP 143 · SNMP 161/162 · LDAP 389 · HTTPS 443 · RDP 3389.
+**OSI ↔ TCP/IP** : 7-6-5 → **Application** · 4 → **Transport** · 3 → **Internet** · 2-1 → **Accès réseau**.
+
+**Ports à connaître** (souvent demandés à l'examen) :
+
+| Port | Service | | Port | Service |
+|---|---|---|---|---|
+| 20/21 | FTP | | 143 | IMAP |
+| 22 | SSH (et SFTP) | | 161/162 | SNMP (supervision) |
+| 23 | Telnet (non chiffré, à bannir) | | 389 / 636 | LDAP / LDAPS |
+| 25 | SMTP | | 443 | HTTPS |
+| 53 | DNS | | 445 | SMB (partages Windows) |
+| 67/68 | DHCP | | 587 | SMTP authentifié (envoi de mails) |
+| 80 | HTTP | | 993 / 995 | IMAPS / POP3S |
+| 88 | Kerberos (Active Directory) | | 3389 | RDP (Bureau à distance) |
+| 110 | POP3 | | 123 | NTP (heure) |
 
 ## 🧠 Quiz — entraîne-toi
 
@@ -313,123 +350,245 @@ Le processus est exactement l'inverse : à chaque couche, l'en-tête ajouté à 
 [
   {
     "question": "Que signifie l'acronyme PDU dans le modèle OSI ?",
-    "options": ["Protocol Data Unit", "Physical Data Unit", "Packet Distribution Unit", "Protocol Description Unit"],
+    "options": [
+      "Protocol Data Unit",
+      "Physical Data Unit",
+      "Packet Distribution Unit",
+      "Protocol Description Unit"
+    ],
     "correctIndex": 0,
     "explanation": "PDU signifie « Protocol Data Unit » : c'est l'unité de données échangée entre deux entités réseau à une couche donnée du modèle OSI, comprenant les données utilisateur et les informations de contrôle ajoutées par le protocole de cette couche."
   },
   {
     "question": "Dans le passage d'une couche N+1 à une couche N, comment est appelée la donnée brute que la couche N+1 transmet à la couche N avant tout traitement ?",
-    "options": ["Un PCI (Protocol Control Information)", "Un SDU (Service Data Unit)", "Un PDU (Protocol Data Unit)", "Un en-tête de couche"],
+    "options": [
+      "Un PCI (Protocol Control Information)",
+      "Un SDU (Service Data Unit)",
+      "Un PDU (Protocol Data Unit)",
+      "Un en-tête de couche"
+    ],
     "correctIndex": 1,
     "explanation": "Le SDU est la donnée fournie par la couche N+1 à la couche N sous forme brute, sans information spécifique à la couche N. La couche N y ajoute ensuite son PCI pour former un nouveau PDU."
   },
   {
     "question": "Dans l'exemple d'encapsulation d'un email à travers les couches OSI, comment est nommé le PDU au niveau de la couche Application ?",
-    "options": ["PPDU (Presentation Protocol Data Unit)", "SPDU (Session Protocol Data Unit)", "APDU (Application Protocol Data Unit)", "TPDU (Transport Protocol Data Unit)"],
+    "options": [
+      "PPDU (Presentation Protocol Data Unit)",
+      "SPDU (Session Protocol Data Unit)",
+      "APDU (Application Protocol Data Unit)",
+      "TPDU (Transport Protocol Data Unit)"
+    ],
     "correctIndex": 2,
     "explanation": "Au niveau de la couche Application, les données brutes de l'email (texte et pièces jointes) sont appelées APDU. Cet APDU est ensuite encapsulé en PPDU par la couche Présentation, puis en SPDU par la couche Session, et ainsi de suite."
   },
   {
     "question": "Combien de couches compte le modèle OSI ?",
-    "options": ["4", "5", "9", "7"],
+    "options": [
+      "4",
+      "5",
+      "9",
+      "7"
+    ],
     "correctIndex": 3,
     "explanation": "Le modèle OSI est structuré en 7 couches distinctes, chacune ayant une fonction spécifique et communiquant uniquement avec les couches directement adjacentes."
   },
   {
     "question": "Quelle couche du modèle OSI est directement responsable de la transmission des bits sous forme de signaux électriques, optiques ou radio ?",
-    "options": ["La couche Physique", "La couche Liaison de données", "La couche Réseau", "La couche Transport"],
+    "options": [
+      "La couche Physique",
+      "La couche Liaison de données",
+      "La couche Réseau",
+      "La couche Transport"
+    ],
     "correctIndex": 0,
     "explanation": "La couche Physique transforme les données en impulsions électriques, signaux lumineux ou ondes radio et les transmet sur le support physique (câbles, fibres, ondes)."
   },
   {
     "question": "Quel type de câble à paires torsadées utilise le même schéma de câblage (par exemple T568B) aux deux extrémités ?",
-    "options": ["Le câble croisé (crossover)", "Le câble droit (straight-through)", "Le câble coaxial", "Le câble à fibre optique"],
+    "options": [
+      "Le câble croisé (crossover)",
+      "Le câble droit (straight-through)",
+      "Le câble coaxial",
+      "Le câble à fibre optique"
+    ],
     "correctIndex": 1,
     "explanation": "Un câble droit conserve le même ordre de connexion des fils aux deux extrémités ; il sert à relier des équipements de types différents, comme un ordinateur à un commutateur."
   },
   {
     "question": "Pour relier directement deux ordinateurs entre eux sans passer par un commutateur (en l'absence d'Auto MDI-X), quel type de câble à paires torsadées faut-il utiliser ?",
-    "options": ["Le câble droit", "Le câble STP simple", "Le câble croisé", "Le câble RJ11"],
+    "options": [
+      "Le câble droit",
+      "Le câble STP simple",
+      "Le câble croisé",
+      "Le câble RJ11"
+    ],
     "correctIndex": 2,
     "explanation": "Le câble croisé inverse les fils de transmission et de réception entre les deux extrémités (une extrémité en T568A, l'autre en T568B), ce qui permet à deux appareils de même type de communiquer directement."
   },
   {
     "question": "Quelle est la principale différence entre un câble UTP et un câble STP ?",
-    "options": ["L'UTP transmet uniquement en fibre optique", "Le STP fonctionne uniquement en réseau sans fil", "L'UTP ne peut pas dépasser 10 mètres de longueur", "Le STP dispose d'un blindage contre les interférences électromagnétiques, contrairement à l'UTP"],
+    "options": [
+      "L'UTP transmet uniquement en fibre optique",
+      "Le STP fonctionne uniquement en réseau sans fil",
+      "L'UTP ne peut pas dépasser 10 mètres de longueur",
+      "Le STP dispose d'un blindage contre les interférences électromagnétiques, contrairement à l'UTP"
+    ],
     "correctIndex": 3,
     "explanation": "STP (Shielded Twisted Pair) intègre un blindage qui protège mieux contre les interférences électromagnétiques, mais il est plus coûteux ; UTP (Unshielded Twisted Pair) est plus léger et économique mais plus sensible aux interférences."
   },
   {
     "question": "Quelles sont les deux sous-couches qui composent la couche Liaison de données ?",
-    "options": ["LLC (Logical Link Control) et MAC (Media Access Control)", "TCP et UDP", "IP et ICMP", "SSL et TLS"],
+    "options": [
+      "LLC (Logical Link Control) et MAC (Media Access Control)",
+      "TCP et UDP",
+      "IP et ICMP",
+      "SSL et TLS"
+    ],
     "correctIndex": 0,
     "explanation": "La couche Liaison de données se subdivise en sous-couche LLC, qui gère les connexions logiques et le multiplexage des protocoles, et en sous-couche MAC, qui contrôle l'accès au support physique et l'adressage physique."
   },
   {
     "question": "Quel type d'adresse est utilisé par la sous-couche MAC pour identifier de façon unique chaque appareil sur un réseau local ?",
-    "options": ["L'adresse IP", "L'adresse MAC", "Le numéro de port", "L'adresse logique de session"],
+    "options": [
+      "L'adresse IP",
+      "L'adresse MAC",
+      "Le numéro de port",
+      "L'adresse logique de session"
+    ],
     "correctIndex": 1,
     "explanation": "La sous-couche MAC gère l'adressage physique : chaque trame comporte une adresse MAC source et une adresse MAC de destination permettant d'identifier les équipements sur le réseau local."
   },
   {
     "question": "Quel équipement fonctionne typiquement au niveau de la couche Liaison de données en utilisant les adresses MAC pour transférer les trames ?",
-    "options": ["Le routeur", "Le modem", "Le commutateur (switch)", "Le pare-feu applicatif"],
+    "options": [
+      "Le routeur",
+      "Le modem",
+      "Le commutateur (switch)",
+      "Le pare-feu applicatif"
+    ],
     "correctIndex": 2,
     "explanation": "Les commutateurs opèrent au niveau de la couche Liaison de données et utilisent les adresses MAC pour acheminer les trames entre les dispositifs d'un même réseau local."
   },
   {
     "question": "Quelle est la fonction principale de la couche Réseau dans le modèle OSI ?",
-    "options": ["Transmettre les bits sous forme de signaux physiques", "Chiffrer et compresser les données", "Gérer les sessions entre applications", "Acheminer les paquets entre différents réseaux via le routage et l'adressage logique (IP)"],
+    "options": [
+      "Transmettre les bits sous forme de signaux physiques",
+      "Chiffrer et compresser les données",
+      "Gérer les sessions entre applications",
+      "Acheminer les paquets entre différents réseaux via le routage et l'adressage logique (IP)"
+    ],
     "correctIndex": 3,
     "explanation": "La couche Réseau détermine le chemin optimal pour acheminer les paquets d'un réseau à un autre, en s'appuyant sur des adresses logiques comme les adresses IP."
   },
   {
     "question": "Quel protocole de la couche Réseau est utilisé pour envoyer des messages de diagnostic tels que le ping ?",
-    "options": ["ICMP (Internet Control Message Protocol)", "ARP (Address Resolution Protocol)", "OSPF (Open Shortest Path First)", "TCP (Transmission Control Protocol)"],
+    "options": [
+      "ICMP (Internet Control Message Protocol)",
+      "ARP (Address Resolution Protocol)",
+      "OSPF (Open Shortest Path First)",
+      "TCP (Transmission Control Protocol)"
+    ],
     "correctIndex": 0,
     "explanation": "ICMP est utilisé pour les messages de contrôle et de diagnostic sur le réseau, comme les erreurs de routage ou les requêtes ping, qui permettent de vérifier la connectivité entre deux hôtes."
   },
   {
     "question": "Quel équipement de la couche Réseau prend des décisions d'acheminement basées sur les adresses IP et les tables de routage ?",
-    "options": ["Le commutateur", "Le routeur", "Le hub", "Le répéteur"],
+    "options": [
+      "Le commutateur",
+      "Le routeur",
+      "Le hub",
+      "Le répéteur"
+    ],
     "correctIndex": 1,
     "explanation": "Les routeurs acheminent les paquets entre différents réseaux en s'appuyant sur les adresses IP de destination et leurs tables de routage."
   },
   {
     "question": "Quelle unité de données, spécifique à la couche Transport, est numérotée pour permettre son réassemblage dans le bon ordre à l'arrivée ?",
-    "options": ["La trame", "Le paquet", "Le segment", "Le bit"],
+    "options": [
+      "La trame",
+      "Le paquet",
+      "Le segment",
+      "Le bit"
+    ],
     "correctIndex": 2,
     "explanation": "La couche Transport découpe les données en segments numérotés, ce qui permet à la couche Transport du récepteur de les réassembler dans le bon ordre, même si le réseau introduit des pertes ou des variations de débit."
   },
   {
     "question": "Quel protocole de la couche Transport garantit la livraison des segments dans le bon ordre et sans erreur, au prix d'une latence potentiellement plus élevée ?",
-    "options": ["UDP (User Datagram Protocol)", "IP (Internet Protocol)", "ARP (Address Resolution Protocol)", "TCP (Transmission Control Protocol)"],
+    "options": [
+      "UDP (User Datagram Protocol)",
+      "IP (Internet Protocol)",
+      "ARP (Address Resolution Protocol)",
+      "TCP (Transmission Control Protocol)"
+    ],
     "correctIndex": 3,
     "explanation": "TCP est un protocole orienté connexion qui assure la fiabilité de la transmission (ordre, absence d'erreurs) grâce à des mécanismes de contrôle et de retransmission, ce qui peut introduire de la latence par rapport à UDP."
   },
   {
     "question": "Pourquoi UDP est-il souvent préféré à TCP pour des applications comme le streaming vidéo ou la VoIP ?",
-    "options": ["Parce qu'il est plus rapide et sans vérification systématique de la réception des segments, ce qui convient aux flux temps réel tolérant quelques pertes", "Parce qu'il chiffre systématiquement les données transmises", "Parce qu'il garantit l'ordre et l'intégrité de chaque paquet", "Parce qu'il fonctionne uniquement sur le port 443"],
+    "options": [
+      "Parce qu'il est plus rapide et sans vérification systématique de la réception des segments, ce qui convient aux flux temps réel tolérant quelques pertes",
+      "Parce qu'il chiffre systématiquement les données transmises",
+      "Parce qu'il garantit l'ordre et l'intégrité de chaque paquet",
+      "Parce qu'il fonctionne uniquement sur le port 443"
+    ],
     "correctIndex": 0,
     "explanation": "UDP est un protocole sans connexion, plus léger que TCP car il n'implémente pas de contrôle d'ordre ni de vérification systématique de la réception, ce qui le rend adapté aux applications temps réel où la rapidité prime sur la fiabilité totale."
   },
   {
     "question": "À quoi servent les numéros de port utilisés par la couche Transport ?",
-    "options": ["À identifier de façon unique chaque carte réseau sur le marché", "À identifier les différentes applications qui communiquent sur un même appareil (multiplexage)", "À définir la topologie physique du réseau", "À chiffrer les échanges entre deux couches Session"],
+    "options": [
+      "À identifier de façon unique chaque carte réseau sur le marché",
+      "À identifier les différentes applications qui communiquent sur un même appareil (multiplexage)",
+      "À définir la topologie physique du réseau",
+      "À chiffrer les échanges entre deux couches Session"
+    ],
     "correctIndex": 1,
     "explanation": "Les ports permettent à plusieurs applications de partager la même connexion réseau en distinguant leurs flux de données respectifs ; par exemple, le port 80 est associé au HTTP et le port 443 au HTTPS."
   },
   {
     "question": "Quelle couche du modèle OSI est chargée d'établir, gérer et terminer les sessions de communication entre deux applications, notamment en assurant leur synchronisation ?",
-    "options": ["La couche Présentation", "La couche Application", "La couche Session", "La couche Transport"],
+    "options": [
+      "La couche Présentation",
+      "La couche Application",
+      "La couche Session",
+      "La couche Transport"
+    ],
     "correctIndex": 2,
     "explanation": "La couche Session établit, gère et termine les sessions entre applications communicantes et assure la synchronisation des échanges, permettant une reprise en cas d'interruption."
   },
   {
     "question": "Quel est le rôle principal de la couche Présentation dans le modèle OSI ?",
-    "options": ["Acheminer les paquets entre réseaux différents", "Gérer l'adressage physique des équipements", "Détecter les collisions sur le support physique partagé", "Convertir les données dans un format compréhensible par l'application, en gérant compression et chiffrement"],
+    "options": [
+      "Acheminer les paquets entre réseaux différents",
+      "Gérer l'adressage physique des équipements",
+      "Détecter les collisions sur le support physique partagé",
+      "Convertir les données dans un format compréhensible par l'application, en gérant compression et chiffrement"
+    ],
     "correctIndex": 3,
     "explanation": "La couche Présentation agit comme une « traductrice de données » : elle convertit les données dans un format exploitable par l'application et prend en charge la compression ainsi que la cryptographie, par exemple via SSL/TLS."
+  },
+  {
+    "question": "Combien de couches compte le modèle TCP/IP ?",
+    "options": [
+      "7",
+      "5",
+      "4",
+      "3"
+    ],
+    "correctIndex": 2,
+    "explanation": "TCP/IP compte 4 couches : Application, Transport, Internet et Accès réseau. Il regroupe les couches 5-6-7 d'OSI en une seule (Application) et les couches 1-2 en une seule (Accès réseau)."
+  },
+  {
+    "question": "Quel port utilise le partage de fichiers Windows (SMB) ?",
+    "options": [
+      "21",
+      "445",
+      "3389",
+      "8080"
+    ],
+    "correctIndex": 1,
+    "explanation": "SMB, utilisé par les partages Windows (\\\\serveur\\partage), fonctionne sur le port TCP 445. 21 = FTP, 3389 = Bureau à distance."
   }
 ]
 </script>

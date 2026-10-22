@@ -337,10 +337,10 @@ icacls D:\Partage\Compta /remove GRP_Stagiaires           ← retirer un groupe 
       "L'autorisation l'emporte toujours sur le refus explicite",
       "Le système accorde l'accès en lecture seule par défaut",
       "Le conflit doit être résolu manuellement par l'administrateur avant tout accès",
-      "Le refus explicite l'emporte toujours sur l'autorisation"
+      "Le refus explicite l'emporte sur l'autorisation"
     ],
     "correctIndex": 3,
-    "explanation": "Pour des raisons de sécurité, un refus explicite l'emporte toujours sur une autorisation, même si un autre groupe de l'utilisateur autorise cet accès."
+    "explanation": "Un refus coché explicitement l'emporte sur les autorisations, pour des raisons de sécurité. Nuance (cas avancé) : une autorisation posée directement sur l'objet l'emporte sur un refus seulement hérité du dossier parent."
   },
   {
     "question": "Par défaut, comment un répertoire NTFS transmet-il ses autorisations à ses objets enfants (sous-répertoires et fichiers contenus) ?",

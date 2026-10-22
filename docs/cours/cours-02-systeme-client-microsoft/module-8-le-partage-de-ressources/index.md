@@ -329,11 +329,11 @@ Exemple : un technicien tape `\\PC-COMPTA05\C$` pour aller chercher un fichier s
     "options": [
       "La conserver telle quelle, elle ne pose aucun risque",
       "La remplacer par le groupe Administrateurs uniquement",
-      "La supprimer (car elle inclut le groupe et l'utilisateur invité) et ajouter à la place l'entité des utilisateurs identifiés",
+      "La supprimer (car elle inclut le groupe et l'utilisateur invité) et ajouter à la place l'entité des « Utilisateurs authentifiés »",
       "Lui donner un accès en contrôle total pour simplifier la gestion"
     ],
     "correctIndex": 2,
-    "explanation": "La bonne pratique consiste à supprimer l'entité \"Tout le monde\" (qui contient le groupe et l'utilisateur invité) et à la remplacer par l'entité des utilisateurs identifiés, en leur accordant le contrôle total : cela ne pose pas de risque car les autorisations seront ensuite affinées grâce aux droits NTFS appliqués directement sur la ressource."
+    "explanation": "La bonne pratique consiste à supprimer l'entité \"Tout le monde\" (qui contient le groupe et l'utilisateur invité) et à la remplacer par l'entité des « Utilisateurs authentifiés », en leur accordant le contrôle total : cela ne pose pas de risque car les autorisations seront ensuite affinées grâce aux droits NTFS appliqués directement sur la ressource."
   },
   {
     "question": "Qu'est-ce qu'un partage administratif, comme ceux se terminant par un \"$\" ?",
@@ -341,7 +341,7 @@ Exemple : un technicien tape `\\PC-COMPTA05\C$` pour aller chercher un fichier s
       "Un partage visible par tous les utilisateurs du réseau",
       "Un partage réservé exclusivement à l'impression",
       "Un partage temporaire supprimé automatiquement après chaque redémarrage",
-      "Un partage caché, géré automatiquement par le système, accessible uniquement au compte administrateur"
+      "Un partage caché, créé automatiquement par le système, réservé aux membres du groupe Administrateurs"
     ],
     "correctIndex": 3,
     "explanation": "Les partages administratifs, dont le nom se termine par un $, sont cachés et n'apparaissent pas sur le réseau ; seul le compte administrateur peut y accéder, et ils sont créés automatiquement par le système."

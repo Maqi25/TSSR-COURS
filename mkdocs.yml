@@ -97,6 +97,7 @@ plugins:
 nav:
   - Accueil: index.md
   - Programme: programme/index.md
+  - Référentiel TSSR: referentiel/index.md
   - Cours:
       - cours/index.md
       - "Cours 1 · Bases des réseaux":
@@ -257,6 +258,7 @@ nav:
       - revisions/index.md
       - "Bases des réseaux": revisions/fiche-bases-des-reseaux.md
       - "Utilisation de GNU/Linux": revisions/fiche-utilisation-gnu-linux.md
+      - "L'IA au service du technicien": revisions/fiche-ia.md
   - Commandes:
       - commandes/index.md
       - PowerShell: commandes/powershell/index.md
