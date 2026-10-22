@@ -7,7 +7,7 @@ title: Référentiel TSSR (REAC 2026)
 Ce que le jury attend de toi le jour du titre, et **où le réviser sur ce site**.
 
 !!! abstract "Quelle version te concerne ?"
-    Le titre **Technicien supérieur systèmes et réseaux** (niveau 5, bac + 2) a été **révisé par l'arrêté du 16 juin 2026** (JORF du 19 juin 2026). La nouvelle version, enregistrée sous le code **RNCP 42463**, s'applique aux parcours **commencés à partir du 1ᵉʳ septembre 2026**, pour 5 ans (jusqu'au 31/08/2031).
+    Le titre **Technicien supérieur systèmes et réseaux** (niveau 5, bac + 2) a été **révisé par l'arrêté du 16 juin 2026** (NOR : TRSD2612221A, *Journal officiel* n° 0142 du 19 juin 2026, texte 5). La nouvelle version, enregistrée sous le code **RNCP 42463** (fiche France Compétences), s'applique aux parcours **commencés à partir du 1ᵉʳ septembre 2026**, pour 5 ans (jusqu'au 31/08/2031).
 
     Ta formation a commencé le **12/10/2026** : c'est **cette version** qui s'applique. L'ancienne (arrêté du 26 avril 2023, RNCP 37682, 2 blocs) ne concerne que les parcours commencés avant. **Fais-le confirmer par ton centre (ENI)**, qui organise ta session d'examen.
 
@@ -34,6 +34,24 @@ flowchart LR
 | **3 · Maintenir en conditions opérationnelles** | 8 | Optimiser des **scripts** à l'aide de l'**intelligence artificielle** |
 | | 9 | Assurer la **continuité et la reprise** de l'infrastructure |
 | | 10 | **Mettre à jour et superviser** les éléments de l'infrastructure |
+
+## 👔 Ce que le texte officiel attend du technicien
+
+Le **résumé du référentiel d'emploi** (annexe de l'arrêté) décrit le métier. En plus des 10 compétences, il insiste sur des **attitudes professionnelles** que le jury peut évaluer, notamment pendant l'entretien :
+
+| Le texte officiel dit… | Concrètement, à l'examen et en stage |
+|---|---|
+| Intégrer l'**IA** comme aide à l'analyse, au diagnostic et à l'optimisation, « dans le respect des exigences de sécurité, de conformité et de continuité de service » | Savoir **quand** l'utiliser et **quelles données** ne pas lui donner ([fiche IA](../revisions/fiche-ia.md)) |
+| **Sensibiliser** aux bonnes pratiques de **sécurité**, d'**éthique** et de **sobriété numérique** | Expliquer simplement un risque (phishing, mot de passe, données personnelles) ; prolonger la vie du matériel, éteindre ce qui ne sert pas |
+| Prendre en compte les utilisateurs **en situation de handicap** | Connaître les **outils d'accessibilité** de Windows (Loupe, Narrateur, contraste élevé, dictée) et adapter son accompagnement |
+| **Qualifier** et traiter les demandes et incidents, appliquer les procédures de résolution et d'**escalade**, assurer la **traçabilité** | Ticket complet et clair (ITIL, GLPI : cours 6) ; savoir **quand passer la main** au niveau 2 |
+| **Surveiller** l'infrastructure, **superviser** ses composants | Lire des alertes, des journaux, des indicateurs (CPU, disque, services) |
+| Exploiter des environnements **sur site ou dans le cloud**, gérer les droits en environnement **hybride** | Comptes locaux et comptes cloud (Active Directory + Microsoft Entra ID) |
+| **Rédiger la documentation** | Procédures, comptes rendus d'intervention, schémas réseau |
+| Se tenir à jour : IA, cybersécurité, virtualisation, cloud, réseaux | Avoir une méthode de **veille** (sites, newsletters, CERT-FR) et pouvoir en parler à l'oral |
+| Respecter les procédures, la **confidentialité** et la **conformité réglementaire** ; possibles **astreintes** et horaires décalés | Montrer que tu connais ces contraintes du métier |
+
+**Emplois visés** (codes ROME **I1401** et **M1810**) : technicien systèmes et réseau, technicien support, technicien d'exploitation, technicien informatique, en ESN, DSI, collectivités, PME ou établissements de santé.
 
 ## 📝 Les épreuves
 
@@ -77,9 +95,23 @@ En comparant le REAC 2026 avec le planning de ta formation, plusieurs sujets **�
 | **Environnement hybride** (compétence 7) | Le planning parle d'Active Directory (cours 8) et de Microsoft 365 (cours 14), mais pas explicitement de leur **synchronisation** | Retenir le principe : les comptes AD locaux sont **synchronisés** vers le cloud (Microsoft Entra ID, avec l'outil **Entra Connect**) |
 | **Continuité et reprise** (compétence 9) | Le cours 15 couvre la sauvegarde ; le REAC parle aussi de **reprise d'activité** | Connaître les sigles **PCA** (plan de continuité), **PRA** (plan de reprise), **RPO** (données qu'on accepte de perdre) et **RTO** (durée d'arrêt acceptable) |
 | **Anglais technique** | Une question en anglais dans chaque questionnaire | Lire régulièrement la documentation en anglais |
+| **Sobriété numérique, éthique, accessibilité** | Citées dans le texte officiel, absentes des intitulés des cours | Savoir donner 2 ou 3 exemples concrets pour chacune (voir le tableau plus haut) |
+| **Veille technologique** et **documentation** | Attendues par le texte, pas de cours dédié | Tenir un petit journal de veille et soigner tes comptes rendus de TP : ils serviront pour le Dossier Professionnel |
+
+## 🔁 Si tu avais déjà des CCP de l'ancien titre
+
+L'article 4 de l'arrêté prévoit une **correspondance** avec le titre de 2023 (sur demande auprès de la DREETS) :
+
+| Ancien CCP (arrêté du 26/04/2023) | Nouveaux CCP (arrêté du 16/06/2026) |
+|---|---|
+| Exploiter les éléments de l'infrastructure et assurer le support aux utilisateurs | CCP 1 « Assurer le support aux utilisateurs » **et** CCP 2 « Exploiter les éléments de l'infrastructure » |
+| Maintenir l'infrastructure et contribuer à son évolution et à sa sécurisation | CCP 3 « Maintenir en conditions opérationnelles l'infrastructure » |
+
+L'article 5 prévoit aussi une équivalence avec le titre « Administrateur de systèmes d'information sécurisés » du ministère des Armées.
 
 ## 📚 Sources officielles
 
-- [Arrêté du 16 juin 2026 relatif au titre professionnel de technicien supérieur systèmes et réseaux (Légifrance)](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054273839)
+- [Arrêté du 16 juin 2026 relatif au titre professionnel de technicien supérieur systèmes et réseaux](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000054273839) — *Journal officiel* n° 0142 du 19 juin 2026, texte 5 (NOR : TRSD2612221A)
+- Le référentiel complet (REAC) et le référentiel d'évaluation sont publiés sur [travail-emploi.gouv.fr](https://travail-emploi.gouv.fr) (article 2 de l'arrêté)
 - [Fiche RNCP 42463 (France Compétences)](https://www.francecompetences.fr/recherche/rncp/42463/), avec le *référentiel d'activités, de compétences et d'évaluation* en téléchargement
 - Pour comparaison, l'ancienne version : [arrêté du 26 avril 2023 (Légifrance)](https://www.legifrance.gouv.fr/jorf/id/JORFTEXT000047541115)

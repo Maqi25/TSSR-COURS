@@ -46,6 +46,8 @@ flowchart LR
 - **Sensibiliser les utilisateurs** : ce qu'ils peuvent ou non coller dans une IA, et pourquoi vérifier les réponses.
 - **Connaître le cadre légal** : le **RGPD** (données personnelles) et le **règlement européen sur l'IA** (*AI Act*), qui impose depuis février 2025 que le personnel qui utilise l'IA ait une **maîtrise suffisante** de ces outils.
 - **Tracer** : noter dans le ticket ou la documentation qu'une solution vient d'une IA et a été **vérifiée**.
+- **Éthique** : une IA peut reproduire des **biais** ; on ne lui délègue pas une décision qui concerne une personne (recrutement, sanction…).
+- **Sobriété numérique** : chaque requête consomme de l'**énergie** ; on utilise l'IA quand elle apporte vraiment quelque chose, pas pour une recherche qu'un `man` ou un moteur de recherche règle en 10 secondes.
 
 ## 4. Écrire un bon prompt
 
