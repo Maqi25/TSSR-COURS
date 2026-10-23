@@ -9,7 +9,7 @@ Ce module présente le modèle OSI : sa logique en 7 couches, le vocabulaire de 
 !!! abstract "En clair"
     Pour qu'un message aille d'un ordinateur à un autre, il faut résoudre plein de problèmes : le câble, les adresses, le chemin, la fiabilité, le format… Le **modèle OSI** range ces problèmes en **7 étages**, chacun avec **un seul travail**. Comme à la poste : on écrit la lettre, on la met dans une enveloppe avec l'adresse, le centre de tri choisit la route, le camion la transporte.
 
-    En pratique, Internet utilise le **modèle TCP/IP** (4 couches), plus simple : il est expliqué en section 5.
+    En pratique, Internet utilise le **modèle TCP/IP** (4 couches), plus simple : il est expliqué en section 6.
 
 ## 🖼️ Résumé visuel
 
@@ -133,6 +133,8 @@ On distingue aussi deux façons de câbler ces paires, selon les appareils à re
 | **Câble droit** | Relier des appareils de **types différents** (PC ↔ switch, PC ↔ routeur, switch ↔ routeur) | Même ordre de fils aux deux extrémités (ex. standard T568B des deux côtés) |
 | **Câble croisé** | Relier des appareils de **même type** directement (2 PC, 2 switches, 2 routeurs) | Un côté en T568A, l'autre en T568B → croise les fils TX/RX pour que l'émission d'un appareil arrive sur la réception de l'autre |
 
+💡 **T568A ou T568B ?** Les deux normes ne diffèrent que d'un point : les paires **orange** et **verte** échangent leur place. En entreprise, on câble presque toujours en **T568B** des deux côtés : blanc-orange, orange, blanc-vert, bleu, blanc-bleu, vert, blanc-marron, marron.
+
 📌 Les équipements modernes intègrent souvent la fonction **Auto MDI-X**, qui détecte automatiquement le type de câble nécessaire — un câble droit peut alors être utilisé même entre deux appareils de même type.
 
 ---
@@ -147,6 +149,8 @@ Elle se divise en 2 sous-couches :
 |---|---|
 | **LLC** (*Logical Link Control*) | Gère les connexions logiques, permet à plusieurs protocoles réseau (IP, IPX...) de partager un même support |
 | **MAC** (*Media Access Control*) | Contrôle l'accès au support physique (ex. CSMA/CD en Ethernet) et gère l'**adressage physique** (adresses MAC) |
+
+**La trame a un début et une fin** : c'est la seule couche qui ajoute aussi une **fin de trame**, le **FCS** (*Frame Check Sequence*). L'émetteur y range un calcul de contrôle (**CRC**) ; le récepteur refait le calcul et, si les résultats diffèrent, la trame abîmée est **jetée**.
 
 *Analogie* : un centre de tri postal local — la lettre est identifiée et vérifiée (contrôle d'erreur), puis acheminée localement, sans se soucier des étapes plus lointaines (qui relèvent de la couche Réseau).
 
@@ -199,20 +203,13 @@ Elle se divise en 2 sous-couches :
 | **TCP** | Orienté connexion, fiable (ordre + intégrité garantis), mais plus lent — idéal pour le transfert de fichiers, le web |
 | **UDP** | Sans connexion, plus léger et rapide, mais sans garantie d'ordre ni d'intégrité — utilisé pour le streaming, la VoIP, où la rapidité prime sur la fiabilité |
 
-**Les ports** : identifiants numériques qui permettent à plusieurs applications de communiquer simultanément sans conflit. Quelques ports à connaître :
+**Les ports** : un numéro qui désigne **l'application** visée sur la machine, comme le numéro d'appartement dans une adresse (l'IP serait l'immeuble).
 
-| Port | Service |
-|---|---|
-| 22 | SSH |
-| 25 | SMTP (envoi d'email) |
-| 53 | DNS |
-| 67 / 68 | DHCP |
-| 80 | HTTP |
-| 443 | HTTPS |
-| 143 | IMAP |
-| 389 | LDAP |
-| 3389 | RDP |
-| 161 / 162 | SNMP (requêtes / notifications) |
+- **Côté serveur**, le port est **fixe et connu** : 443 pour un site HTTPS, 25 pour SMTP, etc.
+- **Côté client**, le système choisit un **port source temporaire** (au-dessus de 1024) : c'est lui qui permet de renvoyer la réponse au bon onglet ou au bon logiciel.
+- La plupart des services passent par **TCP**, mais **DNS (53), DHCP (67/68) et SNMP (161/162)** utilisent surtout **UDP**, car ce sont des échanges courts où la rapidité compte.
+
+La liste complète des ports à connaître se trouve dans la **fiche de révision** en bas de page.
 
 **Équipements** : la couche Transport est essentiellement **logicielle** (systèmes d'exploitation, applications), mais les **firewalls** s'appuient sur ses numéros de port pour filtrer le trafic.
 
@@ -242,39 +239,46 @@ Elle se divise en 2 sous-couches :
 
 ---
 
-### 4. Le processus d'encapsulation / désencapsulation — exemple d'un envoi d'email
+### 4. L'encapsulation en image : un email qui descend les couches
 
-Cet exemple permet de visualiser concrètement la traversée des 7 couches, dans les deux sens, en utilisant les noms de PDU vus en section 3.
+Imagine des **poupées russes** : chaque couche emballe le colis de la couche du dessus dans sa propre boîte, avec son étiquette. Voici ce que devient un email envoyé en SMTP :
 
-#### À l'envoi (encapsulation) — de la couche 7 à la couche 1
+<div class="tssr-encap">
+  <div class="tssr-encap-row"><span class="tssr-encap-lvl">7 · 6 · 5</span><span class="tssr-encap-box is-data">📧 Email (texte + pièce jointe)</span></div>
+  <div class="tssr-encap-row"><span class="tssr-encap-lvl">4 · Segment</span><span class="tssr-encap-box is-l4">TCP<small>port 25</small></span><span class="tssr-encap-box is-data">📧</span></div>
+  <div class="tssr-encap-row"><span class="tssr-encap-lvl">3 · Paquet</span><span class="tssr-encap-box is-l3">IP<small>src → dst</small></span><span class="tssr-encap-box is-l4">TCP</span><span class="tssr-encap-box is-data">📧</span></div>
+  <div class="tssr-encap-row"><span class="tssr-encap-lvl">2 · Trame</span><span class="tssr-encap-box is-l2">MAC<small>src → dst</small></span><span class="tssr-encap-box is-l3">IP</span><span class="tssr-encap-box is-l4">TCP</span><span class="tssr-encap-box is-data">📧</span><span class="tssr-encap-box is-l2">FCS<small>contrôle</small></span></div>
+  <div class="tssr-encap-row"><span class="tssr-encap-lvl">1 · Bits</span><span class="tssr-encap-box is-bits">0110 1001 0011 1100 0101 1010 …</span></div>
+</div>
 
-| Couche | Action | PDU résultant |
-|---|---|---|
-| **7 – Application** | L'utilisateur compose un email, envoyé via **SMTP** | **APDU** |
-| **6 – Présentation** | Mise en forme standardisée, chiffrement éventuel (SSL/TLS) | **PPDU** |
-| **5 – Session** | Gestion de la session entre client et serveur de messagerie | **SPDU** |
-| **4 – Transport** | Ajout du port (ex. **port 25** pour SMTP), numéro de séquence, contrôle d'erreur (TCP) | **TPDU / Segment** |
-| **3 – Réseau** | Ajout des adresses IP source et destination | **RPDU / Paquet** |
-| **2 – Liaison** | Ajout des adresses MAC source et destination | **LPDU / Trame** |
-| **1 – Physique** | Conversion en **bits**, transmission sur le support (câble, Wi-Fi...) | Bits |
+- **À l'envoi**, on descend de 7 à 1 et chaque couche **ajoute** son en-tête (la couche 2 ajoute aussi le FCS à la fin).
+- **À la réception**, on remonte de 1 à 7 et chaque couche **vérifie puis retire** son propre en-tête : la carte réseau regarde la **MAC** (« c'est pour moi ? »), la couche 3 regarde l'**IP**, la couche 4 regarde le **port** pour savoir à quel logiciel donner les données (ici le serveur de messagerie).
+- Si une vérification échoue (mauvaise MAC, FCS incorrect, IP qui n'est pas la sienne), la donnée est **ignorée ou transmise plus loin** : elle ne remonte pas.
 
-#### À la réception (désencapsulation) — de la couche 1 à la couche 7
+💡 Les noms longs des PDU (APDU, PPDU, SPDU, TPDU, RPDU, LPDU) existent, mais on utilise surtout **données, segment, paquet, trame, bits**.
 
-Le processus est exactement l'inverse : à chaque couche, l'en-tête ajouté à l'envoi est analysé puis retiré, jusqu'à reconstituer les données d'origine.
+### 5. Exemple vécu : tu ouvres un site web en HTTPS
 
-| Couche | Action |
-|---|---|
-| **1 – Physique** | Réception des bits, transmis tels quels à la couche 2 |
-| **2 – Liaison** | Vérification de l'adresse MAC de destination → en-tête retiré → il reste le **paquet (RPDU)** |
-| **3 – Réseau** | Vérification de l'adresse IP de destination → en-tête retiré → il reste le **segment (TPDU)** |
-| **4 – Transport** | Vérification du port de destination et des numéros de séquence → en-tête retiré → il reste le **SPDU** |
-| **5 – Session** | En-tête de session retiré → il reste le **PPDU** |
-| **6 – Présentation** | Déchiffrement/décompression si nécessaire → il reste l'**APDU** |
-| **7 – Application** | L'email complet est reconstitué et affiché dans le client de messagerie |
+Ce qui se passe, couche par couche, quand ton PC (derrière ta box) affiche une page :
 
-📌 **À retenir** : à chaque couche, la vérification porte sur **l'information ajoutée par cette couche à l'envoi** (adresse MAC en couche 2, adresse IP en couche 3, port en couche 4...) — c'est ce qui permet à chaque couche de savoir si les données lui sont bien destinées, ou si elles doivent continuer leur chemin.
+```mermaid
+sequenceDiagram
+    participant PC as 💻 Ton PC
+    participant Box as 📦 Box / passerelle
+    participant Web as 🌐 Serveur web
+    PC->>Box: ARP : « Quelle est ta MAC ? » (couche 2/3)
+    Box-->>PC: « Voici ma MAC »
+    PC->>Web: Trame vers la MAC de la box, paquet vers l'IP du serveur,<br/>segment TCP du port 51000 vers le port 443
+    Web-->>PC: Réponse du port 443 vers le port 51000
+    Note over PC,Web: TLS chiffre l'échange (couche 6),<br/>le navigateur affiche la page (couche 7)
+```
 
-### 5. Le modèle TCP/IP : celui qu'on utilise vraiment
+À retenir de cet exemple :
+
+- La **MAC de destination** est celle de la **box** (le prochain saut), alors que l'**IP de destination** est celle du **serveur** (le but final). La MAC change à chaque saut, l'IP reste la même.
+- Le **port de destination** est celui du service (**443**), le **port source** est un numéro temporaire choisi par ton PC ; la réponse fait le chemin inverse en échangeant les deux.
+
+### 6. Le modèle TCP/IP : celui qu'on utilise vraiment
 
 Le modèle OSI est **théorique** : il sert à **expliquer** et à **dépanner** (« le problème est en couche 2 »). Le modèle réellement utilisé par Internet est le **modèle TCP/IP**, en **4 couches**, qui regroupe certaines couches OSI.
 
@@ -299,6 +303,7 @@ Le modèle OSI est **théorique** : il sert à **expliquer** et à **dépanner**
 - Les couches 5, 6, 7 (Session, Présentation, Application) sont **logicielles** ; les couches 1 à 4 impliquent des équipements matériels (câbles, switches, routeurs, firewalls).
 - La couche **Transport** utilise les **ports** pour permettre à plusieurs applications de communiquer simultanément (TCP = fiable, UDP = rapide mais non garanti).
 - L'**encapsulation** se fait à l'envoi (couche 7 → 1), la **désencapsulation** à la réception (couche 1 → 7) — chaque couche ne retire que l'information qu'elle avait elle-même ajoutée côté émetteur.
+- Pour joindre un serveur sur Internet, la **MAC de destination** est celle de la **passerelle** (box, routeur), l'**IP de destination** celle du serveur.
 - En pratique, on utilise le **modèle TCP/IP** à **4 couches** : Application · Transport · Internet · Accès réseau.
 - **Câble droit** = appareils de types différents ; **câble croisé** = appareils de même type (sauf Auto MDI-X, qui rend cette distinction automatique aujourd'hui).
 
@@ -322,7 +327,9 @@ Le modèle OSI est **théorique** : il sert à **expliquer** et à **dépanner**
 | **SDU / PCI / PDU** | SDU (reçu de N+1) + PCI (en-tête de N) = PDU de N |
 | **Encapsulation / désencapsulation** | Envoi : 7 → 1, on ajoute des en-têtes · Réception : 1 → 7, on les retire |
 | **TCP / UDP** | Fiable, orienté connexion · Rapide, sans connexion (streaming, VoIP) |
-| **Adresse MAC / adresse IP** | Physique, couche 2, réseau local · Logique, couche 3, entre réseaux |
+| **Adresse MAC / adresse IP** | Physique, couche 2, change à chaque saut · Logique, couche 3, reste la même de bout en bout |
+| **En-tête / FCS** | Toutes les couches ajoutent un en-tête · Seule la couche 2 ajoute une fin de trame (FCS, contrôle CRC) |
+| **Port source / destination** | Temporaire (> 1024), choisi par le client · Fixe, celui du service (ex. 443) |
 | **Câble droit / croisé** | Appareils différents (PC ↔ switch) · Appareils identiques (PC ↔ PC), sauf Auto MDI-X |
 | **UTP / STP** | Non blindé, économique · Blindé, résiste mieux aux interférences |
 
@@ -589,6 +596,39 @@ Le modèle OSI est **théorique** : il sert à **expliquer** et à **dépanner**
     ],
     "correctIndex": 1,
     "explanation": "SMB, utilisé par les partages Windows (\\\\serveur\\partage), fonctionne sur le port TCP 445. 21 = FTP, 3389 = Bureau à distance."
+  },
+  {
+    "question": "Quelle couche est la seule à ajouter une fin (FCS) en plus de son en-tête ?",
+    "options": [
+      "La couche Transport",
+      "La couche Réseau",
+      "La couche Liaison de données",
+      "La couche Application"
+    ],
+    "correctIndex": 2,
+    "explanation": "La trame (couche 2) se termine par le FCS, un calcul de contrôle (CRC). Le récepteur refait le calcul : si le résultat diffère, la trame abîmée est jetée."
+  },
+  {
+    "question": "Ton PC ouvre un site web hébergé sur Internet. Quelle est l'adresse MAC de destination de la trame qu'il envoie ?",
+    "options": [
+      "La MAC du serveur web",
+      "La MAC de la box (passerelle par défaut)",
+      "La MAC de diffusion FF:FF:FF:FF:FF:FF",
+      "Sa propre MAC"
+    ],
+    "correctIndex": 1,
+    "explanation": "La MAC ne sert que sur le réseau local : la trame est adressée au prochain saut, la box. L'IP de destination, elle, reste celle du serveur web jusqu'au bout."
+  },
+  {
+    "question": "Quel protocole de transport utilisent principalement DNS, DHCP et SNMP ?",
+    "options": [
+      "TCP",
+      "UDP",
+      "ICMP",
+      "ARP"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ce sont des échanges courts où la rapidité compte : ils passent surtout par UDP (DNS sur le port 53, DHCP sur 67/68, SNMP sur 161/162)."
   }
 ]
 </script>
