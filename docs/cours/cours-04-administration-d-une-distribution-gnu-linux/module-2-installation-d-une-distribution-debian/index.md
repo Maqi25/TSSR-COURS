@@ -192,6 +192,83 @@ Ensuite, **tout se fait à distance** depuis ton PC : `ssh tech@IP-du-serveur` (
     ],
     "correctIndex": 1,
     "explanation": "Le paquet openssh-server fournit le service SSH qui permet de se connecter à distance au serveur."
+  },
+  {
+    "question": "Quel type d'image ISO télécharge-t-on le plus souvent pour installer un serveur Debian ?",
+    "options": [
+      "Une image DVD de 20 Go",
+      "Une image netinst (installation par le réseau)",
+      "Une image Windows",
+      "Une image live uniquement"
+    ],
+    "correctIndex": 1,
+    "explanation": "L'image netinst est petite : elle contient le minimum et télécharge le reste depuis Internet, donc les paquets sont déjà à jour."
+  },
+  {
+    "question": "Pourquoi ne pas installer d'environnement de bureau sur un serveur ?",
+    "options": [
+      "C'est interdit par Debian",
+      "Il consomme des ressources et ajoute des logiciels inutiles à maintenir",
+      "Sinon SSH ne fonctionne pas",
+      "Le bureau efface les journaux"
+    ],
+    "correctIndex": 1,
+    "explanation": "Un serveur s'administre en ligne de commande, souvent à distance par SSH. Un bureau gaspille de la mémoire et augmente le nombre de logiciels à mettre à jour."
+  },
+  {
+    "question": "Comment te connecter depuis ton PC Windows au serveur Debian (IP 192.168.1.50, utilisateur tech) ?",
+    "options": [
+      "rdp tech@192.168.1.50",
+      "telnet 192.168.1.50 80",
+      "ssh tech@192.168.1.50",
+      "ping tech@192.168.1.50"
+    ],
+    "correctIndex": 2,
+    "explanation": "Le client ssh est intégré à Windows (PowerShell ou Invite de commandes). Il ouvre un terminal sécurisé sur le serveur, à condition que le serveur SSH soit installé."
+  },
+  {
+    "question": "Tu viens d'ajouter tech au groupe sudo, mais sudo refuse encore. Que faire ?",
+    "options": [
+      "Réinstaller Debian",
+      "Supprimer le groupe sudo",
+      "Redémarrer la box",
+      "Se déconnecter puis se reconnecter"
+    ],
+    "correctIndex": 3,
+    "explanation": "Les groupes d'un utilisateur sont lus à l'ouverture de session. Il faut se reconnecter pour que le nouveau groupe soit pris en compte."
+  },
+  {
+    "question": "Quelle commande affiche l'adresse IP obtenue par le serveur après l'installation ?",
+    "options": [
+      "ipconfig",
+      "ip a",
+      "getip",
+      "show ip"
+    ],
+    "correctIndex": 1,
+    "explanation": "Sous Linux, ip a (ip address) liste les cartes réseau et leurs adresses. ipconfig est la commande Windows."
+  },
+  {
+    "question": "Quel compte faut-il éviter d'utiliser au quotidien sur le serveur ?",
+    "options": [
+      "root",
+      "tech",
+      "Un compte avec sudo",
+      "Un compte sans droits"
+    ],
+    "correctIndex": 0,
+    "explanation": "root a tous les droits sans garde-fou. On travaille avec un compte normal et on utilise sudo seulement pour les tâches d'administration."
+  },
+  {
+    "question": "Quelle commande redémarre le serveur ?",
+    "options": [
+      "sudo restart-pc",
+      "sudo exit",
+      "sudo reboot",
+      "sudo logout"
+    ],
+    "correctIndex": 2,
+    "explanation": "sudo reboot (ou sudo systemctl reboot) redémarre la machine. exit et logout ne font que fermer la session."
   }
 ]
 </script>

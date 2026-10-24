@@ -256,6 +256,72 @@ L'ancien format tient en une ligne par dépôt : `deb http://deb.debian.org/debi
     ],
     "correctIndex": 1,
     "explanation": "main contient les logiciels entièrement libres, c'est-à-dire l'essentiel de Debian. non-free et non-free-firmware contiennent du non libre."
+  },
+  {
+    "question": "Quelle commande cherche un paquet par mot-clé ?",
+    "options": [
+      "apt find",
+      "apt search",
+      "apt look",
+      "dpkg --search-web"
+    ],
+    "correctIndex": 1,
+    "explanation": "apt search motclé parcourt le catalogue local (mis à jour par apt update)."
+  },
+  {
+    "question": "Quelle commande affiche la description, la version et les dépendances d'un paquet ?",
+    "options": [
+      "apt show paquet",
+      "apt info --all",
+      "dpkg -i paquet",
+      "apt list --deps"
+    ],
+    "correctIndex": 0,
+    "explanation": "apt show affiche la fiche du paquet avant de l'installer."
+  },
+  {
+    "question": "Quelle commande liste les paquets qui peuvent être mis à jour ?",
+    "options": [
+      "apt upgrade --dry",
+      "apt list --upgradable",
+      "dpkg -l --new",
+      "apt check"
+    ],
+    "correctIndex": 1,
+    "explanation": "Après apt update, apt list --upgradable montre ce que apt upgrade installerait."
+  },
+  {
+    "question": "Quelle est la façon la plus simple d'installer un fichier .deb téléchargé avec ses dépendances ?",
+    "options": [
+      "sudo dpkg -i logiciel.deb",
+      "sudo apt install ./logiciel.deb",
+      "sudo apt get logiciel.deb",
+      "chmod +x logiciel.deb"
+    ],
+    "correctIndex": 1,
+    "explanation": "apt install ./fichier.deb (avec le ./) récupère les dépendances manquantes. dpkg -i, lui, ne les installe pas."
+  },
+  {
+    "question": "Dans quel fichier Debian 13 décrit-il ses dépôts ?",
+    "options": [
+      "/etc/apt/apt.conf",
+      "/etc/debian_version",
+      "/etc/apt/sources.list.d/debian.sources",
+      "/var/lib/dpkg/status"
+    ],
+    "correctIndex": 2,
+    "explanation": "Debian 13 utilise le format moderne debian.sources. Les anciennes installations utilisent /etc/apt/sources.list."
+  },
+  {
+    "question": "Quelle commande dpkg liste les fichiers installés par un paquet ?",
+    "options": [
+      "dpkg -S",
+      "dpkg -L",
+      "dpkg -i",
+      "dpkg -r"
+    ],
+    "correctIndex": 1,
+    "explanation": "dpkg -L paquet liste ses fichiers ; dpkg -S fichier fait l'inverse (à quel paquet appartient ce fichier)."
   }
 ]
 </script>

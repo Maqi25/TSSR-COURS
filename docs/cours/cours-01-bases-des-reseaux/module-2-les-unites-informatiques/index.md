@@ -322,6 +322,42 @@ Partie réseau : 172.16      Partie hôte : 45.10
 
 **Exemples du cours** : 25 = `11001`₂ · `10110`₂ = 22 · 156 = `234`₈ · 254 = `FE`₁₆ · `3F`₁₆ = 63.
 
+### ✏️ Entraîne-toi (clique pour voir la correction)
+
+??? question "1. Convertis 200 en binaire, puis en hexadécimal."
+    On place 200 dans le tableau des puissances de 2 : 200 = **128 + 64 + 8**.
+
+    | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
+    |---|---|---|---|---|---|---|---|
+    | 1 | 1 | 0 | 0 | 1 | 0 | 0 | 0 |
+
+    → **11001000**₂. On coupe en deux groupes de 4 : `1100` = 12 = **C**, `1000` = **8** → **C8**₁₆.
+
+??? question "2. Quelle valeur décimale représente l'octet 10101100 ?"
+    On additionne les poids des bits à 1 : **128 + 32 + 8 + 4 = 172**.
+
+    En hexadécimal : `1010` = A, `1100` = C → **AC**.
+
+??? question "3. Convertis 2F (hexadécimal) en décimal, puis en binaire."
+    - Décimal : 2 × 16 + F (15) × 1 = 32 + 15 = **47**.
+    - Binaire : chaque chiffre hexa vaut 4 bits → `2` = `0010`, `F` = `1111` → **00101111**.
+
+??? question "4. Ta fibre affiche 500 Mbit/s. Combien de temps, au mieux, pour télécharger un fichier de 2 Go ?"
+    On met tout en **bits** : 2 Go = 2 000 Mo = 2 000 × 8 = **16 000 Mbit**.
+
+    16 000 ÷ 500 = **32 secondes** (en théorie : le débit réel est toujours un peu plus faible).
+
+??? question "5. Tu branches un disque vendu « 500 Go ». Pourquoi Windows affiche-t-il environ 465 Go ?"
+    Le fabricant compte en **décimal** : 500 Go = 500 000 000 000 octets.
+
+    Windows divise par **2³⁰** (1 073 741 824) : 500 000 000 000 ÷ 1 073 741 824 ≈ **465,7**. Il affiche « Go » mais ce sont en réalité des **Gio**. Rien n'a disparu, c'est juste une autre unité.
+
+??? question "6. Donne la classe de : 10.5.3.2 · 172.16.1.1 · 192.168.0.1 · 230.1.1.1"
+    - **10**.5.3.2 → entre 1 et 126 → **classe A** (/8)
+    - **172**.16.1.1 → entre 128 et 191 → **classe B** (/16)
+    - **192**.168.0.1 → entre 192 et 223 → **classe C** (/24)
+    - **230**.1.1.1 → entre 224 et 239 → **classe D** (multicast, jamais attribuée à un poste)
+
 ## 🧠 Quiz — entraîne-toi
 
 <div id="quiz-cours-01-bases-des-reseaux-module-2-les-unites-informatiques"></div>

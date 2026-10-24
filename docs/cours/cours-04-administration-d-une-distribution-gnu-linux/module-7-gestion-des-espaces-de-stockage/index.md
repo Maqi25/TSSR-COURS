@@ -231,6 +231,94 @@ $ sudo blkid /dev/sdb1
     ],
     "correctIndex": 0,
     "explanation": "blkid affiche l'UUID et le type de système de fichiers de chaque partition. lsblk -f le montre aussi."
+  },
+  {
+    "question": "Quelles sont les limites d'une table de partitions MBR ?",
+    "options": [
+      "128 partitions et 18 Eo",
+      "4 partitions principales et 2 To par disque",
+      "Aucune limite",
+      "1 partition et 32 Go"
+    ],
+    "correctIndex": 1,
+    "explanation": "MBR est ancien : 4 partitions principales maximum (ou 3 + une étendue) et 2 To. GPT lève ces limites."
+  },
+  {
+    "question": "Combien de partitions une table GPT accepte-t-elle par défaut ?",
+    "options": [
+      "4",
+      "16",
+      "128",
+      "Illimité"
+    ],
+    "correctIndex": 2,
+    "explanation": "GPT accepte 128 partitions par défaut et des disques de plus de 2 To."
+  },
+  {
+    "question": "Dans fdisk, quelle touche crée une nouvelle partition ?",
+    "options": [
+      "p",
+      "d",
+      "w",
+      "n"
+    ],
+    "correctIndex": 3,
+    "explanation": "n = new (nouvelle partition), d = delete, p = print (afficher), w = write (enregistrer)."
+  },
+  {
+    "question": "Dans fdisk, quelle touche quitte SANS enregistrer ?",
+    "options": [
+      "q",
+      "w",
+      "x",
+      "s"
+    ],
+    "correctIndex": 0,
+    "explanation": "q quitte sans rien écrire : rien n'est modifié tant qu'on n'a pas tapé w."
+  },
+  {
+    "question": "Dans la sortie de fdisk -l, que signifie « Disklabel type: dos » ?",
+    "options": [
+      "Le disque est formaté pour MS-DOS",
+      "Le disque utilise une table de partitions MBR",
+      "Le disque est vide",
+      "Le disque est en NTFS"
+    ],
+    "correctIndex": 1,
+    "explanation": "fdisk appelle « dos » la table MBR ; « gpt » désigne une table GPT."
+  },
+  {
+    "question": "Quelle commande montre les partitions avec leur système de fichiers et leur UUID ?",
+    "options": [
+      "lsblk -f",
+      "ls -la /dev",
+      "df -i",
+      "mount --uuid"
+    ],
+    "correctIndex": 0,
+    "explanation": "lsblk -f ajoute à l'arbre des disques le type de système de fichiers, l'étiquette et l'UUID."
+  },
+  {
+    "question": "Tu ajoutes un 2ᵉ disque SATA à ta machine virtuelle. Quel nom aura-t-il le plus souvent ?",
+    "options": [
+      "/dev/sda",
+      "/dev/sdb",
+      "/dev/hda2",
+      "C:"
+    ],
+    "correctIndex": 1,
+    "explanation": "Les disques SATA ou SCSI sont nommés sda, sdb, sdc… dans l'ordre de détection. Le 2ᵉ disque est donc sdb."
+  },
+  {
+    "question": "Pourquoi lancer lsblk avant de partitionner un disque ?",
+    "options": [
+      "Pour formater automatiquement",
+      "Pour vérifier qu'on travaille sur le bon disque",
+      "Pour créer l'UUID",
+      "Ce n'est pas utile"
+    ],
+    "correctIndex": 1,
+    "explanation": "Partitionner le mauvais disque efface des données. On vérifie le nom, la taille et l'absence de points de montage avant d'agir."
   }
 ]
 </script>

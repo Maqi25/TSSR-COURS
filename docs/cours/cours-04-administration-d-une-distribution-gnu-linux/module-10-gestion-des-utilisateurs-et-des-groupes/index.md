@@ -247,6 +247,72 @@ Chaque utilisateur a **un groupe principal** (souvent du même nom que lui) et p
     ],
     "correctIndex": 1,
     "explanation": "deluser seul garde /home/paul ; avec --remove-home, le dossier personnel est supprimé aussi."
+  },
+  {
+    "question": "À partir de quel UID commencent les comptes des utilisateurs humains sur Debian ?",
+    "options": [
+      "0",
+      "100",
+      "1000",
+      "65535"
+    ],
+    "correctIndex": 2,
+    "explanation": "0 = root, de 1 à 999 = comptes système (services), à partir de 1000 = vraies personnes."
+  },
+  {
+    "question": "Quel fichier liste les groupes et leurs membres ?",
+    "options": [
+      "/etc/passwd",
+      "/etc/shadow",
+      "/etc/sudoers",
+      "/etc/group"
+    ],
+    "correctIndex": 3,
+    "explanation": "/etc/group contient une ligne par groupe : nom, GID et liste des membres."
+  },
+  {
+    "question": "Que se passe-t-il avec sudo usermod -G compta marie (sans -a) ?",
+    "options": [
+      "marie est ajoutée à compta en gardant ses groupes",
+      "marie perd tous ses autres groupes secondaires, sudo compris",
+      "marie est supprimée",
+      "Rien, la commande est refusée"
+    ],
+    "correctIndex": 1,
+    "explanation": "Sans -a, -G remplace la liste des groupes secondaires. C'est le piège n°1 : toujours écrire -aG."
+  },
+  {
+    "question": "Quelle commande change le mot de passe de marie ?",
+    "options": [
+      "sudo passwd marie",
+      "sudo chpass marie",
+      "sudo usermod -p marie",
+      "sudo adduser marie --password"
+    ],
+    "correctIndex": 0,
+    "explanation": "passwd utilisateur (avec sudo) définit un nouveau mot de passe. Sans argument, passwd change le tien."
+  },
+  {
+    "question": "Comment forcer marie à changer son mot de passe à sa prochaine connexion ?",
+    "options": [
+      "sudo passwd -l marie",
+      "sudo usermod -U marie",
+      "sudo passwd -e marie",
+      "sudo deluser marie"
+    ],
+    "correctIndex": 2,
+    "explanation": "passwd -e fait expirer le mot de passe (équivalent : chage -d 0 marie). -l verrouillerait le compte."
+  },
+  {
+    "question": "Quelle commande affiche l'UID, le GID et tous les groupes de marie ?",
+    "options": [
+      "whoami marie",
+      "id marie",
+      "cat marie",
+      "ls -l marie"
+    ],
+    "correctIndex": 1,
+    "explanation": "id marie affiche uid, gid et la liste des groupes. groups marie n'affiche que les groupes."
   }
 ]
 </script>

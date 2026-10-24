@@ -268,6 +268,72 @@ UUID=3f6a1c2e-8b7d-4c1e-9a0f-5d2e7b8c9a01  /data  ext4   defaults,nofail    0   
     ],
     "correctIndex": 1,
     "explanation": "df -h (disk free, en unités lisibles) affiche la taille, l'espace utilisé et l'espace libre de chaque partition. du -sh donne le poids d'un dossier."
+  },
+  {
+    "question": "Que faut-il avant de monter /dev/sdb1 sur /data ?",
+    "options": [
+      "Que le dossier /data existe (mkdir /data)",
+      "Redémarrer le serveur",
+      "Supprimer /etc/fstab",
+      "Installer un pilote"
+    ],
+    "correctIndex": 0,
+    "explanation": "Le point de montage est un dossier existant. On le crée avec sudo mkdir /data, puis sudo mount /dev/sdb1 /data."
+  },
+  {
+    "question": "Le démontage répond « target is busy ». Quelle est la cause la plus courante ?",
+    "options": [
+      "Le disque est plein",
+      "Ton terminal ou un programme est encore dans le dossier",
+      "Le disque est en ext4",
+      "fstab est vide"
+    ],
+    "correctIndex": 1,
+    "explanation": "On ne peut pas démonter un dossier utilisé. Sors-en (cd /) et ferme les programmes qui l'utilisent, puis réessaie."
+  },
+  {
+    "question": "Quelle commande indique combien pèse le dossier /var/log ?",
+    "options": [
+      "df -h /var/log",
+      "free -h",
+      "du -sh /var/log",
+      "ls -size /var/log"
+    ],
+    "correctIndex": 2,
+    "explanation": "du -sh (disk usage, résumé, lisible) donne le poids d'un dossier. df -h donne la place libre des partitions."
+  },
+  {
+    "question": "Quelle commande crée et active une swap sur /dev/sdc1 ?",
+    "options": [
+      "mkfs.swap /dev/sdc1",
+      "mkswap /dev/sdc1 puis swapon /dev/sdc1",
+      "mount -t swap /dev/sdc1 /swap",
+      "swapoff /dev/sdc1"
+    ],
+    "correctIndex": 1,
+    "explanation": "mkswap prépare la partition, swapon l'active. Pour l'avoir à chaque démarrage, on l'ajoute dans /etc/fstab."
+  },
+  {
+    "question": "Dans /etc/fstab, que contient la 3ᵉ colonne ?",
+    "options": [
+      "Le point de montage",
+      "Les options",
+      "L'UUID",
+      "Le type de système de fichiers (ext4, xfs, swap)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Les colonnes sont : périphérique (UUID), point de montage, type, options, dump, ordre de vérification."
+  },
+  {
+    "question": "df -h affiche / utilisée à 95 %. Que fais-tu en premier ?",
+    "options": [
+      "Rien, c'est normal",
+      "Formater la partition",
+      "Chercher les gros dossiers avec du -sh (souvent /var/log)",
+      "Supprimer /etc"
+    ],
+    "correctIndex": 2,
+    "explanation": "Au-delà de 90 %, c'est urgent. On cherche ce qui grossit (journaux, sauvegardes, fichiers temporaires) avant de supprimer quoi que ce soit."
   }
 ]
 </script>

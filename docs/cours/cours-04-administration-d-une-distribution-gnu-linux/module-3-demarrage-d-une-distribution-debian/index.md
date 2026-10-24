@@ -238,6 +238,83 @@ sudo systemctl set-default multi-user.target   # démarrer sans interface graphi
     ],
     "correctIndex": 1,
     "explanation": "shutdown -r (reboot) +10 programme un redémarrage dans 10 minutes et prévient les utilisateurs. shutdown -c l'annule."
+  },
+  {
+    "question": "Quelle commande empêche le service apache2 de se lancer au démarrage, sans l'arrêter maintenant ?",
+    "options": [
+      "systemctl stop apache2",
+      "systemctl disable apache2",
+      "systemctl kill apache2",
+      "systemctl mask --now apache2"
+    ],
+    "correctIndex": 1,
+    "explanation": "disable agit sur le démarrage automatique. stop agit sur le moment présent. Les deux sont indépendants."
+  },
+  {
+    "question": "Quelle est la différence entre systemctl reload et systemctl restart ?",
+    "options": [
+      "Aucune",
+      "reload relit la configuration sans couper le service ; restart l'arrête puis le relance",
+      "reload redémarre le serveur entier",
+      "restart ne fonctionne qu'au démarrage"
+    ],
+    "correctIndex": 1,
+    "explanation": "reload applique une nouvelle configuration sans interrompre les connexions en cours (si le service le permet). restart coupe puis relance."
+  },
+  {
+    "question": "Quelle commande liste tous les services en échec ?",
+    "options": [
+      "systemctl --failed",
+      "systemctl list-errors",
+      "journalctl --failed",
+      "service --all"
+    ],
+    "correctIndex": 0,
+    "explanation": "systemctl --failed affiche les unités en état « failed ». C'est un bon réflexe après un redémarrage."
+  },
+  {
+    "question": "Que fait systemctl enable --now ssh ?",
+    "options": [
+      "Il désactive SSH",
+      "Il active SSH au démarrage ET le démarre tout de suite",
+      "Il affiche le statut de SSH",
+      "Il redémarre le serveur"
+    ],
+    "correctIndex": 1,
+    "explanation": "--now combine les deux actions : enable (au démarrage) et start (maintenant)."
+  },
+  {
+    "question": "Quelle commande affiche la cible (target) utilisée par défaut au démarrage ?",
+    "options": [
+      "systemctl status",
+      "systemctl show-target",
+      "systemctl get-default",
+      "runlevel --default"
+    ],
+    "correctIndex": 2,
+    "explanation": "systemctl get-default affiche la cible par défaut, par exemple multi-user.target sur un serveur."
+  },
+  {
+    "question": "Quelle commande affiche les messages du journal depuis le dernier démarrage ?",
+    "options": [
+      "journalctl -b",
+      "journalctl -f",
+      "dmesg --old",
+      "cat /boot/log"
+    ],
+    "correctIndex": 0,
+    "explanation": "-b (boot) limite le journal au démarrage en cours. Pratique pour comprendre un problème de démarrage."
+  },
+  {
+    "question": "Quelle commande éteint proprement le serveur immédiatement ?",
+    "options": [
+      "sudo shutdown -r +10",
+      "sudo systemctl poweroff",
+      "sudo halt --later",
+      "sudo kill 1"
+    ],
+    "correctIndex": 1,
+    "explanation": "systemctl poweroff (ou shutdown -h now) arrête proprement les services puis éteint la machine. shutdown -r +10 redémarre dans 10 minutes."
   }
 ]
 </script>

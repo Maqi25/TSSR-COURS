@@ -271,6 +271,72 @@ Un **`+`** à la fin des droits dans `ls -l` (`drwxrws---+`) signale des ACL. Le
     ],
     "correctIndex": 1,
     "explanation": "3 = SGID (2) + sticky (1) ; 770 = rwx, rwx, ---. C'est le réglage typique d'un dossier partagé de service."
+  },
+  {
+    "question": "Quels droits donne chmod 640 sur un fichier ?",
+    "options": [
+      "rw- r-- --- : le propriétaire lit et écrit, le groupe lit, les autres rien",
+      "rwx r-x --- ",
+      "rw- rw- rw-",
+      "r-- r-- r--"
+    ],
+    "correctIndex": 0,
+    "explanation": "6 = 4 + 2 (lecture + écriture), 4 = lecture, 0 = rien. Ordre : propriétaire, groupe, autres."
+  },
+  {
+    "question": "Sur un dossier, à quoi sert le droit x ?",
+    "options": [
+      "À exécuter tous les fichiers du dossier",
+      "À entrer dans le dossier (cd) et à accéder à son contenu",
+      "À supprimer le dossier",
+      "À rien"
+    ],
+    "correctIndex": 1,
+    "explanation": "Sur un dossier, r permet de lister, w de créer ou supprimer des fichiers, et x de le traverser (cd)."
+  },
+  {
+    "question": "Avec un umask de 027, quels droits ont les nouveaux dossiers ?",
+    "options": [
+      "777",
+      "755",
+      "750",
+      "640"
+    ],
+    "correctIndex": 2,
+    "explanation": "777 - 027 = 750 pour les dossiers (rwx r-x ---) et 666 - 027 = 640 pour les fichiers."
+  },
+  {
+    "question": "Quelle commande affiche les ACL d'un dossier ?",
+    "options": [
+      "setfacl -m",
+      "getfacl",
+      "ls -acl",
+      "chmod --acl"
+    ],
+    "correctIndex": 1,
+    "explanation": "getfacl dossier affiche les droits ACL ; setfacl -m les modifie. Un « + » à la fin des droits dans ls -l signale des ACL."
+  },
+  {
+    "question": "Que signifie le premier caractère « d » dans « drwxr-x--- » ?",
+    "options": [
+      "Que c'est un dossier",
+      "Que le fichier est supprimé",
+      "Que le fichier est désactivé",
+      "Que c'est un disque"
+    ],
+    "correctIndex": 0,
+    "explanation": "Le 1er caractère donne le type : d = dossier, - = fichier, l = lien."
+  },
+  {
+    "question": "Quelle commande ajoute le droit d'exécution au propriétaire de script.sh, sans toucher au reste ?",
+    "options": [
+      "chmod 777 script.sh",
+      "chmod u+x script.sh",
+      "chown +x script.sh",
+      "chmod -R x script.sh"
+    ],
+    "correctIndex": 1,
+    "explanation": "u = propriétaire (user), + ajoute, x = exécution. 777 donnerait tous les droits à tout le monde : à éviter."
   }
 ]
 </script>

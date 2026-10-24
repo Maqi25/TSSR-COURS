@@ -223,6 +223,83 @@ flowchart LR
     ],
     "correctIndex": 1,
     "explanation": "su - fait devenir root et demande donc le mot de passe de root. sudo, lui, demande le mot de passe de l'utilisateur."
+  },
+  {
+    "question": "Combien de temps une version de Debian est-elle suivie au total, avec le support LTS ?",
+    "options": [
+      "6 mois",
+      "Environ 2 ans",
+      "Environ 5 ans",
+      "10 ans"
+    ],
+    "correctIndex": 2,
+    "explanation": "Environ 3 ans de support standard, puis 2 ans de plus grâce à l'équipe Debian LTS : soit environ 5 ans."
+  },
+  {
+    "question": "À quel rythme sort une nouvelle version stable de Debian ?",
+    "options": [
+      "Tous les 6 mois",
+      "Environ tous les 2 ans",
+      "Tous les 5 ans",
+      "Chaque mois"
+    ],
+    "correctIndex": 1,
+    "explanation": "Debian sort une version stable environ tous les 2 ans, ce qui laisse le temps de bien la tester."
+  },
+  {
+    "question": "D'où viennent les noms de code des versions de Debian (Bookworm, Trixie…) ?",
+    "options": [
+      "Des personnages de Toy Story",
+      "De villes françaises",
+      "De planètes",
+      "De races de chiens"
+    ],
+    "correctIndex": 0,
+    "explanation": "Chaque version porte le nom d'un personnage de Toy Story : Buster, Bullseye, Bookworm, Trixie…"
+  },
+  {
+    "question": "Quel symbole de l'invite de commande indique que tu es connecté en root ?",
+    "options": [
+      "$",
+      ">",
+      "%",
+      "#"
+    ],
+    "correctIndex": 3,
+    "explanation": "Le # signale l'administrateur root ; le $ un utilisateur normal. Un rappel visuel pour faire attention à ce qu'on tape."
+  },
+  {
+    "question": "Comment obtenir l'aide intégrée d'une commande sous Linux ?",
+    "options": [
+      "help.exe commande",
+      "man commande ou commande --help",
+      "info.bat commande",
+      "commande /?"
+    ],
+    "correctIndex": 1,
+    "explanation": "man affiche le manuel complet, --help un résumé des options. commande /? est la syntaxe de Windows."
+  },
+  {
+    "question": "Quelle est la version de Debian « oldstable » en 2026 ?",
+    "options": [
+      "Debian 13 Trixie",
+      "Debian 10 Buster",
+      "Debian 11 Bullseye",
+      "Debian 12 Bookworm"
+    ],
+    "correctIndex": 3,
+    "explanation": "Depuis la sortie de Debian 13 Trixie (stable), Debian 12 Bookworm est devenue oldstable : toujours suivie, mais plus la version de référence."
+  },
+  {
+    "question": "Pourquoi Debian est-elle très utilisée sur les serveurs ?",
+    "options": [
+      "Elle est payante et donc mieux supportée",
+      "Elle est stable, gratuite et très bien testée",
+      "Elle n'a pas besoin de mises à jour",
+      "Elle fonctionne uniquement avec une interface graphique"
+    ],
+    "correctIndex": 1,
+    "explanation": "Debian est libre et gratuite, et sa branche stable privilégie la fiabilité : c'est exactement ce qu'on attend d'un serveur."
   }
 ]
 </script>

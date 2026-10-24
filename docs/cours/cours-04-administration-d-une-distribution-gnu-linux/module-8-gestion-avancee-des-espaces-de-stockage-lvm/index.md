@@ -264,6 +264,72 @@ sudo lvextend -r -l +100%FREE /dev/vg_data/lv_web   # donner toute la place au v
     ],
     "correctIndex": 1,
     "explanation": "vgs affiche un résumé de chaque groupe ; la colonne VFree indique l'espace encore disponible pour créer ou agrandir des LV."
+  },
+  {
+    "question": "Quelle commande crée le VG vg_data à partir du disque /dev/sdb ?",
+    "options": [
+      "lvcreate vg_data /dev/sdb",
+      "vgcreate vg_data /dev/sdb",
+      "pvcreate vg_data",
+      "mkfs.vg /dev/sdb"
+    ],
+    "correctIndex": 1,
+    "explanation": "Après pvcreate /dev/sdb, vgcreate vg_data /dev/sdb crée le groupe de volumes qui rassemble l'espace disque."
+  },
+  {
+    "question": "Quelles commandes donnent un résumé rapide des PV, VG et LV ?",
+    "options": [
+      "pvs, vgs, lvs",
+      "ls, cd, pwd",
+      "df, du, free",
+      "lsblk -lvm"
+    ],
+    "correctIndex": 0,
+    "explanation": "pvs (volumes physiques), vgs (groupes) et lvs (volumes logiques) affichent un tableau par niveau."
+  },
+  {
+    "question": "Par quel chemin accède-t-on au volume lv_web du groupe vg_data ?",
+    "options": [
+      "/dev/sdb/lv_web",
+      "/mnt/vg_data",
+      "/dev/vg_data/lv_web",
+      "/lvm/lv_web"
+    ],
+    "correctIndex": 2,
+    "explanation": "Un LV apparaît dans /dev/<VG>/<LV> (et aussi /dev/mapper/vg_data-lv_web). C'est ce chemin qu'on formate et qu'on monte."
+  },
+  {
+    "question": "Quelle commande ajoute le disque /dev/sdc au VG vg_data ?",
+    "options": [
+      "vgextend vg_data /dev/sdc",
+      "lvextend vg_data /dev/sdc",
+      "vgcreate vg_data /dev/sdc",
+      "pvmove /dev/sdc"
+    ],
+    "correctIndex": 0,
+    "explanation": "On prépare le disque avec pvcreate /dev/sdc, puis vgextend vg_data /dev/sdc ajoute sa place au groupe."
+  },
+  {
+    "question": "Quel est le principal avantage de LVM par rapport à des partitions classiques ?",
+    "options": [
+      "Il est plus rapide à installer",
+      "Il remplace la sauvegarde",
+      "On peut agrandir un volume, même à chaud, et réunir plusieurs disques",
+      "Il chiffre automatiquement les données"
+    ],
+    "correctIndex": 2,
+    "explanation": "LVM sépare l'espace physique des volumes : on ajoute un disque au VG puis on agrandit le LV, sans réinstaller."
+  },
+  {
+    "question": "Avant une mise à jour risquée, quelle fonction de LVM permet de revenir en arrière ?",
+    "options": [
+      "Les instantanés (snapshots)",
+      "Le umask",
+      "Le sticky bit",
+      "Le RAID 0"
+    ],
+    "correctIndex": 0,
+    "explanation": "Un instantané fige l'état d'un volume à un moment donné. Ce n'est pas une sauvegarde : il est stocké dans le même VG."
   }
 ]
 </script>

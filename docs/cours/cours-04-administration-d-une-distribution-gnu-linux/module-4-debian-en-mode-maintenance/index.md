@@ -224,6 +224,94 @@ fsck -f /dev/sda1        # ⚠️ sur une partition NON montée (ou montée en l
     ],
     "correctIndex": 1,
     "explanation": "Debian garde le noyau précédent : on peut le choisir dans les options avancées de GRUB, puis chercher la cause."
+  },
+  {
+    "question": "Après avoir modifié une entrée dans GRUB avec la touche e, comment démarre-t-on ?",
+    "options": [
+      "Échap",
+      "Ctrl + X (ou F10)",
+      "Entrée",
+      "Ctrl + Alt + Suppr"
+    ],
+    "correctIndex": 1,
+    "explanation": "Ctrl + X ou F10 démarre avec l'entrée modifiée. Échap annule les modifications."
+  },
+  {
+    "question": "Les modifications faites dans GRUB avec la touche e sont-elles permanentes ?",
+    "options": [
+      "Oui, elles sont enregistrées dans /etc/default/grub",
+      "Oui, jusqu'à la prochaine mise à jour",
+      "Non, elles ne valent que pour ce démarrage",
+      "Seulement si on est root"
+    ],
+    "correctIndex": 2,
+    "explanation": "C'est volontaire : on peut tester ou dépanner sans risque. Pour un changement durable, on modifie /etc/default/grub puis on lance update-grub."
+  },
+  {
+    "question": "Après init=/bin/bash, quelle commande rend la racine modifiable ?",
+    "options": [
+      "mount -o remount,rw /",
+      "chmod 777 /",
+      "fsck /",
+      "passwd root"
+    ],
+    "correctIndex": 0,
+    "explanation": "Au démarrage, / est montée en lecture seule. remount,rw la remonte en lecture-écriture pour pouvoir changer le mot de passe."
+  },
+  {
+    "question": "Quelle commande régénère le menu de GRUB après une modification ?",
+    "options": [
+      "grub-reset",
+      "update-grub",
+      "apt grub",
+      "systemctl restart grub"
+    ],
+    "correctIndex": 1,
+    "explanation": "update-grub relit /etc/default/grub et les noyaux installés, puis réécrit le menu de démarrage."
+  },
+  {
+    "question": "Avant de faire chroot depuis un live CD, que faut-il monter dans /mnt ?",
+    "options": [
+      "Rien du tout",
+      "Uniquement /home",
+      "Une clé USB",
+      "La partition racine du disque, puis /dev, /proc et /sys en --bind"
+    ],
+    "correctIndex": 3,
+    "explanation": "On monte d'abord la racine du système à réparer, puis on lui donne accès au matériel avec mount --bind pour /dev, /proc et /sys."
+  },
+  {
+    "question": "Quelle est la différence entre le mode secours (rescue) et le mode urgence (emergency) ?",
+    "options": [
+      "Aucune",
+      "Le mode urgence est encore plus minimal : presque aucun service, racine en lecture seule",
+      "Le mode secours n'existe que sous Windows",
+      "Le mode urgence démarre l'interface graphique"
+    ],
+    "correctIndex": 1,
+    "explanation": "rescue.target monte les systèmes de fichiers et démarre quelques services de base. emergency.target ne lance presque rien : c'est le dernier recours."
+  },
+  {
+    "question": "Après avoir changé le mot de passe root avec init=/bin/bash, comment redémarrer correctement ?",
+    "options": [
+      "Débrancher le serveur",
+      "Taper exit",
+      "sync puis exec /sbin/init",
+      "Appuyer sur Échap"
+    ],
+    "correctIndex": 2,
+    "explanation": "sync écrit les données en attente sur le disque, puis exec /sbin/init lance le démarrage normal (sinon reboot -f)."
+  },
+  {
+    "question": "Pourquoi faut-il démonter une partition avant de lancer fsck dessus ?",
+    "options": [
+      "Pour aller plus vite",
+      "Pour ne pas abîmer des fichiers en cours d'écriture",
+      "fsck ne marche que sur les clés USB",
+      "Pour libérer de la mémoire"
+    ],
+    "correctIndex": 1,
+    "explanation": "Réparer un système de fichiers pendant que des programmes y écrivent peut le corrompre. On le démonte, ou on travaille depuis le mode secours ou un live CD."
   }
 ]
 </script>

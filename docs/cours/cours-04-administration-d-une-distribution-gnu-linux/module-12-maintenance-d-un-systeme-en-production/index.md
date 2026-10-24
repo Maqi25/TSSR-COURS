@@ -304,6 +304,61 @@ rsync -av /srv/compta/ tech@srv-backup:/backup/compta/
     ],
     "correctIndex": 1,
     "explanation": "3 copies des données, sur 2 types de supports différents, dont 1 stockée ailleurs : ainsi un incendie ou une panne ne détruit pas tout."
+  },
+  {
+    "question": "Un programme bloqué ne répond plus. Quelle commande essaies-tu en premier ?",
+    "options": [
+      "kill -9 PID",
+      "kill PID",
+      "reboot",
+      "rm -rf /proc/PID"
+    ],
+    "correctIndex": 1,
+    "explanation": "kill PID demande poliment l'arrêt (le programme peut se fermer proprement). kill -9 force l'arrêt : c'est le dernier recours."
+  },
+  {
+    "question": "Quelle commande suit le journal système en direct ?",
+    "options": [
+      "journalctl -f",
+      "journalctl -b",
+      "cat /var/log",
+      "tail journalctl"
+    ],
+    "correctIndex": 0,
+    "explanation": "-f (follow) affiche les nouveaux messages au fur et à mesure ; Ctrl + C pour arrêter."
+  },
+  {
+    "question": "Quelle commande affiche les erreurs du journal depuis ce matin ?",
+    "options": [
+      "journalctl --errors",
+      "journalctl -p err --since today",
+      "grep err /etc",
+      "journalctl -u today"
+    ],
+    "correctIndex": 1,
+    "explanation": "-p err filtre par priorité (erreurs et plus grave) et --since today limite à aujourd'hui."
+  },
+  {
+    "question": "Quelle commande affiche tes tâches cron sans les modifier ?",
+    "options": [
+      "crontab -e",
+      "crontab -r",
+      "crontab -l",
+      "cron --show"
+    ],
+    "correctIndex": 2,
+    "explanation": "-l liste, -e modifie. Attention : -r supprime toute ta crontab sans confirmation."
+  },
+  {
+    "question": "Dans une crontab, que fait la ligne « @reboot /usr/local/bin/demarrage.sh » ?",
+    "options": [
+      "Elle redémarre le serveur chaque jour",
+      "Elle lance le script à chaque démarrage du serveur",
+      "Elle désactive cron",
+      "Elle lance le script toutes les minutes"
+    ],
+    "correctIndex": 1,
+    "explanation": "@reboot exécute la commande une fois, au démarrage du serveur."
   }
 ]
 </script>

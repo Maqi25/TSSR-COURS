@@ -269,6 +269,72 @@ ss -tulpn          # t = TCP, u = UDP, l = en écoute, p = programme, n = numér
     ],
     "correctIndex": 0,
     "explanation": "ss -tulpn : TCP, UDP, en écoute (listening), programme (process), en numérique. C'est le remplaçant moderne de netstat."
+  },
+  {
+    "question": "Dans /etc/network/interfaces, quelle ligne demande une adresse à un serveur DHCP ?",
+    "options": [
+      "iface ens33 inet static",
+      "iface ens33 inet dhcp",
+      "auto dhcp",
+      "address dhcp"
+    ],
+    "correctIndex": 1,
+    "explanation": "inet dhcp = adresse automatique. inet static = adresse fixe, avec les lignes address et gateway."
+  },
+  {
+    "question": "Quel mot-clé indique la passerelle par défaut dans /etc/network/interfaces ?",
+    "options": [
+      "router",
+      "route",
+      "gateway",
+      "default"
+    ],
+    "correctIndex": 2,
+    "explanation": "La ligne gateway 192.168.1.1 désigne la passerelle, c'est-à-dire la sortie vers les autres réseaux."
+  },
+  {
+    "question": "Dans ss -tulpn, que signifient t et u ?",
+    "options": [
+      "TCP et UDP",
+      "Terminal et utilisateur",
+      "Temps et uptime",
+      "Total et unique"
+    ],
+    "correctIndex": 0,
+    "explanation": "t = TCP, u = UDP, l = ports en écoute, p = programme associé, n = numéros au lieu des noms."
+  },
+  {
+    "question": "ping 8.8.8.8 répond, mais ping debian.org échoue. Où se situe le problème ?",
+    "options": [
+      "Dans le câble",
+      "Dans la carte réseau",
+      "Dans la passerelle",
+      "Dans le DNS (/etc/resolv.conf)"
+    ],
+    "correctIndex": 3,
+    "explanation": "Internet est joignable par son adresse IP, donc le réseau marche. Seule la traduction des noms (DNS) pose problème."
+  },
+  {
+    "question": "Le ping vers la passerelle 192.168.1.1 échoue. Quelle est la conclusion la plus probable ?",
+    "options": [
+      "Un problème sur le réseau local (câble, IP, masque, VLAN)",
+      "Un problème DNS",
+      "Un problème chez le serveur web",
+      "Tout fonctionne"
+    ],
+    "correctIndex": 0,
+    "explanation": "Si même la passerelle, sur le réseau local, ne répond pas, le problème est proche : configuration IP, câble ou switch."
+  },
+  {
+    "question": "Dans quel fichier se trouve le nom de la machine ?",
+    "options": [
+      "/etc/hosts",
+      "/etc/hostname",
+      "/etc/resolv.conf",
+      "/etc/machine.conf"
+    ],
+    "correctIndex": 1,
+    "explanation": "/etc/hostname contient le nom. On le modifie proprement avec hostnamectl set-hostname, et on met aussi à jour /etc/hosts."
   }
 ]
 </script>

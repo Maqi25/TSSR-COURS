@@ -349,6 +349,39 @@ Le modèle OSI est **théorique** : il sert à **expliquer** et à **dépanner**
 | 88 | Kerberos (Active Directory) | | 3389 | RDP (Bureau à distance) |
 | 110 | POP3 | | 123 | NTP (heure) |
 
+### ✏️ Entraîne-toi (clique pour voir la correction)
+
+??? question "1. Remets dans l'ordre, de la couche 1 à la couche 7 : Transport · Physique · Application · Réseau · Session · Liaison · Présentation"
+    **1 Physique · 2 Liaison · 3 Réseau · 4 Transport · 5 Session · 6 Présentation · 7 Application**
+
+    Moyen mnémotechnique : « **P**our **L**e **R**éseau, **T**out **S**e **P**asse **A**utomatiquement ».
+
+??? question "2. À quelle couche OSI associes-tu : switch · routeur · hub · adresse IP · adresse MAC · port 443 · câble RJ45 · chiffrement TLS ?"
+    | Élément | Couche |
+    |---|---|
+    | Hub, câble RJ45 | **1** – Physique |
+    | Switch, adresse MAC | **2** – Liaison |
+    | Routeur, adresse IP | **3** – Réseau |
+    | Port 443 | **4** – Transport |
+    | Chiffrement TLS | **6** – Présentation (dans le modèle OSI) |
+
+??? question "3. Un PC envoie une page web. Dans quel ordre ajoute-t-il les en-têtes TCP, IP et MAC ? Laquelle de ces couches ajoute aussi une fin ?"
+    On descend les couches : **TCP** (couche 4) → **IP** (couche 3) → **MAC** (couche 2).
+
+    Seule la couche **2** ajoute aussi une **fin de trame (FCS)**, qui sert à vérifier que la trame n'a pas été abîmée. À la réception, on retire dans l'ordre inverse : MAC, puis IP, puis TCP.
+
+??? question "4. Ton PC (192.168.1.10) ouvre https://www.exemple.fr. Donne : la MAC de destination, l'IP de destination, le port de destination, le port source."
+    - **MAC de destination** : celle de la **box** (passerelle), car le serveur n'est pas sur ton réseau local.
+    - **IP de destination** : celle du **serveur web** (trouvée grâce au DNS).
+    - **Port de destination** : **443** (HTTPS).
+    - **Port source** : un numéro **temporaire au-dessus de 1024**, choisi par ton PC.
+
+??? question "5. Dépannage : à quelle couche commences-tu à chercher ? a) le voyant de la prise réseau est éteint · b) le ping vers 8.8.8.8 répond, mais aucun site ne s'ouvre par son nom"
+    - **a)** Pas de voyant = pas de signal → **couche 1** : câble débranché ou abîmé, prise morte, carte réseau désactivée.
+    - **b)** Internet répond par son adresse IP (couches 1 à 3 OK), mais pas par les noms → le **DNS** ne marche pas, service de la **couche 7**. On vérifie le serveur DNS configuré (`ipconfig /all`) et on teste avec `nslookup`.
+
+    💡 Règle du technicien : on dépanne **de bas en haut**, en commençant par la couche 1.
+
 ## 🧠 Quiz — entraîne-toi
 
 <div id="quiz-cours-01-bases-des-reseaux-module-1-le-modele-osi"></div>
