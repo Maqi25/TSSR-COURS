@@ -4,9 +4,10 @@
 
 ## 🎯 Objectif du module
 
-Ce module présente les systèmes de numération utilisés en informatique (binaire, octal, décimal, hexadécimal), les méthodes de conversion entre ces bases, ainsi que les unités de mesure informatiques (bits, octets, multiples, débits).
+Savoir passer d'une base à l'autre (binaire, octal, décimal, hexadécimal) et ne plus confondre bits, octets, Go et Gio.
 
-
+!!! abstract "En clair"
+    Un ordinateur ne connaît que deux états : courant ou pas de courant, **1** ou **0**. Tout ce qu'il manipule (une adresse IP, une photo, un mot de passe) est une suite de 0 et de 1. Pour que les humains s'y retrouvent, on réécrit ces suites en **décimal** (adresses IPv4) ou en **hexadécimal** (adresses MAC, IPv6). En réseau, la compétence clé est de **convertir un octet** (8 bits) entre décimal et binaire : c'est la base du calcul des masques au module 3.
 
 ## 🖼️ Résumé visuel
 
@@ -47,243 +48,118 @@ Les 4 bases à connaître, de la plus « machine » à la plus « humaine », et
 
 ## 📖 Cours consolidé
 
-### 1. Les bases de numération : vue d'ensemble
+### 1. Les 4 bases en un coup d'œil
 
-La **numération** est le système utilisé pour représenter les nombres. En informatique, 4 bases reviennent constamment :
+Une **base**, c'est le nombre de chiffres différents dont on dispose avant de « passer à la colonne suivante ». En base 10, après 9 on écrit 10 ; en base 2, après 1 on écrit déjà 10.
 
-| Base | Nom | Chiffres utilisés | Pourquoi on l'utilise |
+- **Base 2 (binaire)** : 0 et 1. C'est la langue de la machine : un transistor laisse passer le courant (**1**) ou non (**0**). Un chiffre binaire = un **bit**.
+- **Base 8 (octal)** : 0 à 7. Un chiffre = **3 bits**. On le croise surtout dans les **droits Linux** (`chmod 755`).
+- **Base 10 (décimal)** : 0 à 9. La base des humains, et celle des **adresses IPv4** (`192.168.1.10`).
+- **Base 16 (hexadécimal)** : 0 à 9 puis **A=10, B=11, C=12, D=13, E=14, F=15**. Un chiffre = **4 bits**. Partout en réseau : **adresses MAC** (`00:1A:2B:3C:4D:5E`), **IPv6** (`2001:db8::1`), et aussi les couleurs web (`#FF5733`).
+
+💡 L'octal et l'hexa ne servent qu'à **écrire le binaire en plus court**. 8 bits = 2 chiffres hexa : `11111111` = `FF`.
+
+**La table à connaître par cœur** (de 0 à 15) :
+
+| Déc. | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | 10 | 11 | 12 | 13 | 14 | 15 |
+|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|---|
+| **Hexa** | 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7 | 8 | 9 | A | B | C | D | E | F |
+| **Binaire** | 0000 | 0001 | 0010 | 0011 | 0100 | 0101 | 0110 | 0111 | 1000 | 1001 | 1010 | 1011 | 1100 | 1101 | 1110 | 1111 |
+
+---
+
+### 2. Lire un nombre : chaque position a un poids
+
+Dans toutes les bases, c'est la même règle : le chiffre le plus à droite est en **position 0**, et chaque position vaut **base^position**. On multiplie chaque chiffre par son poids, puis on additionne.
+
+```
+Décimal   407   = 4×10² + 0×10¹ + 7×10⁰  = 400 + 0 + 7     = 407
+Binaire   1101  = 1×2³  + 1×2²  + 0×2¹ + 1×2⁰ = 8 + 4 + 0 + 1 = 13
+Octal     52    = 5×8¹  + 2×8⁰           = 40 + 2          = 42
+Hexa      1B4   = 1×16² + B(11)×16¹ + 4×16⁰ = 256 + 176 + 4 = 436
+```
+
+👉 C'est aussi la méthode pour convertir **n'importe quelle base vers le décimal**.
+
+---
+
+### 3. Convertir : 3 méthodes, du plus général au plus rapide
+
+#### a) Décimal → n'importe quelle base : les divisions successives
+
+On divise par la base, on garde le **reste**, on recommence avec le quotient jusqu'à 0. Le résultat se lit **de bas en haut**.
+
+```
+45 → binaire               45 → hexa
+45 ÷ 2 = 22  reste 1  ↑    45 ÷ 16 = 2  reste 13 → D  ↑
+22 ÷ 2 = 11  reste 0  │     2 ÷ 16 = 0  reste 2       │
+11 ÷ 2 =  5  reste 1  │                                └─ 2D
+ 5 ÷ 2 =  2  reste 1  │
+ 2 ÷ 2 =  1  reste 0  │
+ 1 ÷ 2 =  0  reste 1  └─ 101101
+```
+
+#### b) ⭐ Décimal ↔ binaire sur un octet : le tableau des poids
+
+C'est **la méthode du technicien réseau** : on l'utilise pour chaque octet d'une adresse IP ou d'un masque. On écrit les 8 poids, puis on « remplit » de gauche à droite : si le poids rentre dans ce qui reste, on met **1** et on le soustrait, sinon **0**.
+
+```
+150 → binaire
+Poids :   128   64   32   16    8    4    2    1
+Reste :   150   22   22   22    6    6    2    0
+Rentre ?  oui  non  non  oui  non  oui  oui  non
+Bit :      1    0    0    1    0    1    1    0     → 10010110
+```
+
+Dans l'autre sens, c'est encore plus simple : on **additionne les poids des bits à 1**. `11000000` = 128 + 64 = **192**.
+
+#### c) Binaire ↔ hexa / octal : on fait des paquets
+
+Pas besoin de passer par le décimal : on coupe le binaire **depuis la droite**, en paquets de **4 bits** pour l'hexa et de **3 bits** pour l'octal (on complète à gauche avec des 0 si besoin).
+
+```
+300 en binaire = 100101100
+Hexa  (par 4) :  0001 | 0010 | 1100  →  1 | 2 | C  →  12C
+Octal (par 3) :   100 |  101 |  100  →  4 | 5 | 4  →  454
+```
+
+💡 **Astuce** : pour aller du décimal vers l'octal ou l'hexa, passer par le binaire est souvent plus sûr que les divisions par 8 ou par 16.
+
+---
+
+### 4. Les unités : stocker en octets, transmettre en bits
+
+- **bit** (`b`) : un 0 ou un 1, la plus petite information.
+- **octet** (`o`, en anglais *byte*, `B`) : **8 bits**, de 0 à 255. Environ 1 caractère de texte simple.
+
+**Deux façons de compter les multiples**, et c'est la source d'une confusion classique :
+
+| Préfixe décimal (×1 000) | | Préfixe binaire (×1 024) | |
 |---|---|---|---|
-| **2** | Binaire | 0, 1 | Base fondamentale : correspond directement aux 2 états électriques d'un circuit (0 = pas de courant, 1 = courant qui passe) |
-| **8** | Octale | 0 à 7 | Représentation compacte du binaire (1 chiffre octal = 3 bits, car 8 = 2³) — utile notamment pour les permissions Unix/Linux |
-| **10** | Décimale | 0 à 9 | La base « humaine », utilisée au quotidien |
-| **16** | Hexadécimale | 0 à 9 puis A à F (A=10 … F=15) | Représentation compacte du binaire (1 chiffre hexa = 4 bits, car 16 = 2⁴) — très utilisée pour les adresses IPv6, les adresses MAC, les couleurs web |
+| 1 **Ko** | 10³ = 1 000 o | 1 **Kio** | 2¹⁰ = 1 024 o |
+| 1 **Mo** | 10⁶ o | 1 **Mio** | 2²⁰ o |
+| 1 **Go** | 10⁹ o | 1 **Gio** | 2³⁰ o (≈ 1,07 Go) |
+| 1 **To** | 10¹² o | 1 **Tio** | 2⁴⁰ o (≈ 1,1 To) |
 
-#### Tableau d'équivalence (0 à 15)
+- Les **fabricants** de disques comptent en décimal, **Windows** compte en binaire (mais écrit « Go »). Un disque de 1 To s'affiche donc environ **931 Go**. Rien n'est perdu, c'est l'unité qui change.
+- Les **débits** réseau se comptent en **bits par seconde** (`bit/s`, `Mbit/s`, `Gbit/s`), avec des multiples de 1 000. Pour passer d'un débit à une vitesse de téléchargement, on **divise par 8** : une fibre à 100 Mbit/s télécharge au mieux à **12,5 Mo/s**.
 
-| Décimal | Binaire | Octal | Hexadécimal |
+⚠️ Petit **b** = bit, grand **B** = byte (octet). `Mb` ≠ `MB`.
+
+---
+
+### 5. Application réseau : la classe d'une IPv4 d'après son 1er octet
+
+Une IPv4 = 4 octets écrits en décimal. Le **premier octet** donne la classe, donc le masque par défaut :
+
+| Classe | 1er octet | Commence en binaire par | Masque par défaut |
 |---|---|---|---|
-| 0 | 0000 | 0 | 0 |
-| 1 | 0001 | 1 | 1 |
-| 2 | 0010 | 2 | 2 |
-| 3 | 0011 | 3 | 3 |
-| 4 | 0100 | 4 | 4 |
-| 5 | 0101 | 5 | 5 |
-| 6 | 0110 | 6 | 6 |
-| 7 | 0111 | 7 | 7 |
-| 8 | 1000 | 10 | 8 |
-| 9 | 1001 | 11 | 9 |
-| 10 | 1010 | 12 | **A** |
-| 11 | 1011 | 13 | **B** |
-| 12 | 1100 | 14 | **C** |
-| 13 | 1101 | 15 | **D** |
-| 14 | 1110 | 16 | **E** |
-| 15 | 1111 | 17 | **F** |
-
----
-
-### 2. Le principe de la valeur positionnelle
-
-Toutes les bases fonctionnent sur le **même principe** : chaque position d'un chiffre dans un nombre représente une **puissance de la base**, et la valeur totale du nombre est la somme de chaque chiffre multiplié par la puissance correspondant à sa position (en partant de la droite, position 0).
-
-```
-Position :     ...  2  1  0
-Puissance :    ... B² B¹ B⁰      (B = la base : 2, 8, 10 ou 16)
-```
-
-**Exemple en base 10** — le nombre **325** :
-```
-3 × 10² + 2 × 10¹ + 5 × 10⁰  =  300 + 20 + 5  =  325
-```
-
-**Exemple en base 2** — le nombre **1011** :
-```
-1 × 2³ + 0 × 2² + 1 × 2¹ + 1 × 2⁰  =  8 + 0 + 2 + 1  =  11 (en décimal)
-```
-
-**Exemple en base 8** — le nombre **237** :
-```
-2 × 8² + 3 × 8¹ + 7 × 8⁰  =  128 + 24 + 7  =  159 (en décimal)
-```
-
-**Exemple en base 16** — le nombre **2AF** :
-```
-2 × 16² + A(10) × 16¹ + F(15) × 16⁰  =  512 + 160 + 15  =  687 (en décimal)
-```
-
-📌 C'est exactement ce principe qui est utilisé dans la méthode de conversion « base X → décimal » présentée en section 4.
-
----
-
-### 3. Pourquoi et où utilise-t-on chaque base ?
-
-#### Le binaire
-Base fondamentale de l'informatique : chaque **bit** correspond à un état électrique (0 = absence de courant, 1 = passage de courant). Tout le reste (octal, hexadécimal) n'existe que pour rendre le binaire plus lisible pour un humain.
-
-#### L'octal
-Un chiffre octal représente exactement **3 bits** (8 = 2³), ce qui permet de regrouper un nombre binaire par paquets de 3 pour le raccourcir. Usage concret : les **permissions de fichiers Unix/Linux** (ex. `755`, `644`), et historiquement certaines configurations bas niveau de périphériques.
-
-#### L'hexadécimal
-Un chiffre hexadécimal représente exactement **4 bits** (16 = 2⁴), ce qui en fait le format le plus compact et le plus lisible pour manipuler de grandes valeurs binaires. Usages concrets :
-
-| Usage | Exemple |
-|---|---|
-| **Adresses IPv6** | `2001:0db8:85a3:0000:0000:8a2e:0370:7334` (128 bits regroupés par blocs de 4) |
-| **Adresses MAC** | `00:1A:2B:3C:4D:5E` |
-| **Couleurs web (RGB)** | `#FF5733` → FF (rouge fort), 57 (vert moyen), 33 (bleu faible) |
-
----
-
-### 4. Les méthodes de conversion
-
-Il existe deux méthodes génériques, valables **quelle que soit la base cible** (2, 8 ou 16) :
-
-#### Méthode A — Convertir un nombre décimal vers une autre base (divisions successives)
-
-1. **Diviser** le nombre décimal par la base cible, noter le **reste**.
-2. **Reprendre le quotient** obtenu et le diviser à nouveau par la base.
-3. **Répéter** jusqu'à obtenir un quotient de **0**.
-4. Le nombre converti s'obtient en **lisant les restes de bas en haut** (du dernier reste obtenu au premier).
-
-*(Pour l'hexadécimal, si un reste est ≥ 10, le remplacer par la lettre correspondante : 10→A, 11→B... 15→F.)*
-
-```
-Exemple : 25 (décimal) → binaire (base 2)
-
-25 ÷ 2 = 12   reste 1   ↑
-12 ÷ 2 =  6   reste 0   │  on lit
- 6 ÷ 2 =  3   reste 0   │  de bas
- 3 ÷ 2 =  1   reste 1   │  en haut
- 1 ÷ 2 =  0   reste 1   │
-                         └─→  résultat : 1 1 0 0 1
-
-25 (décimal) = 11001 (binaire)
-```
-
-#### Méthode B — Convertir une autre base vers le décimal (méthode positionnelle)
-
-1. Identifier la **position** de chaque chiffre, en partant de la droite (position 0).
-2. **Multiplier** chaque chiffre par la **base élevée à la puissance de sa position**.
-3. **Additionner** tous les résultats obtenus.
-
-*(C'est exactement la méthode vue en section 2.)*
-
-```
-Exemple : 10110 (binaire) → décimal
-
-position :  4 3 2 1 0
-bit      :  1 0 1 1 0
-
-1×2⁴ + 0×2³ + 1×2² + 1×2¹ + 0×2⁰ = 16+0+4+2+0 = 22
-
-10110 (binaire) = 22 (décimal)
-```
-
-#### Tous les exemples de conversion du cours
-
-| Conversion | Méthode | Exemple | Résultat |
-|---|---|---|---|
-| Décimal → Binaire | A (÷2) | 25 | **11001** |
-| Binaire → Décimal | B (×2ⁿ) | 10110 | **22** |
-| Décimal → Octal | A (÷8) | 156 | **234** |
-| Octal → Décimal | B (×8ⁿ) | 234 | **156** |
-| Décimal → Hexadécimal | A (÷16) | 254 | **FE** |
-| Hexadécimal → Décimal | B (×16ⁿ) | 3F | **63** |
-
-📌 On remarque que les deux premières lignes et les deux suivantes sont des conversions **inverses l'une de l'autre** (156 → 234 puis 234 → 156) — de bons exemples pour s'entraîner dans les deux sens.
-
-#### Raccourci pratique : binaire ↔ octal / hexadécimal
-
-Comme un chiffre octal = 3 bits et un chiffre hexadécimal = 4 bits, on peut convertir **directement** entre binaire et octal/hexadécimal, sans passer par le décimal — il suffit de regrouper les bits par paquets de 3 (octal) ou de 4 (hexadécimal), en partant de la droite.
-
-```
-Binaire → Octal :        110110  →  110 | 110  →  6 | 6  →  66 (octal)
-
-Binaire → Hexadécimal :  10101111  →  1010 | 1111  →  A | F  →  AF (hexadécimal)
-```
-
----
-
-### 5. Les unités informatiques
-
-#### Bit et octet
-
-| Unité | Définition |
-|---|---|
-| **Bit** (b) | La plus petite unité d'information : une valeur binaire, 0 ou 1 |
-| **Octet** (B, *Byte*) | 8 bits regroupés — l'unité de base pour représenter un caractère (ex. une lettre ≈ 1 octet) |
-
-#### Les multiples de l'octet : deux systèmes à ne pas confondre
-
-Il existe **deux façons** de compter les multiples de l'octet, ce qui est une source fréquente de confusion (notamment sur les disques durs, où les fabricants utilisent le système décimal alors que **Windows** compte en binaire, tout en affichant « Go » au lieu de « Gio ») :
-
-| Système **binaire** (base 2) | Valeur | Système **décimal** (base 10) | Valeur |
-|---|---|---|---|
-| **Kio** (Kibioctet) | 2¹⁰ = 1 024 octets | **Ko** (Kilooctet) | 10³ = 1 000 octets |
-| **Mio** (Mébioctet) | 2²⁰ = 1 048 576 octets | **Mo** (Mégaoctet) | 10⁶ = 1 000 000 octets |
-| **Gio** (Gibioctet) | 2³⁰ ≈ 1,07 milliard d'octets | **Go** (Gigaoctet) | 10⁹ = 1 milliard d'octets |
-| **Tio** (Tébioctet) | 2⁴⁰ ≈ 1,1 billion d'octets | **To** (Téraoctet) | 10¹² = 1 billion d'octets |
-
-⚠️ C'est pour cette raison qu'un disque dur annoncé « 1 To » par le fabricant (système décimal) apparaît plus petit une fois branché sous Windows : environ **931 Go** (car Windows compte en Tio/Gio, système binaire). macOS, lui, compte en décimal et affiche bien 1 To.
-
-#### Les unités de débit (vitesse de transmission)
-
-Pour mesurer la **vitesse de transfert** des données sur un réseau (et non plus une quantité de données stockées), on utilise des unités basées sur le **bit**, pas sur l'octet :
-
-| Unité | Signification |
-|---|---|
-| **bps** | bits par seconde — unité de base |
-| **Kbps** | 1 000 bps |
-| **Mbps** | 1 000 000 bps |
-| **Gbps** | 1 000 000 000 bps |
-
-📌 Piège classique : ne pas confondre un débit en **Mbps** (mégabits/seconde, utilisé pour une connexion Internet) avec une taille de fichier en **Mo** (mégaoctets) — il y a un facteur **8** entre les deux (1 octet = 8 bits), ce qui explique pourquoi un débit annoncé « 100 Mbps » ne donne pas une vitesse de téléchargement de 100 Mo/s, mais plutôt de 12,5 Mo/s.
-
----
-
-
-### 6. Application : lire une adresse IPv4 grâce à son premier octet
-
-Une adresse IPv4 s'écrit en **décimal**, sur 4 octets (ex. `192.168.1.10`). La valeur décimale du **premier octet** suffit à retrouver la **classe** de l'adresse, et donc où s'arrête la partie réseau.
-
-!!! note "Rappel : les plages de classes"
-    - **Classe A** : 1 à 126
-    - **Classe B** : 128 à 191
-    - **Classe C** : 192 à 223
-    - **Classe D** : 224 à 239
-    - **Classe E** : 240 à 255
-
-    📌 **127** n'appartient à aucune de ces plages : il est réservé au **loopback** (`127.0.0.1`, la machine elle-même). Les classes D (multicast) et E (expérimental) ne s'attribuent pas à des postes.
-
-Pour séparer la **partie réseau** de la **partie hôte**, il faut suivre 2 étapes.
-
-#### Étape 1 : identifier la classe grâce au premier octet
-
-| Classe | Premier octet | Masque par défaut |
-|---|---|---|
-| **A** | 1 à 126 | 255.0.0.0 (/8) |
-| **B** | 128 à 191 | 255.255.0.0 (/16) |
-| **C** | 192 à 223 | 255.255.255.0 (/24) |
-
-#### Étape 2 : utiliser le masque pour découper l'adresse
-
-Le masque indique combien d'octets appartiennent au réseau :
-
-- **255** = octet de la partie **réseau**
-- **0** = octet de la partie **hôte**
-
-| Classe | Partie réseau | Partie hôte |
-|---|---|---|
-| **A** | 1er octet | 3 derniers octets |
-| **B** | 2 premiers octets | 2 derniers octets |
-| **C** | 3 premiers octets | dernier octet |
-
-```
-Exemple : 172.16.45.10
-Premier octet = 172 → entre 128 et 191 → classe B → masque 255.255.0.0 (/16)
-Partie réseau : 172.16      Partie hôte : 45.10
-```
-
-📌 Pourquoi ces bornes ? En **binaire**, une classe se reconnaît aux premiers bits du premier octet : A commence par `0` (0 à 127), B par `10` (128 à 191), C par `110` (192 à 223), D par `1110` (224 à 239), E par `1111` (240 à 255). C'est une application directe des conversions vues en section 4. L'adressage IPv4 est détaillé dans le [module 3](../module-3-l-adressage-ipv4/index.md).
+| **A** | 1 à 126 | `0` | 255.0.0.0 (/8) |
+| **B** | 128 à 191 | `10` | 255.255.0.0 (/16) |
+| **C** | 192 à 223 | `110` | 255.255.255.0 (/24) |
+| D · E | 224 à 239 · 240 à 255 | `1110` · `1111` | multicast · expérimental (pas pour des postes) |
+
+**127.x.x.x** est réservé à la **boucle locale** (`127.0.0.1` = la machine elle-même). Exemple : `172.16.45.10` → 172 est entre 128 et 191 → **classe B**, réseau `172.16`, hôte `45.10`. La suite est vue au [module 3](../module-3-l-adressage-ipv4/index.md).
 
 ---
 
@@ -292,6 +168,7 @@ Partie réseau : 172.16      Partie hôte : 45.10
 - 4 bases à connaître : **binaire (2)**, **octale (8)**, **décimale (10)**, **hexadécimale (16)**.
 - Le principe est toujours le même : chaque position = une **puissance de la base**, en partant de la droite (position 0).
 - **Décimal → autre base** : divisions successives, lecture des restes **de bas en haut**.
+- Pour un **octet**, la méthode la plus rapide est le **tableau des poids** 128 · 64 · 32 · 16 · 8 · 4 · 2 · 1.
 - **Autre base → décimal** : multiplier chaque chiffre par (base)^position, puis additionner.
 - **Binaire ↔ octal** : regrouper par 3 bits. **Binaire ↔ hexadécimal** : regrouper par 4 bits.
 - **Bit** = 0/1 ; **Octet** = 8 bits.
@@ -320,7 +197,7 @@ Partie réseau : 172.16      Partie hôte : 45.10
 |---|---|---|---|---|---|---|---|
 | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
 
-**Exemples du cours** : 25 = `11001`₂ · `10110`₂ = 22 · 156 = `234`₈ · 254 = `FE`₁₆ · `3F`₁₆ = 63.
+**Exemples du cours** : 45 = `101101`₂ = `2D`₁₆ · `1101`₂ = 13 · 150 = `10010110`₂ · 300 = `12C`₁₆ = `454`₈ · `1B4`₁₆ = 436.
 
 ### ✏️ Entraîne-toi (clique pour voir la correction)
 
