@@ -521,6 +521,39 @@
   color: var(--ip-host);
 }
 
+/* Barre "emprunt de bits" (.tssr-borrow) : réseau | sous-réseau | hôte,
+   largeur proportionnelle au nombre de bits (--bits). */
+.md-typeset .tssr-borrow {
+  --ip-sub: #ea580c;
+  display: flex;
+  gap: 3px;
+  margin: 0.6rem 0;
+  min-width: 29rem;
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tssr-borrow { --ip-sub: #fb923c; }
+
+.md-typeset .tssr-borrow > span {
+  --c: var(--ip-net);
+  flex: var(--bits) 1 0;
+  padding: 0.35rem 0.3rem;
+  border-radius: 8px;
+  border: 2px solid var(--c);
+  background: color-mix(in srgb, var(--c) 14%, transparent);
+  font-size: 0.64rem;
+  text-align: center;
+  line-height: 1.3;
+}
+
+.md-typeset .tssr-borrow > span.is-sub  { --c: var(--ip-sub); }
+.md-typeset .tssr-borrow > span.is-host { --c: var(--ip-host); }
+.md-typeset .tssr-borrow-label {
+  margin-top: 0.8rem;
+  font-size: 0.68rem;
+  font-weight: 700;
+  color: var(--md-default-fg-color--light);
+}
+
 /* --------------------------------------------------------------------
    Schéma "saut par saut" (.tssr-hop) : trajet PC → routeur → PC et
    contenu des trames sur chaque segment (MAC réécrites, IP identiques).
