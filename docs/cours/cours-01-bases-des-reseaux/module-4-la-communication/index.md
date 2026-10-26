@@ -6,31 +6,16 @@
 
 À la fin de ce module, tu sais :
 
-- expliquer ce qu'est un **domaine de diffusion** et quel équipement le limite ;
-- dérouler **pas à pas** un ping entre deux postes du **même réseau** (ARP) ;
-- dérouler un ping entre deux **réseaux différents** (passerelle, routeur) et dire **ce qui change à chaque saut** ;
-- lire une **table de routage** et distinguer routage **statique** / **dynamique** ;
-- **regrouper** plusieurs réseaux en un **sur-réseau** (supernetting).
+- dire ce qu'est un **domaine de diffusion** et quel équipement le coupe ;
+- dérouler un **ping** dans le même réseau (**ARP**) puis vers un autre réseau (**passerelle**) ;
+- lire une **table de routage** et choisir une route grâce à la **métrique** ;
+- **regrouper** plusieurs réseaux en un **sur-réseau**.
 
-## 🚀 Jamais fait de réseau ? Commence ici
-
-Avant le cours, voici **les 8 mots** utilisés partout dans ce module, expliqués avec une image de la vie de tous les jours : **un réseau, c'est comme la poste**.
-
-| Mot | Ce que c'est, en clair | Dans la vie de tous les jours |
-|---|---|---|
-| **Adresse IP** | Le numéro d'une machine sur le réseau, ex. `192.168.1.10`. Elle peut changer si la machine déménage de réseau. | L'**adresse postale** d'une maison |
-| **Adresse MAC** | Le numéro **gravé** dans la carte réseau, ex. `AA:BB:CC:11:22:33`. Il ne change jamais. | Le **nom** écrit sur la boîte aux lettres |
-| **Réseau** | Un groupe de machines qui peuvent se parler **directement**, ex. `192.168.1.0/24`. | Une **rue** |
-| **Switch** (commutateur) | La « multiprise » qui relie les machines d'un même réseau entre elles. | Le **facteur du quartier**, qui ne distribue que dans sa rue |
-| **Routeur** | L'appareil qui relie **deux réseaux différents** (ex. ta maison et Internet : c'est ta box). | Le **centre de tri** qui envoie le courrier vers les autres villes |
-| **Passerelle** | L'adresse du routeur que ta machine utilise pour **sortir** de son réseau. | « Pour tout ce qui sort de la rue, je le donne au **bureau de poste** du coin » |
-| **Broadcast** (diffusion) | Un message envoyé **à toutes** les machines du réseau à la fois. | Une **annonce au haut-parleur** dans la rue |
-| **Ping** | Une petite commande pour tester si une machine répond : `ping 192.168.1.20`. | « **Toc toc**, tu es là ? » « Oui ! » |
-
-!!! tip "L'idée de tout le module en 3 phrases"
-    1. Pour parler à une machine **de sa rue**, il faut connaître son **nom sur la boîte aux lettres** (la MAC). Si on ne le connaît pas, on **crie dans la rue** : « Qui habite au numéro 20 ? » (c'est **ARP**, en broadcast).
-    2. Pour parler à une machine **d'une autre rue**, on ne la contacte pas directement : on confie le courrier au **bureau de poste** (la **passerelle** / le routeur), qui s'occupe de la suite.
-    3. Le **haut-parleur** (broadcast) ne s'entend que **dans la rue** : le routeur ne le laisse jamais passer dans une autre rue.
+!!! abstract "En clair : un réseau, c'est comme la poste"
+    - **Adresse IP** = l'adresse postale (elle change si on déménage) · **adresse MAC** = le nom gravé sur la boîte aux lettres (il ne change jamais).
+    - **Même rue** (même réseau) : on dépose la lettre soi-même. Si on ne connaît pas le nom sur la boîte, on **crie dans la rue** « qui habite au n° 20 ? » → c'est **ARP**.
+    - **Autre rue** : on confie la lettre au **bureau de poste** du coin → la **passerelle** (le routeur), qui sait par où l'envoyer.
+    - Le **haut-parleur** (broadcast) ne s'entend que **dans sa rue** : le routeur ne le laisse jamais passer.
 
 ## 🖼️ Résumé visuel
 
@@ -43,14 +28,14 @@ flowchart LR
         B["💻 PC B<br/>192.168.1.20"] --- SW1
     end
     subgraph D2["📢 Domaine de diffusion 2 — 192.168.2.0/24"]
-        SW2{{"Switch"}} --- D["💻 PC D<br/>192.168.2.20"]
+        SW2{{"Switch"}} --- D["💻 PC D<br/>192.168.2.140"]
         SW2 --- E["💻 PC E<br/>192.168.2.30"]
     end
     SW1 ---|".254"| R(("🛜 Routeur"))
     R ---|".254"| SW2
 ```
 
-Un broadcast de A atteint B (même switch), **mais jamais D ni E** : le routeur ne le laisse pas passer.
+Un broadcast de A atteint B (même switch), **jamais D ni E** : le routeur l'arrête.
 
 **② Le réflexe d'un poste avant d'envoyer un paquet**
 
@@ -66,7 +51,7 @@ flowchart TD
     ARP --> T
 ```
 
-**③ Ce qui change à chaque saut : les MAC. Ce qui ne change jamais : les IP.**
+**③ À chaque saut, les MAC changent. Les IP, jamais.**
 
 <div class="tssr-hop">
   <div class="tssr-hop-path">
@@ -74,248 +59,253 @@ flowchart TD
     <span class="tssr-hop-link">→</span>
     <span class="tssr-hop-node is-router">🛜 <b>Routeur</b><small>e0 : 192.168.1.254 · MAC R1<br/>e1 : 192.168.2.254 · MAC R2</small></span>
     <span class="tssr-hop-link">→</span>
-    <span class="tssr-hop-node">💻 <b>PC D</b><small>192.168.2.20<br/>MAC DD</small></span>
+    <span class="tssr-hop-node">💻 <b>PC D</b><small>192.168.2.140<br/>MAC DD</small></span>
   </div>
   <div class="tssr-hop-frames">
     <div class="tssr-hop-frame">
       <small>Trame sur le réseau 1 (A → routeur)</small>
       <span class="is-mac">MAC : <b>AA → R1</b></span>
-      <span class="is-ip">IP : <b>192.168.1.10 → 192.168.2.20</b></span>
+      <span class="is-ip">IP : <b>192.168.1.10 → 192.168.2.140</b></span>
     </div>
     <div class="tssr-hop-frame">
       <small>Trame sur le réseau 2 (routeur → D)</small>
       <span class="is-mac">MAC : <b>R2 → DD</b> <em>réécrites</em></span>
-      <span class="is-ip">IP : <b>192.168.1.10 → 192.168.2.20</b> <em>identiques</em></span>
+      <span class="is-ip">IP : <b>192.168.1.10 → 192.168.2.140</b> <em>identiques</em></span>
     </div>
   </div>
 </div>
 
 ## 📖 Cours consolidé
 
-### 1. Le domaine de diffusion (broadcast domain)
+### 1. Le domaine de diffusion
 
-!!! abstract "En clair"
-    Un **domaine de diffusion**, c'est « **jusqu'où porte le haut-parleur** ». Toutes les machines reliées par des switchs l'entendent ; le **routeur** est le mur qui l'arrête.
-
-Un **domaine de diffusion** est la zone du réseau dans laquelle un message de **diffusion (broadcast)** est reçu par **toutes** les machines. C'est l'équivalent d'une annonce au haut-parleur : tout le monde dans la pièce l'entend, même si elle ne le concerne pas.
+**Domaine de diffusion** = la zone où un **broadcast** (message « à tout le monde ») est reçu par **toutes** les machines, même celles qui ne sont pas concernées. En clair : **jusqu'où porte le haut-parleur**.
 
 | Couche | Adresse de broadcast | Exemple |
 |---|---|---|
 | **2** (Liaison) | MAC **`FF:FF:FF:FF:FF:FF`** | requête ARP |
-| **3** (Réseau) | IP avec **tous les bits hôte à 1** | `192.168.1.255` pour 192.168.1.0/24 |
+| **3** (Réseau) | IP avec **bits hôte tous à 1** | `192.168.1.255` pour un /24 |
 
-**Qui utilise le broadcast ?** Surtout **ARP** (« qui a cette IP ? ») et **DHCP** (« y a-t-il un serveur DHCP ? »).
+**Qui s'en sert ?** **ARP** (« qui a cette IP ? ») et **DHCP** (« un serveur DHCP est là ? »).
 
-#### Qui arrête (ou pas) le broadcast ?
-
-| Équipement | Effet sur le broadcast |
+| Équipement | Le broadcast… |
 |---|---|
-| **Switch** | ❌ Le **propage** sur tous ses ports (du même VLAN) |
-| **Routeur** | ✅ L'**arrête** : 1 interface de routeur = 1 domaine de diffusion |
-| **VLAN** | ✅ **1 VLAN = 1 domaine** de diffusion, même sur un seul switch physique |
+| **Switch** | ❌ **passe** : envoyé sur tous les ports (du même VLAN) |
+| **Routeur** | ✅ **s'arrête** : 1 interface de routeur = 1 domaine |
+| **VLAN** | ✅ **1 VLAN = 1 domaine**, même sur un seul switch |
 
-**Pourquoi c'est important ?** Plus le domaine est grand, plus chaque machine reçoit et traite de broadcasts inutiles → **perte de performances**. On **segmente** donc les réseaux avec des routeurs et des VLAN (meilleures performances et meilleure sécurité).
+**Pourquoi c'est important ?** Domaine trop grand = chaque machine traite des broadcasts inutiles → **réseau lent**. On **segmente** avec des **routeurs** et des **VLAN** : moins de trafic inutile, meilleures performances, plus de sécurité.
 
 ---
 
-### 2. Communication dans le même réseau : ARP
+### 2. Ping dans le même réseau : ARP
 
-!!! abstract "En clair"
-    Ta machine connaît l'**adresse IP** de la cible (tu l'as tapée), mais pour envoyer réellement le message sur le câble il lui faut son **adresse MAC**. **ARP** sert uniquement à ça : demander à voix haute « **qui a l'IP 192.168.1.20 ? Donne-moi ta MAC** ». La bonne machine répond, et on note la réponse dans un carnet (la **table ARP**) pour ne pas redemander la prochaine fois.
+Ta machine connaît l'**IP** de la cible (tu l'as tapée), mais pour mettre la trame sur le câble il lui faut sa **MAC**. **ARP** sert à ça : « qui a 192.168.1.20 ? donne-moi ta MAC ». La réponse est notée dans la **table ARP** (le carnet d'adresses) pour ne pas redemander.
 
-**Situation** : A (`192.168.1.10/24`, MAC `AA`) fait un `ping 192.168.1.20` vers B (MAC `BB`).
+**Situation** : A (`192.168.1.10/24`, MAC `AA`) → `ping 192.168.1.20` → B (MAC `BB`).
 
-| # | A se demande… | Réponse dans l'exemple |
+| # | A se demande… | Ici |
 |---|---|---|
-| ① | Est-ce ma propre adresse (`127.0.0.1`) ? | Non → on continue |
-| ② | Quel est mon réseau et celui de B ? (IP **ET** masque, le calcul vu au [module 3](../module-3-l-adressage-ipv4/index.md#3-le-masque-de-sous-reseau-et-le-et-logique)) | 192.168.1.10 → **192.168.1.0** · 192.168.1.20 → **192.168.1.0** |
-| ③ | Sommes-nous dans le même réseau ? | **Oui** → envoi direct à B (sinon → passerelle, section 3) |
-| ④ | Ma **table ARP** connaît-elle la MAC de B ? | Non → **requête ARP en broadcast**, le ping attend |
-| ⑤ | B a-t-il répondu ? | Oui → table ARP mise à jour, **le ping part** (sinon : erreur, « hôte inaccessible ») |
+| ① | C'est moi-même (`127.0.0.1`) ? | Non |
+| ② | Mon réseau et celui de B ? (IP **ET** masque, [module 3](../module-3-l-adressage-ipv4/index.md)) | 192.168.1.**0** et 192.168.1.**0** |
+| ③ | Même réseau ? | **Oui** → j'envoie directement à B |
+| ④ | MAC de B dans ma table ARP ? | Non → **requête ARP en broadcast**, le ping attend |
+| ⑤ | B répond ? | Oui → table ARP mise à jour, **le ping part** · Non → erreur ICMP « hôte inaccessible » |
 
 ```mermaid
 sequenceDiagram
     participant A as 💻 PC A<br/>192.168.1.10 · MAC AA
     participant SW as 🔀 Switch
     participant B as 💻 PC B<br/>192.168.1.20 · MAC BB
-    A->>SW: 📢 ARP « Qui a 192.168.1.20 ? » (MAC dest. FF:FF:FF:FF:FF:FF)
+    A->>SW: 📢 ARP « Qui a 192.168.1.20 ? » (vers FF:FF:FF:FF:FF:FF)
     SW->>B: diffusé sur tous les ports
-    Note over SW: tous les autres postes le reçoivent aussi, et l'ignorent
-    B-->>A: ARP « 192.168.1.20, c'est moi : MAC BB » (réponse directe)
-    Note over A: A enregistre 192.168.1.20 ↔ BB dans sa table ARP
+    B-->>A: « C'est moi : MAC BB » (réponse directe, unicast)
+    Note over A: table ARP : 192.168.1.20 ↔ BB
     A->>B: 🏓 Ping (ICMP echo request)
     B-->>A: 🏓 Réponse (ICMP echo reply)
 ```
 
-#### Le contenu des messages ARP
-
-| Message | MAC destination | MAC source | IP recherchée / cible | IP source |
-|---|---|---|---|---|
-| **Requête ARP** (broadcast) | `FF:FF:FF:FF:FF:FF` | AA | 192.168.1.20 | 192.168.1.10 |
-| **Réponse ARP** (unicast = envoyée à **une seule** machine) | AA | BB | 192.168.1.10 | 192.168.1.20 |
-
-💡 Pour voir la table ARP de ton poste : `arp -a` (Windows et Linux).
+📌 **Requête ARP = broadcast** (tout le monde l'entend) · **réponse ARP = unicast** (envoyée au seul demandeur). Voir sa table : `arp -a`.
 
 ---
 
-### 3. Communication entre deux réseaux : la passerelle
+### 3. Ping vers un autre réseau : la passerelle
 
-!!! abstract "En clair"
-    Si la cible n'est **pas dans ta rue**, ta machine ne cherche même pas à la joindre : elle remet le paquet à la **passerelle** (le routeur), comme on dépose une lettre au bureau de poste. Le routeur, lui, sait vers quelle rue l'envoyer. À chaque étape, on change l'**enveloppe extérieure** (les MAC), mais l'**adresse finale écrite sur la lettre** (les IP) ne change jamais.
+**Situation (du support)** : A (`192.168.1.10/24`, passerelle `192.168.1.254`) → `ping 192.168.2.140` → D (`192.168.2.140/26`, passerelle `192.168.2.254`).
 
-**Situation** : A (`192.168.1.10/24`, passerelle `192.168.1.254`) fait un ping vers D (`192.168.2.20/24`, passerelle `192.168.2.254`).
+**Côté PC A**
 
-#### Côté PC A
+1. A calcule son réseau **et celui de D avec SON propre masque** (il ne connaît pas celui de D) : 192.168.1.0 ≠ 192.168.2.0 → **réseaux différents**.
+2. A-t-il une **passerelle** ? Non → erreur ICMP, fin. Oui → la cible devient **la passerelle**.
+3. ARP pour la **MAC de la passerelle** (pas celle de D !), puis envoi du ping au routeur.
 
-Même raisonnement que la section 2, mais à l'étape ③ : `192.168.1.0 ≠ 192.168.2.0` → **réseaux différents**. A n'envoie donc **pas** la trame à D mais à **sa passerelle** : il fait une requête ARP pour obtenir la **MAC de la passerelle** (R1), puis lui envoie le ping.
+**Côté routeur**
 
-⚠️ La passerelle doit **toujours être dans le même réseau que le poste**. Sans passerelle configurée, A ne peut joindre que son propre réseau.
-
-#### Côté routeur
-
-| # | Le routeur… | Si non |
+| # | Le routeur… | Sinon |
 |---|---|---|
-| ① | désencapsule jusqu'à la couche 3 et lit l'**IP de destination** (192.168.2.20) | — |
-| ② | cherche ce réseau (192.168.2.0/24) dans sa **table de routage** | pas de route (ni route par défaut) → paquet détruit, erreur ICMP « destination inaccessible » |
-| ③ | vérifie si ce réseau est **directement connecté** à une de ses interfaces | → transmet au **routeur suivant** |
-| ④ | cherche la **MAC de D** dans sa table ARP (sinon requête ARP sur le réseau 2) | pas de réponse → erreur ICMP |
-| ⑤ | **réécrit les MAC** de la trame (source R2, destination DD) et l'envoie à D | — |
+| ① | ouvre le paquet jusqu'à la couche 3 et lit l'**IP de destination** | — |
+| ② | cherche le réseau de D dans sa **table de routage** | aucune route → paquet détruit, erreur ICMP |
+| ③ | ce réseau est-il **branché sur une de ses interfaces** ? | non → il passe le paquet au **routeur suivant** |
+| ④ | cherche la **MAC de D** (table ARP, sinon requête ARP côté réseau 2) | pas de réponse → erreur ICMP |
+| ⑤ | **réécrit les MAC** (source R2, destination DD) et envoie à D | — |
 
-📌 **À retenir absolument** : à chaque saut, les adresses **MAC** sont **réécrites** (elles ne servent que sur un segment local), alors que les adresses **IP source et destination ne changent jamais** de bout en bout (sauf NAT, vu plus tard).
+⚠️ À retenir absolument : **les MAC changent à chaque saut** (elles ne valent que sur un segment), **les IP source et destination ne changent jamais** (sauf NAT, vu plus tard). Et la passerelle doit être **dans le même réseau que le poste**.
 
 ---
 
 ### 4. Le routage
 
-!!! abstract "En clair"
-    Le routeur a une **liste d'itinéraires** (la **table de routage**) : « pour aller vers tel réseau, passer par telle porte ». Pour chaque paquet, il regarde l'IP de destination dans sa liste ; s'il ne trouve rien, il l'envoie sur la **route par défaut** (en général : vers Internet).
+**Routage** = choisir le **chemin** d'un paquet à travers plusieurs réseaux. C'est le travail du **routeur**, en **couche 3**. (Le switch, lui, reste **dans** un réseau.)
 
-Le **routage** consiste à choisir le **chemin** d'un paquet à travers un ou plusieurs réseaux. Il se fait à la **couche 3** par les **routeurs**. Le switch, lui, ne fait que faire circuler les trames **dans** un réseau.
+Le routeur : **lit l'IP de destination** → **consulte sa table de routage** → **envoie** vers le prochain routeur ou la destination. Rien ne correspond ? → **route par défaut** ; pas de route par défaut → paquet détruit.
 
 #### La table de routage
 
-Pour chaque paquet, le routeur lit l'IP de destination et consulte sa **table de routage** :
+| Réseau destination | Masque | Passerelle (prochain saut) | Interface | Métrique |
+|---|---|---|---|---|
+| 192.168.1.0 | 255.255.255.0 | — (directement connecté) | e0 | 0 |
+| 192.168.2.0 | 255.255.255.0 | — (directement connecté) | e1 | 0 |
+| 10.0.0.0 | 255.0.0.0 | 192.168.2.253 | e1 | 1 |
+| **0.0.0.0** | **0.0.0.0** | 203.0.113.1 | e2 | 1 |
 
-| Réseau destination | Masque | Passerelle (prochain saut) | Interface de sortie |
-|---|---|---|---|
-| 192.168.1.0 | 255.255.255.0 | — (directement connecté) | e0 |
-| 192.168.2.0 | 255.255.255.0 | — (directement connecté) | e1 |
-| 10.0.0.0 | 255.0.0.0 | 192.168.2.253 | e1 |
-| **0.0.0.0** | **0.0.0.0** | 203.0.113.1 | e2 (Internet) |
+- **Passerelle** = le routeur voisin à qui confier le paquet.
+- **0.0.0.0/0 = route par défaut** = « tout le reste » (souvent Internet).
+- **Métrique** = le « coût » d'une route (nombre de **sauts**, débit…). Entre deux chemins, le routeur prend **la plus petite**.
 
-- **Directement connecté** : le réseau est branché sur une interface du routeur.
-- **Passerelle** : le routeur voisin à qui confier le paquet.
-- **0.0.0.0/0 = route par défaut** : « tout le reste », utilisée quand aucune autre route ne correspond (typiquement vers Internet).
-- **Métrique** : le « coût » d'une route (nombre de sauts, débit…), pour choisir entre deux chemins.
+**Exemple de métrique (du support)** : 4 réseaux en **boucle**, reliés par 4 routeurs R1 → R2 → R3 → R4 → R1. Pour aller au réseau 4, R1 a deux chemins :
+
+| Chemin depuis R1 | Sauts | Choisi ? |
+|---|---|---|
+| via R2 puis R3 | 3 | ❌ |
+| via R4 | **2** | ✅ métrique la plus faible |
+
+Si R4 tombe en panne, l'autre chemin existe encore : c'est l'intérêt d'une boucle… à condition que les routeurs s'en rendent compte (→ routage dynamique).
 
 #### Statique ou dynamique ?
 
-| | Routage **statique** | Routage **dynamique** |
+| | **Statique** | **Dynamique** |
 |---|---|---|
-| **Comment** | Routes saisies **à la main** par l'admin | Routes apprises **automatiquement** entre routeurs |
+| **Comment** | Routes tapées **à la main** | Les routeurs **s'échangent** leurs routes |
 | **Protocoles** | — | **RIP**, **OSPF**, **BGP** (Internet) |
-| **➕** | Simple, prévisible, aucune ressource | S'adapte seul aux pannes et changements |
-| **➖** | À refaire à la main à chaque changement | Plus complexe, consomme CPU et bande passante |
-| **Idéal pour** | Petit réseau stable | Réseau moyen à grand, Internet |
+| **➕** | Simple, contrôle total, ne consomme rien | S'adapte **seul** aux pannes |
+| **➖** | Tout à refaire à chaque changement | Plus complexe, consomme CPU et mémoire |
+| **Pour** | Petit réseau stable | Réseau moyen à grand |
 
 ---
 
 ### 5. Le sur-réseau (supernetting)
 
-!!! abstract "En clair"
-    Au lieu d'écrire 4 lignes dans la liste d'itinéraires (« rue 0, rue 1, rue 2, rue 3 : passer par là »), on en écrit **une seule** qui les englobe toutes (« **tout le quartier** : passer par là »). C'est juste une façon de **résumer** plusieurs réseaux voisins.
+**Sur-réseau = l'inverse du sous-réseau** : on **regroupe** plusieurs réseaux voisins en **un seul** avec un masque **plus court**. But : **1 ligne** dans la table de routage au lieu de plusieurs (RFC 1519).
 
-Le **sur-réseau** est l'**inverse du sous-réseau** : on **regroupe plusieurs réseaux contigus** en un seul, plus grand, avec un masque **plus court** (moins de bits à 1). But : **une seule ligne dans la table de routage** au lieu de plusieurs.
+> En clair : au lieu de dire « rue 0, rue 1, rue 2, rue 3 → passer par là », on dit « **tout le quartier** → passer par là ».
 
-| Sans sur-réseau : 4 routes | Avec sur-réseau : 1 route |
-|---|---|
-| 192.168.0.0/24 · 192.168.1.0/24 · 192.168.2.0/24 · 192.168.3.0/24 | **192.168.0.0/22** (de 192.168.0.0 à 192.168.3.255) |
+➕ Tables plus petites → **moins de mémoire et de CPU**, routage **plus rapide**, réseau **plus stable**.
 
 #### La méthode en 3 étapes
 
-1. **Convertir en binaire** l'octet qui change entre les réseaux (ici le 3ᵉ : 0, 1, 2, 3).
-2. **Compter les bits communs** en partant de la gauche.
-3. **Nouveau masque** = bits des octets identiques + bits communs de l'octet qui change.
+1. Écrire **en binaire** l'octet qui change d'un réseau à l'autre.
+2. Compter les **bits identiques en partant de la gauche** (on s'arrête au premier bit différent).
+3. **Masque** = bits des octets identiques + bits communs · **adresse** = bits communs, le reste à 0.
+
+**Exemple simple** : 192.168.0.0/24 → 192.168.3.0/24
 
 ```
-3ᵉ octet :   0 = 000000|00
-             1 = 000000|01
-             2 = 000000|10
-             3 = 000000|11
-                 └────┘ 6 bits communs
-
-Masque = 8 + 8 (192.168 identiques) + 6  =  /22   →   192.168.0.0/22
+3ᵉ octet :  0 = 000000|00
+            1 = 000000|01
+            2 = 000000|10
+            3 = 000000|11
+                └────┘ 6 bits communs  →  8 + 8 + 6 = /22  →  192.168.0.0/22
 ```
 
-💡 **Raccourci** : regrouper **2ⁿ** réseaux /24 contigus revient à retirer **n** bits au masque → 2 réseaux = /23, 4 réseaux = /22, 8 réseaux = /21.
+**Exemple du support** : R1 doit joindre 6 réseaux situés derrière R2, R3 et R4 :
+`192.168.70.0/24 · 192.168.75.64/26 · 192.168.100.128/25 · 192.168.102.96/27 · 192.168.115.128/27 · 192.168.120.192/27`
 
-⚠️ **Condition** : les réseaux doivent être **contigus** et le premier doit être **aligné** (un multiple du nombre de réseaux regroupés). Exemple : 192.168.**1**.0 et 192.168.**2**.0 ne forment **pas** un /23 (1 = 00000001 et 2 = 00000010 n'ont que 6 bits communs).
+```
+3ᵉ octet :  70 = 01|000110
+            75 = 01|001011
+           100 = 01|100100
+           102 = 01|100110
+           115 = 01|110011
+           120 = 01|111000
+                 └┘ 2 bits communs  →  8 + 8 + 2 = /18
 
-| ➕ Avantages | ➖ Limites |
-|---|---|
-| Tables de routage plus petites, routeurs plus rapides | On ne peut plus distinguer finement chaque réseau regroupé |
-| Administration simplifiée | Réseaux obligatoirement contigus et alignés |
-| Indispensable sur Internet (les FAI annoncent des blocs agrégés) | Risque de conflits si le plan d'adressage est mal pensé |
+Adresse : 01|000000 = 64  →  192.168.64.0/18   (de 192.168.64.0 à 192.168.127.255)
+```
+
+👉 Sur R1 : **une seule route** `192.168.64.0/18 → R2` au lieu de 6.
+
+💡 **Raccourci** : regrouper **2ⁿ** réseaux /24 qui se suivent = retirer **n** bits : 2 réseaux → /23 · 4 → /22 · 8 → /21.
+
+⚠️ **Pièges** :
+
+- Les réseaux doivent être **contigus** et le premier **aligné** (multiple du nombre de réseaux) : 192.168.**1**.0 + 192.168.**2**.0 ne font **pas** un /23.
+- Le sur-réseau peut **couvrir plus** que les réseaux réels (le /18 ci-dessus englobe aussi 192.168.80.0, etc.) : ça marche si ces adresses ne sont **utilisées nulle part ailleurs**.
+- On perd la **finesse** : impossible de traiter un des réseaux regroupés à part.
 
 ## ✅ Points clés à retenir
 
-- **Broadcast** : MAC `FF:FF:FF:FF:FF:FF` / IP avec bits hôte à 1 ; reçu par **tout le domaine de diffusion**.
-- Le **switch propage** le broadcast, le **routeur l'arrête** ; **1 VLAN = 1 domaine** de diffusion.
-- Avant d'envoyer, un poste calcule **IP ET masque** : même réseau → envoi direct ; sinon → **passerelle**.
-- **ARP** traduit une IP en MAC : requête en **broadcast**, réponse en **unicast**, résultat dans la **table ARP** (`arp -a`).
-- À chaque saut, les **MAC changent**, les **IP restent identiques**.
-- Le routeur consulte sa **table de routage** ; **0.0.0.0/0** = route par défaut ; **statique** (manuel) vs **dynamique** (RIP, OSPF, BGP).
-- **Sur-réseau** = regrouper des réseaux contigus ; masque = nombre de **bits communs** (4 × /24 → /22).
+- **Broadcast** : MAC `FF:FF:FF:FF:FF:FF` / IP bits hôte à 1 ; reçu par **tout le domaine de diffusion**.
+- **Switch = propage** le broadcast · **routeur = l'arrête** · **1 VLAN = 1 domaine**.
+- Avant d'envoyer : **IP ET masque** (avec son propre masque) → même réseau = direct ; sinon = **passerelle**.
+- **ARP** : IP → MAC ; requête en **broadcast**, réponse en **unicast**, stockée dans la **table ARP** (`arp -a`).
+- À chaque saut : **MAC réécrites**, **IP identiques**.
+- Routeur : **table de routage**, **0.0.0.0/0** = défaut, **métrique** la plus faible gagne ; **statique** (à la main) vs **dynamique** (RIP, OSPF, BGP).
+- **Sur-réseau** : regrouper des réseaux contigus ; masque = **bits communs** (ex. 6 réseaux → 192.168.64.0/18).
 
 ## 📝 Fiche de révision
 
-### 🧠 L'essentiel en un tableau
-
 | Notion | En une phrase | Exemple |
 |---|---|---|
-| **Domaine de diffusion** | Zone où un broadcast est reçu par tous | Tous les PC d'un même VLAN |
-| **Broadcast** | Message « à tout le monde » | MAC `FF:FF:FF:FF:FF:FF`, IP `192.168.1.255` |
-| **ARP** | Trouve la MAC qui correspond à une IP | « Qui a 192.168.1.20 ? » → « MAC BB » |
-| **Table ARP** | Mémoire des couples IP ↔ MAC | `arp -a` |
-| **Passerelle** | Routeur à qui confier ce qui sort du réseau | `192.168.1.254` |
-| **Table de routage** | Liste « pour aller vers tel réseau, passer par… » | `10.0.0.0/8 → 192.168.2.253` |
+| **Domaine de diffusion** | Zone où un broadcast est reçu par tous | Les PC d'un même VLAN |
+| **ARP** | Trouve la MAC d'une IP | « Qui a .20 ? » → « MAC BB » |
+| **Passerelle** | Le routeur à qui confier ce qui sort du réseau | `192.168.1.254` |
+| **Table de routage** | « Pour tel réseau, passer par… » | `10.0.0.0/8 → 192.168.2.253` |
 | **Route par défaut** | « Tout le reste » | `0.0.0.0/0` |
-| **Sur-réseau** | Plusieurs réseaux contigus = 1 seule route | 4 × /24 → `/22` |
+| **Métrique** | Coût d'une route, la plus petite gagne | 2 sauts < 3 sauts |
+| **Sur-réseau** | Plusieurs réseaux = 1 route | 4 × /24 → `/22` |
 
 ### 🔁 Le scénario du ping à savoir réciter
 
 1. **IP ET masque** → même réseau ? Oui → cible = la machine ; non → cible = la **passerelle**.
 2. **Table ARP** → MAC connue ? Non → **ARP en broadcast**, réponse en unicast.
-3. **Envoi** de la trame. Si la cible était la passerelle, le routeur consulte sa **table de routage**…
-4. …puis **réécrit les MAC** et transmet. Les **IP ne bougent pas**.
+3. **Envoi**. Le routeur lit l'IP, consulte sa **table de routage**…
+4. …**réécrit les MAC** et transmet. Les **IP ne bougent pas**.
 
 ### ⚠️ Les pièges
 
-- Le **switch ne coupe pas** le broadcast (seuls le routeur et les VLAN le font).
-- La **réponse ARP n'est pas un broadcast** : elle est envoyée directement au demandeur.
-- Une **passerelle hors du réseau du poste** ne fonctionne pas.
-- Les **IP ne changent pas** d'un saut à l'autre ; ce sont les **MAC** qui changent.
-- Un sur-réseau exige des réseaux **contigus et alignés** : 192.168.1.0 + 192.168.2.0 ≠ un /23.
+- Le **switch ne coupe pas** le broadcast (seuls routeur et VLAN le font).
+- La **réponse ARP n'est pas un broadcast**.
+- Vers un autre réseau, A demande en ARP la **MAC de la passerelle**, jamais celle de la cible.
+- Une **passerelle hors du réseau du poste** ne marche pas.
+- Sur-réseau : réseaux **contigus et alignés** ; on compte les bits communs **depuis la gauche**.
 
 ### ✏️ Entraîne-toi (clique pour voir la correction)
 
-??? question "1. Un réseau : 3 PC reliés à un switch, ce switch relié à un routeur, et le routeur relié à un 2ᵉ switch avec 2 PC. Combien de domaines de diffusion ?"
-    **2 domaines de diffusion** : un par interface du routeur utilisée. Le switch ne crée pas de nouveau domaine, il le propage.
+??? question "1. 3 PC sur un switch, ce switch relié à un routeur, le routeur relié à un 2ᵉ switch avec 2 PC. Combien de domaines de diffusion ?"
+    **2** : un par interface de routeur utilisée. Le switch ne crée pas de domaine, il le propage.
 
-??? question "2. PC 192.168.1.10/24 → ping 192.168.1.50. Le poste envoie-t-il la trame à la passerelle ?"
-    **Non.** 192.168.1.10 ET 255.255.255.0 = 192.168.1.0 et 192.168.1.50 ET 255.255.255.0 = 192.168.1.0 : **même réseau**, envoi direct après une éventuelle requête ARP pour la MAC de .50.
+??? question "2. PC 192.168.1.10/24 → ping 192.168.1.50. La trame part-elle vers la passerelle ?"
+    **Non.** Les deux donnent 192.168.1.0 avec le masque /24 : **même réseau**, envoi direct (après un ARP si la MAC de .50 est inconnue).
 
-??? question "3. PC 192.168.1.10/24 → ping 8.8.8.8. Quelle MAC destination dans la première trame ?"
-    8.8.8.8 n'est pas dans 192.168.1.0/24 → le poste envoie à sa **passerelle**. La MAC de destination est donc **celle de la passerelle** (pas celle de 8.8.8.8, qu'il ne connaîtra jamais). L'IP de destination reste **8.8.8.8**.
+??? question "3. PC 192.168.1.10/24 → ping 8.8.8.8. Quelles MAC et IP de destination dans la 1re trame ?"
+    8.8.8.8 est hors de 192.168.1.0/24 → **MAC de destination = celle de la passerelle**. **IP de destination = 8.8.8.8** (elle ne change jamais en route).
 
 ??? question "4. Quel sur-réseau regroupe 10.1.4.0/24, 10.1.5.0/24, 10.1.6.0/24 et 10.1.7.0/24 ?"
     3ᵉ octet : 4 = 000001**00**, 5 = 000001**01**, 6 = 000001**10**, 7 = 000001**11** → **6 bits communs**.
 
-    Masque = 8 + 8 + 6 = **/22** → **10.1.4.0/22** (de 10.1.4.0 à 10.1.7.255). 4 est bien un multiple de 4 : le bloc est aligné.
+    8 + 8 + 6 = **/22** → **10.1.4.0/22** (10.1.4.0 → 10.1.7.255). 4 est un multiple de 4 : bloc aligné ✅.
 
-??? question "5. Peut-on regrouper 172.16.8.0/24 et 172.16.9.0/24 ? Et 172.16.9.0/24 avec 172.16.10.0/24 ?"
+??? question "5. Peut-on regrouper 172.16.8.0/24 + 172.16.9.0/24 ? Et 172.16.9.0/24 + 172.16.10.0/24 ?"
     - 8 = 0000100**0**, 9 = 0000100**1** → 7 bits communs → **oui : 172.16.8.0/23**.
-    - 9 = 000010**01**, 10 = 000010**10** → seulement 6 bits communs → un /22 inclurait aussi .8 et .11 → **non**, ce n'est pas un regroupement exact (bloc non aligné).
+    - 9 = 000010**01**, 10 = 000010**10** → 6 bits communs → le /22 engloberait aussi .8 et .11 → **non**, bloc non aligné.
+
+??? question "6. Quel sur-réseau pour 192.168.32.0/24, 192.168.40.0/24 et 192.168.47.0/24 ?"
+    3ᵉ octet : 32 = 0010**0000**, 40 = 0010**1000**, 47 = 0010**1111** → **4 bits communs** (`0010`).
+
+    8 + 8 + 4 = **/20** · adresse : `0010 0000` = 32 → **192.168.32.0/20** (192.168.32.0 → 192.168.47.255).
+
+??? question "7. Un routeur a deux routes vers 10.0.0.0/8 : métrique 4 via R2, métrique 2 via R3. Laquelle utilise-t-il ? Et si R3 tombe en panne ?"
+    Il prend **R3** (métrique **2**, la plus faible). Si R3 tombe : en **routage dynamique**, la route est retirée et il bascule seul sur R2 ; en **statique**, il continue d'envoyer vers R3 tant que l'admin ne corrige pas.
 
 ## 🧠 Quiz — entraîne-toi
 
@@ -586,6 +576,39 @@ Masque = 8 + 8 (192.168 identiques) + 6  =  /22   →   192.168.0.0/22
     ],
     "correctIndex": 1,
     "explanation": "Dans le 3ᵉ octet, 4, 5, 6 et 7 partagent leurs 6 premiers bits (000001xx) : 8 + 8 + 6 = 22 bits communs, soit 10.1.4.0/22."
+  },
+  {
+    "question": "Quel sur-réseau résume 192.168.70.0/24, 192.168.75.64/26, 192.168.100.128/25, 192.168.102.96/27, 192.168.115.128/27 et 192.168.120.192/27 ?",
+    "options": [
+      "192.168.64.0/20",
+      "192.168.0.0/16",
+      "192.168.64.0/18",
+      "192.168.70.0/18"
+    ],
+    "correctIndex": 2,
+    "explanation": "Dans le 3ᵉ octet, 70 à 120 commencent tous par 01 (2 bits communs) : 8 + 8 + 2 = /18. L'adresse garde les bits communs et met le reste à 0 : 01000000 = 64, soit 192.168.64.0/18."
+  },
+  {
+    "question": "Un routeur connaît deux chemins vers le même réseau : l'un avec une métrique de 3, l'autre de 2. Lequel choisit-il ?",
+    "options": [
+      "Celui de métrique 3",
+      "Les deux en alternance, obligatoirement",
+      "Le premier saisi par l'administrateur",
+      "Celui de métrique 2"
+    ],
+    "correctIndex": 3,
+    "explanation": "La métrique représente le coût d'une route (par exemple le nombre de sauts). Le routeur retient la route au coût le plus faible."
+  },
+  {
+    "question": "Le PC A (192.168.1.10/24) veut joindre 192.168.2.140. Quel masque utilise-t-il pour calculer le réseau de la destination ?",
+    "options": [
+      "Son propre masque, 255.255.255.0",
+      "Le masque de la destination, qu'il demande par ARP",
+      "Toujours 255.255.0.0",
+      "Aucun : il envoie directement la trame à la destination"
+    ],
+    "correctIndex": 0,
+    "explanation": "Le poste ne connaît pas le masque de la destination : il applique son propre masque aux deux adresses. 192.168.1.0 ≠ 192.168.2.0, donc le paquet part vers la passerelle."
   }
 ]
 </script>
