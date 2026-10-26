@@ -521,6 +521,65 @@
   color: var(--ip-host);
 }
 
+/* Calculatrice IPv4 (.tssr-calc), remplie par javascripts/calculatrice-ip.js */
+.md-typeset .tssr-calc {
+  --ip-net: #0891b2;
+  --ip-host: #db2777;
+  margin: 1rem 0 1.4rem;
+  padding: 1rem;
+  border-radius: 14px;
+  border: 2px solid var(--md-accent-fg-color);
+  background: var(--md-code-bg-color);
+}
+
+[data-md-color-scheme="slate"] .md-typeset .tssr-calc {
+  --ip-net: #22d3ee;
+  --ip-host: #f472b6;
+}
+
+.md-typeset .tssr-calc-label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  font-weight: 700;
+}
+
+.md-typeset .tssr-calc input {
+  max-width: 22rem;
+  padding: 0.45rem 0.7rem;
+  border-radius: 8px;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  font-family: var(--md-code-font-family);
+  font-size: 0.85rem;
+}
+
+.md-typeset .tssr-calc-bin {
+  margin: 0.8rem 0 0.4rem;
+  overflow-x: auto;
+}
+
+.md-typeset .tssr-calc-bin small {
+  display: block;
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .tssr-calc-bin code { background: none; padding: 0; white-space: nowrap; }
+.md-typeset .tssr-calc-bin .is-net  { color: var(--ip-net); font-weight: 700; }
+.md-typeset .tssr-calc-bin .is-host { color: var(--ip-host); }
+
+.md-typeset .tssr-calc dl {
+  display: grid;
+  grid-template-columns: max-content 1fr;
+  gap: 0.25rem 1rem;
+  margin: 0.4rem 0 0;
+}
+
+.md-typeset .tssr-calc dt { font-weight: 700; }
+.md-typeset .tssr-calc dd { margin: 0; font-family: var(--md-code-font-family); }
+.md-typeset .tssr-calc-error { color: #c62828; margin: 0.6rem 0 0; }
+
 /* Barre "emprunt de bits" (.tssr-borrow) : réseau | sous-réseau | hôte,
    largeur proportionnelle au nombre de bits (--bits). */
 .md-typeset .tssr-borrow {

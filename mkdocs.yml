@@ -58,6 +58,7 @@ extra_javascript:
   - javascripts/quiz.js
   - javascripts/animations.js
   - javascripts/home.js
+  - javascripts/calculatrice-ip.js
 
 markdown_extensions:
   - attr_list

@@ -192,6 +192,12 @@ On ajoute un bit à 1 à chaque fois, en partant de la gauche :
 
 ⚠️ Quand l'octet coupé est le 3ᵉ, le 4ᵉ octet va **jusqu'au bout** : broadcast en **.255**, 1er hôte en **.1**.
 
+#### 🧮 Vérifie tes calculs
+
+Fais d'abord le calcul **à la main**, puis tape l'adresse ici pour vérifier (format `IP/CIDR` ou `IP masque`) :
+
+<div class="tssr-calc" data-ip="192.168.10.77/26"></div>
+
 ---
 
 ### 6. Adresses privées, publiques et APIPA
