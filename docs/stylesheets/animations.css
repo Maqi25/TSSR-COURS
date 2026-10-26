@@ -194,7 +194,21 @@
   }
 }
 
+/* Cadres alignés : le contenu descend au niveau des menus latéraux
+   (qui gardent leur marge de 1.2rem en haut), et le même écart les sépare */
+@media screen and (min-width: 60em) {
+  .md-main__inner .md-content {
+    margin-top: 1.2rem;
+  }
+  .md-sidebar--secondary .md-sidebar__scrollwrap {
+    margin: 0 0 0 0.8rem;
+  }
+}
+
 @media screen and (min-width: 76.25em) {
+  .md-sidebar--primary .md-sidebar__scrollwrap {
+    margin: 0 0.8rem 0 0;
+  }
   .md-sidebar--primary .md-sidebar__scrollwrap {
     background: var(--tssr-glass);
     border: 1px solid var(--tssr-glass-border);
