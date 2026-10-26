@@ -234,6 +234,13 @@ Adresse : 01|000000 = 64  →  192.168.64.0/18   (de 192.168.64.0 à 192.168.127
 
 👉 Sur R1 : **une seule route** `192.168.64.0/18 → R2` au lieu de 6.
 
+#### 🧮 Vérifie le sur-réseau
+
+Tape le sur-réseau trouvé : la plage d'hôtes doit contenir **tous** les réseaux regroupés (ici de 192.168.64.1 à 192.168.127.254).
+
+<div class="tssr-calc" data-ip="192.168.64.0/18"></div>
+
+
 💡 **Raccourci** : regrouper **2ⁿ** réseaux /24 qui se suivent = retirer **n** bits : 2 réseaux → /23 · 4 → /22 · 8 → /21.
 
 ⚠️ **Pièges** :
