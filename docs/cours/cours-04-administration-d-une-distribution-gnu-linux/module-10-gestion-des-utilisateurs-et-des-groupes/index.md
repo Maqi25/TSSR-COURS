@@ -27,7 +27,7 @@ flowchart LR
 
 ### 1. Les fichiers des comptes
 
-**`/etc/passwd`** : une ligne par compte, 7 colonnes séparées par `:` ([cours 3, module 5](../../cours-03-utilisateur-d-une-distribution-gnu-linux/module-5-utiliser-des-fichiers-sous-linux/index.md)).
+**`/etc/passwd`** : une ligne par compte, 7 colonnes ([cours 3, module 5](../../cours-03-utilisateur-d-une-distribution-gnu-linux/module-5-utiliser-des-fichiers-sous-linux/index.md)).
 
 ```text
 marie:x:1001:1001:Marie Durand,Compta:/home/marie:/bin/bash
@@ -36,16 +36,14 @@ marie:x:1001:1001:Marie Durand,Compta:/home/marie:/bin/bash
       └ x = le mot de passe est dans /etc/shadow
 ```
 
-| UID | Type de compte |
+| UID | Compte |
 |---|---|
 | **0** | **root** |
-| 1 à 999 | **Comptes système** (services : `www-data` pour le web…). Ils ont souvent le shell `/usr/sbin/nologin` : on ne peut pas se connecter avec |
-| **1000 et plus** | **Vrais utilisateurs** |
+| 1 à 999 | **Comptes système** (`www-data`…), souvent avec le shell `nologin` (connexion impossible) |
+| **1000+** | **Vrais utilisateurs** |
 
-**`/etc/shadow`** : les **mots de passe chiffrés** (lisible par **root** seulement).
-`marie:$y$j9T$…:20380:0:99999:7:::` → `!` au début du mot de passe = compte **verrouillé**.
-
-**`/etc/group`** : les groupes et leurs membres. `compta:x:1002:marie,paul`
+- **`/etc/shadow`** : mots de passe **chiffrés**, lisibles par **root** seulement (`!` au début = compte **verrouillé**).
+- **`/etc/group`** : groupes et membres (`compta:x:1002:marie,paul`).
 
 ---
 
@@ -53,52 +51,40 @@ marie:x:1001:1001:Marie Durand,Compta:/home/marie:/bin/bash
 
 | Je veux… | Commande |
 |---|---|
-| **Créer** un utilisateur (assistant interactif, Debian) ✅ | **`sudo adduser marie`** (crée le dossier perso, demande le mot de passe) |
-| Créer (commande « brute », pour les scripts) | `sudo useradd -m -s /bin/bash marie` (`-m` = créer le dossier perso) |
-| Changer **son** mot de passe | `passwd` |
-| Changer le mot de passe de **quelqu'un** | `sudo passwd marie` |
-| **Verrouiller** / déverrouiller | `sudo usermod -L marie` / `sudo usermod -U marie` |
-| **Changer** le shell, le commentaire… | `sudo usermod -s /bin/bash marie` · `usermod -c "Marie Durand" marie` |
-| **Supprimer** | `sudo deluser marie` · avec son dossier : `sudo deluser --remove-home marie` |
+| **Créer** (assistant Debian) ✅ | **`sudo adduser marie`** : dossier perso + mot de passe |
+| Créer (outil de base, scripts) | `sudo useradd -m -s /bin/bash marie` (`-m` = dossier perso), puis `passwd` |
+| Mot de passe : le mien / celui de quelqu'un | `passwd` / `sudo passwd marie` |
+| **Verrouiller** / déverrouiller | `sudo usermod -L marie` / `-U` |
+| Changer shell, commentaire | `sudo usermod -s /bin/bash marie` · `-c "Marie Durand"` |
+| **Supprimer** (avec son dossier) | `sudo deluser --remove-home marie` |
+| Forcer un nouveau mot de passe à la connexion | `sudo passwd -e marie` (règles : `sudo chage -l marie`) |
 | Infos | `id marie` · `getent passwd marie` |
-
-!!! abstract "En clair : `adduser` ou `useradd` ?"
-    Sur Debian, **`adduser`** est **pratique** : il pose les questions et prépare tout. **`useradd`** est l'outil **de base**, présent sur toutes les distributions, mais il faut tout préciser (`-m` pour le dossier, puis `passwd` pour le mot de passe).
-
-**Forcer un changement de mot de passe à la prochaine connexion :** `sudo passwd -e marie` (ou `sudo chage -d 0 marie`). Voir les règles d'expiration : `sudo chage -l marie`.
 
 ---
 
 ### 3. Gérer les groupes
 
-Chaque utilisateur a **un groupe principal** (souvent du même nom que lui) et peut avoir **des groupes secondaires**.
+Chaque utilisateur a **un groupe principal** (souvent son nom) et des **groupes secondaires**.
 
 | Je veux… | Commande |
 |---|---|
-| **Créer** un groupe | `sudo groupadd compta` (ou `addgroup compta`) |
-| **Ajouter** un utilisateur à un groupe ✅ | **`sudo usermod -aG compta marie`** (ou `sudo adduser marie compta`) |
-| **Retirer** un utilisateur d'un groupe | `sudo deluser marie compta` (ou `gpasswd -d marie compta`) |
-| Supprimer un groupe | `sudo groupdel compta` |
-| Voir les groupes de quelqu'un | `groups marie` · `id marie` |
+| **Créer** / supprimer un groupe | `sudo groupadd compta` / `groupdel compta` |
+| **Ajouter** un utilisateur ✅ | **`sudo usermod -aG compta marie`** (ou `adduser marie compta`) |
+| **Retirer** | `sudo deluser marie compta` |
+| Voir ses groupes | `groups marie` · `id marie` |
 
-!!! danger "⚠️ Le piège n°1 : `usermod -G` sans le `-a`"
-    **`usermod -aG compta marie`** = **ajoute** (*append*) le groupe compta.
-    **`usermod -G compta marie`** (sans `-a`) = **remplace** tous ses groupes secondaires par compta → marie **perd** ses autres groupes, y compris **`sudo`** !
+!!! danger "Le piège n°1 : `usermod -G` sans le `-a`"
+    **`-aG`** **ajoute** le groupe ; **`-G`** seul **remplace** tous les groupes secondaires → l'utilisateur **perd** ses autres groupes, y compris **`sudo`** !
 
-📌 Comme sous Windows, un changement de groupe ne compte qu'**à la prochaine connexion** de l'utilisateur.
+📌 Un changement de groupe compte à la **prochaine connexion**.
 
 ---
 
 ### 4. Donner les droits d'administration : `sudo`
 
-| Méthode | Commande |
-|---|---|
-| ✅ Ajouter au groupe **`sudo`** | `sudo usermod -aG sudo marie` |
-| Règle personnalisée (avancé) | **`sudo visudo`** : édite `/etc/sudoers` en **vérifiant la syntaxe** |
-
-⚠️ Ne jamais modifier `/etc/sudoers` avec un éditeur normal : une faute peut **bloquer `sudo` pour tout le monde**. `visudo` vérifie la syntaxe avant d'enregistrer.
-
-💡 Voir **qui est connecté** et **les dernières connexions** : `who`, `last`, et `lastlog` (dernière connexion de chaque compte).
+- ✅ Ajouter au groupe **`sudo`** : `sudo usermod -aG sudo marie`.
+- Règle personnalisée : **`sudo visudo`** (vérifie la syntaxe de `/etc/sudoers`). ⚠️ Jamais un éditeur normal : une faute **bloque `sudo` pour tous**.
+- 💡 Connexions : `who` (connectés) · `last` (historique) · `lastlog` (dernière connexion de chaque compte).
 
 ## 📝 Fiche de révision
 

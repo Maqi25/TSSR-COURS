@@ -32,12 +32,11 @@ flowchart LR
 
 | Nom | Disque | Partitions |
 |---|---|---|
-| **`/dev/sda`**, `/dev/sdb`, `/dev/sdc`… | Disques **SATA / SCSI / USB** (et la plupart des disques de **VM**) : a = 1ᵉʳ, b = 2ᵉ… | `/dev/sda1`, `/dev/sda2`… |
-| **`/dev/nvme0n1`** | Disque **NVMe** (SSD rapide) | `/dev/nvme0n1p1`, `p2`… |
-| `/dev/vda` | Disque virtuel (KVM / Proxmox) | `/dev/vda1`… |
-| `/dev/sr0` | Lecteur **CD/DVD** | |
+| **`/dev/sda`**, `sdb`… | **SATA / SCSI / USB** et la plupart des disques de **VM** (a = 1ᵉʳ, b = 2ᵉ) | `/dev/sda1`, `sda2`… |
+| **`/dev/nvme0n1`** | **NVMe** (SSD rapide) | `/dev/nvme0n1p1`… |
+| `/dev/vda` · `/dev/sr0` | Disque virtuel KVM / Proxmox · lecteur **CD/DVD** | |
 
-📌 « **Tout est fichier** » ([cours 3, module 4](../../cours-03-utilisateur-d-une-distribution-gnu-linux/module-4-fichiers-et-dossiers-sous-linux/index.md)) : un disque est un fichier spécial dans **`/dev`**.
+📌 « **Tout est fichier** » : un disque est un fichier spécial de **`/dev`**.
 
 ---
 
@@ -45,74 +44,57 @@ flowchart LR
 
 | Commande | Montre… |
 |---|---|
-| **`lsblk`** | ✅ L'**arbre** des disques et partitions, avec leur taille et l'endroit où ils sont montés |
-| `lsblk -f` | La même chose, avec le **système de fichiers** et l'**UUID** |
-| `sudo fdisk -l` | Le détail des partitions de chaque disque (type de table : **gpt** ou **dos** = MBR) |
+| **`lsblk`** (`-f` = avec système de fichiers et **UUID**) | ✅ L'**arbre** des disques et partitions, taille, point de montage |
+| `sudo fdisk -l` | Le détail des partitions (table **gpt** ou **dos** = MBR) |
 | `sudo blkid` | L'**UUID** et le type de chaque partition |
-| `df -h` | L'**espace utilisé / libre** des partitions montées (module 9) |
-
-**Lire un `lsblk`**
+| `df -h` | Espace **utilisé / libre** ([module 9](../module-9-gestion-des-espaces-de-stockage-systemes-de-fichiers/index.md)) |
 
 ```text
 NAME   MAJ:MIN RM  SIZE RO TYPE MOUNTPOINTS
 sda      8:0    0   20G  0 disk                ← 1ᵉʳ disque : 20 Go
-├─sda1   8:1    0   19G  0 part /              ← partition 1, montée sur / (le système)
-├─sda2   8:2    0    1K  0 part                ← partition étendue (MBR)
-└─sda5   8:5    0  975M  0 part [SWAP]         ← la swap (mémoire d'appoint, module 9)
-sdb      8:16   0   10G  0 disk                ← 2ᵉ disque : 10 Go, AUCUNE partition → tout neuf
-sr0     11:0    1  754M  0 rom                 ← le lecteur DVD (l'ISO)
+├─sda1   8:1    0   19G  0 part /              ← montée sur / (le système)
+└─sda5   8:5    0  975M  0 part [SWAP]         ← la swap
+sdb      8:16   0   10G  0 disk                ← 2ᵉ disque, AUCUNE partition → tout neuf
+sr0     11:0    1  754M  0 rom                 ← le lecteur DVD
 ```
 
 ---
 
-### 3. Partitionner un nouveau disque avec `fdisk`
+### 3. Partitionner avec `fdisk`
 
-Rappel : **MBR** (4 partitions principales, 2 To max) ou **GPT** (128 partitions, plus de 2 To) — voir le [cours 2, module 4](../../cours-02-systeme-client-microsoft/module-4-la-gestion-du-stockage/index.md).
-
-**Exemple : une seule partition sur tout le disque `/dev/sdb`**
+Rappel **MBR / GPT** : [cours 2, module 4](../../cours-02-systeme-client-microsoft/module-4-la-gestion-du-stockage/index.md).
 
 ```text
 sudo fdisk /dev/sdb
-
-Commande (m pour l'aide) : g        ← créer une table GPT (o = MBR)
-Commande (m pour l'aide) : n        ← nouvelle partition
-Numéro de partition (1-128, 1 par défaut) : Entrée
-Premier secteur (…, 2048 par défaut) : Entrée
-Dernier secteur, +/-secteurs ou +/-taille{K,M,G,T,P} : Entrée      ← tout le disque (ou +5G pour 5 Go)
-Commande (m pour l'aide) : p        ← afficher pour vérifier
-Commande (m pour l'aide) : w        ← ÉCRIRE et quitter
+Commande : g        ← table GPT (o = MBR)
+Commande : n        ← nouvelle partition → Entrée × 3 (tout le disque, ou +5G)
+Commande : p        ← vérifier
+Commande : w        ← ÉCRIRE et quitter
 ```
 
 | Touche | Action |
 |---|---|
-| `m` | Aide |
-| `p` | Afficher les partitions |
-| `g` / `o` | Nouvelle table **GPT** / **MBR** |
-| `n` | **Nouvelle** partition |
-| `d` | **Supprimer** une partition |
-| `t` | Changer le **type** (ex. LVM, swap) |
-| **`w`** | **Écrire** les changements et quitter |
-| **`q`** | **Quitter sans rien changer** |
+| `m` · `p` | Aide · afficher les partitions |
+| `g` / `o` | Table **GPT** / **MBR** |
+| `n` · `d` · `t` | **Nouvelle** · **supprimer** · changer le **type** (LVM, swap) |
+| **`w`** / **`q`** | **Écrire et quitter** / **quitter sans rien changer** |
 
-!!! tip "Rien n'est modifié avant le `w`"
-    Tant que tu n'as pas tapé **`w`**, `fdisk` ne touche à rien. En cas de doute : **`q`**.
-
-💡 Autres outils : **`parted`** (plus puissant, scriptable), **`cfdisk`** (menus avec les flèches, plus simple pour débuter).
-
-Ensuite, on **vérifie** avec `lsblk` : `/dev/sdb1` est apparu. Il reste à le **formater** et le **monter** (module 9), ou à l'utiliser avec **LVM** (module 8).
+- 💡 **Rien n'est modifié avant le `w`** : en cas de doute, **`q`**.
+- Autres outils : **`cfdisk`** (menus, plus simple), **`parted`** (scriptable).
+- Ensuite : `lsblk` montre `/dev/sdb1` → le **formater et le monter** ([module 9](../module-9-gestion-des-espaces-de-stockage-systemes-de-fichiers/index.md)) ou l'utiliser en **LVM** ([module 8](../module-8-gestion-avancee-des-espaces-de-stockage-lvm/index.md)).
 
 ---
 
-### 4. L'UUID : l'identifiant unique d'une partition
+### 4. L'UUID
 
-Les noms `sda`, `sdb` peuvent **changer** : si on ajoute ou retire un disque, l'ancien `sdb` peut devenir `sdc`. L'**UUID** (*Universally Unique IDentifier*) est un identifiant **unique et fixe**, créé au formatage :
+Les noms `sda`, `sdb` peuvent **changer** quand on ajoute ou retire un disque. L'**UUID** est un identifiant **unique et fixe**, créé au formatage :
 
 ```text
 $ sudo blkid /dev/sdb1
 /dev/sdb1: UUID="3f6a1c2e-8b7d-4c1e-9a0f-5d2e7b8c9a01" TYPE="ext4"
 ```
 
-✅ C'est l'UUID qu'on utilise dans **`/etc/fstab`** pour monter les partitions au démarrage (module 9) : il ne change jamais.
+✅ C'est lui qu'on met dans **`/etc/fstab`** ([module 9](../module-9-gestion-des-espaces-de-stockage-systemes-de-fichiers/index.md)).
 
 ## 📝 Fiche de révision
 

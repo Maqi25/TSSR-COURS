@@ -32,92 +32,69 @@ flowchart BT
 
 ### 1. Les 3 niveaux
 
-| Niveau | Nom | Image | Exemple |
-|---|---|---|---|
-| **PV** | *Physical Volume* : volume **physique** | Les **ingrédients** : un disque ou une partition préparé pour LVM | `/dev/sdb` |
-| **VG** | *Volume Group* : **groupe** de volumes | Le **pot** où l'on verse tous les PV | `vg_data` (20 Go) |
-| **LV** | *Logical Volume* : volume **logique** | Les **parts** qu'on sert depuis le pot : c'est là qu'on **formate** et qu'on **monte** | `lv_web` (8 Go) |
+| Niveau | Image | Exemple |
+|---|---|---|
+| **PV** (*Physical Volume*) | Les **ingrédients** : disque ou partition préparé pour LVM | `/dev/sdb` |
+| **VG** (*Volume Group*) | Le **pot** où l'on verse les PV | `vg_data` (20 Go) |
+| **LV** (*Logical Volume*) | Les **parts** servies : on les **formate** et les **monte** | `lv_web` (8 Go) |
 
-Un LV s'utilise **comme une partition** : son chemin est **`/dev/vg_data/lv_web`** (ou `/dev/mapper/vg_data-lv_web`).
+Un LV s'utilise **comme une partition** : **`/dev/vg_data/lv_web`** (ou `/dev/mapper/vg_data-lv_web`).
 
-| ✅ Avantages de LVM | ⚠️ Limite |
+| ✅ Avantages | ⚠️ Limites |
 |---|---|
-| **Agrandir** un volume à chaud, sans arrêter | Une couche de plus à comprendre |
-| **Ajouter un disque** au pot quand il est plein | Si un disque du pot meurt, les données qu'il porte sont perdues : LVM n'est **pas une sauvegarde** (et pas du RAID) |
-| Des **noms clairs** (`lv_web`) au lieu de `sdb1` | |
-| **Instantanés** (*snapshots*) avant une opération risquée | |
+| **Agrandir à chaud**, sans arrêter | Une couche de plus à comprendre |
+| **Ajouter un disque** au pot | Un disque du pot qui meurt = données perdues : **pas une sauvegarde**, pas du RAID |
+| Des **noms clairs**, des **instantanés** | |
 
 ---
 
-### 2. Créer un volume LVM, pas à pas
+### 2. Créer un volume LVM
 
-**Situation** : un nouveau disque `/dev/sdb` (10 Go). On veut un volume de 8 Go monté sur `/var/www`. (Si besoin : `sudo apt install lvm2`.)
+**Situation** : disque neuf `/dev/sdb` (10 Go) → volume de 8 Go monté sur `/var/www` (paquet `lvm2` si besoin).
 
 ```bash
-# ① Préparer le disque comme volume physique (PV)
-sudo pvcreate /dev/sdb
-
-# ② Créer le groupe de volumes (VG) « vg_data » avec ce PV
-sudo vgcreate vg_data /dev/sdb
-
-# ③ Découper un volume logique (LV) de 8 Go nommé « lv_web »
-sudo lvcreate -n lv_web -L 8G vg_data
-
-# ④ Le formater et le monter (module 9)
-sudo mkfs.ext4 /dev/vg_data/lv_web
-sudo mkdir -p /var/www
-sudo mount /dev/vg_data/lv_web /var/www
+sudo pvcreate /dev/sdb                    # ① préparer le disque (PV)
+sudo vgcreate vg_data /dev/sdb            # ② créer le pot (VG)
+sudo lvcreate -n lv_web -L 8G vg_data     # ③ découper un volume (LV) de 8 Go
+sudo mkfs.ext4 /dev/vg_data/lv_web        # ④ formater…
+sudo mkdir -p /var/www && sudo mount /dev/vg_data/lv_web /var/www   # …et monter (module 9)
 ```
 
-| Option `lvcreate` | Signifie |
-|---|---|
-| `-n lv_web` | Le **nom** du volume |
-| `-L 8G` | Une **taille fixe** (8 Go) |
-| `-l 100%FREE` | **Toute** la place restante du VG |
+`-n` = **nom** · `-L 8G` = **taille fixe** · `-l 100%FREE` = **toute** la place restante.
 
 ---
 
 ### 3. Voir où on en est
 
-| Niveau | Résumé | Détail |
-|---|---|---|
-| PV | **`pvs`** | `pvdisplay` |
-| VG | **`vgs`** (regarde la colonne **VFree** = place libre) | `vgdisplay` |
-| LV | **`lvs`** | `lvdisplay` |
+**`pvs`** · **`vgs`** · **`lvs`** (résumés) — `pvdisplay` · `vgdisplay` · `lvdisplay` (détails).
 
 ```text
 $ sudo vgs
   VG      #PV #LV #SN Attr   VSize   VFree
-  vg_data   1   1   0 wz--n- <10,00g <2,00g      ← 2 Go encore libres dans le pot
+  vg_data   1   1   0 wz--n- <10,00g <2,00g      ← VFree : 2 Go encore libres dans le pot
 ```
 
 ---
 
 ### 4. Agrandir : le vrai super-pouvoir
 
-**`/var/www` est plein** : on ajoute **2 Go** au volume, **sans arrêter** le serveur.
+**`/var/www` est plein** → +2 Go, **sans arrêter** le serveur :
 
 ```bash
 sudo lvextend -r -L +2G /dev/vg_data/lv_web
 ```
 
-| Option | Signifie |
-|---|---|
-| **`-L +2G`** | **Ajouter** 2 Go (sans le `+`, on donne la taille **totale**) |
-| `-l +100%FREE` | Ajouter **toute** la place libre du VG |
-| **`-r`** | Agrandir **aussi le système de fichiers** (*resize*) ⚠️ **ne pas l'oublier** |
+**`-L +2G`** = **ajouter** 2 Go (sans `+` = taille **totale**) · `-l +100%FREE` = toute la place libre · **`-r`** = agrandir **aussi le système de fichiers** ⚠️ **ne pas l'oublier**. Vérifier : `df -h /var/www`.
 
-Puis `df -h /var/www` : la nouvelle taille apparaît.
-
-**Le pot (VG) est plein ? On ajoute un disque :**
+**Le pot est plein ?** On ajoute un disque :
 
 ```bash
-sudo pvcreate /dev/sdc               # préparer le nouveau disque
-sudo vgextend vg_data /dev/sdc       # l'ajouter au pot : le VG grossit
-sudo lvextend -r -l +100%FREE /dev/vg_data/lv_web   # donner toute la place au volume
+sudo pvcreate /dev/sdc
+sudo vgextend vg_data /dev/sdc
+sudo lvextend -r -l +100%FREE /dev/vg_data/lv_web
 ```
 
-⚠️ **Réduire** un volume est **risqué** (perte de données possible) et impossible à chaud en ext4. On évite : mieux vaut créer des volumes un peu petits et les agrandir au besoin.
+⚠️ **Réduire** est **risqué** (et impossible à chaud en ext4) : mieux vaut créer des volumes un peu petits et les **agrandir** au besoin.
 
 ## 📝 Fiche de révision
 

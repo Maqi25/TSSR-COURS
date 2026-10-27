@@ -29,67 +29,53 @@ flowchart LR
 
 | Étape | Qui ? | Rôle |
 |---|---|---|
-| ① | **Firmware** (BIOS ou UEFI) | Teste le matériel, trouve le disque de démarrage |
-| ② | **GRUB** | Affiche le **menu** (quelques secondes), charge le **noyau** choisi. Sa configuration : `/etc/default/grub` (puis `update-grub`) |
-| ③ | **Noyau** (`/boot/vmlinuz-…`) + **initramfs** | Le noyau démarre, détecte le matériel ; l'initramfs est un mini-système qui l'aide à trouver le disque principal |
-| ④ | **systemd** | Premier programme lancé : **PID 1** (le n° 1 des processus). Il démarre **tous les services** |
-| ⑤ | **Écran de connexion** | `login:` sur un serveur |
+| ① | **Firmware** (BIOS / UEFI) | Teste le matériel, trouve le disque de démarrage |
+| ② | **GRUB** | **Menu** de démarrage, charge le **noyau** (config : `/etc/default/grub`, puis `update-grub`) |
+| ③ | **Noyau** + **initramfs** | Le noyau détecte le matériel ; l'initramfs l'aide à trouver le disque |
+| ④ | **systemd** | **PID 1** : démarre **tous les services** |
+| ⑤ | Connexion | `login:` |
 
-💡 Voir le **déroulement du dernier démarrage** : `journalctl -b`. Combien de temps il a pris : `systemd-analyze`.
+💡 `journalctl -b` = le **dernier démarrage** · `systemd-analyze` = sa **durée**.
 
 ---
 
 ### 2. Gérer les services avec `systemctl`
 
-| Je veux… | Commande | Exemple |
-|---|---|---|
-| Voir l'**état** | `systemctl status service` | `systemctl status ssh` |
-| **Démarrer** maintenant | `systemctl start service` | `systemctl start apache2` |
-| **Arrêter** maintenant | `systemctl stop service` | |
-| **Redémarrer** | `systemctl restart service` | Après avoir modifié sa configuration |
-| **Recharger** la configuration sans couper | `systemctl reload service` | |
-| **Activer au démarrage** | `systemctl enable service` | Il démarrera à chaque allumage |
-| **Désactiver** au démarrage | `systemctl disable service` | |
-| Les deux d'un coup | `systemctl enable --now service` | Activer **et** démarrer |
-| Lister les services | `systemctl list-units --type=service` | |
-| Les services **en échec** | `systemctl --failed` | |
+| Je veux… | Commande |
+|---|---|
+| Voir l'**état** | `systemctl status ssh` |
+| **Démarrer** / **arrêter** / **redémarrer** maintenant | `systemctl start` / `stop` / `restart apache2` |
+| **Recharger** la config sans couper | `systemctl reload service` |
+| **Activer** / **désactiver** au démarrage | `systemctl enable` / `disable service` |
+| Activer **et** démarrer | `systemctl enable --now service` |
+| Lister · voir les **échecs** | `systemctl list-units --type=service` · `systemctl --failed` |
 
-⚠️ **`start` ≠ `enable`** : **`start`** démarre **maintenant** ; **`enable`** fait démarrer **au prochain allumage**. Pour un nouveau service : `enable --now`.
-
-**Lire un `systemctl status`**
+⚠️ **`start` ≠ `enable`** : `start` = **maintenant** ; `enable` = **au prochain allumage**. Nouveau service : **`enable --now`**. Ce qui **modifie** se lance avec **`sudo`**.
 
 ```text
 ● ssh.service - OpenBSD Secure Shell server
      Loaded: loaded (/lib/systemd/system/ssh.service; enabled; ...)   ← enabled = démarre à l'allumage
-     Active: active (running) since mar. 2026-10-21 08:02:11 CEST     ← active (running) = il tourne ✅
-   Main PID: 612 (sshd)
-oct. 21 08:02:11 srv-web01 sshd[612]: Server listening on 0.0.0.0 port 22.   ← ses derniers messages
+     Active: active (running) since mar. 2026-10-21 08:02:11 CEST     ← il tourne ✅
+oct. 21 08:02:11 srv-web01 sshd[612]: Server listening on 0.0.0.0 port 22.   ← derniers messages
 ```
 
-| État `Active:` | Signifie |
-|---|---|
-| **active (running)** | ✅ Il tourne |
-| **inactive (dead)** | Arrêté |
-| **failed** | ❌ Il a **planté** → lire les messages en bas, ou `journalctl -u service` |
-
-📌 Toutes ces commandes qui **modifient** quelque chose se lancent avec **`sudo`**.
+`Active:` **active (running)** ✅ tourne · **inactive (dead)** arrêté · **failed** ❌ a **planté** → lire les messages ou `journalctl -u service`.
 
 ---
 
 ### 3. Les cibles (*targets*)
 
-Une **cible** est un **état** du système, défini par la liste des services à démarrer.
+Un **état** du système = la liste des services à démarrer.
 
-| Cible | État | Ancien « niveau » |
+| Cible | État | Ancien niveau |
 |---|---|---|
-| `poweroff.target` | Éteint | 0 |
-| `rescue.target` | **Mode secours** : root seul, réseau coupé (module 4) | 1 |
-| **`multi-user.target`** | **Serveur** : multi-utilisateur, réseau, **sans** interface graphique | 3 |
-| `graphical.target` | **Poste de travail** : avec interface graphique | 5 |
-| `reboot.target` | Redémarrage | 6 |
+| `rescue.target` | **Secours** : root seul, sans réseau ([module 4](../module-4-debian-en-mode-maintenance/index.md)) | 1 |
+| **`multi-user.target`** | **Serveur** : réseau, **sans** interface graphique | 3 |
+| `graphical.target` | **Poste de travail** | 5 |
+| `poweroff` / `reboot.target` | Éteint / redémarrage | 0 / 6 |
 
 ```bash
-systemctl get-default                          # cible utilisée au démarrage
+systemctl get-default                          # cible au démarrage
 sudo systemctl set-default multi-user.target   # démarrer sans interface graphique
 ```
 
@@ -99,13 +85,11 @@ sudo systemctl set-default multi-user.target   # démarrer sans interface graphi
 
 | Commande | Effet |
 |---|---|
-| **`sudo systemctl reboot`** (ou `sudo reboot`) | Redémarrer |
-| **`sudo systemctl poweroff`** (ou `sudo poweroff`) | Éteindre |
-| `sudo shutdown -h +10` | Éteindre **dans 10 minutes** (prévient les utilisateurs connectés) |
-| `sudo shutdown -r 22:00` | Redémarrer **à 22 h** |
-| `sudo shutdown -c` | **Annuler** un arrêt programmé |
+| **`sudo reboot`** / **`sudo poweroff`** | Redémarrer / éteindre |
+| `sudo shutdown -h +10` · `-r 22:00` | Éteindre **dans 10 min** · redémarrer **à 22 h** (les utilisateurs sont prévenus) |
+| `sudo shutdown -c` | **Annuler** |
 
-⚠️ **Ne jamais couper le courant** d'un serveur : un arrêt propre laisse les services enregistrer leurs données.
+⚠️ **Ne jamais couper le courant** : un arrêt propre laisse les services enregistrer leurs données.
 
 ## 📝 Fiche de révision
 

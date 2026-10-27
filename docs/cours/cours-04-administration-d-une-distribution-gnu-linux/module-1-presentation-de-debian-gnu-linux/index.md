@@ -26,13 +26,10 @@ flowchart LR
 
 ### 1. Pourquoi Debian ?
 
-| Atout | En clair |
-|---|---|
-| **Stabilité** | Les logiciels sont **très testés** avant d'arriver en « stable » : un serveur peut tourner des années sans souci |
-| **Gratuite et libre** | 100 % logiciel libre, pas de licence à payer |
-| **Énorme catalogue** | Plus de **60 000 paquets** (logiciels prêts à installer) |
-| **Base de nombreuses distributions** | **Ubuntu**, Linux Mint, Raspberry Pi OS, Kali… sont basées sur Debian : ce que tu apprends ici sert partout |
-| **Communauté** | Développée par des milliers de bénévoles, sans entreprise derrière |
+- **Stable** : logiciels **très testés**, un serveur tourne des années sans souci.
+- **Libre et gratuite**, développée par des **bénévoles**, sans entreprise derrière.
+- **Plus de 60 000 paquets** prêts à installer.
+- **Base de nombreuses distributions** (Ubuntu, Mint, Raspberry Pi OS, Kali) : ce que tu apprends ici sert partout.
 
 ---
 
@@ -40,59 +37,44 @@ flowchart LR
 
 | Branche | Contenu | Pour qui ? |
 |---|---|---|
-| **stable** | La version **officielle**, testée, avec mises à jour de **sécurité** | ✅ **Serveurs, production** |
-| **testing** | La **future** stable, en préparation | Tests, curieux |
+| **stable** | Version **officielle**, testée, avec **correctifs de sécurité** | ✅ **Serveurs** |
+| **testing** | La **future** stable | Tests |
 | **unstable** (« Sid ») | Les logiciels **les plus récents**, peu testés | Développeurs |
 
-| Version | Nom | État en 2026 |
+| Version | Nom | En 2026 |
 |---|---|---|
-| Debian 11 | Bullseye | Fin du support standard, support longue durée (LTS) seulement |
+| Debian 11 | Bullseye | Support longue durée (LTS) seulement |
 | Debian 12 | Bookworm | **oldstable** |
-| **Debian 13** | **Trixie** | **stable** (sortie en août 2025) |
+| **Debian 13** | **Trixie** | **stable** (août 2025) |
 
-📌 Une nouvelle version sort **environ tous les 2 ans**. Chacune est suivie **environ 3 ans**, puis **2 ans de plus** grâce à l'équipe **Debian LTS**, soit **~5 ans** au total. Les noms viennent des personnages de **Toy Story**.
-
-💡 Connaître sa version : `cat /etc/debian_version` (→ `13.1`) ou `cat /etc/os-release`.
+- 📌 Une version **tous les ~2 ans**, suivie **~3 ans + 2 ans de LTS** = **~5 ans**. Noms tirés de **Toy Story**.
+- 💡 Ta version : `cat /etc/debian_version` (→ `13.1`) ou `cat /etc/os-release`.
 
 ---
 
-### 3. Le métier d'administrateur Linux
+### 3. Le métier d'administrateur Linux (le plan du cours)
 
-| Tâche | Module |
-|---|---|
-| Installer le système | 2 |
-| Comprendre le démarrage, gérer les services | 3 |
-| Réparer un système qui ne démarre plus | 4 |
-| Configurer le réseau | 5 |
-| Installer et mettre à jour des logiciels | 6 |
-| Gérer les disques, LVM, systèmes de fichiers | 7 · 8 · 9 |
-| Gérer les utilisateurs et les droits | 10 · 11 |
-| Surveiller, planifier, lire les journaux | 12 |
+Installer (**module 2**) · démarrage et services (**3**) · réparer (**4**) · réseau (**5**) · logiciels (**6**) · disques, LVM, systèmes de fichiers (**7 · 8 · 9**) · utilisateurs et droits (**10 · 11**) · surveiller et planifier (**12**).
 
 ---
 
 ### 4. root et sudo
 
-!!! abstract "En clair"
-    **root** est le compte **tout-puissant**. Plutôt que de se connecter en root (dangereux), on travaille avec **son propre compte** et on **emprunte les droits de root pour une seule commande** grâce à **`sudo`**. On garde ainsi une **trace** de qui a fait quoi, et on évite les erreurs.
+On ne se connecte **pas** en root : on travaille avec **son compte** et on **emprunte les droits de root pour une commande** avec **`sudo`**.
 
-| Méthode | Commande | Usage |
-|---|---|---|
-| **sudo** | `sudo apt update` | ✅ **Recommandé** : une commande en root, avec **ton** mot de passe. Il faut être dans le groupe **`sudo`** |
-| **su -** | `su -` (puis `exit`) | Devenir root (mot de passe de **root**). Pratique pour une longue série de commandes |
+| Méthode | Usage |
+|---|---|
+| **`sudo apt update`** | ✅ **Recommandé** : une commande en root, avec **ton** mot de passe (il faut être dans le groupe **`sudo`**) |
+| **`su -`** (puis `exit`) | Devenir root (mot de passe **de root**) pour une longue série de commandes |
 
-📌 `sudo` est enregistré dans les journaux (`/var/log/auth.log` ou `journalctl`) : on sait **qui** a lancé **quoi**.
+📌 `sudo` est **journalisé** (`/var/log/auth.log`, `journalctl`) : on sait **qui** a lancé **quoi**.
 
 ---
 
 ### 5. Où trouver de l'aide ?
 
-| Source | Contenu |
-|---|---|
-| `man commande` / `commande --help` | L'aide intégrée ([cours 3, module 3](../../cours-03-utilisateur-d-une-distribution-gnu-linux/module-3-decouverte-du-shell-et-premieres-commandes/index.md)) |
-| **wiki.debian.org** | Le wiki officiel, avec des pages en français |
-| **debian.org/doc** | Le **manuel de l'administrateur Debian** (gratuit, en français) |
-| `/usr/share/doc/paquet/` | La documentation installée avec chaque logiciel |
+- **`man`** / **`--help`** ([cours 3, module 3](../../cours-03-utilisateur-d-une-distribution-gnu-linux/module-3-decouverte-du-shell-et-premieres-commandes/index.md)) · **`/usr/share/doc/paquet/`**
+- **wiki.debian.org** (pages en français) · **debian.org/doc** : le **manuel de l'administrateur Debian** (gratuit, en français)
 
 ## 📝 Fiche de révision
 

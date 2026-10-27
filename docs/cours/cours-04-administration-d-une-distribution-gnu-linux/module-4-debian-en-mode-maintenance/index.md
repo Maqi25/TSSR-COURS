@@ -28,18 +28,15 @@ flowchart TD
 
 ### 1. Le menu GRUB
 
-Au démarrage, GRUB affiche son menu quelques secondes (sur une VM, appuie sur ++shift++ ou ++esc++ s'il passe trop vite).
+Il s'affiche quelques secondes au démarrage (sur une VM, ++shift++ ou ++esc++ s'il passe trop vite).
 
 | Entrée | Rôle |
 |---|---|
 | **Debian GNU/Linux** | Démarrage normal |
-| **Options avancées** → *(mode de dépannage)* / *(recovery mode)* | Démarre en **mode secours** |
-| Options avancées → **ancien noyau** | Démarrer sur le **noyau précédent** si une mise à jour du noyau pose problème |
+| **Options avancées** → *(recovery mode)* | **Mode secours** |
+| Options avancées → **ancien noyau** | Si une mise à jour du noyau pose problème |
 
-| Touche dans GRUB | Effet |
-|---|---|
-| ++e++ | **Modifier** l'entrée sélectionnée (pour **ce** démarrage seulement) |
-| ++ctrl+x++ ou ++f10++ | **Démarrer** avec la ligne modifiée |
+++e++ = **modifier** l'entrée (pour **ce** démarrage seulement) · ++ctrl+x++ ou ++f10++ = **démarrer** avec la modification.
 
 ---
 
@@ -47,65 +44,57 @@ Au démarrage, GRUB affiche son menu quelques secondes (sur une VM, appuie sur +
 
 | Mode | Ce qui démarre | Quand ? |
 |---|---|---|
-| **rescue** (secours) | Le minimum : disques **montés**, **réseau coupé**, **root seul** | Corriger une configuration, un service qui bloque le démarrage |
-| **emergency** (urgence) | **Encore moins** : disque `/` monté **en lecture seule**, rien d'autre | Un problème de disque, de `/etc/fstab` (module 9) |
+| **rescue** | Disques montés, **sans réseau**, **root seul** | Corriger une config, un service qui bloque |
+| **emergency** | `/` **en lecture seule**, rien d'autre | Problème de disque ou de `/etc/fstab` ([module 9](../module-9-gestion-des-espaces-de-stockage-systemes-de-fichiers/index.md)) |
 
-**Comment y entrer :** dans GRUB, ++e++, puis à la fin de la ligne qui commence par **`linux`**, ajouter :
+Dans GRUB, ++e++, puis à la fin de la ligne **`linux`** :
 
 ```text
 linux /boot/vmlinuz-6.12.0-1-amd64 root=UUID=… ro quiet  systemd.unit=rescue.target
                                                           └──── ajouté (ou emergency.target)
 ```
 
-Puis ++ctrl+x++ : Linux démarre dans ce mode et demande le **mot de passe root**.
-
-⚠️ Si root est **désactivé** (mot de passe vide à l'installation), ces modes refusent l'accès : utilise la méthode suivante.
+++ctrl+x++ → demande le **mot de passe root**. ⚠️ Root **désactivé** ? Accès refusé → méthode suivante.
 
 ---
 
 ### 3. Réinitialiser le mot de passe root (ou d'un utilisateur)
 
-!!! warning "Une méthode puissante, donc à protéger"
-    Cette méthode montre qu'**un accès physique à la console = un accès root**. En entreprise, on protège la console (salle serveur fermée, mot de passe GRUB, chiffrement du disque).
-
 | # | Action |
 |---|---|
-| ① | Dans GRUB, sélectionner Debian et appuyer sur ++e++ |
-| ② | Sur la ligne **`linux`**, ajouter à la fin : **`init=/bin/bash`** |
-| ③ | ++ctrl+x++ → on arrive sur un shell root, **sans mot de passe** |
-| ④ | Le disque est en lecture seule : **`mount -o remount,rw /`** |
-| ⑤ | **`passwd root`** (ou `passwd tech` pour un utilisateur) → taper 2 fois le nouveau mot de passe |
-| ⑥ | **`sync`** puis **`exec /sbin/init`** (ou `reboot -f`) pour redémarrer normalement |
+| ① | Dans GRUB, ++e++ sur Debian |
+| ② | Fin de la ligne **`linux`** : ajouter **`init=/bin/bash`** |
+| ③ | ++ctrl+x++ → shell root **sans mot de passe** |
+| ④ | **`mount -o remount,rw /`** (le disque était en lecture seule) |
+| ⑤ | **`passwd root`** (ou `passwd tech`) |
+| ⑥ | **`sync`** puis **`exec /sbin/init`** (ou `reboot -f`) |
+
+⚠️ **Accès physique à la console = accès root** : en entreprise, on protège la console (salle fermée, mot de passe GRUB, chiffrement du disque).
 
 ---
 
 ### 4. Réparer depuis un live CD avec `chroot`
 
-Quand **GRUB lui-même** est cassé, on démarre sur une **ISO Debian** (mode *Rescue* de l'installateur, ou une image « live ») et on **entre dans le système installé** :
+Quand **GRUB** est cassé : démarrer sur une **ISO Debian** (mode *Rescue* ou live), puis **entrer dans le système installé**.
 
 ```bash
-lsblk                                   # repérer la partition du système (ex. /dev/sda1)
-mount /dev/sda1 /mnt                    # la monter
+lsblk                                                      # repérer la partition système (ex. /dev/sda1)
+mount /dev/sda1 /mnt                                       # la monter
 for d in dev proc sys; do mount --bind /$d /mnt/$d; done   # donner accès au matériel
-chroot /mnt                             # « entrer » dans le système installé
-grub-install /dev/sda && update-grub    # ex. : réinstaller GRUB
+chroot /mnt                                                # « entrer » dans le système installé
+grub-install /dev/sda && update-grub                       # ex. : réinstaller GRUB
 exit ; reboot
 ```
 
-!!! abstract "En clair : chroot"
-    **`chroot`** (*change root*) fait croire au shell que `/mnt` est la racine `/`. Toutes les commandes s'appliquent alors **au système installé sur le disque**, et non au live CD. C'est comme **entrer dans la maison** pour la réparer de l'intérieur.
+**`chroot`** fait croire au shell que `/mnt` est la racine : les commandes s'appliquent **au système du disque**, pas au live CD (on **entre dans la maison** pour la réparer).
 
 ---
 
 ### 5. Vérifier un système de fichiers : `fsck`
 
-Après un **arrêt brutal** (coupure de courant), le système de fichiers peut être abîmé. **`fsck`** le vérifie et le répare (comme `chkdsk` sous Windows).
+Après un **arrêt brutal**, **`fsck`** vérifie et répare (≈ `chkdsk`) : `fsck -f /dev/sda1`.
 
-```bash
-fsck -f /dev/sda1        # ⚠️ sur une partition NON montée (ou montée en lecture seule)
-```
-
-⚠️ **Jamais de `fsck` sur une partition montée en écriture** : risque de tout casser. On le lance depuis le mode **emergency**, ou depuis un **live CD**.
+⚠️ **Jamais sur une partition montée en écriture** : depuis le mode **emergency** ou un **live CD**.
 
 ## 📝 Fiche de révision
 

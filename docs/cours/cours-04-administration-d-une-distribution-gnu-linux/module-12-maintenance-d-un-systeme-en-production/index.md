@@ -28,117 +28,89 @@ flowchart LR
 
 ### 1. Surveiller le serveur
 
-| Question | Commande | Ce qu'il faut regarder |
+| Question | Commande | À regarder |
 |---|---|---|
-| Depuis quand tourne-t-il ? Est-il chargé ? | **`uptime`** | La **charge** (*load average*) sur 1, 5 et 15 min : au-dessus du **nombre de processeurs** (`nproc`), le serveur est surchargé |
-| Reste-t-il de la **mémoire** ? | **`free -h`** | La colonne **`available`** (et pas `free`) ; une **swap** très utilisée = RAM insuffisante |
-| Reste-t-il de la place **sur les disques** ? | **`df -h`** | Une partition à **plus de 90 %** = urgent |
-| **Qui** consomme ? | **`htop`** (ou `top`) | Les processus en haut de la liste (CPU % et MEM %) ; `q` pour quitter |
-| Quels **services** ont planté ? | **`systemctl --failed`** | Rien = tout va bien |
+| Est-il chargé ? | **`uptime`** | La **charge** sur 1, 5, 15 min : au-dessus du **nombre de processeurs** (`nproc`) = surchargé |
+| Reste-t-il de la **RAM** ? | **`free -h`** | La colonne **`available`** ; **swap** très utilisée = RAM insuffisante |
+| De la place **disque** ? | **`df -h`** | Plus de **90 %** = urgent |
+| **Qui** consomme ? | **`htop`** / `top` | Haut de la liste (CPU %, MEM %) |
+| Des services **plantés** ? | **`systemctl --failed`** | Rien = tout va bien |
 
 ```text
 $ uptime
- 10:42:13 up 37 days,  2:11,  2 users,  load average: 0,35, 0,41, 0,38
-                                                     └─1 min─┘└5 min┘└15 min┘   ← ici, très faible ✅
+ 10:42:13 up 37 days,  2:11,  2 users,  load average: 0,35, 0,41, 0,38   ← 1 · 5 · 15 min : faible ✅
 $ free -h
                total   used   free   shared  buff/cache   available
-Mem:           3,8Gi  1,2Gi  0,4Gi    12Mi       2,2Gi       2,4Gi   ← 2,4 Go disponibles ✅
-Swap:          975Mi    0B   975Mi
+Mem:           3,8Gi  1,2Gi  0,4Gi    12Mi       2,2Gi       2,4Gi      ← 2,4 Go disponibles ✅
 ```
 
-💡 « `free` » paraît bas ? C'est normal : Linux utilise la RAM libre comme **cache** (`buff/cache`) et la rend dès qu'un programme en a besoin. Regarde **`available`**.
-
-**Agir sur un processus** (rappel du [cours 3, module 8](../../cours-03-utilisateur-d-une-distribution-gnu-linux/module-8-mecanismes-avances-de-linux-et-bash/index.md)) : `ps aux | grep nom` pour trouver le PID, puis `kill PID` (et `kill -9 PID` en dernier recours). Pour un **service**, on préfère **`systemctl restart service`**.
+- 💡 `free` bas ? Normal : la RAM libre sert de **cache** et est rendue à la demande. Regarde **`available`**.
+- Processus bloqué : `ps aux | grep nom` puis `kill PID` (`-9` en dernier recours, [cours 3, module 8](../../cours-03-utilisateur-d-une-distribution-gnu-linux/module-8-mecanismes-avances-de-linux-et-bash/index.md)). Pour un **service** : **`systemctl restart`**.
 
 ---
 
 ### 2. Lire les journaux
 
-**`journalctl`** lit le journal de **systemd**, qui rassemble les messages de **tous les services** et du **noyau**.
+**`journalctl`** rassemble les messages de **tous les services** et du **noyau**.
 
 | Je veux… | Commande |
 |---|---|
-| Les **erreurs** seulement | **`journalctl -p err`** |
-| Les **erreurs depuis ce matin** | `journalctl -p err --since today` |
-| Le journal **d'un service** | **`journalctl -u ssh`** |
-| Suivre **en direct** | **`journalctl -f`** (++ctrl+c++ pour arrêter) |
-| Depuis le **dernier démarrage** | `journalctl -b` |
-| Sur une **période** | `journalctl --since "2026-10-21 08:00" --until "2026-10-21 09:00"` |
+| Les **erreurs** (de ce matin) | **`journalctl -p err`** (`--since today`) |
+| Un **service** | **`journalctl -u ssh`** |
+| **En direct** | **`journalctl -f`** |
+| Depuis le **démarrage** · une **période** | `journalctl -b` · `--since "2026-10-21 08:00" --until "09:00"` |
 
-**Les fichiers classiques de `/var/log`** (texte, lisibles avec `less` ou `tail -f`) :
-
-| Fichier | Contient |
+| Fichier de `/var/log` | Contient |
 |---|---|
-| `/var/log/syslog` (si `rsyslog` est installé) | Messages généraux du système |
-| **`/var/log/auth.log`** | **Connexions**, `sudo`, échecs de mot de passe |
-| `/var/log/apt/history.log` | Installations et mises à jour |
-| `/var/log/apache2/` | Journaux du serveur web (selon les services) |
+| `syslog` (si rsyslog) | Messages généraux |
+| **`auth.log`** | **Connexions**, `sudo`, échecs de mot de passe |
+| `apt/history.log` | Installations et mises à jour |
+| `apache2/` | Serveur web |
 
-💡 **`logrotate`** archive et compresse automatiquement les vieux journaux (`syslog.1`, `syslog.2.gz`…) pour qu'ils ne remplissent pas le disque.
+💡 **`logrotate`** archive et compresse les vieux journaux (`syslog.1`, `syslog.2.gz`) pour qu'ils ne remplissent pas le disque.
 
 ---
 
 ### 3. Planifier des tâches : `cron`
 
-**`cron`** lance des commandes **automatiquement**, à heure fixe : sauvegardes, nettoyages, rapports…
-
 ```bash
-crontab -e          # modifier MES tâches planifiées (sudo crontab -e pour celles de root)
-crontab -l          # les afficher
+crontab -e          # modifier MES tâches (sudo crontab -e pour root) · crontab -l pour les voir
 ```
-
-**Une ligne = une tâche, 5 champs de temps + la commande :**
 
 ```text
 # min  heure  jour-du-mois  mois  jour-de-la-semaine   commande
-  30   2      *             *     *                    /usr/local/bin/sauvegarde.sh
-  └─ tous les jours à 2 h 30
+  30   2      *             *     *                    /usr/local/bin/sauvegarde.sh   ← chaque jour à 2 h 30
 ```
 
-| Champ | Valeurs | `*` = |
-|---|---|---|
-| Minute | 0-59 | chaque minute |
-| Heure | 0-23 | chaque heure |
-| Jour du mois | 1-31 | chaque jour |
-| Mois | 1-12 | chaque mois |
-| Jour de la semaine | 0-7 (**0 et 7 = dimanche**, 1 = lundi) | chaque jour |
+Champs : **minute** (0-59) · **heure** (0-23) · **jour du mois** (1-31) · **mois** (1-12) · **jour de la semaine** (0-7, **0 et 7 = dimanche**). **`*`** = tous.
 
 | Exemple | Signifie |
 |---|---|
 | `0 * * * *` | Toutes les heures pile |
 | `*/15 * * * *` | Toutes les **15 minutes** |
 | `0 8 * * 1-5` | À **8 h**, du **lundi au vendredi** |
-| `0 3 1 * *` | Le **1ᵉʳ de chaque mois** à 3 h |
-| `@reboot` | **Au démarrage** du serveur |
+| `0 3 1 * *` | Le **1ᵉʳ du mois** à 3 h |
+| `@reboot` | **Au démarrage** |
 
-⚠️ Dans cron, utilise des **chemins complets** (`/usr/bin/tar`, `/home/tech/script.sh`) : cron n'a pas ton `$PATH` habituel.
-
-💡 Tâche **ponctuelle** (une seule fois) : `at 22:00` (paquet `at`). On rencontre aussi les **timers systemd** (`systemctl list-timers`).
+- ⚠️ **Chemins complets** dans cron (`/usr/bin/tar`) : cron n'a pas ton `$PATH`.
+- 💡 Une seule fois : `at 22:00` · alternative moderne : les **timers systemd** (`systemctl list-timers`).
 
 ---
 
 ### 4. Prévenir : mises à jour et sauvegardes
 
-**Mises à jour**
-
-| Méthode | Commande |
+| Mise à jour | Comment |
 |---|---|
-| Manuelle, régulière | `sudo apt update && sudo apt upgrade` ([module 6](../module-6-gestion-des-paquets-logiciels/index.md)) |
-| **Correctifs de sécurité automatiques** ✅ | `sudo apt install unattended-upgrades` puis `sudo dpkg-reconfigure -plow unattended-upgrades` |
-| Un redémarrage est-il nécessaire ? | Le fichier `/var/run/reboot-required` existe |
-
-**Sauvegardes**
+| Régulière | `sudo apt update && sudo apt upgrade` ([module 6](../module-6-gestion-des-paquets-logiciels/index.md)) |
+| **Sécurité automatique** ✅ | `sudo apt install unattended-upgrades` puis `sudo dpkg-reconfigure -plow unattended-upgrades` |
+| Redémarrage nécessaire ? | Le fichier `/var/run/reboot-required` existe |
 
 ```bash
-# une archive datée des fichiers de configuration (cours 3, module 8)
-sudo tar -czf /backup/etc-$(date +%Y%m%d).tar.gz /etc
-
-# copier un dossier vers un autre serveur, en ne transférant que ce qui a changé
-rsync -av /srv/compta/ tech@srv-backup:/backup/compta/
+sudo tar -czf /backup/etc-$(date +%Y%m%d).tar.gz /etc          # archive datée de la configuration
+rsync -av /srv/compta/ tech@srv-backup:/backup/compta/          # copie vers un autre serveur (seulement ce qui a changé)
 ```
 
-!!! tip "La règle 3-2-1 des sauvegardes (cours 15)"
-    **3** copies des données, sur **2** supports différents, dont **1** hors du site. Et une sauvegarde **qu'on n'a jamais essayé de restaurer** ne compte pas : **teste les restaurations**.
+📌 **Règle 3-2-1** ([cours 15](../../cours-15-sauvegarde-et-restauration/index.md)) : **3** copies, **2** supports, **1** hors site. Et une sauvegarde **jamais restaurée** ne compte pas : **teste les restaurations**.
 
 ## 📝 Fiche de révision
 

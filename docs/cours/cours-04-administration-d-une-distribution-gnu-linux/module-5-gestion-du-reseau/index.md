@@ -29,62 +29,49 @@ flowchart LR
 
 ### 1. Voir la configuration
 
-| Je veux… | Commande | Équivalent Windows |
+| Je veux… | Linux | Windows |
 |---|---|---|
-| Les **adresses IP** | **`ip a`** (*address*) | `ipconfig` |
-| La **passerelle** (route par défaut) | **`ip r`** (*route*) | `ipconfig` |
+| Les **adresses IP** | **`ip a`** | `ipconfig` |
+| La **passerelle** | **`ip r`** | `ipconfig` |
 | Les **DNS** | `cat /etc/resolv.conf` | `ipconfig /all` |
-| Le **nom** de la machine | `hostname` · `hostnamectl` | `hostname` |
+| Le **nom** | `hostname` · `hostnamectl` | `hostname` |
 | Les **ports ouverts** | `ss -tulpn` | `netstat -ano` |
 
-**Lire un `ip a`**
-
 ```text
-1: lo: <LOOPBACK,UP> ...
-    inet 127.0.0.1/8                       ← boucle locale (la machine elle-même)
-2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> ...       ← nom de la carte réseau (UP = active)
+2: ens33: <BROADCAST,MULTICAST,UP,LOWER_UP> ...       ← nom de la carte (UP = active)
     link/ether 00:0c:29:3a:0b:12                       ← adresse MAC
-    inet 192.168.1.50/24 brd 192.168.1.255             ← adresse IPv4 + masque (/24) + broadcast
-    inet6 fe80::20c:29ff:fe3a:b12/64                   ← adresse IPv6 lien-local (cours 1, module 6)
+    inet 192.168.1.50/24 brd 192.168.1.255             ← IPv4 + masque + broadcast
+    inet6 fe80::20c:29ff:fe3a:b12/64                   ← IPv6 lien-local
 ```
 
-📌 Les cartes réseau s'appellent **`ens33`**, **`enp0s3`**, `eth0`… selon le matériel. Repère d'abord le nom de **ta** carte avec `ip a`.
+📌 Les cartes s'appellent **`ens33`**, **`enp0s3`**, `eth0`… : repère d'abord **la tienne** avec `ip a` (`lo` = la boucle locale).
 
 ---
 
 ### 2. Configurer l'IP : `/etc/network/interfaces`
 
-C'est le fichier de configuration réseau classique de **Debian serveur**. On l'édite en root : `sudo nano /etc/network/interfaces` ([cours 3, module 7](../../cours-03-utilisateur-d-une-distribution-gnu-linux/module-7-editer-du-texte-sous-linux/index.md)).
-
-**En DHCP (adresse automatique)**
+Le fichier réseau de **Debian serveur** (`sudo nano /etc/network/interfaces`).
 
 ```text
+# DHCP
 auto ens33                 # activer la carte au démarrage
-iface ens33 inet dhcp      # adresse fournie par un serveur DHCP
-```
+iface ens33 inet dhcp
 
-**En IP fixe (cas d'un serveur)** ✅
-
-```text
+# IP fixe (serveur) ✅
 auto ens33
 iface ens33 inet static
-    address 192.168.1.50/24       # IP + masque en notation CIDR (cours 1, module 3)
-    gateway 192.168.1.1           # la passerelle (le routeur)
-    dns-nameservers 192.168.1.1   # DNS (utilisé si le paquet resolvconf est installé)
+    address 192.168.1.50/24       # IP + masque en CIDR
+    gateway 192.168.1.1           # la passerelle
+    dns-nameservers 192.168.1.1   # DNS (si le paquet resolvconf est installé)
 ```
-
-**Appliquer** la nouvelle configuration :
 
 ```bash
-sudo systemctl restart networking      # ou : sudo ifdown ens33 && sudo ifup ens33
-ip a                                    # vérifier
+sudo systemctl restart networking      # appliquer (ou ifdown ens33 && ifup ens33)
 ```
 
-⚠️ **En SSH, attention** : si tu changes l'IP du serveur, ta connexion **va couper**. Reconnecte-toi sur la **nouvelle** adresse. Une erreur dans le fichier peut t'enfermer dehors : garde un **accès console** (VM) sous la main.
-
-💡 **Changer l'IP pour un test** (perdu au redémarrage) : `sudo ip addr add 192.168.1.60/24 dev ens33`.
-
-📌 Sur les **postes avec bureau**, c'est souvent **NetworkManager** qui gère le réseau (icône en haut de l'écran, ou commande `nmcli`), et non ce fichier.
+- ⚠️ **En SSH**, changer l'IP **coupe ta connexion** : reconnecte-toi sur la nouvelle. Garde un **accès console** en cas d'erreur.
+- 💡 IP de **test** (perdue au redémarrage) : `sudo ip addr add 192.168.1.60/24 dev ens33`.
+- 📌 Sur les **postes avec bureau**, c'est **NetworkManager** (`nmcli`) qui gère le réseau.
 
 ---
 
@@ -92,34 +79,35 @@ ip a                                    # vérifier
 
 | Fichier | Rôle | Exemple |
 |---|---|---|
-| **`/etc/resolv.conf`** | Les **serveurs DNS** à interroger | `nameserver 192.168.1.1`<br/>`nameserver 1.1.1.1` |
+| **`/etc/resolv.conf`** | Les **serveurs DNS** | `nameserver 192.168.1.1` |
 | **`/etc/hostname`** | Le **nom** de la machine | `srv-web01` |
-| **`/etc/hosts`** | Des correspondances **nom → IP** connues **localement**, consultées **avant** le DNS | `192.168.1.50  srv-web01.entreprise.local srv-web01` |
+| **`/etc/hosts`** | **Nom → IP** connus localement, lus **avant** le DNS | `192.168.1.50  srv-web01.entreprise.local srv-web01` |
 
 ```bash
-sudo hostnamectl set-hostname srv-web01     # changer le nom (pense à mettre /etc/hosts à jour aussi)
+sudo hostnamectl set-hostname srv-web01     # changer le nom (mettre /etc/hosts à jour aussi)
 ```
 
-💡 `/etc/hosts` est pratique en TP : on donne un nom à une machine **sans serveur DNS**.
+💡 `/etc/hosts` permet de nommer une machine **sans serveur DNS** (pratique en TP).
 
 ---
 
 ### 4. Vérifier et dépanner
 
-La méthode du [cours 1, module 5](../../cours-01-bases-des-reseaux/module-5-les-premieres-commandes/index.md) marche aussi sous Linux :
+La méthode du [cours 1, module 5](../../cours-01-bases-des-reseaux/module-5-les-premieres-commandes/index.md) :
 
 | # | Commande | Si ça échoue… |
 |---|---|---|
-| ① | `ip a` | Pas d'IP ou carte `DOWN` → vérifier `/etc/network/interfaces` |
-| ② | `ping -c 3 192.168.1.1` (passerelle) | Problème sur le réseau local |
-| ③ | `ping -c 3 8.8.8.8` | Problème de passerelle ou de routeur : `ip r` |
-| ④ | `ping -c 3 debian.org` | Problème de **DNS** : `/etc/resolv.conf` |
+| ① | `ip a` | Pas d'IP ou carte `DOWN` → `/etc/network/interfaces` |
+| ② | `ping -c 3 192.168.1.1` | Réseau local |
+| ③ | `ping -c 3 8.8.8.8` | Passerelle / routeur → `ip r` |
+| ④ | `ping -c 3 debian.org` | **DNS** → `/etc/resolv.conf` |
 | ⑤ | `ss -tulpn` | Le service écoute-t-il sur le bon port ? |
 
-```bash
-ss -tulpn          # t = TCP, u = UDP, l = en écoute, p = programme, n = numéros
-# tcp LISTEN 0 128 0.0.0.0:22  users:(("sshd",pid=612))   ← SSH écoute bien sur le port 22
+```text
+tcp LISTEN 0 128 0.0.0.0:22  users:(("sshd",pid=612))   ← SSH écoute bien sur le port 22
 ```
+
+`ss -tulpn` : **t** TCP · **u** UDP · **l** en écoute · **p** programme · **n** numéros.
 
 ## 📝 Fiche de révision
 

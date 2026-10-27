@@ -41,85 +41,78 @@ flowchart TD
 | | r (4) | w (2) | x (1) |
 |---|---|---|---|
 | **Fichier** | Lire | Modifier | Exécuter |
-| **Dossier** | Lister | Créer / supprimer dedans | Entrer (`cd`) |
+| **Dossier** | Lister | Créer / supprimer dedans | Entrer |
 
 ```bash
-chmod 660 budget.ods       # rw-rw---- : propriétaire et groupe lisent/écrivent, les autres rien
-chmod g+w budget.ods       # ajouter l'écriture au groupe
-chmod -R 750 /srv/compta   # -R = récursif : le dossier ET tout son contenu
+chmod 660 budget.ods       # rw-rw---- : propriétaire et groupe lisent/écrivent
+chmod g+w budget.ods       # + écriture pour le groupe
+chmod -R 750 /srv/compta   # -R = le dossier ET tout son contenu
 ```
 
 ---
 
-### 2. Changer le propriétaire et le groupe
+### 2. Propriétaire et groupe
 
 | Je veux… | Commande |
 |---|---|
-| Changer le **propriétaire** | `sudo chown paul budget.ods` |
-| Changer le **propriétaire et le groupe** | **`sudo chown paul:compta budget.ods`** |
-| Changer **seulement le groupe** | `sudo chgrp compta budget.ods` (ou `chown :compta`) |
-| Tout un dossier, **récursivement** | `sudo chown -R paul:compta /srv/compta` |
+| Changer **propriétaire et groupe** ✅ | **`sudo chown paul:compta budget.ods`** |
+| Seulement le propriétaire · le groupe | `sudo chown paul f` · `sudo chgrp compta f` |
+| Tout un dossier | `sudo chown -R paul:compta /srv/compta` |
 
-📌 Seul **root** peut donner un fichier à quelqu'un d'autre (`chown`).
+📌 Seul **root** peut donner un fichier à quelqu'un d'autre.
 
 ---
 
 ### 3. Les droits par défaut : `umask`
 
-Quand tu crées un fichier, il reçoit des droits **par défaut**, calculés par le **`umask`** (le « masque » des droits à **retirer**).
+Le **masque des droits à retirer** à la création :
 
-| | Départ | − umask `022` | = Résultat |
+| | Départ | − umask `022` | = |
 |---|---|---|---|
-| **Fichier** | `666` (rw-rw-rw-) | `022` | **`644`** (rw-r--r--) |
-| **Dossier** | `777` (rwxrwxrwx) | `022` | **`755`** (rwxr-xr-x) |
+| **Fichier** | `666` | `022` | **`644`** (rw-r--r--) |
+| **Dossier** | `777` | `022` | **`755`** (rwxr-xr-x) |
 
-```bash
-umask          # affiche 0022 (valeur par défaut de Debian)
-umask 027      # nouveaux fichiers en 640, dossiers en 750 (les « autres » n'ont plus rien)
-```
+`umask` affiche **0022** (défaut Debian) · `umask 027` → fichiers en **640**, dossiers en **750**.
 
 ---
 
 ### 4. Les droits spéciaux
 
-| Droit | Sur… | Effet | Exemple réel | Valeur |
+| Droit | Sur… | Effet | Exemple | Valeur |
 |---|---|---|---|---|
-| **SUID** (`s` à la place du x du propriétaire) | Un **programme** | Il s'exécute avec les droits de son **propriétaire** (souvent root) | `/usr/bin/passwd` : un utilisateur peut modifier `/etc/shadow` **uniquement** via passwd | `4000` · `chmod u+s` |
-| **SGID** (`s` à la place du x du groupe) | Un **dossier** | Les fichiers créés dedans **héritent du groupe du dossier** | Dossier partagé d'un service | `2000` · `chmod g+s` |
-| **Sticky bit** (`t` à la place du x des autres) | Un **dossier** | Chacun ne peut supprimer **que ses propres** fichiers | **`/tmp`** (`drwxrwxrwt`) | `1000` · `chmod +t` |
+| **SUID** (`s` sur le x du propriétaire) | Un **programme** | S'exécute avec les droits de son **propriétaire** (root) | `/usr/bin/passwd` modifie `/etc/shadow` | `4000` · `u+s` |
+| **SGID** (`s` sur le x du groupe) | Un **dossier** | Les nouveaux fichiers **héritent du groupe du dossier** | Dossier d'un service | `2000` · `g+s` |
+| **Sticky** (`t` sur le x des autres) | Un **dossier** | Chacun ne supprime **que ses fichiers** | **`/tmp`** (`drwxrwxrwt`) | `1000` · `+t` |
 
 ---
 
-### 5. Cas pratique : le dossier partagé du service Compta
+### 5. Cas pratique : le dossier partagé de la Compta
 
-**Besoin** : les membres de `compta` lisent et modifient tout dans `/srv/compta`, les autres n'ont aucun accès, et chacun ne supprime que ses fichiers.
+**Besoin** : le groupe `compta` lit et modifie tout dans `/srv/compta`, les autres n'ont rien, et chacun ne supprime que ses fichiers.
 
 ```bash
 sudo mkdir /srv/compta
-sudo chown root:compta /srv/compta     # le dossier appartient au groupe compta
-sudo chmod 3770 /srv/compta            # 3 = SGID (2) + sticky (1) ; 770 = rwx pour le propriétaire et le groupe, rien pour les autres
-ls -ld /srv/compta                     # drwxrws--T 2 root compta ... /srv/compta
+sudo chown root:compta /srv/compta
+sudo chmod 3770 /srv/compta      # 3 = SGID (2) + sticky (1) · 770 = rien pour les autres
+ls -ld /srv/compta               # drwxrws--T 2 root compta ... /srv/compta
 ```
 
-| Morceau | Effet |
-|---|---|
-| `chown root:compta` | Le **groupe compta** obtient les droits « groupe » |
-| `770` | Le groupe lit, écrit et entre ; **les autres n'ont rien** |
-| **SGID** (`2`) | Chaque nouveau fichier appartient au groupe **compta** : tous les collègues pourront l'ouvrir |
-| **Sticky** (`1`) | Personne ne supprime le fichier d'un collègue |
+- **`770`** : le groupe lit, écrit, entre ; **les autres n'ont rien**.
+- **SGID** : chaque nouveau fichier appartient à **compta** → tous les collègues l'ouvrent.
+- **Sticky** : personne ne supprime le fichier d'un collègue.
 
 ---
 
 ### 6. Plus précis : les ACL
 
-Quand « propriétaire / groupe / autres » ne suffit pas (donner un droit à **une personne de plus**), on utilise les **ACL** :
+Pour donner un droit à **une personne de plus**, sans la mettre dans le groupe :
 
 ```bash
-sudo setfacl -m u:julie:rx /srv/compta     # julie (hors du groupe compta) peut lire et entrer
+sudo setfacl -m u:julie:rx /srv/compta     # julie peut lire et entrer
 getfacl /srv/compta                        # voir les ACL
 ```
 
-Un **`+`** à la fin des droits dans `ls -l` (`drwxrws---+`) signale des ACL. Le paquet `acl` est parfois à installer.
+Un **`+`** dans `ls -l` (`drwxrws---+`) signale des ACL (paquet `acl` parfois à installer).
 
 ## 📝 Fiche de révision
 

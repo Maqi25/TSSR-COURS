@@ -32,44 +32,33 @@ flowchart LR
 
 | Mot | En clair |
 |---|---|
-| **Paquet** (`.deb`) | Un logiciel prêt à installer : ses fichiers + sa description |
-| **Dépôt** | Un **serveur** qui propose des milliers de paquets (ex. `deb.debian.org`) |
-| **Dépendance** | Un autre paquet **nécessaire** au fonctionnement (installé automatiquement par apt) |
-| **`apt`** | L'outil **de haut niveau** : utilise les dépôts, gère les dépendances ✅ |
-| **`dpkg`** | L'outil **de bas niveau** : installe un fichier `.deb` local, **sans** gérer les dépendances |
+| **Paquet** (`.deb`) | Un logiciel prêt à installer |
+| **Dépôt** | Un **serveur** qui propose des milliers de paquets (`deb.debian.org`) |
+| **Dépendance** | Un autre paquet **nécessaire**, installé automatiquement |
+| **`apt`** ✅ | Outil **de haut niveau** : dépôts + dépendances |
+| **`dpkg`** | Outil **de bas niveau** : un `.deb` local, **sans** dépendances |
 
 ---
 
-### 2. Les commandes `apt` à connaître
-
-Toutes celles qui **modifient** le système se lancent avec **`sudo`**.
+### 2. Les commandes `apt` (avec `sudo` quand elles modifient)
 
 | Je veux… | Commande |
 |---|---|
-| **Mettre à jour le catalogue** (la liste des paquets disponibles) | **`sudo apt update`** |
-| **Installer les mises à jour** | **`sudo apt upgrade`** |
-| Mises à jour **plus profondes** (peut ajouter ou retirer des paquets) | `sudo apt full-upgrade` |
-| **Installer** un logiciel | **`sudo apt install apache2`** |
-| Installer plusieurs logiciels | `sudo apt install curl vim htop` |
-| **Supprimer** (garde la configuration) | `sudo apt remove apache2` |
-| Supprimer **avec** sa configuration | **`sudo apt purge apache2`** |
-| Supprimer les dépendances **devenues inutiles** | `sudo apt autoremove` |
-| **Chercher** un paquet | `apt search serveur web` |
-| **Infos** sur un paquet | `apt show apache2` |
-| Lister les paquets **installés** | `apt list --installed` |
-| Lister les **mises à jour** disponibles | `apt list --upgradable` |
+| **Rafraîchir le catalogue** | **`sudo apt update`** |
+| **Installer les mises à jour** | **`sudo apt upgrade`** (`full-upgrade` = plus profond) |
+| **Installer** | **`sudo apt install apache2`** (plusieurs : `apt install curl vim htop`) |
+| **Supprimer** (garde la config) / **avec** la config | `sudo apt remove apache2` / **`sudo apt purge apache2`** |
+| Retirer les dépendances **inutiles** | `sudo apt autoremove` |
+| **Chercher** · **infos** | `apt search serveur web` · `apt show apache2` |
+| Paquets **installés** · **mises à jour** dispo | `apt list --installed` · `apt list --upgradable` |
 
-!!! abstract "En clair : `update` ou `upgrade` ?"
-    - **`update`** = **rafraîchir le catalogue** (« quoi de neuf au magasin ? »). Rien n'est installé.
-    - **`upgrade`** = **installer** les nouvelles versions.
-
-    On fait **toujours les deux, dans cet ordre** : `sudo apt update && sudo apt upgrade`.
+📌 **`update`** = « quoi de neuf au magasin ? » (rien n'est installé) · **`upgrade`** = **installer** les nouvelles versions. **Toujours les deux, dans cet ordre** : `sudo apt update && sudo apt upgrade`.
 
 ---
 
 ### 3. Les sources des paquets
 
-Debian 13 décrit ses dépôts dans **`/etc/apt/sources.list.d/debian.sources`** (format moderne). Les anciennes installations utilisent `/etc/apt/sources.list`.
+Debian 13 : **`/etc/apt/sources.list.d/debian.sources`** (format moderne ; les anciennes installations utilisent `/etc/apt/sources.list`).
 
 ```text
 Types: deb
@@ -85,15 +74,15 @@ Components: main contrib non-free non-free-firmware
 Signed-By: /usr/share/keyrings/debian-archive-keyring.gpg
 ```
 
-L'ancien format tient en une ligne par dépôt : `deb http://deb.debian.org/debian trixie main contrib non-free non-free-firmware`.
+Ancien format, une ligne par dépôt : `deb http://deb.debian.org/debian trixie main contrib non-free non-free-firmware`.
 
 | Élément | Signification |
 |---|---|
-| **trixie** | La version de Debian |
-| **trixie-security** | Les **correctifs de sécurité** ⚠️ indispensable |
-| **main** | Logiciels **100 % libres** (l'essentiel) |
-| **contrib** / **non-free** | Logiciels qui dépendent de non-libre / non libres |
-| **non-free-firmware** | **Micrologiciels** de matériel (cartes Wi-Fi, réseau…) |
+| **trixie** | La version |
+| **trixie-security** | **Correctifs de sécurité** ⚠️ indispensable |
+| **main** | Logiciels **100 % libres** |
+| **contrib** / **non-free** | Dépendent du non-libre / non libres |
+| **non-free-firmware** | **Micrologiciels** (Wi-Fi, carte réseau…) |
 
 📌 Après toute modification des sources : **`sudo apt update`**.
 
@@ -103,13 +92,12 @@ L'ancien format tient en une ligne par dépôt : `deb http://deb.debian.org/debi
 
 | Je veux… | Commande |
 |---|---|
-| Installer un **`.deb` téléchargé** | `sudo dpkg -i logiciel.deb` → puis `sudo apt -f install` pour récupérer les dépendances manquantes |
-| ✅ Plus simple : installer un `.deb` **avec** ses dépendances | `sudo apt install ./logiciel.deb` |
-| Ce paquet est-il installé ? | `dpkg -l | grep apache2` (`ii` en début de ligne = installé) |
-| Quels fichiers a installés ce paquet ? | `dpkg -L apache2` |
-| À quel paquet appartient ce fichier ? | `dpkg -S /usr/sbin/apache2` |
+| Installer un `.deb` téléchargé **avec** ses dépendances ✅ | `sudo apt install ./logiciel.deb` |
+| … ou avec dpkg | `sudo dpkg -i logiciel.deb` puis `sudo apt -f install` |
+| Ce paquet est-il installé ? | `dpkg -l | grep apache2` (`ii` = installé) |
+| Ses fichiers · à qui appartient un fichier | `dpkg -L apache2` · `dpkg -S /usr/sbin/apache2` |
 
-💡 Le **journal** des installations : `/var/log/apt/history.log` (qui a installé quoi, et quand).
+💡 Journal des installations : **`/var/log/apt/history.log`**.
 
 ## 📝 Fiche de révision
 

@@ -32,71 +32,63 @@ flowchart LR
 
 | Système | Points forts | Usage |
 |---|---|---|
-| **ext4** | ✅ Le **standard** de Debian : fiable, éprouvé, se **réduit** et s'**agrandit** | Le choix par défaut |
-| **XFS** | Très performant pour les **gros fichiers** et volumes ; s'agrandit mais **ne se réduit pas** | Serveurs de fichiers, Red Hat |
-| **Btrfs** | Instantanés, compression | Usages avancés |
+| **ext4** | ✅ **Standard** de Debian, fiable, s'**agrandit** et se **réduit** | Par défaut |
+| **XFS** | Rapide sur **gros fichiers** ; s'agrandit mais **ne se réduit pas** | Serveurs de fichiers, Red Hat |
+| **Btrfs** | Instantanés, compression | Avancé |
 | **vfat / exFAT** | Lisible par Windows | Clés USB |
-| **swap** | Pas un système de fichiers : **mémoire d'appoint** sur le disque | Voir plus bas |
+| **swap** | **Mémoire d'appoint** sur disque | Voir ci-dessous |
 
-!!! abstract "En clair : la swap"
-    Quand la **mémoire vive (RAM) est pleine**, Linux déplace temporairement ce qui sert peu sur le disque, dans la **swap**. Ça évite les plantages, mais c'est **beaucoup plus lent** que la RAM. Un serveur qui utilise **beaucoup** sa swap manque de RAM.
+📌 **Swap** : quand la **RAM est pleine**, Linux y range ce qui sert peu. Évite les plantages, mais **bien plus lent** : un serveur qui « swappe » beaucoup **manque de RAM**.
 
 ---
 
 ### 2. Formater
 
 ```bash
-sudo mkfs.ext4 /dev/sdb1                     # formater en ext4
-sudo mkfs.ext4 -L DONNEES /dev/sdb1          # avec une étiquette (label)
-sudo mkfs.xfs /dev/sdb1                      # en XFS
-sudo mkswap /dev/sdc1 && sudo swapon /dev/sdc1   # créer et activer une swap
+sudo mkfs.ext4 -L DONNEES /dev/sdb1               # ext4, avec une étiquette
+sudo mkfs.xfs /dev/sdb1                           # XFS
+sudo mkswap /dev/sdc1 && sudo swapon /dev/sdc1    # créer et activer une swap
 ```
 
-⚠️ **Formater efface tout** le contenu de la partition. Vérifie **deux fois** le nom avec `lsblk`.
+⚠️ **Formater efface tout** : vérifie **deux fois** le nom avec `lsblk`.
 
 ---
 
 ### 3. Monter et démonter
 
 ```bash
-sudo mkdir /data                 # 1. créer le dossier (point de montage)
-sudo mount /dev/sdb1 /data       # 2. monter
+sudo mkdir /data                 # 1. le point de montage
+sudo mount /dev/sdb1 /data       # 2. monter (perdu au redémarrage)
 df -h /data                      # 3. vérifier
-sudo umount /data                # démonter (attention : umount, sans « n »)
+sudo umount /data                # démonter (umount, sans « n »)
 ```
 
-| Commande | Effet |
-|---|---|
-| `mount` (seule) ou `findmnt` | Lister ce qui est monté |
-| `mount /dev/sdb1 /data` | Monter **maintenant** (perdu au redémarrage) |
-| **`umount /data`** | Démonter |
-| `mount -a` | Monter **tout** ce qui est dans `/etc/fstab` (pour **tester** le fichier) |
-
-⚠️ « **target is busy** » au démontage : quelqu'un (ou ton propre terminal) est **dans** le dossier → `cd /` puis réessayer.
+- `mount` seul ou **`findmnt`** = ce qui est monté · **`mount -a`** = monter tout `/etc/fstab` (pour le **tester**).
+- ⚠️ « **target is busy** » : quelqu'un (ou ton terminal) est **dans** le dossier → `cd /` et réessayer.
 
 ---
 
 ### 4. Monter au démarrage : `/etc/fstab`
 
-**`/etc/fstab`** (*file systems table*) liste ce qui doit être monté **à chaque démarrage**. Une ligne = un montage, en **6 colonnes** :
+Une ligne = un montage, en **6 colonnes** :
 
 ```text
-# <quoi : UUID>                            <où>   <type> <options>          <dump> <fsck>
-UUID=3f6a1c2e-8b7d-4c1e-9a0f-5d2e7b8c9a01  /data  ext4   defaults,nofail    0      2
-/dev/vg_data/lv_web                         /var/www ext4 defaults           0      2
+# <quoi : UUID>                            <où>     <type> <options>        <dump> <fsck>
+UUID=3f6a1c2e-8b7d-4c1e-9a0f-5d2e7b8c9a01  /data    ext4   defaults,nofail  0      2
+/dev/vg_data/lv_web                         /var/www ext4   defaults         0      2
 ```
 
-| Colonne | Contenu | Valeur habituelle |
-|---|---|---|
-| ① **Quoi** | La partition : **`UUID=…`** (trouvé avec `blkid`, module 7) ou le chemin d'un LV | |
-| ② **Où** | Le **point de montage** | `/data` |
-| ③ **Type** | Le système de fichiers | `ext4`, `xfs`, `swap` |
-| ④ **Options** | `defaults` ; **`nofail`** = ne pas bloquer le démarrage si le disque est absent | `defaults` |
-| ⑤ **dump** | Ancienne sauvegarde | `0` |
-| ⑥ **fsck** | Ordre de vérification au démarrage : `1` = la racine `/`, `2` = les autres, `0` = jamais | `2` |
+| Colonne | Contenu |
+|---|---|
+| ① **Quoi** | **`UUID=…`** (`blkid`, [module 7](../module-7-gestion-des-espaces-de-stockage/index.md)) ou le chemin d'un LV |
+| ② **Où** | Le **point de montage** |
+| ③ **Type** | `ext4`, `xfs`, `swap` |
+| ④ **Options** | `defaults` ; **`nofail`** = ne pas bloquer le démarrage si le disque manque |
+| ⑤ **dump** | `0` |
+| ⑥ **fsck** | `1` = la racine `/`, `2` = les autres, `0` = jamais |
 
-!!! danger "⚠️ Toujours tester fstab avant de redémarrer"
-    Une **erreur dans `/etc/fstab`** peut **empêcher le serveur de démarrer** (il passe en mode urgence, voir le [module 4](../module-4-debian-en-mode-maintenance/index.md)). Après chaque modification :
+!!! danger "Toujours tester fstab avant de redémarrer"
+    Une erreur peut **empêcher le démarrage** (mode urgence, [module 4](../module-4-debian-en-mode-maintenance/index.md)) :
 
     ```bash
     sudo systemctl daemon-reload
@@ -107,14 +99,14 @@ UUID=3f6a1c2e-8b7d-4c1e-9a0f-5d2e7b8c9a01  /data  ext4   defaults,nofail    0   
 
 ### 5. Surveiller l'espace disque
 
-| Commande | Répond à… | Exemple |
-|---|---|---|
-| **`df -h`** | Combien de place reste-t-il **sur chaque partition** ? | `/dev/sda1  19G  6,2G  12G  35% /` |
-| **`du -sh dossier`** | Combien pèse **ce dossier** ? | `du -sh /var/log` → `412M` |
-| `du -h --max-depth=1 /var | sort -h` | **Quels sous-dossiers** prennent le plus de place ? | |
-| `free -h` | La **RAM** et la **swap** utilisées | |
+| Commande | Répond à… |
+|---|---|
+| **`df -h`** | Place libre **par partition** (`/dev/sda1  19G  6,2G  12G  35% /`) |
+| **`du -sh /var/log`** | Poids d'**un dossier** |
+| `du -h --max-depth=1 /var | sort -h` | **Quels sous-dossiers** prennent le plus de place |
+| `free -h` | **RAM** et **swap** utilisées |
 
-💡 Un disque plein **à 100 %** fait planter les services. Le coupable est souvent **`/var/log`** (des journaux énormes) : voir le module 12.
+💡 Disque à **100 %** = services qui plantent. Coupable fréquent : **`/var/log`** ([module 12](../module-12-maintenance-d-un-systeme-en-production/index.md)).
 
 ## 📝 Fiche de révision
 

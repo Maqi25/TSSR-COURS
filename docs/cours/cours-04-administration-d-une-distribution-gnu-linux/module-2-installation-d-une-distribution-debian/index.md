@@ -29,51 +29,45 @@ flowchart LR
 
 ### 1. Avant d'installer
 
-| Élément | Choix pour un serveur de TP |
-|---|---|
-| **Image** | **`debian-13.x-amd64-netinst.iso`** (~ 700 Mo) sur **debian.org** : l'installateur télécharge le reste sur Internet |
-| **Machine virtuelle** | 1 à 2 processeurs, **2 Go** de RAM, disque de **20 Go**, réseau **NAT** ou **Bridge** ([cours 2, module 2bis](../../cours-02-systeme-client-microsoft/module-2bis-vmware-workstation/index.md)) |
-| **Prérequis minimum** | 1 Go de RAM et 10 Go de disque sans interface graphique |
-
-💡 **netinst** = petite image qui installe par le réseau. Il existe aussi les **DVD complets** (sans Internet) et les images **« live »** (pour essayer sans installer).
+- **Image** : **`debian-13.x-amd64-netinst.iso`** (~700 Mo, sur **debian.org**) : petite image qui **télécharge le reste**. Existent aussi : DVD complet (sans Internet), images **live** (essayer sans installer).
+- **VM de TP** : 1-2 processeurs, **2 Go** de RAM, **20 Go** de disque, réseau **NAT** ou **Bridge** ([cours 2, module 2bis](../../cours-02-systeme-client-microsoft/module-2bis-vmware-workstation/index.md)). Minimum sans interface graphique : 1 Go de RAM, 10 Go de disque.
 
 ---
 
 ### 2. L'installation, étape par étape
 
-| # | Écran | Ton choix (et pourquoi) |
+| # | Écran | Ton choix |
 |---|---|---|
-| ① | Menu de démarrage | **Install** (en mode texte, plus léger) ou *Graphical install* |
+| ① | Menu | **Install** (mode texte, plus léger) |
 | ② | Langue / pays / clavier | Français · France · Français |
-| ③ | **Nom de machine** | Un nom clair : `srv-web01` |
-| ④ | **Nom de domaine** | `entreprise.local` (ou vide en TP) |
-| ⑤ | **Mot de passe root** | Un mot de passe **fort**. 💡 Si tu le laisses **vide**, root est **désactivé** et ton 1ᵉʳ utilisateur reçoit **`sudo`** automatiquement |
-| ⑥ | **Utilisateur** | Ton nom, identifiant (`tech`) et mot de passe |
-| ⑦ | Fuseau horaire | Europe/Paris (choisi d'après le pays) |
-| ⑧ | **Partitionnement** | **Assisté – utiliser un disque entier** → *Tout dans une seule partition* (débutant) ; ou *avec LVM* (plus souple, module 8) |
+| ③ | **Nom de machine** | Clair : `srv-web01` |
+| ④ | **Domaine** | `entreprise.local` (ou vide en TP) |
+| ⑤ | **Mot de passe root** | **Fort**. 💡 **Vide** = root désactivé et ton 1ᵉʳ utilisateur reçoit **`sudo`** |
+| ⑥ | **Utilisateur** | Nom, identifiant (`tech`), mot de passe |
+| ⑦ | Fuseau horaire | Europe/Paris |
+| ⑧ | **Partitionnement** | **Assisté – disque entier** → *Tout dans une partition* ; ou *avec LVM* ([module 8](../module-8-gestion-avancee-des-espaces-de-stockage-lvm/index.md)) |
 | ⑨ | Miroir | France → **`deb.debian.org`** |
-| ⑩ | **Sélection des logiciels** | ☐ Environnement de bureau · ☐ GNOME · ☑ **Serveur SSH** · ☑ **Utilitaires usuels du système** |
-| ⑪ | **GRUB** | **Oui**, sur le disque principal (`/dev/sda`) : c'est le programme qui démarre Linux (module 3) |
-| ⑫ | Fin | Retirer l'ISO → **Continuer** → redémarrage |
+| ⑩ | **Logiciels** | ☐ Bureau · ☐ GNOME · ☑ **Serveur SSH** · ☑ **Utilitaires usuels** |
+| ⑪ | **GRUB** | **Oui**, sur `/dev/sda` (le programme qui démarre Linux, [module 3](../module-3-demarrage-d-une-distribution-debian/index.md)) |
+| ⑫ | Fin | Retirer l'ISO → redémarrage |
 
-⚠️ À l'étape ⑩, **décoche le bureau** : un serveur n'a pas besoin d'interface graphique. C'est plus léger, plus rapide, et plus sûr (moins de logiciels = moins de failles).
+⚠️ Étape ⑩ : **décocher le bureau**. Un serveur n'a pas besoin d'interface graphique : plus léger, plus rapide, **plus sûr** (moins de logiciels = moins de failles).
 
 ---
 
-### 3. Après l'installation : les premiers réflexes
+### 3. Les premiers réflexes
 
 ```bash
-ip a                          # 1. noter l'adresse IP du serveur
-su -                          # 2. devenir root (si root a un mot de passe)
-apt update && apt upgrade     # 3. mettre le système à jour (module 6)
-apt install sudo              # 4. installer sudo s'il n'y est pas…
-usermod -aG sudo tech         #    …et autoriser l'utilisateur « tech » à l'utiliser
-exit                          #    (tech doit se reconnecter pour que ce soit pris en compte)
+ip a                          # 1. noter l'IP du serveur
+su -                          # 2. devenir root
+apt update && apt upgrade     # 3. mettre à jour (module 6)
+apt install sudo              # 4. installer sudo…
+usermod -aG sudo tech         #    …et l'autoriser pour « tech » (reconnexion nécessaire)
+exit
 ```
 
-Ensuite, **tout se fait à distance** depuis ton PC : `ssh tech@IP-du-serveur` ([cours 3, module 2](../../cours-03-utilisateur-d-une-distribution-gnu-linux/module-2-decouverte-du-systeme-d-exploitation-linux/index.md)).
-
-💡 **Dans une VM VMware** : `apt install open-vm-tools` améliore l'intégration (l'équivalent des VMware Tools).
+- Ensuite, **tout se fait à distance** : `ssh tech@IP-du-serveur`.
+- 💡 Dans une VM VMware : `apt install open-vm-tools` (≈ VMware Tools).
 
 ## 📝 Fiche de révision
 
