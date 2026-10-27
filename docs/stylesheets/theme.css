@@ -926,3 +926,117 @@ html[data-tssr-theme] body[data-md-color-scheme="slate"] {
     transform: none !important;
   }
 }
+
+/* ==========================================================================
+   6. Icônes des cours et modules (Fluent Emoji en SVG, posées par icones.js)
+   ========================================================================== */
+.tssr-icone,
+.tssr-icone-nav,
+.tssr-icone-titre {
+  display: inline-block;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.25));
+}
+
+/* dans la pastille des cartes : grande, et elle saute au survol */
+.md-typeset .tssr-card .tssr-card-icon.has-icone .tssr-icone {
+  width: 1.9rem;
+  height: 1.9rem;
+}
+
+.md-typeset .tssr-card:hover .tssr-card-icon.has-icone {
+  animation: tssr-icone-saut 0.6s var(--tssr-ease);
+}
+
+/* tuiles « Mes modules » de l'accueil */
+.md-typeset .tssr-home-micon.has-icone .tssr-icone {
+  width: 1.5rem;
+  height: 1.5rem;
+}
+
+.md-typeset .tssr-home-module:hover .tssr-home-micon.has-icone {
+  animation: tssr-icone-saut 0.6s var(--tssr-ease);
+}
+
+/* menu de gauche */
+.tssr-icone-nav {
+  flex: none;
+  width: 1rem;
+  height: 1rem;
+  margin-right: 0.45rem;
+  vertical-align: -0.2em;
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
+}
+
+.md-nav__link:has(> .tssr-icone-nav) {
+  display: flex;
+  align-items: flex-start;
+}
+
+.md-nav__link > .tssr-icone-nav {
+  margin-top: 0.05rem;
+}
+
+/* à côté du titre : grande icône qui flotte doucement */
+.md-typeset h1 > .tssr-icone-titre {
+  width: 2.6rem;
+  height: 2.6rem;
+  margin-right: 0.6rem;
+  vertical-align: -0.45em;
+  animation: tssr-icone-flotte 4s ease-in-out infinite;
+}
+
+/* le « > » décoratif devant le titre laisse la place à l'icône */
+.md-typeset h1:has(> .tssr-icone-titre)::before {
+  content: none;
+}
+
+@keyframes tssr-icone-saut {
+  0%   { transform: none; }
+  35%  { transform: translateY(-6px) scale(1.12) rotate(-6deg); }
+  65%  { transform: translateY(1px) scale(0.97); }
+  100% { transform: none; }
+}
+
+@keyframes tssr-icone-flotte {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px) rotate(-3deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset h1 > .tssr-icone-titre,
+  .md-typeset .tssr-card:hover .tssr-card-icon.has-icone,
+  .md-typeset .tssr-home-module:hover .tssr-home-micon.has-icone {
+    animation: none;
+  }
+}
+
+/* les mots longs se coupent avec un tiret au lieu d'être tronqués (« communica-tion ») */
+.md-nav__link:has(> .tssr-icone-nav) .md-ellipsis {
+  overflow: visible;
+  text-overflow: clip;
+  -webkit-hyphens: auto;
+          hyphens: auto;
+}
+
+/* Titres « MON ESPACE » et « SUR CETTE PAGE » : ils restent en haut quand le
+   menu défile, avec un fond plein pour que les entrées passent dessous proprement */
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary .md-nav--primary > .md-nav__title {
+    position: sticky;
+    top: -0.6rem;
+    z-index: 2;
+    background: #0a1f36;
+    box-shadow: 0 8px 12px -10px rgba(0, 0, 0, 0.8);
+  }
+}
+
+@media screen and (min-width: 60em) {
+  .md-sidebar--secondary .md-nav--secondary > .md-nav__title {
+    position: sticky;
+    top: -0.6rem;
+    z-index: 2;
+    background: #0a1f36;
+    box-shadow: 0 8px 12px -10px rgba(0, 0, 0, 0.8);
+  }
+}

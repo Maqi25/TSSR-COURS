@@ -45,3 +45,7 @@ git push
 Suivi de la publication dans l'onglet **Actions** du dépôt. Prérequis (une seule fois) : **Settings → Pages → Source : GitHub Actions**.
 
 Le mode d'emploi détaillé pour remplir les modules, quiz, glossaire et commandes est sur la page [+ Ajouter du contenu](docs/ajouter-du-contenu.md).
+
+## Crédits
+
+Icônes des cours et des modules : [Fluent Emoji](https://github.com/microsoft/fluentui-emoji) de Microsoft (licence MIT, voir `docs/assets/icones/LICENCE.txt`).
