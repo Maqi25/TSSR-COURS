@@ -200,25 +200,28 @@
     return ICONES[parts[0] + "/" + parts[1]] || ICONES[parts[0]] || null;
   }
 
-  function makeImg(name, className) {
+  // size = taille en pixels. Elle est écrite dans l'image elle-même : même si
+  // le navigateur garde une vieille version du CSS en cache, l'icône garde
+  // la bonne taille (16 px dans le menu, plus grande sur les cartes).
+  function makeImg(name, className, size) {
     var img = document.createElement("img");
     img.src = root + "assets/icones/" + name + ".svg";
     img.alt = "";                    // décorative : le titre à côté suffit
     img.className = className;
     img.decoding = "async";
     img.loading = "lazy";
-    img.width = 64;
-    img.height = 64;
+    img.width = size;
+    img.height = size;
     // si le fichier manque, on remet l'emoji d'origine
     img.addEventListener("error", function () { img.remove(); });
     return img;
   }
 
   // Remplace l'emoji d'un conteneur par l'icône (l'emoji revient si l'image manque)
-  function swapEmoji(holder, name, className) {
+  function swapEmoji(holder, name, className, size) {
     if (!holder || !name) return;
     var emoji = holder.textContent;
-    var img = makeImg(name, className);
+    var img = makeImg(name, className, size);
     img.addEventListener("error", function () { holder.textContent = emoji; });
     holder.textContent = "";
     holder.appendChild(img);
@@ -232,23 +235,23 @@
 
     // 1. Cartes des cours et des modules
     document.querySelectorAll("a.tssr-card").forEach(function (card) {
-      swapEmoji(card.querySelector(".tssr-card-icon"), iconFor(card.href), "tssr-icone");
+      swapEmoji(card.querySelector(".tssr-card-icon"), iconFor(card.href), "tssr-icone", 36);
     });
 
     // 2. Tuiles « Mes modules » de l'accueil
     document.querySelectorAll("a.tssr-home-module").forEach(function (tile) {
-      swapEmoji(tile.querySelector(".tssr-home-micon"), iconFor(tile.href), "tssr-icone");
+      swapEmoji(tile.querySelector(".tssr-home-micon"), iconFor(tile.href), "tssr-icone", 28);
     });
 
-    // 3. Menu de gauche (cours et modules)
+    // 3. Menu de gauche (cours et modules) : toutes petites, le texte passe avant
     document.querySelectorAll(".md-nav--primary a.md-nav__link").forEach(function (link) {
       var name = iconFor(link.href);
-      if (name) link.insertBefore(makeImg(name, "tssr-icone-nav"), link.firstChild);
+      if (name) link.insertBefore(makeImg(name, "tssr-icone-nav", 16), link.firstChild);
     });
 
     // 4. À côté du titre de la page
     var h1 = document.querySelector(".md-content h1");
     var name = iconFor(location.href);
-    if (h1 && name) h1.insertBefore(makeImg(name, "tssr-icone-titre"), h1.firstChild);
+    if (h1 && name) h1.insertBefore(makeImg(name, "tssr-icone-titre", 52), h1.firstChild);
   });
 })();

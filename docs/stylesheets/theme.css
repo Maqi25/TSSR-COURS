@@ -961,9 +961,9 @@ html[data-tssr-theme] body[data-md-color-scheme="slate"] {
 /* menu de gauche */
 .tssr-icone-nav {
   flex: none;
-  width: 1rem;
-  height: 1rem;
-  margin-right: 0.45rem;
+  width: 0.8rem;
+  height: 0.8rem;
+  margin-right: 0.4rem;
   vertical-align: -0.2em;
   filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.35));
 }
@@ -1013,6 +1013,8 @@ html[data-tssr-theme] body[data-md-color-scheme="slate"] {
 
 /* les mots longs se coupent avec un tiret au lieu d'être tronqués (« communica-tion ») */
 .md-nav__link:has(> .tssr-icone-nav) .md-ellipsis {
+  flex: 1;
+  min-width: 0;
   overflow: visible;
   text-overflow: clip;
   -webkit-hyphens: auto;
