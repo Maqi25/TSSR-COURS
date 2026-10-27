@@ -8,9 +8,16 @@
  *   "en-cours-ferme" → badge EN COURS 🔒, mais accès fermé comme un cours
  *                  verrouillé (le clic affiche un message) ;
  *   "termine"    → badge ✓ Terminé ;
- *   (cours absent de la liste → aucun badge, accès normal).
+ *   (absent de la liste ou "" → aucun badge, accès normal).
  *
  * POUR CHANGER UN STATUT : modifier la ligne du cours dans STATUTS ci-dessous.
+ *
+ * PAR MODULE : une ligne "dossier-du-cours/dossier-du-module" donne au module
+ * son propre statut, qui passe AVANT celui du cours. Ex. pour verrouiller le
+ * module 6 du cours 1 :
+ *   "cours-01-bases-des-reseaux/module-6-l-adressage-ipv6": "verrouille",
+ * Laisser "" = le module suit le statut de son cours. Une date d'ouverture
+ * peut aussi être ajoutée au module dans OUVERTURE.
  *
  * MODE PROPRIÉTAIRE (toi) : ouvre une fois le site avec #proprio à la fin
  * de l'adresse, ex. https://maqi25.github.io/TSSR-COURS/#proprio
@@ -25,6 +32,14 @@
 window.TSSRStatuts = (function () {
   var STATUTS = {
     "cours-01-bases-des-reseaux": "termine",
+    // modules du cours 1 ("" = suit le statut du cours)
+    "cours-01-bases-des-reseaux/module-1-le-modele-osi": "",
+    "cours-01-bases-des-reseaux/module-2-les-unites-informatiques": "",
+    "cours-01-bases-des-reseaux/module-3-l-adressage-ipv4": "",
+    "cours-01-bases-des-reseaux/module-4-la-communication": "",
+    "cours-01-bases-des-reseaux/module-5-les-premieres-commandes": "",
+    "cours-01-bases-des-reseaux/module-6-l-adressage-ipv6": "",
+
     "cours-02-systeme-client-microsoft": "en-cours-ferme",
     "cours-03-utilisateur-d-une-distribution-gnu-linux": "verrouille",
     "cours-04-administration-d-une-distribution-gnu-linux": "verrouille",
@@ -78,16 +93,25 @@ window.TSSRStatuts = (function () {
 
   var owner = readOwner();
 
-  // Adresse d'une page → dossier du cours ("cours-04-…"), ou null
-  function courseOf(href) {
+  // Adresse d'une page → ["cours-04-…", "module-3-…"] (le module peut manquer), ou null
+  function partsOf(href) {
     var path = new URL(href, location.href).pathname;
     if (!root || path.indexOf(root + "cours/") !== 0) return null;
-    return path.slice((root + "cours/").length).split("/")[0] || null;
+    var parts = path.slice((root + "cours/").length).split("/").filter(Boolean);
+    return parts.length ? parts : null;
   }
 
+  // Statut d'une page : celui du module s'il en a un, sinon celui du cours.
+  // own = true si le statut appartient à cette page elle-même (pour le badge).
   function get(href) {
-    var course = courseOf(href);
-    return course ? { course: course, statut: STATUTS[course] || null, date: OUVERTURE[course] || null } : null;
+    var parts = partsOf(href);
+    if (!parts) return null;
+    var course = parts[0];
+    var moduleKey = parts[1] ? course + "/" + parts[1] : null;
+    if (moduleKey && STATUTS[moduleKey]) {
+      return { course: course, statut: STATUTS[moduleKey], date: OUVERTURE[moduleKey] || null, own: true, isModule: true };
+    }
+    return { course: course, statut: STATUTS[course] || null, date: OUVERTURE[course] || null, own: !moduleKey, isModule: !!moduleKey };
   }
 
   function isLocked(href) {
@@ -154,8 +178,7 @@ window.TSSRStatuts = (function () {
       var s = get(a.href);
       if (!s || !s.statut) return;
       classesOf(s.statut).forEach(function (c) { a.classList.add(c); });
-      var isCoursePage = new URL(a.href, location.href).pathname === root + "cours/" + s.course + "/";
-      if (isCoursePage) a.appendChild(badge(s.statut, s.date));
+      if (s.own) a.appendChild(badge(s.statut, s.date));   // badge seulement là où le statut est posé
     });
 
     // menu de gauche : cours et modules
@@ -174,8 +197,8 @@ window.TSSRStatuts = (function () {
         banner.textContent = owner
           ? "🔓 Cours verrouillé pour les visiteurs (tu le vois car tu es en mode propriétaire)."
           : here.statut === "en-cours-ferme"
-            ? "🔒 Ce cours a lieu en ce moment, mais l'accès est fermé pour l'instant."
-            : "🔒 Ce cours est verrouillé" + (here.date ? " : il ouvrira le " + here.date + "." : ".");
+            ? "🔒 Ce " + (here.isModule ? "module" : "cours") + " a lieu en ce moment, mais l'accès est fermé pour l'instant."
+            : "🔒 Ce " + (here.isModule ? "module" : "cours") + " est verrouillé" + (here.date ? " : il ouvrira le " + here.date + "." : ".");
         h1.insertAdjacentElement("afterend", banner);
       }
     }
