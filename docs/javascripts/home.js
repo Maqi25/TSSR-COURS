@@ -202,8 +202,12 @@
       var isSeen = visited.some(function (url) { return url.indexOf(base) === 0; });
       a.classList.toggle("is-seen", isSeen);
       if (isSeen) seen++;
-      else if (!next) next = a;
+      else if (!next && !a.classList.contains("is-verrouille")) next = a;
     });
+
+    // le cours marqué « en cours » (statuts.js) passe avant tout le reste
+    var current = document.querySelector(".tssr-home-module.is-en-cours");
+    if (current) next = current;
 
     var sub = document.querySelector("[data-home-modules-count]");
     if (sub) sub.textContent = seen + " cours ouvert" + (seen > 1 ? "s" : "") + " sur " + modules.length;
@@ -220,7 +224,9 @@
     var icon = document.createElement("span");
     icon.textContent = "🚀";
     var text = document.createElement("span");
-    text.innerHTML = "<small>Par où commencer ?</small>";
+    text.innerHTML = next.classList.contains("is-en-cours")
+      ? "<small>Ton cours du moment</small>"
+      : "<small>Par où commencer ?</small>";
     var b = document.createElement("b");
     b.textContent = "Cours " + next.querySelector(".tssr-home-num").textContent + " · " + next.querySelector("b").textContent;
     text.appendChild(b);

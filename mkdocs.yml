@@ -57,6 +57,7 @@ extra_css:
 extra_javascript:
   - javascripts/theme.js
   - javascripts/icones.js
+  - javascripts/statuts.js
   - javascripts/filter.js
   - javascripts/quiz.js
   - javascripts/animations.js
