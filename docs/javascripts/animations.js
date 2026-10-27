@@ -75,13 +75,29 @@
     });
   }
 
+  // Halo qui suit la souris + carte qui penche vers elle (variables CSS
+  // --mx/--my pour le halo, --rx/--ry pour l'inclinaison : theme.css § 5)
   function setupSpotlight() {
+    var current = null;
+
+    function flatten(card) {
+      card.style.setProperty("--rx", "0deg");
+      card.style.setProperty("--ry", "0deg");
+    }
+
     document.addEventListener("pointermove", function (e) {
       var card = e.target.closest && e.target.closest(".tssr-card, .tssr-result-card");
+      if (current && current !== card) flatten(current);   // la souris a quitté la carte
+      current = card;
       if (!card) return;
       var rect = card.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / rect.width;    // 0 à gauche → 1 à droite
+      var y = (e.clientY - rect.top) / rect.height;    // 0 en haut → 1 en bas
       card.style.setProperty("--mx", e.clientX - rect.left + "px");
       card.style.setProperty("--my", e.clientY - rect.top + "px");
+      if (reduceMotion) return;
+      card.style.setProperty("--ry", ((x - 0.5) * 8).toFixed(2) + "deg");
+      card.style.setProperty("--rx", ((0.5 - y) * 8).toFixed(2) + "deg");
     });
   }
 

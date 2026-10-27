@@ -183,8 +183,26 @@
     });
   }
 
+  // ------------------------------------------------------------------
+  // Pastille « ✓ vu » sur les cartes des cours et modules déjà ouverts.
+  // La liste des pages ouvertes est tenue par home.js (clé tssr-visited-pages).
+  // ------------------------------------------------------------------
+  function markSeenCards() {
+    var visited;
+    try { visited = JSON.parse(localStorage.getItem("tssr-visited-pages") || "[]"); } catch (e) { visited = []; }
+    if (!Array.isArray(visited) || !visited.length) return;
+
+    document.querySelectorAll("a.tssr-card").forEach(function (card) {
+      var base = card.pathname;   // l'adresse complète de la carte
+      var seen = visited.some(function (url) { return url.indexOf(base) === 0; });
+      card.classList.toggle("is-seen", seen);
+      if (seen) card.setAttribute("title", "Déjà ouvert");
+    });
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     setupPicker();
     setupNav();
+    markSeenCards();
   });
 })();

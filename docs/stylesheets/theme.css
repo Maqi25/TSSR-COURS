@@ -334,3 +334,328 @@ html[data-tssr-theme] body[data-md-color-scheme="slate"] {
     transition: none;
   }
 }
+
+/* ==========================================================================
+   5. Les boutons de tout le site, au même style que l'accueil :
+      relief (liseré clair + ombre), coins très arrondis, couleur du thème,
+      petit enfoncement au clic. L'inclinaison 3D vient de animations.js.
+   ========================================================================== */
+:root {
+  --tssr-btn-radius: 16px;
+  --tssr-btn-relief: 0 1px 0 rgba(255, 255, 255, 0.55) inset, 0 2px 4px rgba(15, 30, 60, 0.05), 0 10px 24px -14px rgba(15, 30, 60, 0.4);
+}
+
+[data-md-color-scheme="slate"] {
+  --tssr-btn-relief: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 2px 4px rgba(0, 0, 0, 0.25), 0 12px 26px -14px rgba(0, 0, 0, 0.8);
+}
+
+/* --- Cartes des cours et des modules ------------------------------------ */
+.md-typeset .tssr-card,
+.md-typeset .tssr-result-card {
+  border-radius: var(--tssr-btn-radius);
+  box-shadow: var(--tssr-btn-relief);
+  transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+}
+
+.md-typeset .tssr-card:hover,
+.md-typeset .tssr-result-card:hover {
+  --lift: -4px;
+  transform: perspective(800px) rotateX(var(--rx, 0deg)) rotateY(var(--ry, 0deg)) translateY(var(--lift, 0px));
+  box-shadow: var(--tssr-btn-relief), 0 18px 34px -18px var(--md-primary-fg-color);
+}
+
+.md-typeset .tssr-card:active,
+.md-typeset .tssr-result-card:active {
+  --lift: -1px;
+}
+
+.md-typeset .tssr-card {
+  padding: 1.1rem 2.2rem 1.1rem 1.1rem;
+}
+
+/* l'emoji devient une pastille colorée */
+.md-typeset .tssr-card .tssr-card-icon {
+  display: grid;
+  place-items: center;
+  width: 2.7rem;
+  height: 2.7rem;
+  margin-bottom: 0.8rem;
+  border-radius: 14px;
+  font-size: 1.35rem;
+  background: linear-gradient(145deg,
+    color-mix(in srgb, var(--md-primary-fg-color) 26%, transparent),
+    color-mix(in srgb, var(--md-primary-fg-color) 8%, transparent));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.35) inset, 0 6px 14px -8px var(--md-primary-fg-color);
+}
+
+/* flèche en haut à droite, qui file au survol */
+.md-typeset .tssr-card::after {
+  content: "↗";
+  position: absolute;
+  top: 0.9rem;
+  right: 1rem;
+  font-weight: 900;
+  color: var(--md-accent-fg-color);
+  opacity: 0.55;
+  transition: transform 0.25s var(--tssr-ease), opacity 0.25s ease;
+}
+
+.md-typeset .tssr-card:hover::after {
+  opacity: 1;
+  transform: translate(3px, -3px);
+}
+
+/* déjà ouvert (theme.js) : pastille « ✓ vu » à la place de la flèche */
+.md-typeset .tssr-card.is-seen::after {
+  content: "✓ vu";
+  padding: 0.1rem 0.45rem;
+  border-radius: 20px;
+  font-size: 0.58rem;
+  color: #fff;
+  background: #10b981;
+  opacity: 1;
+  transform: none;
+}
+
+/* --- Quiz : réponses en gros boutons avec lettre A, B, C, D ------------- */
+.md-typeset .tssr-quiz {
+  border-radius: 20px;
+}
+
+.tssr-quiz-question {
+  padding: 1rem;
+  border-radius: var(--tssr-btn-radius);
+  background: color-mix(in srgb, var(--md-default-bg-color) 45%, transparent);
+  border: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.tssr-quiz-options {
+  counter-reset: tssr-option;
+}
+
+.tssr-quiz-options label {
+  position: relative;
+  gap: 0.75rem;
+  padding: 0.65rem 0.9rem;
+  border-radius: 14px;
+  background: var(--md-default-bg-color);
+  box-shadow: var(--tssr-btn-relief);
+}
+
+/* le rond radio est caché (mais reste utilisable au clavier) */
+.tssr-quiz-options label input {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.tssr-quiz-options label::before {
+  counter-increment: tssr-option;
+  content: counter(tssr-option, upper-alpha);
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 1.6rem;
+  height: 1.6rem;
+  border-radius: 10px;
+  font-size: 0.72rem;
+  font-weight: 800;
+  color: var(--md-accent-fg-color);
+  background: var(--md-accent-fg-color--transparent);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.tssr-quiz-options label:hover {
+  border-color: var(--md-accent-fg-color);
+}
+
+.tssr-quiz-options label:has(input:checked) {
+  border-color: var(--md-accent-fg-color);
+  background: color-mix(in srgb, var(--md-accent-fg-color) 10%, var(--md-default-bg-color));
+}
+
+.tssr-quiz-options label:has(input:checked)::before {
+  color: #fff;
+  background: var(--md-accent-fg-color);
+}
+
+.tssr-quiz-options label:has(input:focus-visible) {
+  outline: 2px solid var(--md-accent-fg-color);
+  outline-offset: 2px;
+}
+
+.tssr-quiz-options label.correct::before   { content: "✓"; color: #fff; background: #2e7d32; }
+.tssr-quiz-options label.incorrect::before { content: "✗"; color: #fff; background: #c62828; }
+
+.tssr-quiz button.tssr-quiz-submit {
+  margin-top: 1rem;
+  padding: 0.7rem 1.6rem;
+  font-weight: 800;
+}
+
+.tssr-quiz-result {
+  border-radius: var(--tssr-btn-radius);
+  box-shadow: var(--tssr-btn-relief);
+}
+
+/* --- Exercices dépliables (??? question) -------------------------------- */
+.md-typeset details {
+  border-radius: var(--tssr-btn-radius);
+  overflow: hidden;
+}
+
+.md-typeset details > summary {
+  padding-top: 0.7rem;
+  padding-bottom: 0.7rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.md-typeset details > summary:hover {
+  background-color: color-mix(in srgb, var(--md-accent-fg-color) 14%, transparent);
+}
+
+.md-typeset details[open] > summary {
+  border-bottom: 1px solid var(--md-default-fg-color--lightest);
+}
+
+/* --- Filtres du glossaire et des commandes ------------------------------ */
+.tssr-filter-bar {
+  border-radius: 20px;
+  background: var(--tssr-glass);
+  border-color: var(--tssr-glass-border);
+  box-shadow: var(--tssr-shadow);
+}
+
+.tssr-filter-bar input[type="text"],
+.tssr-filter-bar select,
+.md-typeset .tssr-calc input {
+  padding: 0.55rem 0.8rem;
+  border-radius: 12px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.08) inset;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.tssr-filter-bar input[type="text"]:focus,
+.tssr-filter-bar select:focus,
+.md-typeset .tssr-calc input:focus {
+  outline: none;
+  border-color: var(--md-accent-fg-color);
+  box-shadow: 0 0 0 3px var(--md-accent-fg-color--transparent);
+}
+
+.tssr-filter-alpha button {
+  min-width: 2rem;
+  padding: 0.35rem 0.5rem;
+  border-radius: 10px;
+  font-weight: 700;
+  box-shadow: var(--tssr-btn-relief);
+  transition: transform 0.15s var(--tssr-ease), background-color 0.15s ease, color 0.15s ease;
+}
+
+.tssr-filter-alpha button:hover {
+  transform: translateY(-2px);
+}
+
+.tssr-filter-alpha button:active {
+  transform: translateY(1px);
+}
+
+.tssr-filter-alpha button.active {
+  background: linear-gradient(135deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+  border-color: transparent;
+  color: #fff;
+}
+
+/* Pages sans sommaire : on n'affiche pas un cadre vide à droite */
+@media screen and (min-width: 60em) {
+  .md-sidebar--secondary:not(:has(.md-nav__link)) .md-sidebar__scrollwrap {
+    border: 0;
+    background: none;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+            backdrop-filter: none;
+  }
+}
+
+/* --- Boutons de Material ------------------------------------------------- */
+/* Page précédente / suivante, en bas */
+.md-footer__link {
+  margin: 0.6rem 0.4rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: var(--tssr-btn-radius);
+  background: rgba(255, 255, 255, 0.06);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 10px 22px -14px rgba(0, 0, 0, 0.6);
+  opacity: 1;
+  transition: transform 0.2s var(--tssr-ease), background-color 0.2s ease;
+}
+
+.md-footer__link:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--md-primary-fg-color) 35%, transparent);
+}
+
+/* Retour en haut */
+.md-top {
+  border-radius: 20px;
+  color: #fff;
+  background: linear-gradient(135deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, 0 10px 24px -10px var(--md-primary-fg-color);
+}
+
+.md-top:hover,
+.md-top:focus {
+  color: #fff;
+  background: linear-gradient(135deg, var(--md-accent-fg-color), var(--md-primary-fg-color));
+}
+
+/* Copier le code */
+.md-typeset .md-clipboard {
+  border-radius: 8px;
+  transition: color 0.2s ease, background-color 0.2s ease;
+}
+
+.md-typeset .md-clipboard:hover {
+  background: var(--md-accent-fg-color--transparent);
+}
+
+/* Onglets (=== "Windows" / === "Linux") */
+.md-typeset .tabbed-labels > label {
+  margin-right: 0.3rem;
+  padding: 0.6rem 0.9rem;
+  border-radius: 12px 12px 0 0;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.md-typeset .tabbed-labels > label:hover {
+  background: var(--md-accent-fg-color--transparent);
+}
+
+/* Crayon « modifier la page » */
+.md-content__button {
+  padding: 0.35rem;
+  border-radius: 12px;
+  transition: background-color 0.2s ease, transform 0.2s var(--tssr-ease);
+}
+
+.md-content__button:hover {
+  background: var(--md-accent-fg-color--transparent);
+  transform: rotate(-8deg);
+}
+
+/* Recherche */
+@media screen and (min-width: 60em) {
+  .md-search__form {
+    border-radius: 14px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.12) inset;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset .tssr-card,
+  .md-typeset .tssr-result-card {
+    transform: none !important;
+  }
+}
