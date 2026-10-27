@@ -9,163 +9,66 @@
    0. Variables propres aux animations
    -------------------------------------------------------------------- */
 :root {
-  /* Scène "Retour vers le futur" — mode clair : aube pastel */
-  --tssr-sky-top: #efe9ff;
-  --tssr-sky-mid: #ffd9ec;
-  --tssr-sky-low: #ffc4a3;
-  --tssr-sun-top: #ffd36b;
-  --tssr-sun-bottom: #ff4f9a;
-  --tssr-sun-glow: rgba(255, 110, 150, 0.35);
-  --tssr-floor: #f6e3f7;
-  --tssr-floor-line: rgba(214, 51, 132, 0.45);
-  --tssr-horizon: #ff5ca8;
-  --tssr-star: rgba(120, 80, 200, 0);
-  --tssr-fire-1: #ffb300;
-  --tssr-fire-2: #ff3d00;
-  --tssr-glass: rgba(255, 255, 255, 0.72);
-  --tssr-glass-border: rgba(214, 51, 132, 0.18);
-  --tssr-shadow: 0 10px 30px -12px rgba(120, 20, 80, 0.25);
+  --tssr-glass: rgba(255, 255, 255, 0.78);
+  --tssr-glass-border: rgba(255, 255, 255, 0.65);
+  --tssr-shadow: 0 1px 0 rgba(255, 255, 255, 0.7) inset, 0 2px 6px rgba(15, 30, 60, 0.06), 0 18px 40px -16px rgba(15, 30, 60, 0.35);
   --tssr-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
 [data-md-color-scheme="slate"] {
-  /* Mode sombre : nuit néon façon 1985 → 2026 */
-  --tssr-sky-top: #05031a;
-  --tssr-sky-mid: #1d0b3f;
-  --tssr-sky-low: #5a1466;
-  --tssr-sun-top: #ffe14d;
-  --tssr-sun-bottom: #ff2e88;
-  --tssr-sun-glow: rgba(255, 46, 136, 0.45);
-  --tssr-floor: #0a0420;
-  --tssr-floor-line: rgba(34, 211, 238, 0.55);
-  --tssr-horizon: #ff2e88;
-  --tssr-star: rgba(255, 255, 255, 0.85);
-  --tssr-glass: rgba(12, 8, 30, 0.74);
-  --tssr-glass-border: rgba(34, 211, 238, 0.18);
-  --tssr-shadow: 0 10px 30px -12px rgba(0, 0, 0, 0.7);
+  --tssr-glass: rgba(9, 22, 40, 0.8);
+  --tssr-glass-border: rgba(148, 197, 255, 0.14);
+  --tssr-shadow: 0 1px 0 rgba(255, 255, 255, 0.06) inset, 0 2px 6px rgba(0, 0, 0, 0.3), 0 20px 44px -16px rgba(0, 0, 0, 0.8);
 }
 
 /* --------------------------------------------------------------------
-   1. Arrière-plan "Retour vers le futur" : ciel de coucher de soleil,
-      soleil rétro rayé, sol en grille néon qui défile et traînées de feu
-      de la DeLorean. La scène (div .tssr-bttf) est créée par animations.js.
+   1. Arrière-plan : la salle de classe futuriste (assets/images/
+      fond-salle-futuriste.jpg). La div .tssr-bg est créée par animations.js,
+      qui la décale légèrement avec la souris (effet de profondeur).
+      Un voile teinté de la couleur du thème garde le texte lisible.
    -------------------------------------------------------------------- */
-.tssr-bttf {
-  --tssr-horizon-h: 38vh;            /* hauteur du sol */
+.tssr-bg {
   position: fixed;
   inset: 0;
   z-index: 0;
   overflow: hidden;
   pointer-events: none;
-  background: linear-gradient(to bottom,
-    var(--tssr-sky-top) 0%,
-    var(--tssr-sky-mid) 42%,
-    var(--tssr-sky-low) calc(100% - var(--tssr-horizon-h)));
 }
 
-/* Étoiles (visibles en mode sombre) */
-.tssr-bttf__stars {
+.tssr-bg__img {
   position: absolute;
-  inset: 0 0 var(--tssr-horizon-h) 0;
-  background-image:
-    radial-gradient(1px 1px at 20px 30px, var(--tssr-star), transparent),
-    radial-gradient(1px 1px at 120px 80px, var(--tssr-star), transparent),
-    radial-gradient(1.5px 1.5px at 200px 150px, var(--tssr-star), transparent),
-    radial-gradient(1px 1px at 60px 190px, var(--tssr-star), transparent),
-    radial-gradient(1.5px 1.5px at 260px 40px, var(--tssr-star), transparent);
-  background-size: 300px 220px;
-  -webkit-mask-image: linear-gradient(#000 30%, transparent 90%);
-          mask-image: linear-gradient(#000 30%, transparent 90%);
-  animation: tssr-twinkle 5s ease-in-out infinite alternate;
+  inset: -40px;
+  background: url("../assets/images/fond-salle-futuriste.jpg") center / cover no-repeat;
+  filter: blur(2px) saturate(115%);
+  transform: translate3d(var(--bg-x, 0px), var(--bg-y, 0px), 0) scale(1.06);
+  transition: transform 0.6s var(--tssr-ease);
 }
 
-/* Halo derrière le soleil */
-.tssr-bttf__glow {
-  position: absolute;
-  left: 50%;
-  bottom: calc(var(--tssr-horizon-h) - 20vh);
-  width: 90vh;
-  height: 90vh;
-  transform: translateX(-50%);
-  background: radial-gradient(circle, var(--tssr-sun-glow), transparent 60%);
-  animation: tssr-pulse 6s ease-in-out infinite alternate;
-}
-
-/* Soleil rétro découpé en bandes */
-.tssr-bttf__sun {
-  position: absolute;
-  left: 50%;
-  bottom: calc(var(--tssr-horizon-h) - 6vh);
-  width: min(44vh, 70vw);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  transform: translateX(-50%);
-  background: linear-gradient(to bottom, var(--tssr-sun-top) 10%, var(--tssr-sun-bottom) 85%);
-  -webkit-mask-image: linear-gradient(to bottom,
-    #000 50%, transparent 50% 53%, #000 53% 61%, transparent 61% 65%,
-    #000 65% 72%, transparent 72% 77%, #000 77% 83%, transparent 83% 89%, #000 89%);
-          mask-image: linear-gradient(to bottom,
-    #000 50%, transparent 50% 53%, #000 53% 61%, transparent 61% 65%,
-    #000 65% 72%, transparent 72% 77%, #000 77% 83%, transparent 83% 89%, #000 89%);
-}
-
-/* Sol : plan en perspective qui file vers l'horizon */
-.tssr-bttf__floor {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: var(--tssr-horizon-h);
-  perspective: 18vh;
-  perspective-origin: 50% 0;
-  overflow: hidden;
-  background: var(--tssr-floor);
-  border-top: 2px solid var(--tssr-horizon);
-  box-shadow: 0 0 24px 4px var(--tssr-horizon);
-}
-
-.tssr-bttf__plane {
-  position: absolute;
-  left: -100%;
-  right: -100%;
-  top: -60px;
-  height: 400%;
-  transform-origin: 50% 0;
-  transform: rotateX(72deg);
-  background-image:
-    linear-gradient(var(--tssr-floor-line) 2px, transparent 2px),
-    linear-gradient(90deg, var(--tssr-floor-line) 2px, transparent 2px);
-  background-size: 60px 60px;
-  background-position: center top;
-  -webkit-mask-image: linear-gradient(transparent 0%, #000 12%);
-          mask-image: linear-gradient(transparent 0%, #000 12%);
-  animation: tssr-drive 1.4s linear infinite;
-}
-
-/* Les deux traînées de feu laissées par les pneus */
-.tssr-bttf__plane::before,
-.tssr-bttf__plane::after {
-  content: "";
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  width: 10px;
-  background: linear-gradient(to bottom,
-    transparent 0%, var(--tssr-fire-2) 15%, var(--tssr-fire-1) 60%, #fff3c4 100%);
-  filter: blur(2px) drop-shadow(0 0 8px var(--tssr-fire-2));
-  animation: tssr-flicker 0.18s steps(2) infinite alternate;
-}
-.tssr-bttf__plane::before { left: calc(50% - 70px); }
-.tssr-bttf__plane::after  { left: calc(50% + 60px); }
-
-/* Voile de lecture : adoucit la scène derrière le texte */
-.tssr-bttf__veil {
+.tssr-bg__veil {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 35%, transparent 30%, rgba(0, 0, 0, 0.18) 100%);
+  background:
+    radial-gradient(ellipse at 50% 0%, transparent 0%, rgba(240, 246, 255, 0.35) 70%),
+    linear-gradient(160deg,
+      color-mix(in srgb, var(--md-primary-fg-color) 22%, rgba(255, 255, 255, 0.35)) 0%,
+      rgba(255, 255, 255, 0.2) 50%,
+      color-mix(in srgb, var(--md-primary-fg-color) 18%, rgba(255, 255, 255, 0.3)) 100%);
 }
 
-/* Le contenu passe au-dessus du fond */
+[data-md-color-scheme="slate"] .tssr-bg__img {
+  filter: blur(2px) saturate(115%) brightness(0.8);
+}
+
+[data-md-color-scheme="slate"] .tssr-bg__veil {
+  background:
+    radial-gradient(ellipse at 50% 0%, transparent 0%, rgba(3, 10, 22, 0.45) 80%),
+    linear-gradient(160deg,
+      color-mix(in srgb, var(--md-primary-fg-color) 30%, rgba(4, 12, 26, 0.35)) 0%,
+      rgba(4, 12, 26, 0.3) 50%,
+      color-mix(in srgb, var(--md-primary-fg-color) 25%, rgba(4, 12, 26, 0.45)) 100%);
+}
+
+
 .md-container {
   position: relative;
   z-index: 1;
@@ -216,26 +119,6 @@
     -webkit-backdrop-filter: blur(10px);
             backdrop-filter: blur(10px);
   }
-}
-
-@keyframes tssr-drive {
-  from { transform: rotateX(72deg) translateY(0); }
-  to   { transform: rotateX(72deg) translateY(60px); }
-}
-
-@keyframes tssr-flicker {
-  from { opacity: 0.75; }
-  to   { opacity: 1; }
-}
-
-@keyframes tssr-pulse {
-  from { opacity: 0.75; transform: translateX(-50%) scale(1); }
-  to   { opacity: 1;    transform: translateX(-50%) scale(1.06); }
-}
-
-@keyframes tssr-twinkle {
-  from { opacity: 0.55; }
-  to   { opacity: 1; }
 }
 
 /* --------------------------------------------------------------------
@@ -624,7 +507,7 @@
 }
 
 @media print {
-  .tssr-bttf,
+  .tssr-bg,
   .tssr-progress {
     display: none;
   }

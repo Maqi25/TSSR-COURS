@@ -52,8 +52,10 @@ extra_css:
   - stylesheets/extra.css
   - stylesheets/animations.css
   - stylesheets/home.css
+  - stylesheets/theme.css
 
 extra_javascript:
+  - javascripts/theme.js
   - javascripts/filter.js
   - javascripts/quiz.js
   - javascripts/animations.js

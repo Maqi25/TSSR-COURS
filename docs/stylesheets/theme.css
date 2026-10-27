@@ -1,0 +1,336 @@
+/* ==========================================================================
+   theme.css — couleur du site au choix, relief des cadres et menu de gauche
+   façon « tableau de bord ». Le comportement est dans javascripts/theme.js.
+   Chargé en dernier : ses règles passent devant celles des autres feuilles.
+   ========================================================================== */
+
+/* --------------------------------------------------------------------
+   1. Les couleurs au choix
+   theme.js pose data-tssr-theme="…" sur <html>. Chaque thème donne
+   3 nuances : --tssr-c (principale), --tssr-c-dark (liens en mode clair),
+   --tssr-c-neon (liens et accents en mode sombre).
+   -------------------------------------------------------------------- */
+html[data-tssr-theme="cyan"]   { --tssr-c: #0891b2; --tssr-c-dark: #0e7490; --tssr-c-neon: #22d3ee; }
+html[data-tssr-theme="bleu"]   { --tssr-c: #2563eb; --tssr-c-dark: #1d4ed8; --tssr-c-neon: #60a5fa; }
+html[data-tssr-theme="violet"] { --tssr-c: #7c3aed; --tssr-c-dark: #6d28d9; --tssr-c-neon: #a78bfa; }
+html[data-tssr-theme="rose"]   { --tssr-c: #db2777; --tssr-c-dark: #be185d; --tssr-c-neon: #f472b6; }
+html[data-tssr-theme="vert"]   { --tssr-c: #059669; --tssr-c-dark: #047857; --tssr-c-neon: #34d399; }
+html[data-tssr-theme="orange"] { --tssr-c: #ea580c; --tssr-c-dark: #c2410c; --tssr-c-neon: #fb923c; }
+
+/* Material range ses couleurs sur <body> : on les remplace par celles du thème */
+html[data-tssr-theme] body[data-md-color-scheme="default"] {
+  --md-primary-fg-color: var(--tssr-c);
+  --md-primary-fg-color--light: var(--tssr-c-neon);
+  --md-primary-fg-color--dark: var(--tssr-c-dark);
+  --md-accent-fg-color: var(--tssr-c-dark);
+  --md-accent-fg-color--transparent: color-mix(in srgb, var(--tssr-c-dark) 10%, transparent);
+  --md-typeset-a-color: var(--tssr-c-dark);
+  --tssr-home-cyan: var(--tssr-c);
+}
+
+html[data-tssr-theme] body[data-md-color-scheme="slate"] {
+  --md-primary-fg-color: var(--tssr-c-dark);
+  --md-primary-fg-color--light: var(--tssr-c-neon);
+  --md-primary-fg-color--dark: color-mix(in srgb, var(--tssr-c-dark) 55%, #000);
+  --md-accent-fg-color: var(--tssr-c-neon);
+  --md-accent-fg-color--transparent: color-mix(in srgb, var(--tssr-c-neon) 15%, transparent);
+  --md-typeset-a-color: var(--tssr-c-neon);
+  --tssr-home-cyan: var(--tssr-c-neon);
+}
+
+/* --------------------------------------------------------------------
+   2. Le relief : chaque cadre est une plaque de verre posée au-dessus du
+   fond (ombre douce en dessous, liseré clair en haut, coins arrondis)
+   -------------------------------------------------------------------- */
+.md-header {
+  background-color: color-mix(in srgb, var(--md-primary-fg-color) 72%, transparent);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.15) inset, 0 8px 28px -12px rgba(0, 0, 0, 0.45);
+}
+
+@media screen and (min-width: 60em) {
+  .md-main__inner .md-content,
+  .md-sidebar--secondary .md-sidebar__scrollwrap {
+    border-radius: 20px;
+    -webkit-backdrop-filter: blur(16px) saturate(150%);
+            backdrop-filter: blur(16px) saturate(150%);
+  }
+}
+
+.md-typeset .admonition,
+.md-typeset details,
+.md-typeset .md-typeset__table,
+.md-typeset .tssr-home-panel,
+.md-typeset .tssr-quiz {
+  box-shadow: var(--tssr-shadow);
+}
+
+.md-typeset .md-typeset__table {
+  border-radius: 14px;
+}
+
+/* Boutons : dégradé + ombre colorée, s'enfoncent au clic */
+.md-typeset .md-button {
+  border-radius: 12px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.25) inset, 0 6px 16px -8px var(--md-primary-fg-color);
+}
+
+.md-typeset .md-button--primary {
+  background: linear-gradient(135deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+  border-color: transparent;
+}
+
+.md-typeset .md-button:active {
+  transform: translateY(1px);
+  box-shadow: 0 2px 6px -4px var(--md-primary-fg-color);
+}
+
+/* --------------------------------------------------------------------
+   3. Menu de gauche façon tableau de bord : panneau bleu nuit, titre
+   « MON ESPACE » doré, icônes dorées, entrée active surlignée
+   -------------------------------------------------------------------- */
+:root {
+  --tssr-nav-bg: rgba(8, 28, 48, 0.9);
+  --tssr-nav-fg: #e8f1fb;
+  --tssr-nav-muted: #9fb3c8;
+  --tssr-nav-gold: #f5a524;
+}
+
+@media screen and (min-width: 76.25em) {
+  .md-sidebar--primary .md-sidebar__scrollwrap {
+    padding: 0.6rem 0 0.8rem;
+    border-radius: 20px;
+    border: 1px solid rgba(148, 197, 255, 0.14);
+    background: var(--tssr-nav-bg);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 20px 44px -18px rgba(0, 0, 0, 0.7);
+  }
+
+  /* Titre : « MON ESPACE » en petites capitales dorées, sans logo */
+  .md-sidebar--primary .md-nav--primary > .md-nav__title {
+    padding: 0.5rem 1.1rem 0.6rem;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--tssr-nav-gold);
+  }
+
+  .md-sidebar--primary .md-nav--primary > .md-nav__title .md-logo {
+    display: none;
+  }
+
+  /* Tous les liens du panneau sont clairs (le fond est toujours sombre) */
+  .md-sidebar--primary .md-nav__link,
+  .md-sidebar--primary .md-nav__link .md-nav__icon {
+    color: var(--tssr-nav-muted);
+  }
+
+  .md-sidebar--primary .md-nav__link:hover,
+  .md-sidebar--primary .md-nav__link--active,
+  .md-sidebar--primary .md-nav__item--active > .md-nav__link {
+    color: var(--tssr-nav-fg);
+  }
+
+  .md-sidebar--primary .md-nav__link--active:not(.md-nav__container) {
+    color: var(--md-accent-fg-color);
+  }
+
+  /* Les entrées principales deviennent des boutons */
+  .md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link {
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin: 0.2rem 0.6rem;
+    padding: 0.6rem 0.75rem;
+    border-radius: 14px;
+    border: 1px solid transparent;
+    font-size: 0.72rem;
+    font-weight: 700;
+    color: var(--tssr-nav-fg);
+    transition: background-color 0.2s ease, border-color 0.2s ease, transform 0.2s var(--tssr-ease);
+  }
+
+  .md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link:hover {
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateX(3px);
+  }
+
+  /* Bouton « sommaire » de Material : caché sur grand écran (le sommaire est à droite) */
+  .md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item > label.md-nav__link[for="__toc"] {
+    display: none;
+  }
+
+  /* Entrée à sous-menu (Cours, TP…) : le lien prend toute la place, la flèche reste à droite */
+  .md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__container > a.md-nav__link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    flex: 1;
+    margin: 0;
+    padding: 0;
+    color: inherit;
+    transform: none;
+  }
+
+  .md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__container > label.md-nav__link {
+    margin: 0;
+    padding: 0;
+    color: var(--tssr-nav-muted);
+  }
+
+  /* Entrée active : fond éclairé + barre lumineuse à gauche */
+  .md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item--active > .md-nav__link {
+    border-color: color-mix(in srgb, var(--md-accent-fg-color) 35%, transparent);
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--md-accent-fg-color) 22%, transparent),
+      color-mix(in srgb, var(--md-accent-fg-color) 6%, transparent));
+    box-shadow: 0 8px 20px -12px var(--md-accent-fg-color);
+    color: #fff;
+  }
+
+  .md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item--active > .md-nav__link::before {
+    content: "";
+    position: absolute;
+    left: -1px;
+    top: 22%;
+    bottom: 22%;
+    width: 3px;
+    border-radius: 3px;
+    background: var(--md-accent-fg-color);
+    box-shadow: 0 0 10px var(--md-accent-fg-color);
+  }
+
+  /* Sous-menus : décalés sous leur bouton, avec un trait guide */
+  .md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav > .md-nav__list {
+    margin: 0.1rem 0.6rem 0.4rem 1.9rem;
+    padding-left: 0.6rem;
+    border-left: 1px solid rgba(148, 197, 255, 0.18);
+  }
+}
+
+/* Icônes ajoutées par theme.js devant chaque entrée principale */
+.tssr-nav-icon {
+  flex: none;
+  width: 1.05rem;
+  height: 1.05rem;
+  color: var(--tssr-nav-gold);
+  filter: drop-shadow(0 0 6px color-mix(in srgb, var(--tssr-nav-gold) 45%, transparent));
+}
+
+@media screen and (max-width: 76.1875em) {
+  .tssr-nav-icon {
+    margin-right: 0.6rem;
+    vertical-align: -0.2em;
+  }
+}
+
+/* --------------------------------------------------------------------
+   4. Le sélecteur de couleur (bouton 🎨 dans l'en-tête)
+   -------------------------------------------------------------------- */
+.tssr-theme-picker {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.tssr-theme-btn {
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 0.2rem;
+  border-radius: 50%;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.3s var(--tssr-ease);
+}
+
+.tssr-theme-btn:hover,
+.tssr-theme-btn[aria-expanded="true"] {
+  background: rgba(255, 255, 255, 0.15);
+  transform: rotate(-20deg);
+}
+
+.tssr-theme-btn svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: currentColor;
+}
+
+.tssr-theme-menu {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  z-index: 10;
+  width: 13.5rem;
+  padding: 0.8rem;
+  border-radius: 16px;
+  border: 1px solid var(--tssr-glass-border);
+  background: var(--md-default-bg-color);
+  box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.55);
+  color: var(--md-default-fg-color);
+  opacity: 0;
+  transform: translateY(-6px) scale(0.97);
+  transform-origin: top right;
+  visibility: hidden;
+  transition: opacity 0.18s ease, transform 0.18s var(--tssr-ease), visibility 0.18s;
+}
+
+.tssr-theme-menu.is-open {
+  opacity: 1;
+  transform: none;
+  visibility: visible;
+}
+
+.tssr-theme-menu p {
+  margin: 0 0 0.6rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--md-default-fg-color--light);
+}
+
+.tssr-theme-swatches {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.5rem;
+}
+
+.tssr-theme-swatch {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  padding: 0.45rem 0.2rem;
+  border-radius: 12px;
+  border: 1px solid transparent;
+  font-size: 0.6rem;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.tssr-theme-swatch:hover {
+  background: var(--md-default-fg-color--lightest);
+}
+
+.tssr-theme-swatch[aria-pressed="true"] {
+  border-color: var(--swatch);
+  background: color-mix(in srgb, var(--swatch) 12%, transparent);
+}
+
+.tssr-theme-swatch span {
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, rgba(255, 255, 255, 0.55), transparent 45%), var(--swatch);
+  box-shadow: 0 4px 10px -4px var(--swatch), 0 0 0 2px var(--md-default-bg-color) inset;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tssr-theme-btn,
+  .tssr-theme-menu {
+    transition: none;
+  }
+}

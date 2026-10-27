@@ -85,22 +85,31 @@
     });
   }
 
-  // Décor "Retour vers le futur" en arrière-plan (styles : animations.css § 1)
+  // Fond « salle de classe futuriste » (styles : animations.css § 1).
+  // L'image glisse de quelques pixels à l'opposé de la souris : comme
+  // elle est « loin » derrière les cadres, on a une impression de profondeur.
   function setupBackdrop() {
-    var scene = document.createElement("div");
-    scene.className = "tssr-bttf";
-    scene.setAttribute("aria-hidden", "true");
-    ["stars", "glow", "sun", "floor", "veil"].forEach(function (part) {
-      var el = document.createElement("div");
-      el.className = "tssr-bttf__" + part;
-      if (part === "floor") {
-        var plane = document.createElement("div");
-        plane.className = "tssr-bttf__plane";
-        el.appendChild(plane);
-      }
-      scene.appendChild(el);
+    var bg = document.createElement("div");
+    bg.className = "tssr-bg";
+    bg.setAttribute("aria-hidden", "true");
+    bg.innerHTML = '<div class="tssr-bg__img"></div><div class="tssr-bg__veil"></div>';
+    document.body.insertBefore(bg, document.body.firstChild);
+    if (reduceMotion) return;
+
+    var img = bg.firstChild;
+    var pending = false;
+    var x = 0, y = 0;
+    document.addEventListener("pointermove", function (e) {
+      x = (e.clientX / window.innerWidth - 0.5) * -24;    // de -12 px à +12 px
+      y = (e.clientY / window.innerHeight - 0.5) * -16;
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(function () {   // au plus une mise à jour par image
+        img.style.setProperty("--bg-x", x.toFixed(1) + "px");
+        img.style.setProperty("--bg-y", y.toFixed(1) + "px");
+        pending = false;
+      });
     });
-    document.body.insertBefore(scene, document.body.firstChild);
   }
 
   function setupProgress() {
