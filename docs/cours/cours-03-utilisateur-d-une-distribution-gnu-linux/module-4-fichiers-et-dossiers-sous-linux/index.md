@@ -46,41 +46,29 @@ Tu es dans /home/user30 et tu veux atteindre /home/user30/Documents/cv.txt
 
 ## 📖 Cours consolidé
 
-### 1. L'arborescence
+### 1. L'arborescence (norme FHS)
 
-Linux range ses dossiers selon une norme commune à toutes les distributions : la **FHS** (*Filesystem Hierarchy Standard*).
-
-| Dossier | Contient | Équivalent Windows (approx.) |
+| Dossier | Contient | ≈ Windows |
 |---|---|---|
-| **`/`** | La **racine** : le point de départ de tout | `C:\` |
-| **`/home`** | Un dossier **par utilisateur** : `/home/user30` | `C:\Users` |
-| **`/root`** | Le dossier personnel de **root** | |
-| **`/etc`** | Les **fichiers de configuration** (texte) | Le registre, en partie |
-| **`/var`** | Les données **qui varient** : **`/var/log`** (les **journaux**), sites web, mails | |
-| **`/usr/bin`**, `/bin` | Les **commandes** (programmes) | `C:\Program Files`, `C:\Windows\System32` |
-| **`/tmp`** | Les fichiers **temporaires** | `C:\Windows\Temp` |
-| **`/dev`** | Les **périphériques** vus comme des fichiers : `/dev/sda` = 1ᵉʳ disque | |
-| **`/media`**, `/mnt` | Les **clés USB** et disques **montés** | `D:`, `E:` |
-| `/boot` | Le **noyau** et le démarrage | |
-| `/proc` | Des infos **en direct** sur le système (virtuel) | |
+| **`/`** | La **racine** | `C:\` |
+| **`/home`** | Un dossier **par utilisateur** | `C:\Users` |
+| **`/root`** | Le dossier de **root** | |
+| **`/etc`** | Les **fichiers de configuration** | Le registre, en partie |
+| **`/var`** | Ce qui **varie** : **`/var/log`** (**journaux**), sites web | |
+| **`/usr/bin`**, `/bin` | Les **commandes** | `C:\Windows\System32` |
+| **`/tmp`** | Fichiers **temporaires** | `C:\Windows\Temp` |
+| **`/dev`** | **Périphériques** vus comme des fichiers (`/dev/sda` = 1ᵉʳ disque) | |
+| **`/media`**, `/mnt` | Clés USB et disques **montés** | `D:`, `E:` |
+| `/boot` · `/proc` | Noyau et démarrage · infos système **en direct** | |
 
 ---
 
 ### 2. Chemins absolus et relatifs
 
-| Type | Commence par… | Exemple | Marche… |
-|---|---|---|---|
-| **Absolu** | **`/`** | `/etc/ssh/sshd_config` | **De n'importe où** |
-| **Relatif** | Pas de `/` | `Documents/cv.txt`, `../user31` | **Depuis le dossier où tu es** |
-
-| Raccourci | Signifie | Exemple |
-|---|---|---|
-| **`.`** | Le dossier **actuel** | `./script.sh` |
-| **`..`** | Le dossier **parent** (au-dessus) | `cd ..` |
-| **`~`** | **Mon** dossier personnel | `cd ~` → `/home/user30` |
-| `-` | Le dossier **précédent** (avec `cd`) | `cd -` |
-
-⚠️ Sous Linux, le séparateur est **`/`** (pas `\` comme sous Windows), et **la casse compte** : `Documents` ≠ `documents`.
+- **Absolu** : commence par **`/`** (`/etc/ssh/sshd_config`), marche **de partout**.
+- **Relatif** : sans `/` (`Documents/cv.txt`), part **du dossier actuel**.
+- **`.`** = ici · **`..`** = le parent · **`~`** = mon dossier · `cd -` = le dossier précédent.
+- ⚠️ Séparateur **`/`** (pas `\`) et **casse** qui compte : `Documents` ≠ `documents`.
 
 ---
 
@@ -88,58 +76,41 @@ Linux range ses dossiers selon une norme commune à toutes les distributions : l
 
 | Commande | Effet |
 |---|---|
-| **`pwd`** | Où suis-je ? |
-| **`cd /etc`** | Aller dans `/etc` (absolu) |
-| **`cd Documents`** | Aller dans `Documents` depuis ici (relatif) |
-| **`cd ..`** | Remonter d'un cran |
-| **`cd`** ou **`cd ~`** | Revenir **chez moi** |
-| **`ls`** | Lister le dossier actuel |
-| **`ls -l`** | Liste **détaillée** (droits, propriétaire, taille, date) |
-| **`ls -a`** | Montrer **aussi les fichiers cachés** |
-| **`ls -lh`** | Tailles **lisibles** (Ko, Mo, Go) |
-| `ls -R` | Lister aussi le contenu des sous-dossiers |
-| `ls -lt` | Trier par **date** (le plus récent en haut) |
-
-**Lire un `ls -l`**
+| **`cd /etc`** · **`cd ..`** · **`cd`** | Aller dans `/etc` · remonter · revenir **chez moi** |
+| **`ls -l`** | Liste **détaillée** |
+| **`ls -a`** | Avec les fichiers **cachés** |
+| **`ls -lh`** · `ls -lt` · `ls -R` | Tailles **lisibles** · tri par **date** · sous-dossiers aussi |
 
 ```text
 -rw-r--r-- 1 user30 user30  2048 21 oct. 10:15 rapport.txt
 drwxr-xr-x 2 user30 user30  4096 20 oct. 09:00 Documents
 │└───┬───┘   └──┬─┘ └──┬─┘  └┬─┘ └─────┬─────┘ └────┬────┘
 │  droits   propriétaire groupe taille   date        nom
-└─ type : - = fichier · d = dossier (directory) · l = lien
+└─ type : - = fichier · d = dossier · l = lien
 ```
 
-(Les **droits** `rwx` sont expliqués au [module 8](../module-8-mecanismes-avances-de-linux-et-bash/index.md).)
-
-📌 **Les fichiers cachés** : sous Linux, un fichier est **caché** si son nom **commence par un point** : `.bashrc`, `.bash_history`, `.ssh`. On les voit avec **`ls -a`**.
-
-💡 **Les extensions ne comptent pas** pour Linux : un fichier peut s'appeler `rapport` sans `.txt`. Pour savoir **ce qu'il contient vraiment** : **`file rapport`** → `rapport: ASCII text`.
+- Les **droits** `rwx` : [module 8](../module-8-mecanismes-avances-de-linux-et-bash/index.md).
+- **Fichier caché** = nom qui **commence par un point** (`.bashrc`, `.ssh`).
+- 💡 Les **extensions ne comptent pas** : **`file rapport`** dit ce que contient vraiment le fichier.
 
 ---
 
 ### 4. Créer, copier, déplacer, supprimer
 
-| Je veux… | Commande | Exemple |
-|---|---|---|
-| Créer un **dossier** | **`mkdir`** | `mkdir Projets` |
-| Créer **plusieurs niveaux** d'un coup | **`mkdir -p`** | `mkdir -p Projets/2026/Octobre` |
-| Créer un **fichier vide** | **`touch`** | `touch notes.txt` |
-| **Copier** un fichier | **`cp source destination`** | `cp notes.txt notes-sauvegarde.txt` |
-| Copier un **dossier** (et son contenu) | **`cp -r`** | `cp -r Projets /tmp/` |
-| **Déplacer** | **`mv source destination`** | `mv notes.txt Documents/` |
-| **Renommer** | **`mv ancien nouveau`** | `mv notes.txt idees.txt` |
-| **Supprimer** un fichier | **`rm`** | `rm idees.txt` |
-| Supprimer un **dossier vide** | **`rmdir`** | `rmdir Vide` |
-| Supprimer un **dossier et tout son contenu** | **`rm -r`** | `rm -r Projets` |
-| Demander **confirmation** | **`-i`** (interactif) | `rm -i *.txt`, `cp -i`, `mv -i` |
+| Je veux… | Commande |
+|---|---|
+| Créer un **dossier** (plusieurs niveaux : **`-p`**) | `mkdir -p Projets/2026/Octobre` |
+| Créer un **fichier vide** | `touch notes.txt` |
+| **Copier** un fichier · un **dossier** | `cp notes.txt copie.txt` · `cp -r Projets /tmp/` |
+| **Déplacer** ou **renommer** | `mv notes.txt Documents/` · `mv notes.txt idees.txt` |
+| **Supprimer** un fichier · un dossier **vide** · un dossier **et son contenu** | `rm idees.txt` · `rmdir Vide` · `rm -r Projets` |
+| Demander **confirmation** | **`-i`** : `rm -i *.txt` |
 
-!!! danger "⚠️ Pas de corbeille sous Linux en ligne de commande"
-    **`rm` supprime définitivement**, sans demander de confirmation. Et **`rm -rf`** (récursif + forcé) efface **un dossier entier sans poser de question**. Relis **toujours** ta commande avant de valider, surtout en root. Utilise **`-i`** si tu as un doute.
+!!! danger "Pas de corbeille en ligne de commande"
+    **`rm` supprime définitivement**, et **`rm -rf`** efface un dossier entier **sans question**. Relis **toujours** avant de valider, surtout en root.
 
-📌 **`mv` sert à la fois à déplacer et à renommer** : il n'y a pas de commande « rename » de base.
-
-⚠️ **Les espaces dans les noms** : `mkdir Mes Documents` crée **deux** dossiers, `Mes` et `Documents`. Il faut écrire `mkdir "Mes Documents"` ou `mkdir Mes\ Documents`. Le plus simple : **éviter les espaces** (`Mes_Documents`).
+- 📌 **`mv`** sert à **déplacer et à renommer**.
+- ⚠️ `mkdir Mes Documents` crée **deux** dossiers : écrire `"Mes Documents"`, ou mieux, **éviter les espaces** (`Mes_Documents`).
 
 ## 📝 Fiche de révision
 

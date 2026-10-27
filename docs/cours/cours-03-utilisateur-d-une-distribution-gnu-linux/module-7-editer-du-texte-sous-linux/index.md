@@ -47,101 +47,73 @@ flowchart LR
 
 ```bash
 nano notes.txt                  # ouvre (ou crée) le fichier
-sudo nano /etc/hosts            # un fichier système : il faut les droits d'administration (cours 4)
+sudo nano /etc/hosts            # fichier système : droits d'administration (cours 4)
 ```
 
-On **tape directement** le texte et on se déplace avec les flèches. Les raccourcis sont affichés en bas : le symbole **`^`** signifie ++ctrl++.
+On **tape directement** ; les raccourcis sont en bas (**`^`** = ++ctrl++).
 
 | Raccourci | Effet |
 |---|---|
-| ++ctrl+o++ puis Entrée | **Enregistrer** (*Write Out*) |
-| ++ctrl+x++ | **Quitter** (demande d'enregistrer si besoin : `O` pour oui, `N` pour non) |
-| ++ctrl+w++ | **Chercher** un mot |
-| ++ctrl+k++ | **Couper** la ligne |
-| ++ctrl+u++ | **Coller** |
+| ++ctrl+o++ puis Entrée | **Enregistrer** |
+| ++ctrl+x++ | **Quitter** (`O` = enregistrer, `N` = non) |
+| ++ctrl+w++ | **Chercher** |
+| ++ctrl+k++ / ++ctrl+u++ | **Couper** la ligne / **coller** |
 | ++alt+u++ | **Annuler** |
 
 ---
 
-### 2. vim : les modes
+### 2. vim : les 3 modes
 
-**vi** est l'éditeur historique d'Unix (1979) ; **vim** (*Vi IMproved*) est sa version améliorée, installée presque partout.
+**vim** (*Vi IMproved*) = la version moderne de **vi** (1979), installée presque partout. **Les touches changent de rôle selon le mode** : en Normal, `d` **supprime** ; en Insertion, `d` **écrit un d**. **Perdu ? Échap** : retour au mode Normal.
 
-!!! abstract "En clair : pourquoi des modes ?"
-    Dans vim, **les touches du clavier n'ont pas le même rôle selon le mode** :
-
-    - en mode **Normal**, la touche `d` **supprime** ;
-    - en mode **Insertion**, la touche `d` **écrit la lettre d**.
-
-    C'est déroutant au début, mais très rapide ensuite. **Quand tu es perdu : appuie sur Échap**, tu reviens toujours au mode Normal.
-
-| Mode | À quoi il sert | Comment y aller |
+| Mode | Sert à… | Y aller |
 |---|---|---|
-| **Normal** (ou commande) | Se déplacer, supprimer, copier, coller | **Au démarrage**, ou **Échap** |
-| **Insertion** | **Écrire** du texte | `i`, `a`, `o` depuis le mode Normal |
-| **Ligne de commande** | Enregistrer, quitter, chercher et remplacer | **`:`** depuis le mode Normal |
+| **Normal** | Se déplacer, supprimer, copier, coller | **Au démarrage**, ou **Échap** |
+| **Insertion** | **Écrire** | **`i`** (avant le curseur), `a` (après), `A` (fin de ligne), **`o`** / `O` (nouvelle ligne dessous / dessus) |
+| **Commande** | Enregistrer, quitter, chercher | **`:`** |
 
 ---
 
-### 3. Passer en mode Insertion
-
-| Touche | Commence à écrire… |
-|---|---|
-| **`i`** | **Avant** le curseur (*insert*) |
-| `a` | **Après** le curseur (*append*) |
-| `A` | À la **fin de la ligne** |
-| **`o`** | Sur une **nouvelle ligne en dessous** |
-| `O` | Sur une **nouvelle ligne au-dessus** |
-
----
-
-### 4. En mode Normal : se déplacer et modifier
+### 3. Mode Normal : se déplacer et modifier
 
 | Touche | Effet |
 |---|---|
-| Flèches (ou `h` `j` `k` `l`) | Se déplacer |
-| `0` / `$` | Début / fin de la ligne |
-| **`gg`** / **`G`** | Début / **fin du fichier** |
-| `:25` | Aller à la **ligne 25** |
+| Flèches · `0` / `$` | Se déplacer · début / fin de ligne |
+| **`gg`** / **`G`** · `:25` | Début / **fin** du fichier · ligne 25 |
 | **`x`** | Supprimer **un caractère** |
 | **`dd`** | Supprimer (couper) **la ligne** |
-| `3dd` | Supprimer **3 lignes** |
-| **`yy`** | **Copier** la ligne (*yank*) |
-| **`p`** | **Coller** en dessous |
-| **`u`** | **Annuler** (*undo*) |
-| ++ctrl+r++ | Refaire |
+| **`yy`** / **`p`** | **Copier** la ligne / **coller** dessous |
+| **`u`** / ++ctrl+r++ | **Annuler** / refaire |
 
-💡 Un **nombre devant** une commande la **répète** : `5dd` supprime 5 lignes, `3yy` copie 3 lignes.
+💡 Un **nombre devant** répète : `5dd` = 5 lignes, `3yy` = 3 lignes.
 
 ---
 
-### 5. En mode commande (`:`) : enregistrer, quitter, chercher
+### 4. Mode commande (`:`)
 
 | Commande | Effet |
 |---|---|
-| **`:w`** | **Enregistrer** (*write*) |
-| **`:q`** | **Quitter** (refuse s'il y a des modifications non enregistrées) |
-| **`:wq`** (ou `:x`, ou `ZZ` en mode Normal) | **Enregistrer et quitter** |
-| **`:q!`** | **Quitter sans enregistrer** (on abandonne les modifications) |
-| **`/mot`** | **Chercher** « mot » vers le bas ; **`n`** = suivant, `N` = précédent |
-| `:%s/ancien/nouveau/g` | **Remplacer** partout `ancien` par `nouveau` |
-| `:set number` | Afficher les **numéros de ligne** |
+| **`:w`** | **Enregistrer** |
+| **`:q`** | **Quitter** (refuse si modifications non enregistrées) |
+| **`:wq`** (ou `:x`, `ZZ`) | **Enregistrer et quitter** |
+| **`:q!`** | **Quitter sans enregistrer** |
+| **`/mot`** puis **`n`** / `N` | **Chercher** · suivant / précédent |
+| `:%s/ancien/nouveau/g` | **Remplacer** partout |
+| `:set number` | Numéros de ligne |
 
-!!! warning "Le message « E37: No write since last change »"
-    Tu as tapé `:q` mais le fichier a été modifié. Choisis : **`:wq`** pour enregistrer et quitter, ou **`:q!`** pour quitter **sans** enregistrer.
+⚠️ **« E37: No write since last change »** après `:q` : choisir **`:wq`** (enregistrer) ou **`:q!`** (abandonner).
 
 ---
 
-### 6. Bien éditer un fichier de configuration
+### 5. Éditer un fichier de configuration sans risque
 
-!!! tip "La méthode sûre"
-    1. **Sauvegarder** l'original avant de toucher : `sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak`
-    2. **Éditer** : `sudo vim /etc/ssh/sshd_config` (ou nano)
-    3. **Vérifier** ce qui a changé : `diff /etc/ssh/sshd_config.bak /etc/ssh/sshd_config`
-    4. **Redémarrer le service** concerné pour appliquer (cours 4)
-    5. En cas de problème : **remettre la sauvegarde** avec `cp … .bak …`
+1. **Sauvegarder** : `sudo cp /etc/ssh/sshd_config /etc/ssh/sshd_config.bak`
+2. **Éditer** : `sudo vim /etc/ssh/sshd_config`
+3. **Vérifier** : `diff /etc/ssh/sshd_config.bak /etc/ssh/sshd_config`
+4. **Redémarrer le service** ([cours 4](../../cours-04-administration-d-une-distribution-gnu-linux/index.md))
+5. Problème ? **Remettre la sauvegarde**.
 
-📌 Dans les fichiers de configuration, une ligne qui commence par **`#`** est un **commentaire** : elle est **ignorée**. **« Décommenter »** une ligne = retirer le `#` pour l'activer.
+📌 Une ligne qui commence par **`#`** est un **commentaire** (ignorée). **Décommenter** = retirer le `#` pour l'activer.
 
 ## 📝 Fiche de révision
 

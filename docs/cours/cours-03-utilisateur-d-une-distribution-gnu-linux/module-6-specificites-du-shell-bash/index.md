@@ -41,99 +41,86 @@ flowchart LR
 
 ## 📖 Cours consolidé
 
-### 1. Les jokers (caractères génériques)
+### 1. Les jokers
 
-Ils servent à désigner **plusieurs fichiers d'un coup**. C'est **Bash** qui les remplace par la liste des fichiers correspondants, **avant** de lancer la commande.
+Désignent **plusieurs fichiers d'un coup** ; c'est **Bash** qui les remplace par la liste des fichiers, avant de lancer la commande.
 
-| Joker | Remplace | Exemple | Correspond à… |
-|---|---|---|---|
-| **`*`** | **N'importe quels caractères** (même aucun) | `ls *.txt` | `a.txt`, `rapport.txt`, `.txt` |
-| **`?`** | **Exactement un** caractère | `ls fichier?.log` | `fichier1.log`, `fichierA.log` (pas `fichier10.log`) |
-| **`[abc]`** | **Un** caractère **parmi** la liste | `ls photo[123].jpg` | `photo1.jpg`, `photo2.jpg`, `photo3.jpg` |
-| **`[0-9]`** | **Un** caractère dans l'**intervalle** | `ls rapport-[0-9].pdf` | `rapport-0.pdf` à `rapport-9.pdf` |
-| **`[!abc]`** | **Un** caractère **sauf** ceux-là | `ls [!a]*` | Tout ce qui ne commence **pas** par a |
+| Joker | Remplace | Exemple → correspond à |
+|---|---|---|
+| **`*`** | **N'importe quoi** (même rien) | `ls *.txt` → `a.txt`, `rapport.txt` |
+| **`?`** | **Exactement un** caractère | `fichier?.log` → `fichier1.log` (pas `fichier10.log`) |
+| **`[abc]`** · **`[0-9]`** | **Un** caractère de la liste · de l'intervalle | `photo[123].jpg` · `rapport-[0-9].pdf` |
+| **`[!abc]`** | **Un** caractère **sauf** ceux-là | `[!a]*` → ne commence **pas** par a |
 
-```bash
-cp *.jpg ~/Images/          # copier toutes les images jpg
-rm -i *.tmp                 # supprimer les .tmp, avec confirmation
-ls /var/log/*.log           # tous les .log du dossier
-```
-
-⚠️ **`rm *`** supprime **tout** le dossier courant. Vérifie d'abord avec **`ls *`** ce qui sera concerné.
+⚠️ **`rm *`** vide **tout** le dossier : vérifie d'abord avec **`ls *`**.
 
 ---
 
 ### 2. Protéger les caractères spéciaux
 
-Certains caractères ont un **sens spécial** pour Bash : l'espace, `*`, `$`, `>`, `|`, `;`, `&`… Pour les utiliser **tels quels**, on les protège.
+L'espace, `*`, `$`, `>`, `|`, `;`, `&` ont un **sens spécial** pour Bash.
 
-| Protection | Effet | Exemple | Résultat |
-|---|---|---|---|
-| **`"…"`** (doubles) | Protège **tout sauf** `$`, `` ` `` et `\` : **les variables sont remplacées** | `echo "Bonjour $USER"` | `Bonjour user30` |
-| **`'…'`** (simples) | Protège **absolument tout** : **rien n'est remplacé** | `echo 'Bonjour $USER'` | `Bonjour $USER` |
-| **`\`** (antislash) | Protège **le seul caractère suivant** | `echo Prix : 10\$` | `Prix : 10$` |
+| Protection | Effet | `echo … $USER` donne |
+|---|---|---|
+| **`"…"`** (doubles, **doux**) | Protège tout **sauf** `$`, `` ` ``, `\` : **variables remplacées** | `"Bonjour $USER"` → `Bonjour user30` |
+| **`'…'`** (simples, **stricts**) | Protège **absolument tout** | `'Bonjour $USER'` → `Bonjour $USER` |
+| **`\`** | Protège **le seul caractère suivant** | `10\$` → `10$` |
 
 ```bash
 touch "mon fichier.txt"     # un seul fichier, avec un espace dans le nom
-echo "5 * 3"                # affiche 5 * 3 (sans guillemets, * serait remplacé par les noms de fichiers !)
+echo "5 * 3"                # sans guillemets, * serait remplacé par les noms de fichiers !
 ```
-
-**Moyen mnémotechnique** : guillemets **doubles** = **doux** (laissent passer les variables) ; guillemets **simples** = **stricts** (ne laissent rien passer).
 
 ---
 
 ### 3. Les redirections
 
-Rappel des **3 flux** ([module 2](../module-2-decouverte-du-systeme-d-exploitation-linux/index.md)) : **entrée (0)** = clavier, **sortie (1)** = écran, **erreurs (2)** = écran.
+Les 3 flux ([module 2](../module-2-decouverte-du-systeme-d-exploitation-linux/index.md)) : **entrée (0)**, **sortie (1)**, **erreurs (2)**.
 
 | Syntaxe | Effet | Exemple |
 |---|---|---|
-| **`>`** | Sortie → fichier (**écrase** le contenu) | `ls -l > liste.txt` |
-| **`>>`** | Sortie → **fin** du fichier (ajoute) | `date >> journal.txt` |
+| **`>`** | Sortie → fichier, **écrasé** | `ls -l > liste.txt` |
+| **`>>`** | Sortie → **ajout** en fin de fichier | `date >> journal.txt` |
 | **`2>`** | **Erreurs** → fichier | `find / -name x 2> erreurs.txt` |
-| **`2> /dev/null`** | **Jeter les erreurs** (`/dev/null` est une « poubelle » qui avale tout) | `find / -name "*.conf" 2> /dev/null` |
-| **`&>`** (ou `> f 2>&1`) | Sortie **et** erreurs → **même** fichier | `apt update &> maj.log` |
-| **`<`** | Le **contenu d'un fichier** devient l'**entrée** de la commande | `wc -l < /etc/passwd` |
+| **`2> /dev/null`** | **Jeter** les erreurs (`/dev/null` = poubelle) | `find / -name "*.conf" 2> /dev/null` |
+| **`&>`** | Sortie **et** erreurs → **même** fichier | `apt update &> maj.log` |
+| **`<`** | Un fichier devient l'**entrée** | `wc -l < /etc/passwd` |
 
-⚠️ **`>` écrase sans prévenir.** Un `>` à la place d'un `>>` efface tout ce que contenait le fichier.
+⚠️ **`>` écrase sans prévenir** : un `>` à la place d'un `>>` efface le fichier.
 
 ---
 
 ### 4. Le pipe `|` : la chaîne de montage
 
-Le **pipe** envoie le **résultat** de la commande de gauche **dans l'entrée** de la commande de droite. Chaque commande fait une petite tâche, et on les **assemble**.
+Le **résultat** de gauche devient l'**entrée** de droite : chaque commande fait une petite tâche, on les **assemble**.
 
 ```bash
-cat /etc/passwd | wc -l                       # combien de comptes ?
-ls -l /etc | less                             # lire une longue liste page par page
-cut -d: -f7 /etc/passwd | sort | uniq -c      # combien de comptes utilisent chaque shell ?
-ps aux | grep ssh                             # les processus qui contiennent « ssh »
-history | grep apt                            # retrouver les commandes apt déjà tapées
+ls -l /etc | less                             # longue liste, page par page
+ps aux | grep ssh                             # les processus « ssh »
+history | grep apt                            # retrouver ses commandes apt
+cut -d: -f7 /etc/passwd | sort | uniq -c      # combien de comptes par shell ?
 ```
 
-**Décortiquons** `cut -d: -f7 /etc/passwd | sort | uniq -c` :
-
 ```text
-cut -d: -f7 /etc/passwd   →   /bin/bash  /usr/sbin/nologin  /bin/bash  /usr/sbin/nologin …   (la colonne « shell »)
-| sort                    →   /bin/bash  /bin/bash  /usr/sbin/nologin  /usr/sbin/nologin …   (regroupés)
-| uniq -c                 →   2 /bin/bash
-                              17 /usr/sbin/nologin                                             (comptés)
+cut -d: -f7 /etc/passwd   →   /bin/bash  /usr/sbin/nologin  /bin/bash …   (la colonne « shell »)
+| sort                    →   /bin/bash  /bin/bash  /usr/sbin/nologin …   (regroupés)
+| uniq -c                 →   2 /bin/bash   17 /usr/sbin/nologin           (comptés)
 ```
 
 ---
 
 ### 5. Enchaîner selon le résultat : `;` `&&` `||`
 
-Chaque commande renvoie un **code de retour** : **0 = réussite**, autre chose = **échec**. Il est visible avec **`echo $?`** juste après la commande.
+Chaque commande renvoie un **code de retour** (**`echo $?`**) : **0 = réussite**, autre = **échec**.
 
 | Opérateur | Lance la 2ᵉ commande… |
 |---|---|
 | **`;`** | **Toujours** |
-| **`&&`** | **Si la 1ʳᵉ a réussi** (« **et ensuite** ») |
-| **`||`** | **Si la 1ʳᵉ a échoué** (« **sinon** ») |
+| **`&&`** | **Si la 1ʳᵉ a réussi** (« et ensuite ») |
+| **`||`** | **Si la 1ʳᵉ a échoué** (« sinon ») |
 
 ```bash
-sudo apt update && sudo apt upgrade        # on ne met à jour que si la liste a bien été téléchargée
+sudo apt update && sudo apt upgrade        # mise à jour seulement si la liste est téléchargée
 cd /dossier/inexistant || echo "Le dossier n'existe pas"
 ```
 
@@ -141,36 +128,30 @@ cd /dossier/inexistant || echo "Le dossier n'existe pas"
 
 ### 6. Insérer le résultat d'une commande : `$(…)`
 
-**`$(commande)`** est **remplacé par le résultat** de la commande.
-
 ```bash
 echo "Nous sommes le $(date +%d/%m/%Y)"           # → Nous sommes le 21/10/2026
-echo "Il y a $(ls | wc -l) éléments ici"
 cp rapport.txt "rapport-$(date +%Y%m%d).txt"       # → rapport-20261021.txt (sauvegarde datée)
 ```
 
-💡 On rencontre aussi l'ancienne écriture avec des **accents graves** : `` `date` ``. Préfère **`$(…)`**, plus lisible.
+💡 Ancienne écriture : `` `date` `` ; préfère **`$(…)`**, plus lisible.
 
 ---
 
-### 7. Les alias et le fichier `~/.bashrc`
-
-Un **alias** est un **raccourci** pour une commande que tu tapes souvent.
+### 7. Les alias et `~/.bashrc`
 
 ```bash
-alias ll='ls -lah'             # créer : désormais, ll = ls -lah
+alias ll='ls -lah'                                 # ll = ls -lah
 alias maj='sudo apt update && sudo apt upgrade'
-alias                          # lister les alias existants
-unalias ll                     # supprimer un alias
+alias                                              # lister · unalias ll = supprimer
 ```
 
-⚠️ Un alias créé dans le terminal **disparaît à la déconnexion**. Pour le garder, il faut l'écrire dans **`~/.bashrc`**, le fichier que Bash **lit à chaque ouverture** de terminal. Ensuite : **`source ~/.bashrc`** pour le recharger tout de suite.
+⚠️ Un alias tapé dans le terminal **disparaît à la déconnexion** : l'écrire dans **`~/.bashrc`** (lu à **chaque ouverture** de terminal), puis **`source ~/.bashrc`**.
 
 | Fichier | Rôle |
 |---|---|
 | **`~/.bashrc`** | Tes réglages Bash : alias, variables, prompt |
-| `~/.bash_history` | Ton historique de commandes |
-| `~/.profile` | Lu à la **connexion** (variables d'environnement) |
+| `~/.bash_history` | Ton historique |
+| `~/.profile` | Lu à la **connexion** |
 
 ## 📝 Fiche de révision
 

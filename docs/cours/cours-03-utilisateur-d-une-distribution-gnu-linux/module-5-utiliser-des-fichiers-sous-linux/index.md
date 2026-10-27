@@ -35,24 +35,13 @@ flowchart TD
 
 | Commande | Effet | Exemple |
 |---|---|---|
-| **`cat`** | Affiche **tout** le fichier d'un coup | `cat /etc/hostname` |
-| `cat -n` | Avec les **numéros de ligne** | `cat -n /etc/passwd` |
-| **`less`** | Affiche **page par page** (pour les gros fichiers) | `less /var/log/syslog` |
-| **`head`** | Les **10 premières** lignes (ou `-n 20` pour 20) | `head -n 5 /etc/passwd` |
-| **`tail`** | Les **10 dernières** lignes | `tail -n 50 /var/log/auth.log` |
-| **`tail -f`** | La fin du fichier **en direct** : les nouvelles lignes s'affichent au fur et à mesure | `tail -f /var/log/syslog` (arrêter : ++ctrl+c++) |
+| **`cat`** (`-n` = numéros de ligne) | Affiche **tout** d'un coup | `cat /etc/hostname` |
+| **`less`** | **Page par page** (gros fichiers) | `less /var/log/syslog` |
+| **`head`** / **`tail`** | Les **10 premières** / **dernières** lignes (`-n 20`) | `tail -n 50 /var/log/auth.log` |
+| **`tail -f`** | La fin **en direct** (++ctrl+c++ pour arrêter) | `tail -f /var/log/syslog` |
 
-**Se déplacer dans `less`** (mêmes touches que `man`) :
-
-| Touche | Effet |
-|---|---|
-| ++space++ / ++b++ | Page suivante / précédente |
-| ++arrow-up++ ++arrow-down++ | Ligne par ligne |
-| `/mot` puis `n` | Chercher « mot », puis l'occurrence suivante |
-| ++g++ / ++shift+g++ | Début / fin du fichier |
-| **`q`** | **Quitter** |
-
-💡 **`tail -f` est le réflexe de dépannage** : tu le lances sur le journal d'un service, tu reproduis le problème, et tu vois l'erreur **apparaître en direct**.
+- Dans `less` (comme `man`) : ++space++ / ++b++ page suivante / précédente · `/mot` puis `n` · ++g++ / ++shift+g++ début / fin · **`q`** quitter.
+- 💡 **`tail -f` = le réflexe de dépannage** : on reproduit le problème et l'erreur **apparaît en direct** dans le journal.
 
 ---
 
@@ -60,14 +49,12 @@ flowchart TD
 
 | Commande | Effet | Exemple |
 |---|---|---|
-| **`wc`** | **Compte** lignes, mots, caractères (*word count*) | `wc -l /etc/passwd` → nombre de **lignes** (ici, de comptes) |
-| **`sort`** | **Trie** les lignes (ordre alphabétique) | `sort noms.txt` |
-| `sort -n` · `sort -r` | Tri **numérique** · tri **inversé** | `sort -nr scores.txt` |
-| **`uniq`** | Supprime les lignes **en double qui se suivent** (donc après un `sort`) | `sort villes.txt | uniq` |
-| `uniq -c` | **Compte** les répétitions | `sort villes.txt | uniq -c` |
-| **`cut`** | **Découpe** des colonnes | `cut -d: -f1 /etc/passwd` → la 1ʳᵉ colonne, séparateur `:` |
+| **`wc -l`** | **Compte** les lignes (`wc` = mots, caractères aussi) | `wc -l /etc/passwd` = nombre de comptes |
+| **`sort`** (`-n` numérique, `-r` inversé) | **Trie** les lignes | `sort -nr scores.txt` |
+| **`uniq`** (`-c` = compter) | Supprime les doublons **qui se suivent** → après un `sort` | `sort villes.txt | uniq -c` |
+| **`cut -d: -f1`** | **Découpe** une colonne (séparateur `:`) | `cut -d: -f1,7 /etc/passwd` |
 
-**Exemple : le fichier `/etc/passwd`** (la liste des comptes, un par ligne, colonnes séparées par `:`)
+**`/etc/passwd`** : la liste des comptes, colonnes séparées par `:`.
 
 ```text
 user30:x:1030:1030:Sophie Martin:/home/user30:/bin/bash
@@ -76,74 +63,57 @@ user30:x:1030:1030:Sophie Martin:/home/user30:/bin/bash
  (-f1)   (-f3)(-f4)    (-f5)         (-f6)         (-f7)
 ```
 
-```bash
-cut -d: -f1 /etc/passwd          # tous les noms de comptes
-cut -d: -f1,7 /etc/passwd        # nom + shell
-wc -l /etc/passwd                # combien de comptes
-```
-
-(Le **`|`**, qui enchaîne des commandes, est détaillé au [module 6](../module-6-specificites-du-shell-bash/index.md).)
+(Le **`|`** est expliqué au [module 6](../module-6-specificites-du-shell-bash/index.md).)
 
 ---
 
 ### 3. Chercher **dans** des fichiers : `grep`
 
-**`grep`** affiche **uniquement les lignes qui contiennent** un mot (ou un motif).
-
-```bash
-grep user30 /etc/passwd                  # la ligne du compte user30
-```
+Affiche **seulement les lignes qui contiennent** un mot : `grep user30 /etc/passwd`.
 
 | Option | Effet | Exemple |
 |---|---|---|
-| **`-i`** | Ignorer **majuscules / minuscules** | `grep -i error /var/log/syslog` |
-| **`-n`** | Afficher le **numéro de ligne** | `grep -n Port /etc/ssh/sshd_config` |
-| **`-v`** | **Inverser** : les lignes qui **ne** contiennent **pas** le mot | `grep -v "^#" fichier.conf` (sans les commentaires) |
-| **`-r`** | Chercher dans **tous les fichiers d'un dossier** | `grep -r "PermitRootLogin" /etc/ssh/` |
+| **`-i`** | Ignorer la **casse** | `grep -i error /var/log/syslog` |
+| **`-n`** | Numéro de ligne | `grep -n Port /etc/ssh/sshd_config` |
+| **`-v`** | Les lignes **sans** le mot | `grep -v "^#" fichier.conf` (sans commentaires) |
+| **`-r`** | Dans **tout un dossier** (`-l` = juste les noms de fichiers) | `grep -r "PermitRootLogin" /etc/ssh/` |
 | **`-c`** | **Compter** les lignes trouvées | `grep -c "Failed password" /var/log/auth.log` |
-| `-l` | N'afficher que les **noms de fichiers** qui contiennent le mot | `grep -rl "192.168.1.10" /etc` |
 
-💡 Mets le motif **entre guillemets** s'il contient des espaces : `grep "Failed password" /var/log/auth.log`. Les motifs avancés (début de ligne `^`, fin de ligne `$`…) sont au [module 8](../module-8-mecanismes-avances-de-linux-et-bash/index.md).
+💡 Motif **entre guillemets** s'il y a des espaces. Motifs avancés (`^`, `$`) : [module 8](../module-8-mecanismes-avances-de-linux-et-bash/index.md).
 
 ---
 
 ### 4. Retrouver un fichier : `find`
 
-**`find`** **parcourt le disque** pour trouver des fichiers selon des critères.
-
 ```
-find   OÙ chercher   QUOI chercher
-find   /etc          -name "*.conf"
+find   OÙ   CRITÈRES
+find   /etc -name "*.conf"
 ```
 
-| Critère | Effet | Exemple |
-|---|---|---|
-| **`-name`** | Par **nom** (avec jokers `*`) | `find /etc -name "*.conf"` |
-| `-iname` | Par nom, **sans tenir compte de la casse** | `find ~ -iname "*facture*"` |
-| **`-type f`** / **`-type d`** | Seulement les **fichiers** / les **dossiers** | `find /var/log -type f` |
-| **`-size`** | Par **taille** (`+` = plus grand que) | `find / -size +500M` |
-| `-mtime` | Par **date de modification** (`-7` = moins de 7 jours) | `find ~ -mtime -7` |
-| `-user` | Par **propriétaire** | `find /home -user user30` |
+| Critère | Exemple |
+|---|---|
+| **`-name`** (`-iname` = sans casse) | `find ~ -iname "*facture*"` |
+| **`-type f`** / **`-type d`** | Fichiers / dossiers seulement |
+| **`-size +500M`** | Plus gros que 500 Mo |
+| `-mtime -7` | Modifiés il y a **moins de 7 jours** |
+| `-user user30` | Appartenant à user30 |
 
-⚠️ Chercher dans **`/`** en utilisateur normal affiche beaucoup de « Permission non accordée » (des dossiers interdits). Pour les masquer : ajoute **`2>/dev/null`** (expliqué au module 6).
-
-💡 Il existe aussi **`locate nom`**, très rapide car il cherche dans une **base de données** (à mettre à jour avec `sudo updatedb`) ; mais il n'est pas toujours installé.
+- ⚠️ Dans `/`, beaucoup de « Permission non accordée » → ajouter **`2>/dev/null`** ([module 6](../module-6-specificites-du-shell-bash/index.md)).
+- 💡 **`locate nom`** est bien plus rapide (base de données, mise à jour par `sudo updatedb`), mais pas toujours installé.
 
 ---
 
 ### 5. Comparer deux fichiers : `diff`
 
-```bash
-diff sshd_config sshd_config.sauvegarde
-```
 ```text
+$ diff sshd_config sshd_config.sauvegarde
 14c14
-< PermitRootLogin no            ← ligne dans le 1er fichier
+< PermitRootLogin no            ← dans le 1er fichier
 ---
-> PermitRootLogin yes           ← ligne dans le 2ᵉ fichier
+> PermitRootLogin yes           ← dans le 2ᵉ fichier
 ```
 
-Pas de résultat = les fichiers sont **identiques**. Très utile pour voir **ce qui a changé** dans une configuration.
+Aucun résultat = fichiers **identiques**. Parfait pour voir **ce qui a changé** dans une configuration.
 
 ## 📝 Fiche de révision
 

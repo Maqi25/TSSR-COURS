@@ -62,98 +62,61 @@ flowchart LR
 
 ## 📖 Cours consolidé
 
-### 1. Unix, l'ancêtre (1969 → années 80)
+### 1. D'Unix à GNU/Linux
 
 | Année | Ce qui se passe |
 |---|---|
-| **1969-1970** | Aux **Bell Labs** (AT&T), **Ken Thompson**, **Dennis Ritchie** et **Brian Kernighan** créent **Unix** |
-| **1972-1973** | Ritchie invente le **langage C** ; Unix est **réécrit en C**. Il devient **portable** : il peut fonctionner sur d'autres machines |
-| **1976** | Unix est fourni aux **universités avec son code source** : on peut l'étudier et l'améliorer |
-| **1977** | À l'université de **Berkeley**, Bill Joy crée **BSD**, une branche d'Unix toujours vivante (FreeBSD, et une partie de macOS) |
-| **1979** | BSD apporte l'éditeur **vi**, toujours utilisé aujourd'hui (module 7) |
+| **1969** | Aux **Bell Labs**, **Ken Thompson** et **Dennis Ritchie** créent **Unix** |
+| **1973** | Unix est **réécrit en C** (langage inventé par Ritchie) → **portable** sur d'autres machines |
+| **1977** | **BSD** à Berkeley (toujours vivant : FreeBSD, une partie de macOS), qui apporte l'éditeur **vi** |
+| **1983** | **Richard Stallman** lance **GNU** : un système **100 % libre** (puis la **FSF** en 1985) |
+| **1991** | **Linus Torvalds** écrit un **noyau** libre : **Linux** |
 
-📌 Beaucoup d'idées de Linux viennent d'Unix : tout est fichier, de petites commandes qu'on enchaîne, le **manuel** (`man`)…
-
----
-
-### 2. Le logiciel libre et la naissance de Linux
-
-| Année | Ce qui se passe |
-|---|---|
-| **1983** | Les entreprises **ferment** le code de leurs logiciels. En réaction, **Richard Stallman** lance le projet **GNU** : un système d'exploitation **100 % libre** |
-| **1985** | Il crée la **Free Software Foundation** (FSF) |
-| **1987** | Andrew Tanenbaum crée **Minix**, un petit Unix pour enseigner |
-| **1991** | **Linus Torvalds**, étudiant finlandais, annonce qu'il écrit un **noyau** libre, « juste pour le plaisir ». C'est **Linux** |
-
-!!! abstract "En clair : pourquoi dit-on « GNU/Linux » ?"
-    En 1991, le projet GNU avait **tous les outils** d'un système (shell, commandes, compilateur), **sauf le noyau**. Linus Torvalds avait **un noyau**, mais pas d'outils. **GNU + Linux = un système complet**. Strictement, **Linux n'est que le noyau** ; le système complet s'appelle **GNU/Linux**, même si tout le monde dit « Linux ».
-
-**Les premières distributions** : SLS (1992), **Slackware** et **Debian** (1993), **Red Hat** et **SuSE** (1994). Les 4 dernières existent toujours. Puis viennent le pingouin **Tux** (1996), les bureaux graphiques **KDE** (1996) et **GNOME** (1997), et **Ubuntu** (2004), pensé pour le grand public.
+- Linux hérite d'Unix : **tout est fichier**, de petites commandes qu'on **enchaîne**, le manuel **`man`**.
+- **« GNU/Linux »** : GNU avait **tous les outils sauf le noyau**, Linus avait **le noyau** → ensemble, un système complet. Strictement, **Linux = le noyau**.
+- Premières distributions encore vivantes : **Slackware**, **Debian** (1993), **Red Hat**, **SuSE** (1994) ; puis **Ubuntu** (2004), grand public.
 
 ---
 
-### 3. Linux aujourd'hui
-
-#### Où trouve-t-on Linux ?
+### 2. Linux aujourd'hui
 
 | Domaine | Exemples |
 |---|---|
-| **Serveurs web** | Apache, Nginx : la grande majorité des sites Internet |
-| **Bases de données** | MySQL, MariaDB, PostgreSQL |
-| **Cloud** | La plupart des machines virtuelles chez Amazon, Google, Microsoft Azure |
-| **Smartphones** | **Android** utilise le noyau Linux |
-| **Objets connectés** | Box Internet, TV, montres, voitures, Raspberry Pi |
-| **Superordinateurs** | 100 % des 500 plus puissants du monde |
+| **Serveurs web** et **bases de données** | Apache, Nginx · MySQL, MariaDB, PostgreSQL |
+| **Cloud** | La plupart des VM chez Amazon, Google, Azure |
+| **Smartphones**, objets connectés | **Android** (noyau Linux), box, TV, Raspberry Pi |
+| **Superordinateurs** | 100 % des 500 plus puissants |
 
-**Au quotidien, un technicien utilise Linux en ligne de commande** (**CLI**, *Command Line Interface*), souvent **à distance**. Les **bureaux graphiques** (**GNOME**, **KDE**, **XFCE**, **LXDE**) existent, mais servent surtout sur les postes de travail, ou pour **redonner vie à de vieux PC** (Linux est bien moins gourmand que Windows).
+Un technicien l'utilise surtout **en ligne de commande** (**CLI**), souvent **à distance**. Les bureaux graphiques (**GNOME**, **KDE**, **XFCE**) servent aux postes de travail et aux vieux PC.
 
-#### Les distributions à connaître
-
-| Distribution | Ce qu'il faut savoir |
+| Distribution | À savoir |
 |---|---|
-| **Debian** | 100 % libre et gratuite, réputée pour sa **stabilité**. ✅ **Celle de la formation** |
-| **Ubuntu** | Basée sur Debian, facile, très répandue (bureau **et** serveur). Prendre les versions **LTS** |
-| **Red Hat Enterprise Linux (RHEL)** | Leader en entreprise, **payant** (abonnement avec support) |
-| **Rocky Linux / AlmaLinux** | Copies **gratuites** de Red Hat, qui remplacent **CentOS** (arrêté en 2021, devenu CentOS Stream) |
-| **SUSE / openSUSE** | Version payante pour les entreprises / version gratuite |
+| **Debian** | Libre, gratuite, **stable**. ✅ **Celle de la formation** |
+| **Ubuntu** | Basée sur Debian, très répandue. Prendre une **LTS** |
+| **Red Hat (RHEL)** | Leader en entreprise, **payante** (support) |
+| **Rocky / AlmaLinux** | Copies **gratuites** de Red Hat (remplacent CentOS, arrêté en 2021) |
+| **SUSE / openSUSE** | Payante / gratuite |
+| **Linux Mint**, Zorin OS | Bureau, faciles pour qui vient de Windows |
+| **Kali Linux** | **Tests d'intrusion** ⚠️ jamais sur un réseau d'entreprise sans autorisation |
+| **SystemRescue** | Clé de secours (réparer, récupérer des données) |
 
-| Distribution spécialisée | Usage |
-|---|---|
-| **Linux Mint**, Zorin OS | Postes de bureau, faciles pour les débutants qui viennent de Windows |
-| **Kali Linux** | **Tests d'intrusion** (sécurité). ⚠️ Ne pas l'utiliser sur le réseau d'une entreprise sans autorisation : ça peut ressembler à une attaque |
-| **Raspberry Pi OS** | Debian pour Raspberry Pi |
-| **SystemRescue** | Clé de secours pour réparer un PC et récupérer des données |
-
-⚠️ **Libre ne veut pas dire gratuit** : Red Hat est libre, mais son support est payant.
-
-📌 **Toujours vérifier la durée de support** d'une version. Une version **LTS** (*Long Term Support*) d'Ubuntu est suivie **5 ans** ; une version intermédiaire seulement **9 mois**. En entreprise : **toujours une LTS**.
-
-#### Debian
-
-Les versions de Debian portent des noms de personnages de **Toy Story** :
-
-| Version | Nom | |
-|---|---|---|
-| 10 | Buster | Celle des supports de cours (plus supportée) |
-| 12 | Bookworm | Encore très répandue |
-| **13** | **Trixie** | **Version stable actuelle** (août 2025) |
-
-Debian repose sur un **contrat social** : elle restera **totalement libre**, ne cachera pas ses problèmes, et ses priorités sont **ses utilisateurs et le logiciel libre**.
+- ⚠️ **Libre ≠ gratuit** : Red Hat est libre, mais son support est payant.
+- 📌 **Durée de support** : Ubuntu **LTS** = **5 ans**, version intermédiaire = **9 mois**. En entreprise : **toujours une LTS**.
+- **Debian** : noms tirés de **Toy Story** — 10 Buster (supports de cours) · 12 Bookworm · **13 Trixie** (**stable actuelle**, août 2025). Son **contrat social** : rester **totalement libre**, priorité aux utilisateurs.
 
 ---
 
-### 4. Les licences libres
+### 3. Les licences libres
 
-!!! abstract "En clair : libre ≠ gratuit"
-    La devise de la FSF : « ***Free as in free speech, not as in free beer*** ». **Libre** comme dans « **liberté** d'expression », pas comme dans « bière **gratuite** ». Un logiciel libre te donne des **libertés** : l'utiliser, l'étudier, le modifier, le partager.
+**« *Free as in free speech, not as in free beer* »** : libre comme **liberté**, pas comme **gratuit**. Un logiciel libre donne le droit de l'**utiliser, étudier, modifier, partager**.
 
-| Licence | Règle principale | Image |
-|---|---|---|
-| **GNU GPL** | Les **4 libertés** (utiliser, étudier, redistribuer, améliorer). **Copyleft** : si tu modifies et redistribues, ta version **doit rester libre** | « Tu peux tout faire, mais tu dois partager pareil » |
-| **BSD** | Réutilisation **presque sans condition**, **sans copyleft** : on peut même en faire un logiciel **fermé** | C'est ainsi qu'Apple a pu bâtir **macOS** sur une base BSD |
-| **Apache** | Modifier et distribuer librement, en gardant les mentions de copyright | Logiciels de l'Apache Foundation |
-| **CeCILL** | Licence libre **française** (CEA, CNRS, INRIA), adaptée au droit français | |
-| **Creative Commons** | Pour les **œuvres** (images, musiques, textes), pas pour le code | |
+| Licence | Règle |
+|---|---|
+| **GNU GPL** | Les **4 libertés** + **copyleft** : une version modifiée et redistribuée **doit rester libre** |
+| **BSD** | Presque **sans condition**, **sans copyleft** : on peut en faire un logiciel **fermé** (macOS) |
+| **Apache** | Libre, en gardant les mentions de copyright |
+| **CeCILL** | Licence libre **française** (CEA, CNRS, INRIA) |
+| **Creative Commons** | Pour les **œuvres** (images, textes), pas le code |
 
 ## 📝 Fiche de révision
 

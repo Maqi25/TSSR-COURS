@@ -33,50 +33,32 @@ flowchart LR
 
 ### 1. Root : l'administrateur tout-puissant
 
-**root** est le **super-administrateur** de Linux : il peut **tout** faire, y compris tout casser. Son prompt finit par **`#`** (un utilisateur normal : **`$`**).
+**root** peut **tout** faire, y compris tout casser. Son prompt finit par **`#`** (utilisateur normal : **`$`**).
 
-⚠️ **Les bonnes pratiques :**
-
-- **ne jamais** travailler en root au quotidien ;
-- se connecter avec **son compte normal**, puis **demander les droits** seulement quand c'est nécessaire (avec `sudo`, vu dans le cours 4) ;
-- **jamais de connexion SSH directe en root** : Debian l'interdit d'ailleurs par défaut.
+⚠️ **Jamais** root au quotidien : son compte normal, puis **`sudo`** quand c'est nécessaire ([cours 4](../../cours-04-administration-d-une-distribution-gnu-linux/index.md)). **Pas de SSH direct en root** (interdit par défaut sous Debian).
 
 ---
 
 ### 2. Qui suis-je, qui est là ?
 
-| Commande | Répond à… | Exemple de résultat |
+| Commande | Répond à… | Exemple |
 |---|---|---|
-| **`logname`** | Mon nom d'utilisateur | `user30` |
-| **`id`** | Mon **UID** (numéro d'utilisateur), mon **GID** (numéro de groupe) et mes **groupes** | `uid=1031(user01) gid=1031(user01) groupes=1031(user01),1002(tssr)` |
-| `id -u` · `id -g` · `id -G` | Seulement l'UID · le GID · les groupes | `1031` |
-| `id -u user5` | L'UID **d'un autre** utilisateur | `1061` |
-| **`who`** | Qui est connecté (et depuis quand) | `user30  pts/0  2026-10-21 10:30` |
-| `who -H` · `who -q` | Avec les titres des colonnes · seulement le nombre de connectés | |
-| **`w`** | Comme `who`, **plus** ce que fait chacun, son inactivité, la charge de la machine | |
+| **`logname`** | Mon nom | `user30` |
+| **`id`** | Mon **UID**, mon **GID** et mes **groupes** | `uid=1031(user01) gid=1031(user01) groupes=…,1002(tssr)` |
+| `id -u` · `-g` · `-G` | Seulement UID · GID · groupes ; `id -u user5` = UID d'un autre | `1031` |
+| **`who`** / **`w`** | Qui est connecté / **plus** ce qu'il fait et la charge | `user30  pts/0  …` |
 | **`uptime`** | Depuis **combien de temps** la machine tourne | `up 12 days, 3:14` |
+| **`passwd`** | **Changer** mon mot de passe (`-S` = son état) | |
 
-💡 **UID** = *User ID*, **GID** = *Group ID*. Ce sont l'équivalent Linux du **SID** de Windows : Linux travaille avec ces **numéros**, pas avec les noms.
-
-#### Changer son mot de passe
-
-```bash
-passwd          # demande l'ancien, puis 2 fois le nouveau (rien ne s'affiche quand on tape)
-passwd -S       # état du mot de passe : user30 P 06/26/2026 0 99999 7 -1  (P = mot de passe valide)
-```
-
-Un bon mot de passe : **long**, avec des **caractères spéciaux**, **pas un mot du dictionnaire**, et **différent du précédent**.
+💡 **UID / GID** = l'équivalent Linux du **SID** de Windows : Linux travaille avec ces **numéros**.
 
 ---
 
 ### 3. Où suis-je ?
 
-| Commande | Signifie | Exemple de résultat |
-|---|---|---|
-| **`pwd`** | *Print Working Directory* : **dans quel dossier** je suis | `/home/user30` |
-| **`tty`** | **Quel terminal** j'utilise | `/dev/tty1` (directement sur la console) · `/dev/pts/0` (en SSH ou dans une fenêtre graphique) |
-
-📌 Le prompt affiche souvent ton dossier : `user30@deb:~$` → **`~`** veut dire « **mon dossier personnel** » (`/home/user30`).
+- **`pwd`** : dans quel **dossier** je suis (`/home/user30`).
+- **`tty`** : quel **terminal** (`/dev/tty1` = console · `/dev/pts/0` = SSH ou fenêtre).
+- 📌 **`~`** dans le prompt (`user30@deb:~$`) = **mon dossier personnel**.
 
 ---
 
@@ -84,114 +66,57 @@ Un bon mot de passe : **long**, avec des **caractères spéciaux**, **pas un mot
 
 | Commande | Effet |
 |---|---|
-| `date` | Date et heure actuelles : `mer. 21 oct. 2026 14:20:30 CEST` |
-| `date +"%d/%m/%Y"` | Format personnalisé : `21/10/2026` |
-| `date +"%Y-%m-%d_%H%M"` | Pratique pour **nommer un fichier** ou un journal : `2026-10-21_1420` |
-| `cal` | Calendrier du **mois** en cours |
-| `cal 03 2027` · `cal 2027` | Un mois précis · une année entière |
+| `date` | Date et heure actuelles |
+| `date +"%d/%m/%Y"` | Format perso : `21/10/2026` |
+| `date +"%Y-%m-%d_%H%M"` | Pour **nommer un fichier** : `2026-10-21_1420` |
+| `cal` · `cal 03 2027` · `cal 2027` | Calendrier du mois · d'un mois · d'une année |
 
-**Les codes de format les plus utiles** (après un **seul** `+`, entre guillemets) :
-
-| Code | Donne | | Code | Donne |
-|---|---|---|---|---|
-| `%d` | jour (21) | | `%H` | heure (14) |
-| `%m` | mois (10) | | `%M` | minutes (20) |
-| `%Y` | année (2026) | | `%S` | secondes (30) |
-| `%A` | jour en lettres (mercredi) | | `%B` | mois en lettres (octobre) |
-
-```bash
-date +"Nous sommes le %A %d %B %Y, il est %H:%M"
-# → Nous sommes le mercredi 21 octobre 2026, il est 14:20
-```
+Codes : **`%d`** jour · **`%m`** mois · **`%Y`** année · **`%H`** heure · **`%M`** minutes · **`%S`** secondes · **`%A`** / **`%B`** jour / mois en lettres.
 
 ---
 
 ### 5. Les variables
 
-!!! abstract "En clair"
-    Une **variable**, c'est une **boîte avec une étiquette** : l'étiquette est le **nom**, et ce qu'il y a dedans est le **contenu**.
-
-    - Pour **remplir** la boîte : `nom=contenu` (**sans `$`**, **sans espaces** autour du `=`).
-    - Pour **lire** la boîte : `$nom` (**avec `$`**).
+Une **boîte avec une étiquette** : **remplir** avec `nom=contenu` (**sans `$`, sans espaces**), **lire** avec **`$nom`**.
 
 ```bash
-prenom="Sophie"                   # créer (pas d'espace autour du = !)
-echo $prenom                      # lire → Sophie
-echo "Bonjour $prenom"            # → Bonjour Sophie
-prenom="Romain"                   # changer le contenu
-unset prenom                      # supprimer la variable
+prenom="Sophie"            # créer (pas d'espace autour du = !)
+echo "Bonjour $prenom"     # → Bonjour Sophie
+unset prenom               # supprimer
 ```
 
-⚠️ `prenom = "Sophie"` (avec des espaces) **ne marche pas** : Bash croit que `prenom` est une commande.
+⚠️ `prenom = "Sophie"` (avec espaces) **échoue** : Bash prend `prenom` pour une commande.
 
-#### Les variables d'environnement
+**Variables d'environnement** (automatiques, en **MAJUSCULES**, sensibles à la casse) :
 
-Créées **automatiquement** par le système. Par convention, elles sont en **MAJUSCULES**, et **la casse compte** : `$home` n'existe pas, c'est `$HOME`.
-
-| Variable | Contient | Exemple |
-|---|---|---|
-| **`$HOME`** | Ton dossier personnel (= `~`) | `/home/user30` |
-| **`$USER`** / `$LOGNAME` | Ton nom d'utilisateur | `user30` |
-| **`$PATH`** | Les dossiers où Linux **cherche les commandes** | `/usr/local/bin:/usr/bin:/bin` |
-| **`$SHELL`** | Ton shell | `/bin/bash` |
-| **`$PWD`** | Le dossier actuel (comme `pwd`) | `/home/user30` |
-| **`$LANG`** | La langue | `fr_FR.UTF-8` |
-
-| Commande | Affiche |
+| Variable | Contient |
 |---|---|
-| `env` | Les variables d'environnement |
-| `set` | **Toutes** les variables et fonctions (très long) |
+| **`$HOME`** | Mon dossier personnel (= `~`) |
+| **`$USER`** | Mon nom d'utilisateur |
+| **`$PATH`** | Les dossiers où Linux **cherche les commandes** |
+| **`$SHELL`** · **`$PWD`** · **`$LANG`** | Mon shell · le dossier actuel · la langue |
 
-💡 **`$PATH`** explique pourquoi tu peux taper `ls` au lieu de `/usr/bin/ls` : Linux cherche `ls` dans chaque dossier de `$PATH`. Si une commande est « introuvable », elle n'est dans aucun de ces dossiers.
+- `env` = variables d'environnement · `set` = **toutes** les variables (très long).
+- 💡 Grâce à **`$PATH`**, on tape `ls` au lieu de `/usr/bin/ls`. « Commande introuvable » = absente de tous ces dossiers.
 
 ---
 
 ### 6. Aller plus vite
 
-#### L'historique
-
 | Raccourci | Effet |
 |---|---|
-| ++arrow-up++ / ++arrow-down++ | Remonter / redescendre dans les commandes déjà tapées |
-| **`history`** | La liste numérotée de tes commandes |
-| **`!!`** | Relancer la **dernière** commande |
-| `!73` | Relancer la commande **n° 73** |
-| `!ssh` | Relancer la dernière commande qui **commence** par « ssh » |
-| ++ctrl+r++ | **Rechercher** dans l'historique en tapant un morceau |
+| ++arrow-up++ / ++arrow-down++ | Parcourir les commandes déjà tapées |
+| **`history`** | Liste numérotée (enregistrée dans **`~/.bash_history`**) |
+| **`!!`** · `!73` · `!ssh` | Relancer la dernière · la n° 73 · la dernière commençant par « ssh » |
+| ++ctrl+r++ | **Rechercher** dans l'historique |
+| ++tab++ | **Compléter** (commande, fichier, variable) ; ++tab++ ++tab++ = **lister** les choix |
 
-📌 L'historique est enregistré dans **`~/.bash_history`**. ⚠️ Ne tape jamais un **mot de passe** directement dans une commande : il y resterait écrit.
+⚠️ Jamais de **mot de passe** dans une commande : il resterait dans l'historique. ✅ Utilise ++tab++ **tout le temps**.
 
-#### L'autocomplétion avec ++tab++
+**L'aide** : **`commande --help`** (résumé) · **`man commande`** (manuel complet) · `help cd` (commandes intégrées à Bash).
 
-| Touche | Effet |
-|---|---|
-| ++tab++ | **Complète** la commande, le fichier ou la variable s'il n'y a qu'une possibilité |
-| ++tab++ ++tab++ | **Liste** les possibilités s'il y en a plusieurs |
-
-```bash
-cd /e<Tab>       → cd /etc/
-echo $HO<Tab>    → echo $HOME
-```
-
-✅ **Utilise ++tab++ tout le temps** : c'est plus rapide, et ça évite les fautes de frappe.
-
-#### Trouver de l'aide
-
-| Méthode | Pour… |
-|---|---|
-| **`commande --help`** | Un **résumé rapide** des options |
-| **`man commande`** | Le **manuel complet** |
-| `help commande` | Les commandes **intégrées** à Bash (`cd`, `echo`…) |
-
-**Se déplacer dans `man`** : ++arrow-up++ ++arrow-down++ ou ++space++ pour défiler · **`/mot`** pour chercher · **`n`** pour l'occurrence suivante · **`q`** pour **quitter**.
-
-Le manuel est rangé en **sections**. Les 3 à retenir : **1** = les commandes, **5** = les fichiers de configuration, **8** = les commandes d'administration.
-
-```bash
-man passwd          # section 1 : la COMMANDE passwd
-man 5 passwd        # section 5 : le FICHIER /etc/passwd
-LANG=C man ls       # le manuel en anglais (souvent plus complet)
-```
+- Dans `man` : ++space++ défiler · **`/mot`** chercher · **`n`** suivant · **`q`** quitter.
+- Sections : **1** = commandes · **5** = fichiers de configuration · **8** = administration. Ex. `man 5 passwd` = le **fichier** `/etc/passwd`.
 
 ## 📝 Fiche de révision
 

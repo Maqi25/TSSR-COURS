@@ -53,168 +53,115 @@ flowchart LR
 
 ### 1. Les droits sur les fichiers
 
-Chaque fichier a **un propriétaire** (un utilisateur), **un groupe**, et des **droits** pour **3 publics** :
+Chaque fichier a **un propriétaire**, **un groupe**, et des droits pour **3 publics** : **u** (propriétaire), **g** (groupe), **o** (les autres).
 
-| Public | Lettre | Qui ? |
-|---|---|---|
-| **Propriétaire** | **u** (*user*) | Celui à qui appartient le fichier |
-| **Groupe** | **g** (*group*) | Les membres du groupe du fichier |
-| **Autres** | **o** (*others*) | Tout le monde, sauf les deux précédents |
-
-| Droit | Lettre | Valeur | Sur un **fichier** | Sur un **dossier** |
+| Droit | Lettre | Valeur | Fichier | Dossier |
 |---|---|---|---|---|
-| **Lecture** | **r** | **4** | Lire le contenu | **Lister** le contenu (`ls`) |
-| **Écriture** | **w** | **2** | Modifier | **Créer / supprimer** des fichiers dedans |
-| **Exécution** | **x** | **1** | **Lancer** (script, programme) | **Entrer** dedans (`cd`) |
+| **Lecture** | **r** | **4** | Lire | **Lister** (`ls`) |
+| **Écriture** | **w** | **2** | Modifier | **Créer / supprimer** dedans |
+| **Exécution** | **x** | **1** | **Lancer** | **Entrer** (`cd`) |
 
-#### Modifier les droits avec `chmod`
+**`chmod` en chiffres** (on additionne, un chiffre par public) :
 
-**Méthode en chiffres (octale)** : on additionne les valeurs pour chaque public.
-
-| Chiffres | Droits | Usage courant |
+| Chiffres | Droits | Usage |
 |---|---|---|
-| **755** | `rwxr-xr-x` | Script ou dossier : tout le monde lit et exécute, seul le propriétaire modifie |
-| **644** | `rw-r--r--` | Fichier normal : le propriétaire modifie, les autres lisent |
-| **700** | `rwx------` | **Privé** : seulement le propriétaire |
-| **600** | `rw-------` | Fichier **secret** (ex. une clé SSH) |
+| **755** | `rwxr-xr-x` | Script ou dossier : seul le propriétaire modifie |
+| **644** | `rw-r--r--` | Fichier normal |
+| **700** | `rwx------` | **Privé** |
+| **600** | `rw-------` | **Secret** (clé SSH) |
+
+**`chmod` en lettres** : `qui` `+`/`-`/`=` `quoi`.
 
 ```bash
 chmod 755 script.sh
-chmod 600 ~/.ssh/id_ed25519
+chmod u+x script.sh         # + exécution pour le propriétaire
+chmod go-w rapport.txt      # − écriture pour groupe et autres
+chmod o= secret.txt         # plus aucun droit pour les autres
 ```
 
-**Méthode en lettres (symbolique)** : `qui` `+` ou `-` `quoi`.
-
-```bash
-chmod u+x script.sh         # ajouter l'exécution au propriétaire
-chmod go-w rapport.txt      # retirer l'écriture au groupe et aux autres
-chmod o= secret.txt         # retirer TOUS les droits aux autres
-```
-
-💡 Pour lancer un script du dossier courant : `./script.sh` (il faut le droit **x**).
-
-📌 **Changer le propriétaire** (`chown`) nécessite les droits d'administration : vu au cours 4.
+💡 Lancer un script d'ici : `./script.sh` (droit **x** nécessaire). Changer le propriétaire (**`chown`**) : [cours 4](../../cours-04-administration-d-une-distribution-gnu-linux/index.md).
 
 ---
 
 ### 2. Les liens
 
-| | **Lien symbolique** (`ln -s`) | **Lien physique** (`ln`) |
+| | **Symbolique** (`ln -s`) ✅ | **Physique** (`ln`) |
 |---|---|---|
-| **Image** | Un **raccourci** Windows | Un **deuxième nom** pour le même fichier |
-| **Si l'original est supprimé** | Le lien est **cassé** | Le fichier **reste accessible** par l'autre nom |
-| **Sur un dossier ?** | ✅ Oui | ❌ Non |
-| **Dans `ls -l`** | `l` + flèche : `rapport -> /home/user30/Documents/rapport.txt` | Un fichier normal (le compteur de liens augmente) |
+| **Image** | Un **raccourci** | Un **2ᵉ nom** pour le même fichier |
+| **Original supprimé** | Lien **cassé** | Fichier **toujours accessible** |
+| **Sur un dossier** | ✅ | ❌ |
 
 ```bash
-ln -s /var/log/apache2 ~/logs-web       # raccourci vers les journaux Apache
-ls -l ~/logs-web                        # lrwxrwxrwx ... logs-web -> /var/log/apache2
+ln -s /var/log/apache2 ~/logs-web       # ls -l → logs-web -> /var/log/apache2
 ```
-
-✅ Dans la pratique, on utilise surtout les **liens symboliques** (`ln -s`).
 
 ---
 
 ### 3. Les processus
 
-Un **processus**, c'est **un programme en cours d'exécution**. Chacun a un numéro unique : le **PID** (*Process ID*).
+Un **processus** = un **programme en cours**, identifié par son **PID**.
 
 | Commande | Effet |
 |---|---|
-| **`ps`** | Les processus **de ton terminal** |
-| **`ps aux`** | **Tous** les processus de la machine |
-| `ps aux | grep apache` | Trouver un processus précis (et son PID) |
-| **`top`** (ou **`htop`**, plus lisible) | Les processus **en direct**, triés par usage du processeur (`q` pour quitter) |
-| **`kill PID`** | Demander **poliment** à un processus de s'arrêter |
-| **`kill -9 PID`** | **Forcer** l'arrêt (si le processus ne répond plus) |
-| `pkill firefox` | Arrêter les processus **par leur nom** |
-
-**Premier plan et arrière-plan**
+| **`ps aux`** | **Tous** les processus (`| grep apache` pour en trouver un) |
+| **`top`** / **`htop`** | **En direct**, triés par CPU (`q` = quitter) |
+| **`kill PID`** | Demander **poliment** l'arrêt |
+| **`kill -9 PID`** | **Forcer** (dernier recours : pas de sauvegarde des données) |
+| `pkill firefox` | Arrêter **par nom** |
 
 | Action | Effet |
 |---|---|
-| `commande &` | Lancer **directement en arrière-plan** : le terminal reste disponible |
-| ++ctrl+c++ | **Arrêter** la commande en cours |
-| ++ctrl+z++ | **Mettre en pause** la commande en cours |
-| **`jobs`** | Lister les tâches de ce terminal |
-| **`bg`** | Relancer la tâche en pause **en arrière-plan** |
-| **`fg`** | Ramener une tâche **au premier plan** |
-
-```bash
-sleep 300 &        # [1] 4521  ← n° de tâche et PID
-jobs               # [1]+  En cours d'exécution   sleep 300 &
-kill 4521          # l'arrêter
-```
-
-⚠️ Toujours essayer **`kill`** avant **`kill -9`** : `-9` coupe brutalement, sans laisser le programme enregistrer ses données.
+| `commande &` | Lancer **en arrière-plan** |
+| ++ctrl+c++ / ++ctrl+z++ | **Arrêter** / **mettre en pause** |
+| **`jobs`** · **`bg`** · **`fg`** | Lister les tâches · relancer en arrière-plan · ramener au premier plan |
 
 ---
 
 ### 4. Les expressions régulières (avec `grep`)
 
-!!! abstract "En clair"
-    Une **expression régulière** (*regex*) est un **motif** qui décrit **la forme** d'un texte : « une ligne qui **commence** par… », « un mot qui **finit** par… », « **un chiffre**, puis… ». C'est `grep` en version **super-puissante**.
+Une **regex** décrit **la forme** d'un texte (« commence par… », « un chiffre puis… »). ⚠️ Rien à voir avec les **jokers** de noms de fichiers ([module 6](../module-6-specificites-du-shell-bash/index.md)) : ici `*` a un autre sens.
 
-⚠️ Ne pas confondre avec les **jokers** du module 6 (`*.txt`), qui servent à désigner des **noms de fichiers**. Dans une regex, `*` a un **autre** sens.
-
-| Symbole | Signifie | Exemple | Trouve… |
-|---|---|---|---|
-| **`^`** | **Début** de ligne | `grep "^root" /etc/passwd` | Les lignes qui **commencent** par root |
-| **`$`** | **Fin** de ligne | `grep "bash$" /etc/passwd` | Les lignes qui **finissent** par bash |
-| **`.`** | **Un** caractère quelconque | `grep "r..t"` | root, rest, r2dt… |
-| **`*`** | Le caractère d'avant, **0 fois ou plus** | `grep "ab*c"` | ac, abc, abbbc |
-| **`[0-9]`** | **Un chiffre** | `grep "[0-9]"` | Les lignes avec un chiffre |
-| **`[a-z]`** | Une **lettre minuscule** | | |
-| `[^…]` | **Sauf** ces caractères | `grep "[^0-9]"` | |
-| **`|`** (avec `-E`) | **OU** | `grep -E "error|fail"` | error **ou** fail |
-| `+` (avec `-E`) | **1 fois ou plus** | `grep -E "[0-9]+"` | Un nombre |
-
-**Exemples utiles**
+| Symbole | Signifie | Exemple |
+|---|---|---|
+| **`^`** / **`$`** | **Début** / **fin** de ligne | `grep "^root"` · `grep "bash$"` |
+| **`.`** | **Un** caractère quelconque | `r..t` → root, rest |
+| **`*`** | Le caractère d'avant, **0 fois ou plus** | `ab*c` → ac, abc, abbbc |
+| **`[0-9]`** · **`[a-z]`** · `[^…]` | Un chiffre · une minuscule · **sauf** ces caractères | |
+| **`|`** · `+` (avec **`-E`**) | **OU** · **1 fois ou plus** | `grep -E "error|fail"` |
 
 ```bash
-grep -v "^#" /etc/ssh/sshd_config | grep -v "^$"     # la config SANS commentaires ni lignes vides
-grep "bash$" /etc/passwd                              # les comptes qui utilisent bash
-grep -E "error|warning" /var/log/syslog               # les erreurs OU les avertissements
-grep -E "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" fichier   # les lignes contenant une adresse IPv4
+grep -v "^#" /etc/ssh/sshd_config | grep -v "^$"     # config SANS commentaires ni lignes vides
+grep -E "error|warning" /var/log/syslog               # erreurs OU avertissements
+grep -E "[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}" fichier   # lignes avec une IPv4
 ```
-
-💡 **`grep -E`** (ou `egrep`) active les **regex étendues** : `|`, `+`, `?`, `{n,m}` sans antislash.
 
 ---
 
 ### 5. Archiver et compresser
 
-!!! abstract "En clair"
-    - **Archiver** = **regrouper** plusieurs fichiers en **un seul** (un « carton »). C'est le rôle de **`tar`**.
-    - **Compresser** = **réduire la taille** (« mettre le carton sous vide »). C'est le rôle de **`gzip`**, `bzip2`, `xz`.
-    - `tar` sait faire **les deux en même temps** : on obtient un fichier **`.tar.gz`** (l'équivalent du `.zip` de Windows).
+- **Archiver** = **regrouper** en un seul fichier (**`tar`**) · **compresser** = **réduire** la taille (**`gzip`**).
+- `tar` fait **les deux** : un **`.tar.gz`** (≈ le `.zip` de Windows).
 
-| Option de `tar` | Signifie | Moyen mnémotechnique |
-|---|---|---|
-| **`c`** | **Créer** une archive | *create* |
-| **`x`** | **Extraire** | *extract* |
-| **`t`** | **Lister** le contenu | *table* |
-| **`z`** | Compresser / décompresser avec **gzip** | g**z**ip |
-| **`v`** | Afficher les fichiers traités | *verbose* |
-| **`f`** | Le **nom de l'archive** suit (toujours en **dernier**) | *file* |
+| Option `tar` | Signifie |
+|---|---|
+| **`c`** / **`x`** / **`t`** | **Créer** / **extraire** / **lister** |
+| **`z`** | Avec **gzip** |
+| **`v`** | Afficher les fichiers traités |
+| **`f`** | Nom de l'archive (toujours **en dernier**) |
 
 ```bash
-tar -czvf sauvegarde.tar.gz Documents/       # CRÉER une archive compressée du dossier Documents
-tar -tzvf sauvegarde.tar.gz                  # VOIR ce qu'elle contient
-tar -xzvf sauvegarde.tar.gz                  # EXTRAIRE ici
+tar -czvf sauvegarde.tar.gz Documents/       # CRÉER
+tar -tzvf sauvegarde.tar.gz                  # VOIR le contenu
 tar -xzvf sauvegarde.tar.gz -C /tmp          # EXTRAIRE dans /tmp
 ```
 
-**Moyen mnémotechnique** : **c**réer = **czvf**, e**x**traire = **xzvf**.
+| Outil | Compresser / décompresser | Extension |
+|---|---|---|
+| **gzip** | `gzip f` / `gunzip f.gz` | `.gz` (le plus courant) |
+| bzip2 · xz | `bzip2` / `bunzip2` · `xz` / `unxz` | `.bz2` · `.xz` (plus compacts) |
+| zip | `zip -r a.zip dossier` / `unzip a.zip` | `.zip` (compatible Windows) |
 
-| Outil | Compresse | Décompresse | Extension |
-|---|---|---|---|
-| **gzip** | `gzip fichier` | `gunzip fichier.gz` | `.gz` (le plus courant) |
-| bzip2 | `bzip2 fichier` | `bunzip2 fichier.bz2` | `.bz2` (plus compact, plus lent) |
-| xz | `xz fichier` | `unxz fichier.xz` | `.xz` (encore plus compact) |
-| zip | `zip -r a.zip dossier` | `unzip a.zip` | `.zip` (compatible Windows) |
-
-⚠️ **`gzip` remplace le fichier** d'origine par sa version `.gz`, et ne compresse qu'**un seul fichier**. Pour un **dossier**, on utilise **`tar -czf`**.
+⚠️ `gzip` **remplace** le fichier et ne prend **qu'un fichier** : pour un dossier, **`tar -czf`**.
 
 ## 📝 Fiche de révision
 
