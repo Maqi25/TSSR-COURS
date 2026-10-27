@@ -47,107 +47,79 @@ flowchart LR
 
 ### 1. Que peut-on partager ?
 
-| Ressource | Exemple |
-|---|---|
-| **Des fichiers** | Un dossier, une arborescence ou un volume entier |
-| **Des imprimantes** | L'imprimante branchée sur un poste, partagée à tout le service (module 9) |
-
-N'importe quel appareil peut jouer le rôle de **serveur** : un PC sous Windows 10/11, un Windows Server, un NAS, un copieur… ⚠️ **Créer un partage modifie le système** : il faut être **administrateur**.
+**Des fichiers** (un dossier, un volume) et **des imprimantes** ([module 9](../module-9-les-pilotes-et-imprimantes/index.md)). Le « serveur » peut être un PC Windows, un Windows Server, un NAS… ⚠️ Créer un partage demande d'être **administrateur**.
 
 ---
 
 ### 2. Les deux niveaux de droits
 
-Quand Marie ouvre un dossier partagé, Windows vérifie **deux fois** :
-
-| Niveau | Où le régler ? | S'applique… |
+| Niveau | Où ? | S'applique… |
 |---|---|---|
-| **① Droits de partage** | Propriétés → Partage → *Partage avancé* → **Autorisations** | **Seulement** à travers le **réseau** |
-| **② Droits NTFS** ([module 6](../module-6-la-securite-ntfs-et-les-acl/index.md)) | Propriétés → **Sécurité** | **Toujours** : en réseau et en local |
+| **① Partage** | Propriétés → Partage → *Partage avancé* → **Autorisations** | **Seulement en réseau** |
+| **② NTFS** ([module 6](../module-6-la-securite-ntfs-et-les-acl/index.md)) | Propriétés → **Sécurité** | **Toujours** (réseau et local) |
 
-Les deux proposent **Lecture / Modifier / Contrôle total**, et **c'est le plus restrictif des deux qui gagne**.
+**Le plus restrictif des deux gagne** :
 
 | Partage | NTFS | **Droit final** |
 |---|---|---|
 | Lecture | Modification | **Lecture** |
 | Contrôle total | Modification | **Modification** |
-| Contrôle total | Lecture | **Lecture** |
 | Modifier | *(absent de l'ACL)* | **Aucun accès** |
 
-!!! tip "La bonne pratique des techniciens"
-    Pour ne gérer les droits **qu'à un seul endroit** :
+!!! tip "La bonne pratique : gérer les droits à un seul endroit"
+    1. **Partage** : retirer **Tout le monde**, mettre **Utilisateurs authentifiés → Contrôle total**.
+    2. **NTFS** : régler les **vrais** droits, groupe par groupe.
 
-    1. **Partage** : retirer **Tout le monde** (qui inclut le compte Invité) et mettre **Utilisateurs authentifiés → Contrôle total**.
-    2. **NTFS** : régler les **vrais** droits, groupe par groupe (Compta : Modification, Direction : Lecture…).
-
-    Ce n'est pas dangereux : comme **le plus strict gagne**, ce sont les droits NTFS qui décident.
+    Comme le plus strict gagne, ce sont les droits **NTFS** qui décident.
 
 ---
 
 ### 3. Créer un partage
 
-| Méthode | Comment | Pour qui ? |
-|---|---|---|
-| **Partage simplifié** | Clic droit → *Accorder l'accès à* | Utilisateurs (peu de contrôle) : un technicien ne l'utilise pas |
-| **Partage avancé** | Propriétés → **Partage** → *Partage avancé* → cocher « Partager ce dossier » → **Autorisations** | ✅ Technicien |
-| **Console « Dossiers partagés »** | `fsmgmt.msc` (aussi dans `compmgmt.msc`) | Voir **tous** les partages, **qui est connecté** et **quels fichiers sont ouverts** |
-| **cmd** | `net share Compta=D:\Compta /GRANT:"Utilisateurs authentifiés",FULL` | Script |
-| **PowerShell** | `New-SmbShare -Name Compta -Path D:\Compta -FullAccess "Utilisateurs authentifiés"` | Script |
-
-💡 Un nom de partage **qui finit par `$`** (ex. `Compta$`) le rend **caché** : il n'apparaît pas quand on parcourt le réseau, mais reste accessible si on connaît son nom.
-
-#### Les partages administratifs
-
-Windows crée **tout seul** des partages cachés, **réservés aux administrateurs** :
-
-| Partage | Contenu |
+| Méthode | Comment |
 |---|---|
-| **`C$`**, `D$`… | La **racine** de chaque disque |
-| **`ADMIN$`** | Le dossier `C:\Windows` |
-| **`IPC$`** | La communication entre programmes (pas un dossier) |
+| **Partage avancé** ✅ | Propriétés → **Partage** → *Partage avancé* → « Partager ce dossier » → **Autorisations** |
+| **Console** `fsmgmt.msc` | Voir **tous** les partages, **qui est connecté**, **quels fichiers sont ouverts** |
+| **cmd** | `net share Compta=D:\Compta /GRANT:"Utilisateurs authentifiés",FULL` |
+| **PowerShell** | `New-SmbShare -Name Compta -Path D:\Compta -FullAccess "Utilisateurs authentifiés"` |
 
-Exemple : un technicien tape `\\PC-COMPTA05\C$` pour aller chercher un fichier sur ce poste, sans se déplacer.
+- Le **partage simplifié** (*Accorder l'accès à*) donne peu de contrôle : un technicien l'évite.
+- Nom finissant par **`$`** (ex. `Compta$`) = partage **caché** (accessible si on connaît son nom).
+- **Partages administratifs** créés par Windows, réservés aux administrateurs : **`C$`** (racine du disque), **`ADMIN$`** (`C:\Windows`), **`IPC$`** (communication entre programmes). Ex. `\\PC-COMPTA05\C$`.
 
 ---
 
 ### 4. Accéder à un partage
 
-| Besoin | Comment |
-|---|---|
-| **Accès ponctuel** | Taper le chemin **UNC** dans l'Explorateur ou dans ++win+r++ : `\\SRV01\Compta` |
-| **Accès permanent** | **Connecter un lecteur réseau** (Explorateur → *Ce PC* → *Connecter un lecteur réseau*) : `Z:` → `\\SRV01\Compta`, en cochant « Se reconnecter à la connexion » |
+- **Ponctuel** : chemin **UNC** dans l'Explorateur ou ++win+r++ : `\\SRV01\Compta`.
+- **Permanent** : **Connecter un lecteur réseau** (`Z:` → `\\SRV01\Compta`, « Se reconnecter »).
 
 | Je veux… | cmd | PowerShell |
 |---|---|---|
-| Voir les partages d'un serveur | `net view \\SRV01` | `Get-SmbShare` (sur le serveur) |
-| Connecter un lecteur réseau | `net use Z: \\SRV01\Compta /persistent:yes` | `New-SmbMapping -LocalPath Z: -RemotePath \\SRV01\Compta` |
-| Voir mes lecteurs réseau | `net use` | `Get-SmbMapping` |
+| Voir les partages | `net view \\SRV01` | `Get-SmbShare` (sur le serveur) |
+| Connecter un lecteur | `net use Z: \\SRV01\Compta /persistent:yes` | `New-SmbMapping -LocalPath Z: -RemotePath \\SRV01\Compta` |
+| Mes lecteurs réseau | `net use` | `Get-SmbMapping` |
 | Déconnecter | `net use Z: /delete` | `Remove-SmbMapping -LocalPath Z:` |
 
 ---
 
 ### 5. Le Bureau à distance (RDP)
 
-!!! abstract "En clair"
-    Le **Bureau à distance** permet de **prendre la main sur un PC entier** depuis un autre PC, comme si tu étais assis devant. Idéal pour **dépanner sans te déplacer**, ou pour travailler sur ton PC du bureau depuis chez toi (à travers un **VPN**).
+**Prendre la main sur un PC entier** à distance, comme si tu étais devant.
 
-**Côté poste à contrôler (à activer, car désactivé par défaut)** :
+**Sur le poste à contrôler** (désactivé par défaut) :
 
-1. **Paramètres → Système → Bureau à distance → Activer** (ou `sysdm.cpl` → onglet *Utilisation à distance*).
-2. Garder l'option **NLA** cochée (*Authentification au niveau du réseau*) : l'utilisateur doit prouver son identité **avant** d'obtenir l'écran de connexion, ce qui est plus sûr.
-3. **Qui peut se connecter ?** Par défaut, les **administrateurs**. Pour les autres : les ajouter au groupe **Utilisateurs du Bureau à distance**.
-4. Le **pare-feu** s'ouvre automatiquement (port **TCP 3389**).
+1. **Paramètres → Système → Bureau à distance → Activer** (ou `sysdm.cpl`).
+2. Garder **NLA** (identification **avant** l'écran de connexion, plus sûr).
+3. Autoriser des non-administrateurs : groupe **Utilisateurs du Bureau à distance**.
+4. Le pare-feu s'ouvre seul (**TCP 3389**).
 
-⚠️ Le PC à contrôler doit être en **édition Pro ou Entreprise** : l'édition Famille ne peut pas recevoir de connexion Bureau à distance.
+⚠️ Il faut l'édition **Pro ou Entreprise** (la Famille ne reçoit pas de connexion).
 
-**Côté technicien** : lancer **`mstsc`** (Connexion Bureau à distance), saisir le nom ou l'IP du poste. L'onglet *Ressources locales* permet de rapatrier le **presse-papiers**, les **imprimantes** et les **clés USB** dans la session.
+**Côté technicien** : **`mstsc`**, puis le nom ou l'IP. *Ressources locales* = presse-papiers, imprimantes, clés USB dans la session.
 
-| Limite | Détail |
-|---|---|
-| **Poste client** (Windows 10/11) | **1 seule session** à la fois : si tu te connectes, l'utilisateur présent est **déconnecté** |
-| **Serveur** | **2 sessions** d'administration en même temps. Au-delà, il faut le rôle **RDS** (*Remote Desktop Services*, cours 17) |
-
-💡 **Pour aider un utilisateur en le voyant travailler** (sans le déconnecter), on utilise un outil de **prise en main partagée** : **Assistance rapide** (intégrée à Windows, ++ctrl+win+q++), TeamViewer, AnyDesk, VNC…
+- **Poste client** : **1 session** à la fois (l'utilisateur présent est **déconnecté**). **Serveur** : **2 sessions** d'administration (au-delà : rôle **RDS**).
+- 💡 Pour aider un utilisateur **en le voyant** sans le déconnecter : **Assistance rapide** (++ctrl+win+q++), TeamViewer, AnyDesk, VNC.
 
 ## 📝 Fiche de révision
 

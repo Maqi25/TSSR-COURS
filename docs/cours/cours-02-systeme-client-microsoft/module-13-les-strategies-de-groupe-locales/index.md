@@ -44,95 +44,75 @@ HKEY_LOCAL_MACHINE                      ← RUCHE   (comme un disque)
 
 ## 📖 Cours consolidé
 
-### 1. La base de registre
+### 1. La base de registre (`regedit`)
 
-La **base de registre** est une **base de données hiérarchique** (en arbre) où Windows stocke **toute sa configuration** : système, matériel, logiciels, réglages de chaque utilisateur. Elle existe depuis **Windows 95** et contient des **milliers** de paramètres.
+Une **base de données en arbre** où Windows range **toute sa configuration** (système, matériel, logiciels, réglages des utilisateurs).
 
-Pour l'ouvrir : ++win+r++ → **`regedit`**.
+⚠️ **Avant toute modification**, clic droit → **Exporter** la clé : le registre n'a **ni corbeille, ni « Annuler »**.
 
-⚠️ **Avant toute modification**, exporte la clé (clic droit → *Exporter*) pour pouvoir **revenir en arrière** : le registre n'a **ni corbeille, ni bouton « Annuler »**.
+| Ruche | Contient… |
+|---|---|
+| **HKLM** (`HKEY_LOCAL_MACHINE`) | Réglages de **l'ordinateur**, pour **tous** les utilisateurs (matériel, logiciels, sécurité, SAM) |
+| **HKCU** (`HKEY_CURRENT_USER`) | Réglages de **l'utilisateur connecté** (fond d'écran, imprimantes…) |
+| HKU (`HKEY_USERS`) | Tous les profils chargés (HKCU en est un raccourci) |
+| HKCR (`HKEY_CLASSES_ROOT`) | **Associations de fichiers** (quel programme ouvre un `.pdf`) |
+| HKCC (`HKEY_CURRENT_CONFIG`) | Profil **matériel** au démarrage |
 
-#### Les 5 ruches
+📌 À retenir : **HKLM** (la **machine**) et **HKCU** (l'**utilisateur**), celles que modifient les stratégies.
 
-| Ruche | Abréviation | Contient… |
-|---|---|---|
-| **`HKEY_LOCAL_MACHINE`** | **HKLM** | Les réglages de **l'ordinateur**, communs à **tous les utilisateurs** (matériel, logiciels, sécurité, base SAM) |
-| **`HKEY_CURRENT_USER`** | **HKCU** | Les réglages de **l'utilisateur connecté** (son fond d'écran, ses imprimantes…) |
-| `HKEY_USERS` | HKU | Les réglages de **tous les profils** chargés (HKCU en est un raccourci) |
-| `HKEY_CLASSES_ROOT` | HKCR | Les **associations de fichiers** : quel programme ouvre un `.pdf` |
-| `HKEY_CURRENT_CONFIG` | HKCC | Le profil **matériel** utilisé au démarrage |
-
-📌 Les deux ruches à retenir : **HKLM** (la **machine**) et **HKCU** (l'**utilisateur**). Ce sont celles que modifient les stratégies de groupe.
-
-#### Les types de valeurs
-
-| Type | Contient | Exemple |
+| Type de valeur | Contient | Exemple |
 |---|---|---|
 | **`REG_SZ`** | Du **texte** | `Driver Name = "Lexmark XC9200"` |
-| **`REG_DWORD`** | Un **nombre** (souvent 0 = non, 1 = oui), affiché en hexadécimal et en décimal | `Shared = 0x00000000 (0)` → l'imprimante **n'est pas** partagée |
-| `REG_BINARY` | Des données brutes | |
-| `REG_MULTI_SZ` | Une **liste** de textes | |
+| **`REG_DWORD`** | Un **nombre** (souvent 0 = non, 1 = oui) | `Shared = 0x00000000 (0)` → **pas** partagée |
+| `REG_BINARY` · `REG_MULTI_SZ` | Données brutes · **liste** de textes | |
 
 ---
 
 ### 2. Les stratégies de groupe locales (LGPO)
 
-**LGPO** = *Local Group Policy Object* (objet de stratégie de groupe local). Ce sont des centaines de réglages **prêts à l'emploi** qui écrivent **proprement** dans le registre.
+Des centaines de réglages **prêts à l'emploi** qui écrivent **proprement** dans le registre.
 
-| Console | Commande | Contenu |
-|---|---|---|
-| **Éditeur de stratégie de groupe locale** | **`gpedit.msc`** | **Tous** les réglages : poste, utilisateurs, scripts, restrictions |
-| **Stratégie de sécurité locale** | **`secpol.msc`** | Seulement la partie **sécurité** : mots de passe, verrouillage, droits, audit |
+| Console | Contenu |
+|---|---|
+| **`gpedit.msc`** | **Tous** les réglages : poste, utilisateurs, scripts, restrictions |
+| **`secpol.msc`** | La partie **sécurité** : mots de passe, verrouillage, droits, audit |
 
-⚠️ Ces consoles **n'existent pas sous Windows Famille** : il faut l'édition **Pro** ou **Entreprise**.
-
-#### Deux grandes parties
+⚠️ **Absentes de Windows Famille** : il faut **Pro** ou **Entreprise**.
 
 | Partie | Écrit dans… | S'applique… | Exemple |
 |---|---|---|---|
-| **Configuration ordinateur** | **HKLM** | À la **machine**, quel que soit l'utilisateur | Longueur minimale du mot de passe |
-| **Configuration utilisateur** | **HKCU** | À l'**utilisateur** qui se connecte | Interdire l'accès au Panneau de configuration |
+| **Configuration ordinateur** | **HKLM** | À la **machine** | Longueur minimale du mot de passe |
+| **Configuration utilisateur** | **HKCU** | À l'**utilisateur** qui se connecte | Interdire le Panneau de configuration |
 
-💡 En ajoutant le composant « Éditeur d'objets de stratégie de groupe » dans une **console MMC** (`mmc`), on peut cibler en plus les **Administrateurs**, les **Non-administrateurs**, ou **un utilisateur précis** (les autres groupes locaux ne sont pas proposés).
+💡 Dans une console **`mmc`**, l'« Éditeur d'objets de stratégie de groupe » peut cibler les **Administrateurs**, les **Non-administrateurs** ou **un utilisateur précis**.
 
-#### Ce qu'on peut faire (exemples)
-
-| Besoin | Où le régler |
+| Besoin | Où ? |
 |---|---|
-| **Mot de passe** d'au moins 12 caractères | `secpol.msc` → Stratégies de comptes → **Stratégie de mot de passe** |
-| **Verrouiller le compte** après 5 erreurs | `secpol.msc` → Stratégies de comptes → **Stratégie de verrouillage du compte** |
-| Interdire le **Panneau de configuration** | `gpedit.msc` → Configuration utilisateur → Modèles d'administration → Panneau de configuration |
-| Imposer un **fond d'écran** | `gpedit.msc` → Configuration utilisateur → Modèles d'administration → Bureau |
-| Lancer un **script** à l'ouverture de session | `gpedit.msc` → Configuration utilisateur → Paramètres Windows → **Scripts** |
-| Restreindre des **droits d'administration** | `secpol.msc` → Stratégies locales → **Attribution des droits utilisateur** |
+| **Mot de passe** ≥ 12 caractères | `secpol.msc` → Stratégies de comptes → **Mot de passe** |
+| **Verrouiller** après 5 erreurs | `secpol.msc` → Stratégies de comptes → **Verrouillage du compte** |
+| Interdire le **Panneau de configuration** | `gpedit.msc` → Config. utilisateur → Modèles d'administration → Panneau de configuration |
+| Imposer un **fond d'écran** | `gpedit.msc` → Config. utilisateur → Modèles d'administration → Bureau |
+| **Script** à l'ouverture de session | `gpedit.msc` → Config. utilisateur → Paramètres Windows → **Scripts** |
+| Restreindre des **droits** | `secpol.msc` → Stratégies locales → **Attribution des droits utilisateur** |
 
 ---
 
 ### 3. Lire et régler un paramètre
 
-Double-clic sur un paramètre :
-
-| Élément | Signification |
+| État | Signification |
 |---|---|
-| **Non configuré** | **Valeur par défaut** : la stratégie ne touche à rien, Windows garde son comportement normal |
+| **Non configuré** | **Par défaut** : la stratégie ne touche à rien |
 | **Activé** | La stratégie **s'applique** |
-| **Désactivé** | La stratégie est **explicitement refusée** |
-| **Options** | Des réglages complémentaires (nombre, texte, liste…) |
-| **Pris en charge sur** | ⚠️ Les **versions de Windows** sur lesquelles le paramètre **fonctionne** |
-| **Aide** | Explique **précisément** l'effet : **à lire avant de toucher** |
-| **Commentaire** | Note libre pour **documenter** pourquoi tu as fait ce changement |
+| **Désactivé** | **Explicitement refusée** |
 
-!!! warning "Attention à « Activé » ou « Désactivé » sur un paramètre formulé en négatif"
-    « **Désactiver** le Gestionnaire des tâches » + **Activé** = le Gestionnaire des tâches est **bloqué**. Lis toujours la phrase **et** l'aide.
-
-⚠️ **« Pris en charge sur »** : un paramètre prévu pour « Windows 7, Vista, Server 2008 » **n'aura aucun effet** sous Windows 10/11, même s'il est activé.
-
-**Appliquer et vérifier** :
+- **Pris en charge sur** : ⚠️ les versions où le paramètre **fonctionne** (« Windows 7, Vista » = **sans effet** sous Windows 10/11).
+- **Aide** : l'effet exact, **à lire avant** · **Commentaire** : pour **documenter** ton changement.
+- ⚠️ Phrase négative : « **Désactiver** le Gestionnaire des tâches » + **Activé** = Gestionnaire **bloqué**.
 
 | Commande | Rôle |
 |---|---|
-| **`gpupdate /force`** | Appliquer **immédiatement** les stratégies, sans attendre ni redémarrer |
-| **`gpresult /r`** | Afficher les stratégies **réellement appliquées** à l'ordinateur et à l'utilisateur |
+| **`gpupdate /force`** | Appliquer **tout de suite** |
+| **`gpresult /r`** | Voir les stratégies **réellement appliquées** |
 
 ## 📝 Fiche de révision
 

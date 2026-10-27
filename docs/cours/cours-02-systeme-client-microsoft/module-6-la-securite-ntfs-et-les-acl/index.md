@@ -43,13 +43,13 @@ flowchart TD
 
 ### 1. L'ACL : la liste des droits
 
-Pour la voir : clic droit sur un fichier ou dossier → **Propriétés** → onglet **Sécurité**.
+Clic droit sur un fichier ou dossier → **Propriétés** → onglet **Sécurité**.
 
 | Élément | En clair |
 |---|---|
-| **ACL** | La **liste des droits** d'un objet (fichier ou dossier) |
-| **DACL** | La partie de l'ACL qui **liste les utilisateurs et groupes** autorisés ou refusés |
-| **ACE** | **Une ligne** de cette liste : « tel groupe → tels droits » |
+| **ACL** | La **liste des droits** d'un objet |
+| **DACL** | La partie qui liste les **utilisateurs et groupes** autorisés ou refusés |
+| **ACE** | **Une ligne** : « tel groupe → tels droits » |
 
 ```
 ACL de D:\Partage\Compta
@@ -58,88 +58,74 @@ ACL de D:\Partage\Compta
  └─ ACE : GRP_Direction   → Lecture
 ```
 
-📌 **Bonne pratique** : dans une ACL, on met des **groupes**, presque jamais des utilisateurs. C'est plus simple de gérer 10 groupes que 100 personnes : quand quelqu'un change de service, on le change **de groupe**, sans toucher aux ACL.
+📌 Dans une ACL, on met des **groupes**, presque jamais des personnes : quand quelqu'un change de service, on le change **de groupe**, sans toucher aux ACL.
 
 ---
 
-### 2. Les 3 niveaux de droits à connaître
+### 2. Les 3 niveaux de droits (cumulatifs)
 
-Ils sont **cumulatifs** : chaque niveau contient le précédent.
-
-| Niveau | L'utilisateur peut… | Pour qui, typiquement ? |
+| Niveau | L'utilisateur peut… | Pour qui ? |
 |---|---|---|
-| **Lecture** (et exécution) | **Ouvrir** et lire les fichiers, lancer les programmes, voir le contenu des dossiers | Consultation |
-| **Modification** | Lecture **+ créer, modifier, supprimer** des fichiers et dossiers | Les personnes qui **travaillent** dans le dossier |
-| **Contrôle total** | Modification **+ changer les droits** (l'ACL) et devenir propriétaire | **Administrateurs uniquement** |
+| **Lecture** (et exécution) | **Ouvrir**, lire, lancer les programmes | Consultation |
+| **Modification** | Lecture **+ créer, modifier, supprimer** | Ceux qui **travaillent** dans le dossier |
+| **Contrôle total** | Modification **+ changer les droits**, devenir propriétaire | **Administrateurs uniquement** |
 
-💡 L'onglet Sécurité affiche aussi « Affichage du contenu du dossier » et « Écriture » : ce sont des variantes. Les **autorisations spéciales** (bouton **Avancé**) permettent des réglages très fins, mais on les évite : 95 % des besoins se règlent avec les 3 niveaux ci-dessus.
-
-⚠️ On ne donne **jamais le Contrôle total** à un utilisateur standard : il pourrait **changer les droits** et retirer l'accès aux autres.
+- Les **autorisations spéciales** (bouton **Avancé**) existent, mais 95 % des besoins se règlent avec ces 3 niveaux.
+- ⚠️ **Jamais de Contrôle total** pour un utilisateur standard : il pourrait retirer l'accès aux autres.
 
 ---
 
 ### 3. Les règles de calcul
 
-| Règle | Ce qu'elle dit | Exemple |
-|---|---|---|
-| **① Refus implicite** | Pas dans la liste = **pas d'accès** | Le groupe Stagiaires n'est pas dans l'ACL → refusé, sans rien cocher |
-| **② Cumul** | Plusieurs groupes autorisés → on **additionne**, donc on garde le **plus fort** | Marie : Lecture (Utilisateurs) + Modification (Compta) → **Modification** |
-| **③ Le refus gagne** | Un **Refus coché** l'emporte sur toutes les autorisations | Marie : Modification (Compta) + **Refus** (Stagiaires) → **refusé** |
+| Règle | Exemple |
+|---|---|
+| **① Refus implicite** : pas dans la liste = **pas d'accès** | Stagiaires absents de l'ACL → refusés |
+| **② Cumul** : plusieurs groupes → on garde le **plus fort** | Lecture (Utilisateurs) + Modification (Compta) → **Modification** |
+| **③ Le refus gagne** : un **Refuser coché** bat toutes les autorisations | Modification (Compta) + **Refus** (Stagiaires) → **refusé** |
 
-✅ **Bonne pratique** : préfère le **refus implicite** (ne pas mettre le groupe dans la liste) au **refus explicite** (cocher « Refuser »). Les cases « Refuser » sont difficiles à retrouver et provoquent des blocages incompréhensibles.
-
-!!! note "Pour aller plus loin"
-    Ordre exact de Windows : refus explicite > autorisation explicite > refus hérité > autorisation héritée. Une autorisation posée **directement** sur un fichier peut donc battre un refus **hérité** du dossier parent.
+- ✅ Préfère le **refus implicite** (ne pas mettre le groupe) au **refus explicite** (cases « Refuser » difficiles à retrouver).
+- Ordre exact : refus explicite > autorisation explicite > refus hérité > autorisation héritée.
 
 ---
 
 ### 4. L'héritage
 
-**Par défaut, un dossier transmet ses droits à tout ce qu'il contient** (sous-dossiers et fichiers). On met donc les droits **en haut** de l'arborescence, et ils **descendent tout seuls**.
+- Un dossier **transmet ses droits** à tout son contenu : on pose les droits **en haut**, ils **descendent**.
+- Les droits hérités sont **grisés** (non modifiables à cet endroit).
 
-- Dans l'onglet Sécurité, les droits **hérités** apparaissent **grisés** : on ne peut pas les modifier ici.
-- **Pour les changer**, deux méthodes :
-
-| Méthode | Quand ? |
+| Pour les changer… | Quand ? |
 |---|---|
-| **Modifier le dossier parent** | Le changement doit valoir pour **tout** le contenu |
-| **Désactiver l'héritage** (*Avancé* → *Désactiver l'héritage* → « Convertir en autorisations explicites ») | **Un seul** sous-dossier doit être différent (ex. `Salaires`) : les droits deviennent **modifiables** |
+| **Modifier le dossier parent** | Pour **tout** le contenu |
+| **Désactiver l'héritage** (*Avancé* → « Convertir en autorisations explicites ») | **Un seul** sous-dossier différent (ex. `Salaires`) |
 
 ---
 
 ### 5. Copier ou déplacer : que deviennent les droits ?
 
-| Action | Les droits… | Pourquoi |
-|---|---|---|
-| **Déplacer** (couper / coller) **sur le même disque** (`D:` → `D:`) | ✅ **sont conservés** | Le fichier ne bouge pas vraiment, seul son « chemin » change |
-| **Déplacer vers un autre disque** (`D:` → `E:`) | 🔄 **sont ceux de la destination** | C'est une copie suivie d'une suppression : un **nouveau** fichier |
-| **Copier** (n'importe où) | 🔄 **sont ceux de la destination** | La copie est un **nouveau** fichier, qui hérite de son nouveau dossier |
+| Action | Les droits… |
+|---|---|
+| **Déplacer sur le même disque** (`D:` → `D:`) | ✅ **sont conservés** (seul le chemin change) |
+| **Déplacer vers un autre disque** (`D:` → `E:`) | 🔄 **ceux de la destination** (copie + suppression) |
+| **Copier** (n'importe où) | 🔄 **ceux de la destination** (nouveau fichier) |
 
-**Moyen mnémotechnique** : **seul le « couper-coller sur le même disque » garde les droits.** Tout le reste prend les droits du dossier d'arrivée.
+**À retenir** : **seul le couper-coller sur le même disque garde les droits.**
 
 ---
 
 ### 6. Vérifier les droits
 
-!!! tip "Toujours tester avant de mettre en production"
-    - **Accès effectif** : clic droit → Propriétés → Sécurité → **Avancé** → onglet **Accès effectif** → choisir un utilisateur → **Afficher l'accès effectif**. Windows **simule** ses droits réels (avec tous ses groupes), sans avoir besoin de son mot de passe.
-    - Encore mieux : **tester avec l'utilisateur** lui-même. C'est aussi l'occasion d'échanger avec lui en dehors d'une panne.
-
-**En ligne de commande : `icacls`**
+- **Accès effectif** : Sécurité → **Avancé** → **Accès effectif** → choisir un utilisateur : Windows **simule** ses droits réels, sans son mot de passe.
+- Encore mieux : **tester avec l'utilisateur** lui-même.
 
 ```
 icacls D:\Partage\Compta                                  ← afficher l'ACL
-icacls D:\Partage\Compta /grant GRP_Compta:(OI)(CI)M      ← donner Modification à GRP_Compta (et à tout le contenu)
-icacls D:\Partage\Compta /remove GRP_Stagiaires           ← retirer un groupe de la liste
+icacls D:\Partage\Compta /grant GRP_Compta:(OI)(CI)M      ← Modification pour GRP_Compta, sur tout le contenu
+icacls D:\Partage\Compta /remove GRP_Stagiaires           ← retirer un groupe
 ```
 
-| Lettre | Droit | | Code | Sens |
-|---|---|---|---|---|
-| **R** | Lecture | | **(OI)** | s'applique aux **fichiers** contenus |
-| **M** | Modification | | **(CI)** | s'applique aux **sous-dossiers** |
-| **F** | Contrôle total | | | |
+Droits : **R** = Lecture · **M** = Modification · **F** = Contrôle total. Héritage : **(OI)** = fichiers contenus · **(CI)** = sous-dossiers.
 
-⚠️ Même un **administrateur** travaille avec des droits standard (**UAC**, module 5) : lance l'Explorateur ou la console **en tant qu'administrateur** si une modification de droits est refusée.
+⚠️ Modification de droits refusée alors que tu es administrateur ? C'est l'**UAC** ([module 5](../module-5-les-utilisateurs-et-les-groupes/index.md)) : lance l'outil **en tant qu'administrateur**.
 
 ## 📝 Fiche de révision
 

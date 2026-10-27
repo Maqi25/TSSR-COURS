@@ -49,99 +49,71 @@ flowchart LR
 
 ### 1. Les outils de diagnostic
 
-**Performance** : on surveille **4 composants** : le **processeur (CPU)**, la **mémoire (RAM)**, le **disque** et le **réseau**.
+On surveille **4 composants** : **CPU**, **RAM**, **disque**, **réseau**.
 
-| Outil | Commande | Quand ? | Ce qu'il montre |
-|---|---|---|---|
-| **Gestionnaire des tâches** | ++ctrl+shift+esc++ | 🔴 Maintenant | Programmes ouverts, % CPU / RAM / disque / réseau, applications lancées au démarrage |
-| **Moniteur de ressources** | `resmon` | 🔴 Maintenant | Le détail : **quel programme** utilise le disque ou le réseau, **quel fichier** est verrouillé |
-| **Observateur d'événements** | `eventvwr.msc` | 🔴 et 🕓 | Les **journaux** (logs) : tout ce qui s'est passé, avec la date et le code d'erreur |
-| **Historique de fiabilité** | `perfmon /rel` | 🕓 Avant | Une **courbe** de stabilité jour par jour, avec les plantages et installations |
-| **Analyseur de performances** | `perfmon` | 🕓 Planifié | Des **compteurs** très précis, enregistrés sur une période (surtout pour les serveurs) |
-| **Diagnostic mémoire** | `mdsched` | Au redémarrage | Teste la **RAM** (suspicion d'une barrette défectueuse) |
+| Outil | Commande | Ce qu'il montre |
+|---|---|---|
+| **Gestionnaire des tâches** | ++ctrl+shift+esc++ | 🔴 **Maintenant** : programmes, % CPU / RAM / disque / réseau, démarrage |
+| **Moniteur de ressources** | `resmon` | 🔴 Le détail : **quel programme** utilise le disque ou le réseau |
+| **Observateur d'événements** | `eventvwr.msc` | 🔴🕓 Les **journaux** : ce qui s'est passé, avec date et code d'erreur |
+| **Historique de fiabilité** | `perfmon /rel` | 🕓 Une **courbe** de stabilité jour par jour (plantages, installations) |
+| **Analyseur de performances** | `perfmon` | 🕓 Des **compteurs** précis, enregistrés sur une période |
+| **Diagnostic mémoire** | `mdsched` | Teste la **RAM** au redémarrage |
 
 #### L'Observateur d'événements : le réflexe n°1
 
-Les journaux à regarder sont dans **Journaux Windows** :
-
-| Journal | Contient |
-|---|---|
-| **Système** | Windows lui-même : pilotes, services, démarrage, arrêts imprévus |
-| **Application** | Les logiciels : plantages d'applications |
-| **Sécurité** | Connexions réussies ou échouées, accès aux fichiers |
-
-| Niveau | Signification |
-|---|---|
-| ℹ️ **Information** | Tout va bien |
-| ⚠️ **Avertissement** | Problème possible, à surveiller |
-| ❌ **Erreur** | Quelque chose a échoué |
-| 🛑 **Critique** | Grave (ex. arrêt brutal, **ID 41**) |
-
-💡 Méthode : **filtrer** le journal (*Filtrer le journal actuel*) sur **Erreur + Critique**, autour de **l'heure du problème**. Puis chercher la **Source** et l'**ID de l'événement** sur Internet.
-
-**Chercher une solution** : les solutions se trouvent très souvent en ligne, surtout **en anglais**. La documentation officielle de Microsoft est sur **Microsoft Learn** (`learn.microsoft.com`, qui remplace l'ancien TechNet). Les assistants de dépannage automatiques de Windows sont faits pour les particuliers : un technicien préfère comprendre la cause.
+- **Journaux Windows** : **Système** (pilotes, services, arrêts) · **Application** (plantages de logiciels) · **Sécurité** (connexions, accès).
+- **Niveaux** : ℹ️ Information · ⚠️ Avertissement · ❌ Erreur · 🛑 **Critique** (ex. arrêt brutal, **ID 41**).
+- 💡 Méthode : **filtrer** sur **Erreur + Critique** autour de **l'heure du problème**, puis chercher **Source + ID** en ligne (souvent en anglais ; doc officielle : **Microsoft Learn**).
 
 ---
 
-### 2. Réparer Windows en ligne de commande
+### 2. Réparer Windows en ligne de commande (en administrateur)
 
-À lancer dans un terminal **en administrateur** :
-
-| Commande | Ce qu'elle fait | Quand ? |
-|---|---|---|
-| **`sfc /scannow`** | Vérifie et **répare les fichiers système** de Windows | Windows se comporte bizarrement, plantages |
-| **`DISM /Online /Cleanup-Image /RestoreHealth`** | Répare la **réserve** dont se sert `sfc` (en la téléchargeant via Windows Update) | `sfc` n'arrive pas à tout réparer → DISM, **puis à nouveau sfc** |
-| **`chkdsk C: /f`** | Vérifie et **répare le système de fichiers** du disque (au prochain redémarrage pour C:) | Fichiers illisibles, arrêt brutal |
+| Commande | Ce qu'elle fait |
+|---|---|
+| **`sfc /scannow`** | Vérifie et **répare les fichiers système** |
+| **`DISM /Online /Cleanup-Image /RestoreHealth`** | Répare la **réserve** utilisée par `sfc` → puis **relancer sfc** |
+| **`chkdsk C: /f`** | Répare le **système de fichiers** du disque (au redémarrage pour C:) |
 
 ---
 
 ### 3. Les points de restauration
 
-!!! abstract "En clair"
-    Un **point de restauration** est une **photo des réglages de Windows** à un instant donné. Si une installation casse quelque chose, on **revient à la photo**.
+Une **photo des réglages de Windows** pour **revenir en arrière** si une installation casse quelque chose.
 
-| ✅ Il sauvegarde | ❌ Il ne sauvegarde **PAS** |
+| ✅ Sauvegarde | ❌ Ne sauvegarde **PAS** |
 |---|---|
-| Le **registre**, les fichiers système, les pilotes, les programmes installés | Les **documents** de l'utilisateur (photos, fichiers…) → ce n'est **pas une sauvegarde** |
+| **Registre**, fichiers système, pilotes, programmes | Les **documents** de l'utilisateur → ce n'est **pas une sauvegarde** |
 
-- ⚠️ La fonction est souvent **désactivée par défaut**. On l'active **disque par disque** : ++win+r++ → `sysdm.cpl` → onglet **Protection du système** → *Configurer*.
-- **Création** : automatique (avant une mise à jour, l'installation d'un pilote…), ou **manuelle** (bouton *Créer*, à faire **avant** une manipulation risquée).
-- **Espace** : on lui réserve une taille. Quand elle est pleine, les **plus anciens points sont effacés**.
-- **Restaurer** : `rstrui`, ou depuis **WinRE** si Windows ne démarre plus.
+- ⚠️ Souvent **désactivé** : l'activer disque par disque dans `sysdm.cpl` → **Protection du système**.
+- Création **automatique** (avant une mise à jour, un pilote) ou **manuelle** (**avant** une manip risquée).
+- Espace plein → les **plus anciens** points sont effacés.
+- Restaurer : **`rstrui`**, ou depuis **WinRE** si Windows ne démarre plus.
 
 ---
 
 ### 4. WinRE : l'environnement de secours
 
-**WinRE** (*Windows Recovery Environment*) est un **mini-Windows de secours**, rangé sur une petite partition cachée du disque. Il démarre **quand le vrai Windows n'y arrive plus**.
+Un **mini-Windows de secours** (partition cachée) qui démarre **quand Windows n'y arrive plus**.
 
-**Comment le lancer :**
+**Le lancer** : ++shift++ + **Redémarrer** · `shutdown /r /o /t 0` · Paramètres → **Récupération** → *Démarrage avancé* · **automatiquement après 2 échecs de démarrage** · clé d'installation → *Réparer l'ordinateur*.
 
-| Méthode | |
+| Outil (Dépannage → Options avancées) | Rôle |
 |---|---|
-| Maintenir **Maj** (++shift++) en cliquant sur **Redémarrer** | Le plus rapide |
-| `shutdown /r /o /t 0` | En ligne de commande |
-| Paramètres → **Système → Récupération** → *Démarrage avancé* | |
-| **Automatiquement**, après **2 échecs de démarrage** de suite, ou 2 plantages dans les 2 minutes qui suivent le démarrage | |
-| Démarrer sur une **clé d'installation Windows** → *Réparer l'ordinateur* | Si le disque est très abîmé |
-
-**Ce qu'on y trouve (Dépannage → Options avancées) :**
-
-| Outil | Rôle |
-|---|---|
-| **Outil de redémarrage système** | Répare **automatiquement** le démarrage (secteur de démarrage MBR/GPT, **BCD** = la configuration du démarrage) |
-| **Paramètres** (de démarrage) | Démarrer en **mode sans échec** (++f4++), en **basse résolution**, **sans vérification de la signature des pilotes**… |
+| **Outil de redémarrage système** | Répare **automatiquement** le démarrage (MBR/GPT, **BCD**) |
+| **Paramètres** (de démarrage) | **Mode sans échec** (++f4++), **basse résolution**, **sans signature des pilotes** |
 | **Restauration du système** | Revenir à un **point de restauration** |
-| **Désinstaller des mises à jour** | Retirer la **dernière mise à jour** (de qualité ou de fonctionnalités) qui pose problème |
-| **Récupération de l'image système** | Restaurer une **sauvegarde complète** (disque externe, réseau) |
-| **Invite de commandes** | Réparer à la main (`sfc`, `chkdsk`, `bootrec`…) |
-| **Réinitialiser ce PC** (dans *Dépannage*) | Réinstaller Windows, **en gardant ou non** les fichiers personnels |
+| **Désinstaller des mises à jour** | Retirer la **dernière mise à jour** qui pose problème |
+| **Récupération de l'image système** | Restaurer une **sauvegarde complète** |
+| **Invite de commandes** | Réparer à la main (`sfc`, `chkdsk`, `bootrec`) |
+| **Réinitialiser ce PC** | Réinstaller Windows, **en gardant ou non** les fichiers |
 
 | Mode de démarrage | Pour quoi ? |
 |---|---|
-| **Mode sans échec** | Windows démarre avec **le strict minimum** (pilotes de base). Si ça marche en sans échec, le problème vient d'un **pilote** ou d'un **logiciel** |
-| **Vidéo basse résolution** | Le **pilote graphique** empêche l'affichage |
-| **Désactiver la signature des pilotes** | Tester un pilote **non signé** |
+| **Sans échec** | Le **strict minimum** : si ça marche, le problème vient d'un **pilote** ou d'un **logiciel** |
+| **Basse résolution** | Le **pilote graphique** empêche l'affichage |
+| **Sans signature des pilotes** | Tester un pilote **non signé** |
 
 ## 📝 Fiche de révision
 

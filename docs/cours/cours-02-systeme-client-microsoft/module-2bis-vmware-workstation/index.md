@@ -73,104 +73,84 @@ flowchart TB
 | Mot | En clair |
 |---|---|
 | **Hôte** | Le **vrai PC**, qui possède le matériel |
-| **VM** (machine virtuelle) | Un **ordinateur virtuel**, isolé des autres, avec son propre OS |
-| **OS invité** | Le système installé **dans** la VM |
-| **Hyperviseur** | Le logiciel qui **fait tourner les VM** et partage le matériel entre elles. Sans lui, pas de virtualisation |
+| **VM** (machine virtuelle) | Un **ordinateur virtuel** isolé, avec son propre OS (**OS invité**) |
+| **Hyperviseur** | Le logiciel qui **fait tourner les VM** et partage le matériel |
 
-**Deux familles d'hyperviseurs :**
-
-| Type | Installé… | Exemple | Usage |
+| Hyperviseur | Installé… | Exemples | Usage |
 |---|---|---|---|
-| **Type 2** (logiciel) | **sur un Windows ou un Linux** existant | **VMware Workstation**, VirtualBox | Tests, formation, maquettes |
-| **Type 1** (« bare metal ») | **directement sur le serveur**, à la place de l'OS | **VMware ESXi**, Hyper-V | Production en entreprise (voir cours 13) |
+| **Type 2** | **sur** un Windows / Linux | **VMware Workstation**, VirtualBox | Tests, formation |
+| **Type 1** (« bare metal ») | **directement** sur le serveur | **ESXi**, Hyper-V | Production ([cours 13](../../cours-13-virtualisation-de-serveurs/index.md)) |
 
 ---
 
 ### 2. Les ressources d'une VM
 
-Une VM a besoin des mêmes choses qu'un vrai PC : **processeur, RAM, disque, carte réseau**.
-
 | Ressource | À savoir |
 |---|---|
-| **Processeur (CPU)** | Ne donne pas trop de processeurs à une VM : elle peut **devenir plus lente**, car elle attend que les cœurs soient libres. Se modifie **VM éteinte** |
-| **RAM** | Elle est **prise sur l'hôte dès que la VM démarre**. Une VM à 4 Go retire 4 Go à ton PC. ⚠️ Vérifie que l'hôte en a assez **avant** de démarrer |
-| **Disque** | C'est **un simple fichier** (`.vmdk`) sur l'hôte. Il est **dynamique** : un disque de 60 Go ne pèse que quelques Go au début, et grossit au fur et à mesure (sans jamais dépasser 60 Go) |
+| **CPU** | Trop de processeurs peut **ralentir** la VM. Se modifie **VM éteinte** |
+| **RAM** | **Prise sur l'hôte** au démarrage de la VM (VM à 4 Go = 4 Go en moins). Libérée quand la VM est **en pause** ou **éteinte** |
+| **Disque** | Un **fichier** `.vmdk`, **dynamique** : il grossit au fur et à mesure, jusqu'à sa taille maximale |
 
-| État de la VM | La RAM de l'hôte… |
-|---|---|
-| **Allumée** | est réservée à la VM |
-| **En pause** (suspendue) | est libérée : son contenu est enregistré dans un fichier, et restauré à la reprise |
-| **Éteinte** | est libérée |
-
-⚠️ Si le disque **de l'hôte** est plein, les VM peuvent **se figer** ou **s'abîmer**. Range tes VM sur un disque avec de la place (idéalement un **SSD**).
+⚠️ Disque **de l'hôte** plein = VM qui **se figent** ou **s'abîment**. Range-les sur un disque avec de la place (SSD).
 
 ---
 
 ### 3. Les modes réseau
 
-Chaque VM a une **carte réseau virtuelle**, branchée sur un **switch virtuel** (appelé **VMnet**).
+Chaque VM a une carte réseau virtuelle, branchée sur un **switch virtuel** (**VMnet**).
 
-| Mode | Switch virtuel | La VM peut joindre… | Quand l'utiliser ? |
+| Mode | Switch | La VM joint… | Quand ? |
 |---|---|---|---|
-| **Bridge** (pont) | VMnet0 | Le **vrai réseau** : la box, Internet, les autres PC. Elle reçoit une IP de ta box | La VM doit être vue comme un vrai PC du réseau |
-| **NAT** | **VMnet8** | Internet, **en empruntant l'IP de l'hôte** (comme une box) | Donner Internet à une VM, simplement |
-| **Host-only** (hôte uniquement) | **VMnet1** | **L'hôte et les autres VM** de ce réseau, **pas Internet** | Labo isolé, avec accès depuis ton PC |
-| **LAN Segment** | Segment nommé | **Uniquement les VM du même segment** (ni l'hôte, ni Internet) | Simuler des réseaux d'entreprise séparés (« Compta », « Serveurs »…) reliés par un routeur virtuel |
+| **Bridge** (pont) | VMnet0 | Le **vrai réseau** (IP donnée par ta box) | La VM doit être vue comme un vrai PC |
+| **NAT** | **VMnet8** | Internet, **via l'IP de l'hôte** | Donner Internet simplement |
+| **Host-only** | **VMnet1** | L'**hôte** et les autres VM, **pas Internet** | Labo isolé |
+| **LAN Segment** | Nommé | **Seulement les VM du segment** | Simuler des réseaux séparés reliés par un routeur virtuel |
 
-💡 Il existe **20 switchs virtuels** (VMnet0 à VMnet19), modifiables dans **Edit → Virtual Network Editor**. Côté hôte, les cartes « **VMware Network Adapter VMnet1 / VMnet8** » apparaissent dans `ncpa.cpl`.
+💡 20 switchs (VMnet0 à 19), réglables dans **Edit → Virtual Network Editor**. Côté hôte, les cartes « VMware Network Adapter VMnet1 / VMnet8 » sont dans `ncpa.cpl`.
 
 ---
 
 ### 4. Les fonctions qui font gagner du temps
 
-| Fonction | À quoi ça sert | Exemple |
-|---|---|---|
-| **Snapshot** (instantané) | **Photographier** la VM à un instant T pour **revenir en arrière** si ça tourne mal | Snapshot **avant** une mise à jour risquée → ça plante → retour au snapshot en 10 secondes |
-| **Clone** | **Dupliquer** une VM modèle | Créer 5 postes Windows en quelques minutes |
-| **Pause** (suspend) | Mettre la VM en veille et **libérer les ressources** | Reprendre le TP le lendemain là où on l'a laissé |
-| **VMware Tools** | Pilotes à installer **dans** la VM : meilleur affichage, copier-coller et glisser-déposer avec l'hôte | À installer après chaque nouvelle VM |
+| Fonction | À quoi ça sert |
+|---|---|
+| **Snapshot** | **Photo** de la VM pour **revenir en arrière** (à faire avant une mise à jour risquée) |
+| **Clone** | **Dupliquer** une VM modèle (5 postes en quelques minutes) |
+| **Pause** | Mettre en veille et **libérer les ressources** |
+| **VMware Tools** | Pilotes **dans** la VM : affichage, copier-coller avec l'hôte. À installer sur chaque VM |
 
-!!! tip "Les raccourcis indispensables"
-    - Cliquer dans la VM **capture** le clavier et la souris : ++ctrl+alt++ pour **revenir sur l'hôte**.
-    - Pour faire un ++ctrl+alt+del++ **dans la VM** : ++ctrl+alt+insert++, ou le bouton dédié dans la barre de Workstation.
+- ++ctrl+alt++ : **rendre la main** clavier/souris à l'hôte.
+- ++ctrl+alt+insert++ : faire un ++ctrl+alt+del++ **dans** la VM.
 
 ---
 
-### 5. Créer une VM, pas à pas
+### 5. Créer une VM
 
 | # | Étape | Conseil |
 |---|---|---|
 | ① | **File → New Virtual Machine** → *Typical* | |
-| ② | Source de l'OS | Choisir **« I will install the operating system later »** : tu gardes la main sur les réglages |
-| ③ | OS invité | Ex. Windows 10 x64 : Workstation propose alors des réglages adaptés |
-| ④ | Nom et dossier | Un dossier par VM, sur un disque rapide |
-| ⑤ | Disque | Taille proposée (ex. 60 Go), **« Store virtual disk as a single file »** |
-| ⑥ | **Customize Hardware** | Ajuster RAM et CPU, **monter l'ISO** dans le lecteur CD, choisir le **mode réseau** |
-| ⑦ | Démarrer | La VM démarre sur l'ISO → installation de l'OS (voir [module 2](../module-2-installation-de-windows-10/index.md)) |
+| ② | Source | **« I will install the operating system later »** (tu gardes la main) |
+| ③ | OS invité | Ex. Windows 10 x64 → réglages adaptés proposés |
+| ④ | Nom, dossier | Un dossier par VM, sur un disque rapide |
+| ⑤ | Disque | Ex. 60 Go, **« single file »** |
+| ⑥ | **Customize Hardware** | RAM, CPU, **ISO** dans le lecteur, **mode réseau** |
+| ⑦ | Démarrer | Installation de l'OS ([module 2](../module-2-installation-de-windows-10/index.md)) |
 
-**Les fichiers d'une VM** (dans son dossier) :
-
-| Fichier | Contenu |
-|---|---|
-| **`.vmx`** | La **configuration** (RAM, CPU, réseau…), un simple fichier texte |
-| **`.vmdk`** | Le **disque dur** virtuel |
+Dans le dossier de la VM : **`.vmx`** = la **configuration** (fichier texte) · **`.vmdk`** = le **disque**.
 
 ---
 
-### 6. Importer et exporter une VM
-
-Une VM, c'est **un dossier de fichiers** : on peut donc la **copier** comme n'importe quel dossier.
+### 6. Importer et exporter
 
 | Je veux… | Comment |
 |---|---|
-| **Ouvrir une VM existante** | Double-clic sur son fichier **`.vmx`** (ou File → Open) |
-| **Importer une VM toute prête** | File → Open → fichier **`.ova`** / **`.ovf`** (format standard d'échange de VM) |
-| **Exporter une VM** | **File → Export to OVF** (choisir `.ova` pour obtenir un seul fichier) |
-| **Sauvegarder une VM** | Copier son dossier (VM éteinte) |
+| Ouvrir une VM | Double-clic sur le **`.vmx`** |
+| Importer une VM toute prête | File → Open → **`.ova`** / **`.ovf`** (format standard) |
+| Exporter | **File → Export to OVF** (`.ova` = un seul fichier) |
+| Sauvegarder | Copier son dossier, **VM éteinte** |
 
-⚠️ À l'ouverture d'une VM copiée, Workstation demande : **« I moved it »** ou **« I copied it »**. Si l'original existe encore, réponds **« I copied it »** : la copie reçoit une **nouvelle adresse MAC**, ce qui évite un conflit sur le réseau.
-
-📌 Workstation est fait pour les **tests et maquettes**, pas pour faire tourner des serveurs de **production** (on utilise alors ESXi ou Hyper-V). Depuis fin 2024, **VMware Workstation Pro est gratuit**, y compris pour un usage professionnel.
+- ⚠️ VM copiée : répondre **« I copied it »** si l'original existe encore → nouvelle **MAC**, pas de conflit réseau.
+- 📌 Workstation = **tests et maquettes**, pas la production (ESXi, Hyper-V). **Gratuit** depuis fin 2024, même en entreprise.
 
 ## 📝 Fiche de révision
 

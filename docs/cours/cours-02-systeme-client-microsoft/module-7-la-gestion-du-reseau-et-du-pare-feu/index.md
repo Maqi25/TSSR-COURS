@@ -53,41 +53,29 @@ flowchart LR
 
 ### 1. Les profils réseau
 
-À chaque nouvelle connexion, Windows associe la carte réseau à un **profil** (ou « emplacement réseau »). Le **pare-feu adapte ses règles** à ce profil.
+Chaque connexion reçoit un **profil** ; le **pare-feu** adapte ses règles à ce profil.
 
 | Profil | Quand ? | Le pare-feu… |
 |---|---|---|
-| **Domaine** | **Automatique** dès que le PC (joint au domaine) joint son **contrôleur de domaine**. On ne peut pas le changer à la main | Laisse passer les échanges avec le domaine |
-| **Privé** | Choisi **par toi** pour un réseau de **confiance** | Autorise la découverte du réseau et le partage |
-| **Public** | Par défaut sur un réseau inconnu (ou sans passerelle) | **Bloque** au maximum ; le PC est **invisible** pour les autres |
+| **Domaine** | **Automatique** quand le PC joint son contrôleur de domaine | Laisse passer les échanges avec le domaine |
+| **Privé** | Choisi **par toi**, réseau de **confiance** | Autorise découverte et partage |
+| **Public** | Par défaut, réseau inconnu | **Bloque** au maximum : PC **invisible** |
 
-💡 Pour changer le profil : **Paramètres → Réseau et Internet** → propriétés de la connexion → *Public* / *Privé*. Le **Centre Réseau et partage** (Panneau de configuration) affiche le profil de chaque carte.
-
-⚠️ Un PC qui n'arrive pas à **partager un dossier** ou à **être vu** sur le réseau est souvent en profil **Public**.
+- Changer : **Paramètres → Réseau et Internet** → propriétés de la connexion → *Public* / *Privé*.
+- ⚠️ Un PC qui **ne partage pas** ou **n'est pas vu** sur le réseau est souvent en **Public**.
 
 ---
 
 ### 2. Configurer la carte réseau
 
-Raccourci : ++win+r++ → **`ncpa.cpl`** → clic droit sur la carte → *Propriétés* → **Protocole Internet version 4 (TCP/IPv4)**.
+++win+r++ → **`ncpa.cpl`** → clic droit sur la carte → *Propriétés* → **TCP/IPv4**.
 
 | Mode | Principe | Pour qui ? |
 |---|---|---|
-| **Dynamique** (« Obtenir une adresse IP automatiquement ») | Un serveur **DHCP** (la box, un serveur) donne IP, masque, passerelle et DNS | ✅ **Postes clients**, cas normal |
-| **Statique** (fixe) | Tu saisis **toi-même** IP, masque, passerelle, DNS | **Serveurs**, imprimantes, routeurs : ils doivent garder **la même adresse** |
+| **Dynamique** (DHCP) | Un serveur **DHCP** donne IP, masque, passerelle, DNS | ✅ **Postes clients** |
+| **Statique** | Tu saisis **tout** toi-même | **Serveurs**, imprimantes, routeurs (adresse **fixe**) |
 
-📌 **APIPA** : en DHCP, si aucun serveur ne répond, Windows se donne une adresse **169.254.x.x** (réseau `169.254.0.0/16`). Il ne peut alors parler qu'aux autres postes en 169.254 : **pas d'Internet**. C'est le signe d'un **problème DHCP**.
-
-**Exemple de configuration statique**
-
-| Champ | Valeur | Rôle |
-|---|---|---|
-| Adresse IP | `192.168.1.50` | L'adresse du poste |
-| Masque | `255.255.255.0` | Le réseau est 192.168.1.0/24 |
-| Passerelle | `192.168.1.1` | Le routeur, pour sortir du réseau |
-| DNS préféré | `192.168.1.1` | Le serveur qui traduit les noms en adresses |
-
-**En PowerShell :**
+**Exemple statique** : IP `192.168.1.50` · masque `255.255.255.0` · passerelle `192.168.1.1` (le routeur) · DNS `192.168.1.1`.
 
 ```powershell
 Get-NetIPConfiguration                                         # voir la config (comme ipconfig)
@@ -95,55 +83,46 @@ New-NetIPAddress -InterfaceAlias "Ethernet" -IPAddress 192.168.1.50 -PrefixLengt
 Set-DnsClientServerAddress -InterfaceAlias "Ethernet" -ServerAddresses 192.168.1.1
 ```
 
+📌 **APIPA** : en DHCP sans réponse, Windows prend une **169.254.x.x** → **pas d'Internet**, **problème DHCP**.
+
 ---
 
 ### 3. Diagnostiquer
 
-L'assistant **« Résoudre les problèmes »** de Windows est pratique pour un utilisateur, mais un technicien utilise **les commandes** (détaillées dans le [module 5 du cours 1](../../cours-01-bases-des-reseaux/module-5-les-premieres-commandes/index.md)) :
+Les commandes du [cours 1, module 5](../../cours-01-bases-des-reseaux/module-5-les-premieres-commandes/index.md) :
 
-| Commande | Question à laquelle elle répond |
+| Commande | Question |
 |---|---|
-| `ipconfig /all` | Quelle est ma configuration ? (APIPA ?) |
+| `ipconfig /all` | Ma configuration ? (APIPA ?) |
 | `ping` | Cette machine répond-elle ? |
 | `tracert` | Par où passent mes paquets ? |
-| `nslookup google.fr` | Le **DNS** traduit-il bien ce nom ? |
-| `arp -a` | Quelles adresses MAC mon PC connaît-il ? |
-| `netstat -an` | Quelles connexions et quels ports sont ouverts ? |
+| `nslookup google.fr` | Le **DNS** traduit-il ce nom ? |
+| `arp -a` · `netstat -an` | MAC connues · connexions et ports ouverts |
 
-⚠️ **Le pare-feu Windows bloque le ping entrant par défaut.** Un PC qui ne répond pas au ping **n'est pas forcément éteint**.
+⚠️ Le pare-feu Windows **bloque le ping entrant** par défaut : pas de réponse ≠ PC éteint.
 
 ---
 
 ### 4. Le pare-feu Windows
 
-Activé **par défaut**, il fonctionne ainsi :
+Actif par défaut : **entrant ⛔ bloqué** (sauf règle) · **sortant ✅ autorisé**.
 
-| Sens | Par défaut |
-|---|---|
-| **Entrant** (quelqu'un essaie de se connecter à ton PC) | ⛔ **Bloqué**, sauf ce qui est autorisé par une règle |
-| **Sortant** (ton PC se connecte ailleurs, ex. un site web) | ✅ **Autorisé** |
-
-**Les 3 niveaux de réglage**
-
-| Niveau | Où ? | Exemple |
+| Niveau de réglage | Où ? | Exemple |
 |---|---|---|
-| **① Activer / désactiver** par profil | `firewall.cpl` → *Activer ou désactiver le Pare-feu* | Actif sur les 3 profils (recommandé) |
-| **② Autoriser une application** | `firewall.cpl` → *Autoriser une application…* | Autoriser « Partage de fichiers et d'imprimantes » sur le profil Privé |
-| **③ Règles avancées** (entrantes / sortantes) | **`wf.msc`** (*Pare-feu Windows avec fonctions avancées de sécurité*) | Autoriser le **port TCP 3389** (Bureau à distance) **seulement depuis** 192.168.1.0/24 |
+| **① Activer / désactiver** par profil | `firewall.cpl` | Actif sur les 3 profils ✅ |
+| **② Autoriser une application** | `firewall.cpl` → *Autoriser une application* | « Partage de fichiers et d'imprimantes » en Privé |
+| **③ Règles avancées** | **`wf.msc`** | **TCP 3389** (Bureau à distance) **seulement depuis** 192.168.1.0/24 |
 
-Une règle avancée précise : **le sens** (entrant / sortant), **le programme ou le port**, **les adresses** concernées, **l'action** (autoriser / bloquer) et **les profils**.
-
-**Exemple : autoriser le ping (ICMP) en entrée**
+Une règle avancée précise : **sens**, **programme ou port**, **adresses**, **action** (autoriser / bloquer), **profils**.
 
 ```powershell
-# avec la règle prédéfinie (sur un Windows en français, elle s'appelle « Partage de fichiers et d'imprimantes (Demande d'écho - Trafic entrant ICMPv4) ») :
+# Autoriser le ping entrant : règle prédéfinie…
 Enable-NetFirewallRule -DisplayName "*Demande d'écho*ICMPv4*"
-
-# ou en créant sa propre règle :
+# …ou sa propre règle
 New-NetFirewallRule -DisplayName "Autoriser ping" -Direction Inbound -Protocol ICMPv4 -IcmpType 8 -Action Allow
 ```
 
-⚠️ **Ne désactive jamais complètement le pare-feu** pour « régler » un problème : **ouvre seulement ce qui est nécessaire**, avec une règle.
+⚠️ **Ne jamais désactiver tout le pare-feu** pour régler un problème : **ouvrir seulement le nécessaire**, avec une règle.
 
 ## 📝 Fiche de révision
 

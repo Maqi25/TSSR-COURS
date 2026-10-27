@@ -46,113 +46,77 @@ flowchart LR
 
 ### 1. Les outils graphiques
 
-| Outil | À quoi ça sert | Comment l'ouvrir |
+| Outil | À quoi ça sert | Ouvrir |
 |---|---|---|
-| **Paramètres** | Réglages modernes (réseau, mises à jour, comptes…) | ++win+i++ |
-| **Panneau de configuration** | Réglages classiques : chaque icône est un fichier **`.cpl`** dans `C:\Windows\System32` | Taper « panneau » dans la recherche |
-| **Consoles MMC** | **Outils d'administration** : chaque console est un fichier **`.msc`** | Clic droit sur le menu Démarrer, ou ++win+r++ |
-| **Gestionnaire des tâches** | Voir les applications qui tournent, le processeur, la mémoire | ++ctrl+shift+esc++ |
+| **Paramètres** | Réglages modernes (réseau, mises à jour, comptes) | ++win+i++ |
+| **Panneau de configuration** | Réglages classiques (fichiers **`.cpl`**) | Rechercher « panneau » |
+| **Consoles MMC** | **Outils d'administration** (fichiers **`.msc`**) | ++win+r++ |
+| **Gestionnaire des tâches** | Applications, processeur, mémoire | ++ctrl+shift+esc++ |
 
-**Les consoles à connaître** (à taper dans ++win+r++) :
+**Les consoles à taper dans ++win+r++** : `compmgmt.msc` (**gestion de l'ordinateur**) · `diskmgmt.msc` (**disques**) · `devmgmt.msc` (**périphériques**) · `lusrmgr.msc` (**utilisateurs et groupes**) · `eventvwr.msc` (**journaux**) · `services.msc` (**services**) · `ncpa.cpl` (**cartes réseau**).
 
-| Console | Ouvre… |
-|---|---|
-| `compmgmt.msc` | **Gestion de l'ordinateur** (regroupe beaucoup d'outils) |
-| `diskmgmt.msc` | Gestion des **disques** |
-| `devmgmt.msc` | Gestionnaire de **périphériques** |
-| `lusrmgr.msc` | **Utilisateurs et groupes** locaux |
-| `eventvwr.msc` | Observateur d'**événements** (les journaux) |
-| `services.msc` | Les **services** |
-| `ncpa.cpl` | Les **cartes réseau** |
-
-💡 **MMC** (*Microsoft Management Console*) : tape `mmc` pour créer **ta propre console** en y ajoutant les outils (« composants logiciels enfichables ») dont tu as besoin, puis enregistre-la.
+💡 `mmc` crée **ta propre console** : tu y ajoutes les outils (« composants enfichables ») dont tu as besoin.
 
 ---
 
 ### 2. L'invite de commandes (`cmd`)
 
-**Les 3 règles d'une commande**
-
-1. Le **premier mot** est **toujours la commande**.
-2. Les éléments sont séparés par des **espaces**.
-3. Les **options** commencent par **`/`** sous cmd (`dir /s`) et par **`-`** sous PowerShell.
+- Le **1er mot** est la **commande**, les éléments sont séparés par des **espaces**, les **options** commencent par **`/`** (`-` en PowerShell).
 
 ```
 C:\Users\Demo> copy rapport.txt D:\Sauvegarde /y
    └─ prompt ─┘ └cmd┘ └─source─┘ └destination┘ └option┘
 ```
 
-**Lire l'aide d'une commande** : `help copy` (ou `copy /?`). La syntaxe utilise des symboles :
+**Lire l'aide** (`help copy` ou `copy /?`) :
 
-| Dans l'aide | Signifie | Exemple |
+| Symbole | Signifie | Exemple |
 |---|---|---|
-| Texte **sans crochets** | **Obligatoire** | `COPY source destination` |
+| Sans crochets | **Obligatoire** | `COPY source destination` |
 | **`[ ]`** | **Facultatif** | `[/Y]` |
-| **`|`** | **Un choix** parmi plusieurs | `[/A | /B]` : l'un ou l'autre |
+| **`|`** | **L'un ou l'autre** | `[/A | /B]` |
 | **`...`** | **Répétable** | `source [+ source ...]` |
 
-**Quelques commandes utiles**
+**Commandes utiles** : `help` · `cls` (efface l'écran) · `dir` (liste) · `cd C:\Windows` (change de dossier) · `ipconfig > reseau.txt` (**`>`** = résultat **dans un fichier**).
 
-| Commande | Effet |
-|---|---|
-| `help` | Liste les commandes |
-| `cls` | Efface l'écran |
-| `dir` | Liste le contenu du dossier |
-| `cd C:\Windows` | Change de dossier |
-| `notepad` | Lance le Bloc-notes |
-| `ipconfig > reseau.txt` | **`>`** envoie le résultat **dans un fichier** au lieu de l'écran |
-
-⚠️ Pour **modifier le système** (créer un utilisateur, arrêter un service…), il faut **lancer cmd en tant qu'administrateur** : clic droit → *Exécuter en tant qu'administrateur*, puis accepter la fenêtre de confirmation (**UAC**, le contrôle de compte d'utilisateur).
+⚠️ Pour **modifier le système** : clic droit → **Exécuter en tant qu'administrateur**, puis valider l'**UAC**.
 
 ---
 
 ### 3. PowerShell : le shell moderne
 
-!!! abstract "En clair : la différence avec cmd"
-    `cmd` renvoie **du texte** : pour en extraire une info, il faut le « découper ». **PowerShell** renvoie des **objets** : des fiches bien rangées avec des champs (nom, état, taille…). On peut alors **trier, filtrer et choisir** facilement ce qu'on veut afficher.
-
 | | cmd | PowerShell |
 |---|---|---|
-| **Résultats** | Du texte | Des **objets** (.NET) |
-| **Commandes** | `dir`, `copy`, `ipconfig` | **Cmdlets** `Verbe-Nom` : `Get-ChildItem`, `Copy-Item` |
+| **Résultats** | Du **texte** | Des **objets** (fiches avec des champs : on trie et filtre facilement) |
+| **Commandes** | `dir`, `copy` | **Cmdlets** `Verbe-Nom` : `Get-ChildItem`, `Copy-Item` |
 | **Options** | `/option` | `-Parametre valeur` |
-| **Versions** | — | **5.1** intégrée à Windows · **7** (moderne, à installer, fonctionne aussi sous Linux) |
+| **Versions** | — | **5.1** intégrée · **7** (à installer, aussi sous Linux) |
 
-**Outils pour écrire du PowerShell** : la console PowerShell, **PowerShell ISE** (éditeur de scripts, ++f5++ pour exécuter), **Windows Terminal**, **Visual Studio Code**.
+Éditeurs : console, **PowerShell ISE** (++f5++ = exécuter), **Windows Terminal**, **VS Code**.
 
-#### Les cmdlets : toujours `Verbe-Nom`
-
-| Verbe | Rôle | Exemple |
-|---|---|---|
-| **Get** | Afficher | `Get-Service` (liste les services) |
-| **Set** | Modifier | `Set-Date` |
-| **New** | Créer | `New-LocalUser` |
-| **Remove** | Supprimer | `Remove-Item` |
-| **Start / Stop** | Démarrer / arrêter | `Stop-Service` |
+**Les verbes** : **Get** (afficher) · **Set** (modifier) · **New** (créer) · **Remove** (supprimer) · **Start / Stop**.
 
 ```powershell
 Get-ChildItem -Path C:\Users     # liste le dossier C:\Users
 #   └ cmdlet ┘ └paramètre┘ └valeur┘
 ```
 
-📌 PowerShell **ne fait pas la différence entre majuscules et minuscules**, et la touche ++tab++ **complète automatiquement** les commandes.
+- Pas de différence **majuscules / minuscules** ; ++tab++ **complète** les commandes.
+- **Alias** : `dir`, `ls` et `gci` lancent tous `Get-ChildItem` (liste : `Get-Alias`).
 
-💡 Les **alias** sont des raccourcis : `dir`, `ls` et `gci` lancent tous `Get-ChildItem`. Liste complète : `Get-Alias`.
+#### Les objets
 
-#### Les objets : des propriétés et des méthodes
-
-| Notion | Définition | Avec un ballon | Avec un service Windows |
+| Notion | Définition | Ballon | Service Windows |
 |---|---|---|---|
-| **Propriétés** | Ce qu'il **est** | couleur, taille, forme | `Name`, `Status`, `DisplayName` |
+| **Propriétés** | Ce qu'il **est** | couleur, taille | `Name`, `Status` |
 | **Méthodes** | Ce qu'on peut lui **faire** | lancer, gonfler | `Start()`, `Stop()` |
 
 ```powershell
-Get-Process                                   # affiche les propriétés principales des processus
-Get-Process -Name notepad | Select-Object *   # TOUTES les propriétés de Notepad (* = tout)
+Get-Process -Name notepad | Select-Object *   # TOUTES les propriétés de Notepad
 Get-Process | Select-Object Name, CPU         # seulement le nom et le CPU
 ```
 
-📌 Le **`|`** (« pipe ») **transmet le résultat** d'une commande à la suivante.
+📌 Le **`|`** (« pipe ») **passe le résultat** à la commande suivante.
 
 ---
 
@@ -160,44 +124,31 @@ Get-Process | Select-Object Name, CPU         # seulement le nom et le CPU
 
 | Commande | Effet |
 |---|---|
-| `Get-Command *service*` | **Trouver** les commandes qui parlent de « service » |
-| `Get-Help Get-Service` | **L'aide** d'une commande (alias : `help`, `man`) |
-| `Get-Help Get-Service -Examples` | **Des exemples** concrets (le plus utile !) |
-| `Get-Help Get-Service -Online` | L'aide à jour sur le site de Microsoft |
-| `Update-Help` | **Télécharger** l'aide (en administrateur, avec Internet) |
-| `Get-Help about_Variables` | Les chapitres **`about_`** expliquent les concepts du langage |
-
-⚠️ Depuis PowerShell 3, l'aide **n'est pas installée** par défaut : il faut lancer **`Update-Help`** une fois (en administrateur). Seule l'aide en **anglais** est à jour.
+| `Get-Command *service*` | **Trouver** une commande |
+| `Get-Help Get-Service -Examples` | **Des exemples** (le plus utile) · `-Online` = version web |
+| `Update-Help` | **Télécharger** l'aide (une fois, en administrateur) |
+| `Get-Help about_Variables` | Les chapitres **`about_`** expliquent les concepts |
 
 ---
 
 ### 5. Cas pratique : la méthode complète
 
-**Mission** : arrêter le **service de géolocalisation**, puis enregistrer le nom et le SID (identifiant unique) d'un utilisateur dans un fichier.
+**Mission** : arrêter le service de géolocalisation, puis enregistrer le nom et le SID d'un utilisateur dans un fichier.
 
 ```powershell
-# 1. TROUVER la bonne commande
-Get-Command *service*
+Get-Command *service*                                         # 1. TROUVER la commande
+Get-Help Get-Service -Examples                                # 2. COMPRENDRE
+Get-Service | Where-Object { $_.DisplayName -like "*géolocalisation*" }   # 3. FILTRER → lfsvc
+Stop-Service -Name lfsvc                                      # 4. AGIR (en administrateur)
 
-# 2. COMPRENDRE comment elle marche
-Get-Help Get-Service -Examples
-
-# 3. FILTRER pour trouver le service (Where-Object garde les lignes qui correspondent)
-Get-Service | Where-Object { $_.DisplayName -like "*géolocalisation*" }
-#   → Name : lfsvc   DisplayName : Service de géolocalisation   Status : Running
-
-# 4. AGIR (console lancée en administrateur)
-Stop-Service -Name lfsvc
-
-# Bonus : choisir des propriétés et les exporter dans un fichier
 Get-LocalUser demo-user | Select-Object Name, SID | Out-File C:\Users\demo-user\identite.txt
 ```
 
-| Cmdlet | Rôle |
+| Cmdlet | Garde… |
 |---|---|
-| **`Where-Object`** | Garde **les lignes** qui respectent une condition (`$_` = « l'objet en cours ») |
-| **`Select-Object`** | Garde **les colonnes** (propriétés) choisies |
-| **`Out-File`** | Envoie le résultat **dans un fichier** |
+| **`Where-Object`** | les **lignes** qui respectent une condition (`$_` = l'objet en cours) |
+| **`Select-Object`** | les **colonnes** (propriétés) choisies |
+| **`Out-File`** | → envoie le résultat **dans un fichier** |
 
 ## 📝 Fiche de révision
 

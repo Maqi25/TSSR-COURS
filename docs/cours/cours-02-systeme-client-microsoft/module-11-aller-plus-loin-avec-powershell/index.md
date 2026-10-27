@@ -45,90 +45,64 @@ flowchart LR
 
 ### 1. Rediriger vers un fichier
 
-Une commande a **3 flux** :
-
-| Flux | Numéro | Par défaut |
-|---|---|---|
-| **Entrée** (*stdin*) | `0` | Le clavier |
-| **Sortie** (*stdout*) : le résultat normal | `1` | L'écran |
-| **Erreurs** (*stderr*) : les messages rouges | `2` | L'écran |
+Une commande a **3 flux** : **entrée** `0` (clavier) · **sortie** `1` (le résultat, à l'écran) · **erreurs** `2` (messages rouges, à l'écran).
 
 | Syntaxe | Effet | Exemple |
 |---|---|---|
-| **`>`** | Envoie le résultat dans un fichier, en **écrasant** son contenu | `Get-LocalUser > C:\Temp\users.txt` |
-| **`>>`** | **Ajoute** à la fin du fichier | `Get-Date >> C:\Temp\journal.txt` |
-| **`2>`** | Envoie **seulement les erreurs** dans un fichier | `Get-Item C:\inexistant 2> C:\Temp\erreurs.log` |
-| **`2>&1`** | Envoie les erreurs **au même endroit** que le résultat | `commande > tout.txt 2>&1` |
-| **`2>$null`** | **Jette** les erreurs (`$null` = la poubelle) | `Get-ChildItem C:\ -Recurse 2>$null` |
+| **`>`** | Résultat dans un fichier, **écrasé** | `Get-LocalUser > C:\Temp\users.txt` |
+| **`>>`** | **Ajoute** à la fin | `Get-Date >> C:\Temp\journal.txt` |
+| **`2>`** | **Seulement les erreurs** dans un fichier | `Get-Item C:\inexistant 2> C:\Temp\erreurs.log` |
+| **`2>&1`** | Erreurs **au même endroit** que le résultat | `commande > tout.txt 2>&1` |
+| **`2>$null`** | **Jette** les erreurs | `Get-ChildItem C:\ -Recurse 2>$null` |
 
-💡 Le fichier est **créé s'il n'existe pas**. Pour le lire : `Get-Content C:\Temp\users.txt` (alias `cat`). Une alternative à `>` est **`| Out-File chemin`**.
+💡 Le fichier est **créé s'il n'existe pas** ; lecture : `Get-Content` (alias `cat`). Alternative à `>` : **`| Out-File chemin`**.
 
 ---
 
 ### 2. Le pipeline `|`
 
-Le **`|`** prend le **résultat** de la commande de gauche et le donne **en entrée** à la commande de droite. On peut en enchaîner autant qu'on veut.
+Le **`|`** donne le **résultat** de gauche **en entrée** à la commande de droite.
 
 ```powershell
 Get-NetAdapter | Select-Object Name, Status, LinkSpeed
 ```
-
-`Get-NetAdapter` sort toutes les cartes réseau avec des dizaines de propriétés ; `Select-Object` (alias **`select`**) n'en garde que 3.
 
 ```text
 Name                            Status         LinkSpeed
 ----                            ------         ---------
 Ethernet0                       Up             1 Gbps
 Wi-Fi                           Disconnected   0 bps
-VMware Network Adapter VMnet8   Up             100 Mbps
 ```
 
 ---
 
-### 3. Filtrer avec `Where-Object`
+### 3. Filtrer avec `Where-Object` (alias `where`, `?`)
 
-`Where-Object` (alias **`where`** ou **`?`**) garde **uniquement les objets qui respectent une condition**. La condition utilise un **opérateur de comparaison**.
+Garde **seulement** les objets qui respectent une condition.
 
 | Opérateur | Signifie | Exemple |
 |---|---|---|
-| **`-eq`** | égal (*equal*) | `Status -eq "Running"` |
-| **`-ne`** | différent (*not equal*) | `Status -ne "Running"` |
-| **`-gt`** / **`-ge`** | plus grand / plus grand ou égal (*greater*) | `Length -gt 1MB` |
-| **`-lt`** / **`-le`** | plus petit / plus petit ou égal (*less*) | `CPU -lt 10` |
-| **`-like`** | ressemble à, avec des **jokers** `*` | `Name -like "*Windows*"` |
-| **`-notlike`** | ne ressemble pas à | `Name -notlike "Microsoft*"` |
+| **`-eq`** / **`-ne`** | égal / différent | `Status -eq "Running"` |
+| **`-gt`** / **`-ge`** | plus grand / ou égal | `Length -gt 1MB` |
+| **`-lt`** / **`-le`** | plus petit / ou égal | `CPU -lt 10` |
+| **`-like`** / **`-notlike`** | ressemble (avec **jokers** `*`) / ne ressemble pas | `Name -like "*Windows*"` |
 
-📌 Par défaut, les comparaisons **ne font pas la différence entre majuscules et minuscules**. Pour les distinguer, ajoute un **`c`** : `-ceq`, `-clike`… Toute la liste : `Get-Help about_Comparison_Operators`.
-
-⚠️ **`-like` a besoin de jokers** : `-like "*up*"` signifie « contient up », alors que `-like "up"` signifie « exactement up ».
-
-**Syntaxe simple (une seule condition)**
+- Pas de différence **majuscules / minuscules** (sauf avec un **`c`** : `-ceq`, `-clike`).
+- ⚠️ `-like` a besoin de **jokers** : `"*up*"` = contient « up », `"up"` = exactement « up ».
 
 ```powershell
-Get-NetAdapter | Where-Object Status -eq "Up"
-```
-
-**Syntaxe complète (plusieurs conditions) : entre accolades, avec `$_`**
-
-```powershell
-Get-Service | Where-Object { $_.Status -eq "Running" -and $_.StartType -eq "Automatic" }
+Get-NetAdapter | Where-Object Status -eq "Up"                                   # 1 condition
+Get-Service | Where-Object { $_.Status -eq "Running" -and $_.StartType -eq "Automatic" }   # plusieurs
+Get-ChildItem $HOME\Downloads | Where-Object { $_.Length -gt 100MB } | Select-Object Name, Length
 ```
 
 | Élément | Signification |
 |---|---|
-| `{ … }` | Le **bloc de filtre** (son vrai nom : `-FilterScript`) |
-| **`$_`** | « **l'objet en cours** » : chaque service, l'un après l'autre |
-| `$_.Status` | La propriété `Status` de cet objet |
-| **`-and`** | **ET** : les deux conditions doivent être vraies |
-| **`-or`** | **OU** : au moins une des deux |
+| `{ … }` | Le **bloc de filtre** |
+| **`$_`** | « **l'objet en cours** » ; `$_.Status` = sa propriété Status |
+| **`-and`** / **`-or`** | **ET** (les deux) / **OU** (au moins une) |
 
-**Exemple concret : les fichiers de plus de 100 Mo dans Téléchargements**
-
-```powershell
-Get-ChildItem $HOME\Downloads | Where-Object { $_.Length -gt 100MB } | Select-Object Name, Length
-```
-
-💡 PowerShell comprend directement **`KB`, `MB`, `GB`** : `100MB` = 104 857 600 octets.
+💡 PowerShell comprend **`KB`, `MB`, `GB`** : `100MB` = 104 857 600 octets.
 
 ---
 
@@ -136,17 +110,16 @@ Get-ChildItem $HOME\Downloads | Where-Object { $_.Length -gt 100MB } | Select-Ob
 
 | Cmdlet | Alias | Affiche… |
 |---|---|---|
-| **`Format-Table`** | `ft` | En **tableau** (colonnes) ; `-AutoSize` ajuste la largeur |
-| **`Format-List`** | `fl` | En **liste** (une propriété par ligne) : pratique pour **tout voir** avec `-Property *` |
-| **`Format-Wide`** | `fw` | **Une seule** propriété, sur plusieurs colonnes |
+| **`Format-Table`** | `ft` | En **tableau** (`-AutoSize` ajuste) |
+| **`Format-List`** | `fl` | En **liste** : `-Property *` pour **tout voir** |
+| **`Format-Wide`** | `fw` | **Une** propriété sur plusieurs colonnes |
 
 ```powershell
-Get-Service -Name Spooler | Format-List -Property *          # toutes les propriétés du spouleur
-Get-TimeZone | Format-Table StandardName, BaseUtcOffset -AutoSize
-Get-Service | Format-Wide -Property Name -Column 4             # juste les noms, sur 4 colonnes
+Get-Service -Name Spooler | Format-List -Property *
+Get-Service | Format-Wide -Property Name -Column 4
 ```
 
-⚠️ **Les `Format-*` se mettent TOUJOURS en dernier.** Ils transforment les objets en **simple affichage** : après eux, on ne peut plus filtrer, trier ni exporter proprement. Pour **exporter**, utilise `Select-Object` puis `Export-Csv` ou `Out-File`, **pas** `Format-Table`.
+⚠️ **Les `Format-*` toujours en dernier** : après eux, plus de filtre, de tri ni d'export propre. Pour **exporter** : `Select-Object` puis `Export-Csv` ou `Out-File`.
 
 ## 📝 Fiche de révision
 

@@ -33,13 +33,7 @@ flowchart LR
 
 ### 1. Pourquoi des images ?
 
-Une équipe informatique veut **gagner du temps** pour le consacrer à d'autres projets.
-
-| Levier | Idée | Réalité |
-|---|---|---|
-| **Matériel identique** | Tous les PC du même modèle | Rarement possible |
-| **Logiciel identique** | Un seul OS à gérer (Windows 11 partout) | Réaliste |
-| **PC prêts à l'emploi** | Un nouvel arrivant ou un PC en panne → un PC prêt en quelques minutes | ✅ C'est ce que permettent les **masters** |
+Objectif : **gagner du temps**. Tous les PC du même modèle, c'est rare ; un **seul OS** partout, c'est réaliste ; un **PC prêt en quelques minutes** (nouvel arrivant, panne) : c'est ce que permet un **master**.
 
 ---
 
@@ -47,64 +41,51 @@ Une équipe informatique veut **gagner du temps** pour le consacrer à d'autres 
 
 | Étape | Ce qu'on fait |
 |---|---|
-| **① Installer Windows** | Sur un PC (ou une VM) **le plus standard possible** |
-| **② Configurer** | Pilotes, mises à jour Windows Update, réglages de l'entreprise |
-| **③ Installer les logiciels** *(facultatif)* | Navigateur, suite bureautique, logiciels métier **validés par la DSI** |
-| **④ Généraliser avec sysprep** | Rendre le système **clonable** |
+| **① Installer Windows** | Sur un PC ou une VM **le plus standard possible** |
+| **② Configurer** | Pilotes, Windows Update, réglages de l'entreprise |
+| **③ Logiciels** *(facultatif)* | Navigateur, bureautique, logiciels **validés par la DSI** |
+| **④ Sysprep** | Rendre le système **clonable** |
 
-💡 Le **mode Audit** de sysprep permet de redémarrer le master pour **ajouter** des logiciels ou des pilotes **avant** la généralisation finale.
+💡 Le **mode Audit** de sysprep permet d'**ajouter** logiciels et pilotes **avant** la généralisation finale.
 
 ---
 
 ### 3. Sysprep : rendre le master clonable
 
-**Sysprep** (`C:\Windows\System32\Sysprep\sysprep.exe`) **retire tout ce qui est propre à ce PC** : son identifiant de sécurité (**SID** machine), son nom, l'activation, les pilotes de son matériel précis… Au démarrage suivant, chaque PC cloné **repart comme un PC neuf** (écran OOBE) et reçoit **sa propre identité**.
+**Sysprep** (`C:\Windows\System32\Sysprep\sysprep.exe`) **retire ce qui est propre à ce PC** (**SID** machine, nom, activation, pilotes spécifiques). Chaque clone **repart comme un PC neuf** (OOBE) avec **sa propre identité**.
 
 ```
 sysprep /generalize /oobe /shutdown
 ```
 
-| Option | Rôle |
+**`/generalize`** = supprimer les identifiants uniques · **`/oobe`** = écran de première configuration au démarrage · **`/shutdown`** = éteindre à la fin.
+
+⚠️ **Règle d'or : après sysprep, NE PAS redémarrer le master sur son Windows** (sinon il se re-personnalise, sysprep est à refaire). On le démarre **sur autre chose** (PXE ou WinPE) pour capturer.
+
+| Piège | Solution |
 |---|---|
-| **`/generalize`** | **Généraliser** : supprimer les identifiants uniques (SID machine…) |
-| **`/oobe`** | Au prochain démarrage, afficher l'**écran de première configuration** (région, compte…) |
-| **`/shutdown`** | **Éteindre** le PC à la fin (pour capturer « à froid ») |
-
-⚠️ **LA règle d'or : après sysprep, NE PAS redémarrer le master sur son Windows.** Sinon, il se « personnalise » à nouveau et **tout le sysprep est à refaire**. On le démarre **sur un autre système** (PXE ou WinPE) pour capturer l'image.
-
-**Les pièges de sysprep**
-
-| Problème | Solution |
-|---|---|
-| Sysprep échoue à cause des **applications du Microsoft Store** installées pour un utilisateur | Les **désinstaller** avant ; le détail est dans les journaux `C:\Windows\System32\Sysprep\Panther\setupact.log` |
-| Les **pilotes** installés à la main sont **supprimés** | Ajouter **`/PersistAllDevicesInstall`**, ou les mettre dans le **magasin de pilotes** (module 9) |
-| Les **comptes utilisateurs** locaux **ne sont pas supprimés** | Les **supprimer à la main** avant (sauf les comptes de service nécessaires) |
-| Certains **rôles serveur** ne supportent pas sysprep | Vérifier la documentation Microsoft |
+| Échec à cause d'**applis du Microsoft Store** | Les **désinstaller** avant (détails : `…\Sysprep\Panther\setupact.log`) |
+| **Pilotes** installés à la main **supprimés** | **`/PersistAllDevicesInstall`**, ou le **magasin de pilotes** ([module 9](../module-9-les-pilotes-et-imprimantes/index.md)) |
+| **Comptes locaux** non supprimés | Les **supprimer à la main** avant |
 
 ---
 
 ### 4. Capturer l'image
 
-Le master est éteint après sysprep. Pour faire sa « photo » **sans démarrer son Windows**, on le fait démarrer **sur autre chose** :
+Le master éteint démarre **sur un autre système** :
 
 | Méthode | Principe | Quand ? |
 |---|---|---|
-| **Démarrage PXE** (sur le réseau) | La **carte réseau** démarre le PC en chargeant un système depuis un **serveur de déploiement** (WDS, MDT : cours 17), qui **capture** l'image et la **stocke** | En entreprise, avec un serveur |
-| **Clé WinPE** | On démarre sur une clé contenant **WinPE** (*Windows Preinstallation Environment*), un **mini-Windows en ligne de commande**, et on capture avec **`dism`** | Sans serveur, au cas par cas |
-
-**Capturer avec `dism` (depuis WinPE)**
+| **PXE** (réseau) | La **carte réseau** charge un système depuis un **serveur de déploiement** (WDS, MDT), qui capture et stocke l'image | En entreprise |
+| **Clé WinPE** | Un **mini-Windows en ligne de commande** ; capture avec **`dism`** | Sans serveur |
 
 ```
 dism /Capture-Image /ImageFile:E:\master.wim /CaptureDir:C:\ /Name:"Master Win11 Compta"
 ```
 
-| Paramètre | Signification |
-|---|---|
-| `/ImageFile:E:\master.wim` | Où **enregistrer** l'image (ici sur un disque externe `E:`) |
-| `/CaptureDir:C:\` | Le **disque à photographier** (le Windows du master) |
-| `/Name:"…"` | Un **nom** pour s'y retrouver |
+`/ImageFile` = **où enregistrer** l'image · `/CaptureDir` = le **disque à photographier** · `/Name` = un nom.
 
-💡 **Mettre à jour l'image sans la redéployer** : `dism` sait ouvrir une image `.wim` **hors ligne** (*offline*) pour y ajouter des **mises à jour (KB)**, des **pilotes** ou des fonctionnalités. Le master reste à jour sans être recréé.
+💡 `dism` sait aussi ouvrir un `.wim` **hors ligne** pour y ajouter **mises à jour (KB)** et **pilotes** sans recréer le master.
 
 ---
 
@@ -112,20 +93,16 @@ dism /Capture-Image /ImageFile:E:\master.wim /CaptureDir:C:\ /Name:"Master Win11
 
 | Méthode | Déroulé | Pour… |
 |---|---|---|
-| **Serveur de déploiement** | Le PC démarre en **PXE** (souvent ++f12++ au démarrage) → se connecte au serveur → on **choisit l'image** → installation automatique | **Beaucoup de PC** (10, 50, 500…) en même temps |
-| **WinPE + `dism`** | Démarrer sur la clé WinPE → **préparer le disque** (`diskpart`) → **appliquer** l'image → rendre le disque **démarrable** | **Un PC** de temps en temps |
-
-**Déployer à la main avec WinPE**
+| **Serveur de déploiement** | Démarrage **PXE** (souvent ++f12++) → choix de l'image → installation automatique | **Beaucoup de PC** |
+| **WinPE + `dism`** | Préparer le disque → **appliquer** l'image → rendre **démarrable** | **Un PC** |
 
 ```
-diskpart                                   ← préparer le disque : partitions + formatage (module 4), lettre W:
+diskpart                                                             ← partitions + formatage (module 4), lettre W:
 dism /Apply-Image /ImageFile:E:\master.wim /Index:1 /ApplyDir:W:\    ← copier l'image sur W:
-bcdboot W:\Windows                         ← rendre le disque démarrable
+bcdboot W:\Windows                                                   ← rendre le disque démarrable
 ```
 
-Au redémarrage, le PC affiche l'écran **OOBE** : il devient **un PC unique**, prêt à être nommé et joint au domaine.
-
-💡 **Avant de déployer**, vérifie que le PC cible respecte les **prérequis** de l'OS (module 2 : TPM 2.0 pour Windows 11, par exemple).
+Au redémarrage : écran **OOBE**, le PC devient **unique** (à nommer, joindre au domaine). 💡 Vérifier avant les **prérequis** ([module 2](../module-2-installation-de-windows-10/index.md) : TPM 2.0 pour Windows 11).
 
 ## 📝 Fiche de révision
 

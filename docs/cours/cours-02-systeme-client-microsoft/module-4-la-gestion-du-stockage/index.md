@@ -52,18 +52,17 @@ flowchart LR
 
 ### 1. La table de partitions : MBR ou GPT
 
-Chaque disque commence par un **sommaire** qui liste ses partitions : la **table de partitions**.
+Le **sommaire** du disque, qui liste ses partitions.
 
-| | **MBR** (*Master Boot Record*) | **GPT** (*GUID Partition Table*) |
+| | **MBR** | **GPT** |
 |---|---|---|
-| **Époque** | Historique | Moderne |
-| **Démarrage** | Avec un **BIOS** | Avec un **UEFI** |
-| **Partitions** | **4 principales** maximum | **128** |
-| **Taille du disque** | **2,2 To** maximum | Pratiquement illimitée |
-| **Solidité** | Table en un seul exemplaire (premier secteur) | Table **en double** (début et fin du disque) |
-| **Aujourd'hui** | Vieux PC, petites clés USB | ✅ **Par défaut** (obligatoire pour Windows 11) |
+| **Démarrage** | **BIOS** | **UEFI** |
+| **Partitions** | **4 principales** max | **128** |
+| **Taille du disque** | **2,2 To** max | Pratiquement illimitée |
+| **Solidité** | Table en 1 exemplaire | Table **en double** |
+| **Aujourd'hui** | Vieux PC, petites clés | ✅ **Par défaut** (obligatoire pour Windows 11) |
 
-**Contourner la limite de 4 partitions du MBR :** on crée une **partition étendue**, une « boîte » dans laquelle on range des **lecteurs logiques**.
+Pour dépasser 4 partitions en MBR : une **partition étendue** qui contient des **lecteurs logiques**.
 
 ```
 Disque MBR :  [ Principale 1 ][ Principale 2 ][ Principale 3 ][ ÉTENDUE ──────────────── ]
@@ -72,63 +71,61 @@ Disque MBR :  [ Principale 1 ][ Principale 2 ][ Principale 3 ][ ÉTENDUE ──�
 
 ---
 
-### 2. Disque de base ou disque dynamique
+### 2. Disque de base ou dynamique
 
-| | **Disque de base** | **Disque dynamique** |
+| | **De base** ✅ | **Dynamique** |
 |---|---|---|
-| **Les zones s'appellent** | Partitions | **Volumes** |
-| **Agrandir une partition** | Seulement avec l'espace libre **juste à côté** (contigu) | Avec de l'espace libre **n'importe où**, même sur **un autre disque** |
-| **Usage** | ✅ Le cas normal | Regrouper plusieurs disques (base du **RAID** logiciel, voir cours 15) |
+| **Zones** | Partitions | **Volumes** |
+| **Agrandir** | Seulement avec l'espace **juste à côté** | Avec de l'espace **n'importe où**, même sur un **autre disque** |
+| **Usage** | Le cas normal | Regrouper des disques, **RAID** logiciel |
 
-📌 On peut convertir un disque de base en dynamique **sans perdre les données**. L'inverse oblige à **tout effacer**. Microsoft conseille aujourd'hui les **espaces de stockage** (*Storage Spaces*) plutôt que les disques dynamiques.
+- Base → dynamique : **sans perte**. Dynamique → base : **tout effacer**.
+- Microsoft conseille aujourd'hui les **espaces de stockage** (*Storage Spaces*).
 
 ---
 
 ### 3. Le système de fichiers
 
-**Formater**, c'est installer un **système de fichiers** : l'organisation qui retient **où se trouve chaque fichier** sur le disque. ⚠️ Formater **efface** le contenu.
+**Formater** = installer un **système de fichiers** (qui retient **où est chaque fichier**). ⚠️ Formater **efface** tout.
 
-| Système | Points forts | Limites | Pour quoi ? |
+| Système | Points forts | Limites | Pour… |
 |---|---|---|---|
-| **NTFS** | ✅ **Droits d'accès** (ACL), **chiffrement** (EFS), compression, quotas | Mal lu par certains appareils (TV, consoles, Mac en écriture) | **Disque Windows** : le standard |
-| **FAT32** | Lu **partout** (Windows, Mac, Linux, TV, autoradio) | ❌ **Fichiers de 4 Go maximum**, volume de 32 Go maximum à la création sous Windows, **aucun droit d'accès** | Petite clé USB |
-| **exFAT** | Lu presque partout, **pas de limite de 4 Go** | Aucun droit d'accès | **Grosse clé USB**, disque externe, carte SD |
-| **ReFS** | Très robuste, se répare tout seul | Pas pour démarrer Windows | **Serveurs** de stockage |
+| **NTFS** | **Droits** (ACL), **chiffrement** (EFS), compression, quotas | Mal lu par TV, consoles, Mac | **Disque Windows** |
+| **FAT32** | Lu **partout** | **Fichiers de 4 Go max**, aucun droit | Petite clé USB |
+| **exFAT** | Lu presque partout, **pas de limite de 4 Go** | Aucun droit | **Grosse clé**, disque externe, carte SD |
+| **ReFS** | Très robuste, s'auto-répare | Ne démarre pas Windows | **Serveurs** de stockage |
 
-💡 D'autres OS ont leurs propres systèmes de fichiers : **ext4** (Linux), **VMFS** (VMware ESXi), **APFS** (Mac).
+💡 Ailleurs : **ext4** (Linux), **VMFS** (ESXi), **APFS** (Mac).
 
 ---
 
-### 4. Les disques durs virtuels (VHD / VHDX)
+### 4. Les disques virtuels VHD / VHDX
 
-Comme dans VMware (le `.vmdk` du [module 2bis](../module-2bis-vmware-workstation/index.md)), Microsoft a son format de disque virtuel : **`.vhd`** et **`.vhdx`** (plus récent, plus robuste). Il est utilisé par **Hyper-V**, et c'est **un simple fichier**.
-
-- Taille **fixe** (toute la place est prise tout de suite) ou **dynamique** (grossit à l'usage).
-- On peut le **monter** dans Windows (double-clic) : il apparaît comme un vrai disque.
-- On peut même **démarrer** un PC physique dessus.
+- Le disque virtuel de Microsoft (**`.vhdx`** = version récente), utilisé par **Hyper-V** : un **simple fichier**, comme le `.vmdk` de [VMware](../module-2bis-vmware-workstation/index.md).
+- Taille **fixe** ou **dynamique** · se **monte** d'un double-clic · on peut même **démarrer** dessus.
 
 ---
 
 ### 5. Les outils
 
-| Je veux… | Graphique | `diskpart` (cmd) | PowerShell |
+| Je veux… | Graphique (`diskmgmt.msc`) | `diskpart` | PowerShell |
 |---|---|---|---|
-| Voir les disques | `diskmgmt.msc` | `list disk` | `Get-Disk` |
-| Initialiser (MBR / GPT) | Clic droit → *Initialiser le disque* | `convert gpt` | `Initialize-Disk -Number 1 -PartitionStyle GPT` |
-| Créer une partition | Clic droit → *Nouveau volume simple* | `create partition primary` | `New-Partition -DiskNumber 1 -UseMaximumSize -AssignDriveLetter` |
-| Formater | Clic droit → *Formater* | `format fs=ntfs quick` | `Format-Volume -DriveLetter E -FileSystem NTFS` |
-| Agrandir / réduire | Clic droit → *Étendre* / *Réduire* | `extend` / `shrink` | `Resize-Partition` |
+| Voir les disques | Ouvrir la console | `list disk` | `Get-Disk` |
+| Initialiser | *Initialiser le disque* | `convert gpt` | `Initialize-Disk -Number 1 -PartitionStyle GPT` |
+| Créer une partition | *Nouveau volume simple* | `create partition primary` | `New-Partition -DiskNumber 1 -UseMaximumSize -AssignDriveLetter` |
+| Formater | *Formater* | `format fs=ntfs quick` | `Format-Volume -DriveLetter E -FileSystem NTFS` |
+| Agrandir / réduire | *Étendre* / *Réduire* | `extend` / `shrink` | `Resize-Partition` |
 
-**Exemple complet en PowerShell : préparer un 2ᵉ disque**
+**Préparer un 2ᵉ disque en PowerShell** :
 
 ```powershell
-Get-Disk                                                      # 1. repérer le numéro du nouveau disque (ici 1, état « RAW »)
-Initialize-Disk -Number 1 -PartitionStyle GPT                 # 2. lui donner une table GPT
-New-Partition -DiskNumber 1 -UseMaximumSize -AssignDriveLetter   # 3. une partition sur tout le disque, avec une lettre (ex. E:)
-Format-Volume -DriveLetter E -FileSystem NTFS -NewFileSystemLabel "Donnees"   # 4. formater en NTFS
+Get-Disk                                                         # 1. repérer le disque (ici 1, état « RAW »)
+Initialize-Disk -Number 1 -PartitionStyle GPT                    # 2. table GPT
+New-Partition -DiskNumber 1 -UseMaximumSize -AssignDriveLetter   # 3. partition + lettre (ex. E:)
+Format-Volume -DriveLetter E -FileSystem NTFS -NewFileSystemLabel "Donnees"   # 4. NTFS
 ```
 
-⚠️ `diskpart` et ces cmdlets agissent **immédiatement et sans corbeille** : vérifie **deux fois le numéro du disque** avant d'agir.
+⚠️ `diskpart` et ces cmdlets agissent **tout de suite, sans corbeille** : vérifie **deux fois le numéro du disque**.
 
 ## 📝 Fiche de révision
 

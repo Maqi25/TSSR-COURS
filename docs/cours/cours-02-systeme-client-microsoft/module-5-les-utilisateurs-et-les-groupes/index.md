@@ -64,94 +64,82 @@ flowchart LR
 
 | | **Compte local** | **Compte de domaine** |
 |---|---|---|
-| **Stocké dans** | La base **SAM** du PC (*Security Account Manager*) | L'annuaire **Active Directory**, sur un **contrôleur de domaine** (un serveur) |
-| **Valable sur** | **Ce PC uniquement** | **Tous les PC** de l'entreprise joints au domaine |
-| **Pour qui ?** | Particulier, petite structure, compte de secours | **Entreprise** (cours 8) |
-| **Connexion** | Choisir son nom sur l'écran d'accueil + mot de passe | Le PC doit être **joint au domaine** ; on tape `DOMAINE\utilisateur` + mot de passe, et le serveur vérifie |
+| **Stocké dans** | La base **SAM** du PC | **Active Directory**, sur un **contrôleur de domaine** |
+| **Valable sur** | **Ce PC** | **Tous les PC** joints au domaine |
+| **Pour qui ?** | Particulier, compte de secours | **Entreprise** ([cours 8](../../cours-08-les-services-reseau-en-environnement-microsoft/index.md)) |
+| **Connexion** | Son nom + mot de passe | `DOMAINE\utilisateur` + mot de passe, vérifié par le serveur |
 
-📌 Chaque compte, local ou de domaine, a un identifiant unique : le **SID** (*Security Identifier*), par exemple `S-1-5-21-3623811015-…-1001`. Windows travaille avec le **SID**, pas avec le nom. Si on supprime « dupont » et qu'on recrée un « dupont », le **SID est différent** : le nouveau compte **n'a plus aucun des anciens droits**.
-
-💡 Après avoir joint un PC au domaine, ses **comptes locaux existent toujours**. Ils ne sont simplement plus proposés sur l'écran d'accueil (on tape `.\nom` pour s'y connecter).
-
-**Prouver son identité** : en général un **identifiant + mot de passe**, que l'on peut renforcer par un 2ᵉ facteur : carte à puce, empreinte digitale, code par SMS ou par application. C'est l'**authentification multifacteur** (MFA).
+- Chaque compte a un **SID** unique (ex. `S-1-5-21-…-1001`) : Windows travaille avec le **SID**, pas le nom. Supprimer puis recréer « dupont » = **nouveau SID**, **plus aucun ancien droit**.
+- Un PC joint au domaine **garde ses comptes locaux** (connexion avec `.\nom`).
+- **MFA** (authentification multifacteur) : mot de passe **+** un 2ᵉ facteur (carte à puce, empreinte, code SMS ou appli).
 
 ---
 
 ### 2. Les types de comptes
 
-| Type | Il peut… | Il est membre du groupe… |
+| Type | Il peut… | Groupe |
 |---|---|---|
-| **Utilisateur standard** | Utiliser le PC, ses applications, ses fichiers | **Utilisateurs** |
-| **Administrateur** | Tout ça, **plus modifier le système** (installer, configurer, créer des comptes) | **Administrateurs** |
+| **Standard** | Utiliser le PC et ses fichiers | **Utilisateurs** |
+| **Administrateur** | Tout ça **+ modifier le système** | **Administrateurs** |
 | **Invité** | Usage très limité, **sans mot de passe** | **Invités** |
 
-⚠️ **Deux comptes intégrés sont désactivés par défaut**, pour la sécurité :
-
-- le compte nommé **« Administrateur »** : il ne correspond à **aucune personne**, et les pirates connaissent son nom ;
-- le compte **« Invité »** : il n'a pas de mot de passe.
-
-✅ **Bonne pratique** : au quotidien, on utilise un **compte standard**, et on garde un compte administrateur **personnel** pour les tâches d'administration.
+- ⚠️ Les comptes intégrés **« Administrateur »** (nom connu des pirates) et **« Invité »** (sans mot de passe) sont **désactivés par défaut**.
+- ✅ Au quotidien : un compte **standard** ; un compte administrateur **personnel** pour l'administration.
 
 ---
 
 ### 3. Les groupes et le jeton d'accès
 
-**Tout utilisateur appartient à au moins un groupe.** Comme les comptes, chaque groupe a un **SID**.
-
-À l'ouverture de session, Windows crée le **jeton d'accès** (*access token*) de l'utilisateur : **son SID + les SID de tous ses groupes**. À chaque accès à un fichier, Windows compare ce jeton aux droits du fichier (module 6).
-
-⚠️ Conséquence : quand on **ajoute quelqu'un à un groupe**, cela ne compte qu'**à sa prochaine ouverture de session** (son jeton est recalculé à ce moment-là).
+- Tout utilisateur est dans **au moins un groupe** ; chaque groupe a un **SID**.
+- À l'ouverture de session, Windows crée le **jeton d'accès** = **SID de l'utilisateur + SID de ses groupes**, comparé aux droits de chaque fichier ([module 6](../module-6-la-securite-ntfs-et-les-acl/index.md)).
+- ⚠️ Ajout à un groupe = effectif à la **prochaine ouverture de session** (le jeton est recalculé).
 
 | Type de groupe | Rôle | Exemples |
 |---|---|---|
-| **Groupes locaux** (créés par toi) | Rassembler des personnes pour leur donner des **droits sur des ressources** | « Compta », « Direction » |
-| **Groupes prédéfinis** (intégrés) | **Déléguer une tâche d'administration précise** à un utilisateur standard, sans le rendre administrateur | **Opérateurs de sauvegarde**, **Opérateurs de configuration réseau**, **Lecteurs des journaux d'événements**, **Utilisateurs du Bureau à distance** |
-| **Identités spéciales** (automatiques) | Groupes que **Windows attribue tout seul** selon la situation | **Tout le monde**, **Utilisateurs authentifiés**, **Interactif**, **Réseau** |
+| **Locaux** (créés par toi) | Donner des **droits sur des ressources** | « Compta », « Direction » |
+| **Prédéfinis** | **Déléguer une tâche** sans rendre administrateur | **Opérateurs de sauvegarde**, **Lecteurs des journaux d'événements**, **Utilisateurs du Bureau à distance** |
+| **Identités spéciales** | Attribués **automatiquement** par Windows | **Tout le monde**, **Utilisateurs authentifiés**, **Interactif**, **Réseau** |
 
-**Exemple :** le stagiaire doit pouvoir lire les journaux d'événements, mais il ne doit rien pouvoir modifier. On l'ajoute au groupe **Lecteurs des journaux d'événements**, et surtout **pas** aux Administrateurs.
+**Exemple** : le stagiaire doit lire les journaux sans rien modifier → groupe **Lecteurs des journaux d'événements**, surtout **pas** Administrateurs.
 
 ---
 
 ### 4. Les profils
 
-À la **première connexion** d'un utilisateur sur un PC, Windows crée son **profil** : le dossier **`C:\Users\nom`**, qui contient son Bureau, ses Documents, ses Téléchargements, ses favoris et ses réglages.
+À la **1re connexion**, Windows crée le profil **`C:\Users\nom`** (Bureau, Documents, réglages).
 
-| Profil spécial | Rôle |
-|---|---|
-| **Par défaut** (`C:\Users\Default`, caché) | Le **modèle** copié pour créer chaque **nouveau** profil |
-| **Public** (`C:\Users\Public`) | Ce qu'on y dépose est **visible par tous** les utilisateurs du PC |
-
-⚠️ **Ne jamais supprimer ou renommer un profil directement dans `C:\Users`** : le profil est aussi enregistré dans le **registre** de Windows. On obtient alors un **profil corrompu** (session temporaire). ✅ La bonne méthode : **Paramètres système avancés** (`sysdm.cpl`) → **Profils des utilisateurs** → *Paramètres*.
+- **Default** (`C:\Users\Default`, caché) : le **modèle** de chaque nouveau profil.
+- **Public** (`C:\Users\Public`) : visible par **tous** les utilisateurs.
+- ⚠️ **Ne jamais supprimer un profil directement dans `C:\Users`** (il est aussi dans le registre → **profil corrompu**). ✅ Passer par `sysdm.cpl` → **Profils des utilisateurs**.
 
 ---
 
-### 5. L'UAC : la fenêtre « Voulez-vous autoriser… ? »
+### 5. L'UAC : « Voulez-vous autoriser… ? »
 
-!!! abstract "En clair"
-    Même un administrateur **travaille par défaut avec des droits standard**. Quand une action va **modifier le système**, Windows affiche une fenêtre de confirmation : c'est l'**UAC** (*User Account Control*, contrôle de compte d'utilisateur). Les actions concernées sont signalées par un **bouclier** 🛡️. Un virus ne peut donc pas modifier le système discrètement : il faut ton accord.
+Même un administrateur travaille **avec des droits standard**. Une action qui **modifie le système** (signalée par un **bouclier** 🛡️) affiche une confirmation : l'**UAC** (*User Account Control*). Un virus ne peut donc rien modifier en douce.
 
-| Tu es… | L'UAC te demande… |
+| Tu es… | L'UAC demande… |
 |---|---|
-| **Administrateur** | Une simple **confirmation** : « Oui » |
-| **Utilisateur standard** | Le **nom et le mot de passe d'un administrateur** |
+| **Administrateur** | Une **confirmation** (« Oui ») |
+| **Standard** | Le **nom et le mot de passe d'un administrateur** |
 
-⚠️ **Ne jamais désactiver l'UAC.** Le niveau par défaut convient dans la grande majorité des cas (réglage : Panneau de configuration → Comptes d'utilisateurs → *Modifier les paramètres de contrôle du compte d'utilisateur*).
+⚠️ **Ne jamais désactiver l'UAC** : le niveau par défaut convient.
 
 ---
 
 ### 6. Les outils de gestion
 
-| Je veux… | Graphique | cmd | PowerShell |
-|---|---|---|---|
-| Lister les utilisateurs | `lusrmgr.msc` | `net user` | `Get-LocalUser` |
-| Créer un utilisateur | Clic droit → *Nouvel utilisateur* | `net user dupont MotDePasse1! /add` | `New-LocalUser -Name dupont -Password (Read-Host -AsSecureString)` |
-| Désactiver un compte | Propriétés → *Le compte est désactivé* | `net user dupont /active:no` | `Disable-LocalUser -Name dupont` |
-| Lister les groupes | `lusrmgr.msc` | `net localgroup` | `Get-LocalGroup` |
-| Créer un groupe | Clic droit → *Nouveau groupe* | `net localgroup Compta /add` | `New-LocalGroup -Name Compta` |
-| Ajouter au groupe | Propriétés du groupe → *Ajouter* | `net localgroup Compta dupont /add` | `Add-LocalGroupMember -Group Compta -Member dupont` |
-| Voir les membres | Propriétés du groupe | `net localgroup Administrateurs` | `Get-LocalGroupMember -Group Administrateurs` |
+| Je veux… | cmd | PowerShell |
+|---|---|---|
+| Lister les utilisateurs | `net user` | `Get-LocalUser` |
+| Créer un utilisateur | `net user dupont MotDePasse1! /add` | `New-LocalUser -Name dupont -Password (Read-Host -AsSecureString)` |
+| Désactiver un compte | `net user dupont /active:no` | `Disable-LocalUser -Name dupont` |
+| Lister / créer un groupe | `net localgroup` · `net localgroup Compta /add` | `Get-LocalGroup` · `New-LocalGroup -Name Compta` |
+| Ajouter au groupe | `net localgroup Compta dupont /add` | `Add-LocalGroupMember -Group Compta -Member dupont` |
+| Voir les membres | `net localgroup Administrateurs` | `Get-LocalGroupMember -Group Administrateurs` |
 
-💡 Pour voir **ton SID et tes groupes** : `whoami /user` et `whoami /groups`.
+- En graphique : tout se fait dans **`lusrmgr.msc`**.
+- 💡 **Ton SID et tes groupes** : `whoami /user` et `whoami /groups`.
 
 ## 📝 Fiche de révision
 

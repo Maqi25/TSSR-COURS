@@ -52,51 +52,39 @@ flowchart TB
 
 ## 📖 Cours consolidé
 
-### 1. Le Gestionnaire de périphériques
+### 1. Le Gestionnaire de périphériques (`devmgmt.msc`)
 
-Ouvre-le avec **`devmgmt.msc`** (ou clic droit sur le menu Démarrer). Il liste **tout le matériel** et signale les problèmes.
-
-| Ce que tu vois | Ça veut dire… |
+| Je vois… | Ça veut dire… |
 |---|---|
-| ⚠️ **Point d'exclamation jaune** | Le pilote est **absent** ou **en erreur** |
-| ⬇️ **Flèche vers le bas** | Le périphérique est **désactivé** |
-| « **Périphérique inconnu** » | Windows ne sait pas ce que c'est : **aucun pilote** |
+| ⚠️ **Point d'exclamation jaune** | Pilote **absent** ou **en erreur** |
+| ⬇️ **Flèche vers le bas** | Périphérique **désactivé** |
+| « **Périphérique inconnu** » | **Aucun pilote** |
 
-**Clic droit sur un périphérique → Propriétés → onglet *Pilote*** :
+**Clic droit → Propriétés → onglet *Pilote*** :
 
-| Bouton | Quand l'utiliser ? |
+| Bouton | Quand ? |
 |---|---|
-| **Mettre à jour le pilote** | Installer une version plus récente |
-| **Restaurer le pilote** | ✅ **La nouvelle version pose problème** → revenir à la précédente |
+| **Mettre à jour** | Installer une version plus récente |
+| **Restaurer le pilote** | ✅ La nouvelle version **pose problème** → retour à la précédente |
 | **Désactiver** | Couper le matériel sans le désinstaller |
-| **Désinstaller** | Supprimer le périphérique (et son pilote) pour le réinstaller proprement |
+| **Désinstaller** | Supprimer pour **réinstaller proprement** |
 
-**Comment le matériel est détecté :**
-
-| Type | Exemple | Détection |
-|---|---|---|
-| **Plug & Play « à chaud »** | Clé USB, souris, casque Bluetooth | **Immédiate**, au branchement |
-| **Interne** (carte **PCIe**) | Carte graphique, carte réseau | PC **éteint** pour l'installer, détectée **au démarrage** |
+- **Plug & Play à chaud** (USB, Bluetooth) : détecté **au branchement**.
+- **Carte interne** (PCIe) : installée PC **éteint**, détectée **au démarrage**.
 
 ---
 
-### 2. Retrouver le pilote d'un périphérique inconnu
+### 2. Trouver le pilote d'un périphérique inconnu
 
-Chaque matériel a une **carte d'identité** : Propriétés → onglet **Détails** → *ID du matériel*.
+Propriétés → **Détails** → *ID du matériel* :
 
 ```
 PCI\VEN_8086&DEV_15B8&SUBSYS_...
        └─┬──┘ └──┬──┘
-   fabricant   modèle
-   (8086 = Intel)
+   fabricant   modèle   (8086 = Intel)
 ```
 
-| Code | Signification |
-|---|---|
-| **`VEN_`** (*vendor*) | Le **fabricant** |
-| **`DEV_`** (*device*) | Le **modèle** de matériel chez ce fabricant |
-
-💡 Tape ces codes dans un moteur de recherche (ou sur un site comme **pcilookup.com**) pour trouver le fabricant et le modèle, puis télécharge le pilote **sur le site officiel du fabricant**.
+**`VEN_`** = le **fabricant** · **`DEV_`** = le **modèle**. On cherche ces codes en ligne (ex. **pcilookup.com**), puis on télécharge le pilote **sur le site officiel** du fabricant.
 
 ---
 
@@ -104,91 +92,67 @@ PCI\VEN_8086&DEV_15B8&SUBSYS_...
 
 | Fichier | Rôle |
 |---|---|
-| **`.inf`** | La « notice d'installation », en texte : dit à Windows quels fichiers copier |
+| **`.inf`** | La **notice d'installation** (texte) |
 | **`.sys`** | Le **pilote** lui-même |
-| **`.cat`** | Le **certificat** : la **signature** qui prouve que le pilote est authentique |
+| **`.cat`** | La **signature** qui prouve qu'il est authentique |
 
-**Installer un pilote** : clic droit sur le fichier **`.inf`** → *Installer*, ou lancer le `setup.exe` du fabricant (qui installe souvent un logiciel en plus).
-
-📌 **Pilotes signés** : Windows 64 bits **exige** des pilotes **signés** (certifiés). C'est pour cela que les **écrans bleus** sont devenus rares : autrefois, la plupart venaient de pilotes mal conçus.
-
-#### Le magasin de pilotes (DriverStore)
-
-Windows embarque des **milliers de pilotes génériques** dans `C:\Windows\System32\DriverStore`. C'est grâce à eux qu'une souris ou une imprimante courante **fonctionne dès le branchement**. Ils sont mis à jour par **Windows Update**.
+- **Installer** : clic droit sur le **`.inf`** → *Installer*, ou le `setup.exe` du fabricant.
+- Windows 64 bits **exige des pilotes signés** : c'est pourquoi les **écrans bleus** sont devenus rares.
+- **DriverStore** (`C:\Windows\System32\DriverStore`) : des **milliers de pilotes génériques** (mis à jour par Windows Update), d'où le matériel courant qui marche **dès le branchement**.
 
 | Commande | Rôle |
 |---|---|
-| `pnputil /enum-drivers` | Lister les pilotes ajoutés au magasin |
-| `pnputil /add-driver pilote.inf /install` | **Ajouter** un pilote au magasin et l'installer |
-| `pnputil /delete-driver oem12.inf` | **Supprimer** un pilote du magasin |
-| `driverquery` | Lister les pilotes **chargés** |
-| `msinfo32` | Fiche complète du PC : matériel, composants, logiciels |
+| `pnputil /enum-drivers` | Lister les pilotes ajoutés |
+| `pnputil /add-driver pilote.inf /install` | **Ajouter** et installer un pilote |
+| `pnputil /delete-driver oem12.inf` | **Supprimer** un pilote |
+| `driverquery` · `msinfo32` | Pilotes **chargés** · fiche complète du PC |
 
 ---
 
 ### 4. Le vocabulaire de l'impression
 
-!!! abstract "En clair : « imprimante » ne veut pas dire « la machine »"
-    Pour Windows, l'**imprimante** est **logicielle** : c'est l'icône dans *Imprimantes et scanners*, avec son pilote, ses réglages, sa file d'attente et son port. La **machine physique** s'appelle le **périphérique d'impression**.
-
 | Terme | Définition |
 |---|---|
 | **Périphérique d'impression** | La **machine** qui sort les feuilles |
 | **Imprimante** | La partie **logicielle** dans Windows : pilote + réglages + file d'attente + port |
-| **Spouleur** (*spooler*) | Le **service** qui gère la **file d'attente** : il traduit les documents pour la machine et les envoie **un par un** |
-| **Port** | Par où partent les données : **USB** ou **adresse IP** |
+| **Spouleur** | Le **service** qui gère la **file d'attente** et envoie les documents **un par un** |
+| **Port** | Par où partent les données : **USB** ou **IP** |
 
 | Type | Branchement | ✅ | ⚠️ |
 |---|---|---|---|
-| **Locale** | En **USB** sur un PC | Simple | Un seul utilisateur |
-| **Partagée** | Locale, puis **partagée** par le PC hôte (onglet *Partage*) | Plusieurs utilisateurs | Le **PC hôte doit rester allumé** |
-| **Réseau** | Directement sur le **réseau** (câble ou Wi-Fi), avec **sa propre IP** et une **page web** de réglages | Indépendante de tout PC | Plus chère |
+| **Locale** | **USB** sur un PC | Simple | Un seul utilisateur |
+| **Partagée** | Locale, **partagée** par le PC | Plusieurs utilisateurs | Le **PC hôte doit rester allumé** |
+| **Réseau** | Sur le **réseau**, **sa propre IP** + page web de réglages | Indépendante | Plus chère |
 
 ---
 
 ### 5. Configurer et sécuriser une imprimante
 
-Dans **Paramètres → Imprimantes et scanners** (ou `control printers`) :
+**Paramètres → Imprimantes et scanners** (ou `control printers`) : **file d'attente**, imprimante **par défaut**, et dans les Propriétés : **emplacement** (« Bât. B, 2ᵉ »), **horaires**, **partage**.
 
-- voir la **file d'attente** et annuler un document bloqué ;
-- choisir l'**imprimante par défaut** ;
-- dans les **Propriétés** : nom, **emplacement** (« Bâtiment B, 2ᵉ étage », pratique sur un grand site), **horaires** d'utilisation, **partage**.
-
-**Les autorisations d'une imprimante** (onglet *Sécurité* de l'imprimante, comme pour un dossier) :
-
-| Autorisation | Permet de… | Pour qui ? |
+| Autorisation (onglet *Sécurité*) | Permet de… | Pour qui ? |
 |---|---|---|
 | **Imprimer** | Envoyer des documents | Tout le monde |
-| **Gérer les documents** | Mettre en pause, annuler **les documents des autres** | La personne référente du service |
+| **Gérer les documents** | Mettre en pause, annuler **les documents des autres** | Le référent du service |
 | **Gérer l'imprimante** | Tout régler (pilote, partage, droits) | Techniciens |
 
-🩺 **Le dépannage n°1** : un document reste **bloqué** dans la file d'attente et plus rien ne sort → **redémarrer le spouleur**.
+🩺 **Dépannage n°1** : un document **bloqué** dans la file → **redémarrer le spouleur** (en administrateur) :
 
 ```powershell
-Restart-Service -Name Spooler        # PowerShell (en administrateur)
-```
-```
-net stop spooler && net start spooler   ← cmd (en administrateur)
+Restart-Service -Name Spooler                 # PowerShell
+net stop spooler && net start spooler         # cmd
 ```
 
 ---
 
 ### 6. L'impression en entreprise
 
-Le **serveur d'impression** centralise toutes les imprimantes réseau :
+Le **serveur d'impression** centralise : pilotes, partage et droits **au même endroit**, plus le **suivi** (journaux, toner, bacs). Côté poste : **`\\SRV-IMPRESSION`** → clic droit sur l'imprimante → **Connecter** (le pilote s'installe tout seul).
 
-- **un seul endroit** pour installer les pilotes, partager et régler les droits ;
-- **suivi** : journaux, niveaux de toner, bacs vides ;
-- côté poste : on tape **`\\SRV-IMPRESSION`** dans l'Explorateur → clic droit sur l'imprimante → **Connecter**. Le pilote s'installe **tout seul** depuis le serveur.
+**Le pool d'impression** = **une** imprimante logicielle reliée à **plusieurs machines identiques** : le spouleur envoie chaque document à la **première machine libre** (une seule file d'attente pour plusieurs caisses).
 
-#### Le pool d'impression
-
-!!! abstract "En clair"
-    Un **pool** = **une seule imprimante** (logicielle) reliée à **plusieurs machines identiques**. Les utilisateurs envoient sur « Imprimante-Accueil » et le spouleur **répartit** les documents sur la première machine libre. C'est comme **plusieurs caisses avec une seule file d'attente** au supermarché.
-
-    Condition : les machines doivent être **du même modèle** (même pilote) et **côte à côte**, car l'utilisateur ne sait pas laquelle va imprimer.
-
-Mise en place : Propriétés de l'imprimante → **Ports** → cocher **« Activer le pool d'imprimantes »** → cocher les ports des différentes machines.
+- Conditions : machines **du même modèle**, **côte à côte**.
+- Mise en place : Propriétés → **Ports** → **« Activer le pool d'imprimantes »** → cocher les ports des machines.
 
 ## 📝 Fiche de révision
 

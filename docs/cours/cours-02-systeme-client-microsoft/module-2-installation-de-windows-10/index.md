@@ -35,96 +35,84 @@ flowchart LR
 
 | Composant | Windows 10 (64 bits) | **Windows 11** |
 |---|---|---|
-| **Processeur** | 1 GHz | 1 GHz, 2 cœurs, **64 bits** et récent |
-| **Mémoire vive (RAM)** | 2 Go (1 Go en 32 bits) | **4 Go** |
-| **Stockage** | 32 Go (16 Go en 32 bits) | **64 Go** |
-| **Démarrage** | BIOS ou UEFI | **UEFI + Secure Boot** obligatoires |
-| **Puce de sécurité** | — | **TPM 2.0** obligatoire |
+| **Processeur** | 1 GHz | 1 GHz, 2 cœurs, **64 bits**, récent |
+| **RAM** | 2 Go | **4 Go** |
+| **Stockage** | 32 Go | **64 Go** |
+| **Démarrage** | BIOS ou UEFI | **UEFI + Secure Boot** |
+| **Puce de sécurité** | — | **TPM 2.0** |
 
-📌 Ce sont des **minimums** : en pratique, prévois **8 Go de RAM** et un **SSD**. L'espace indiqué ne comprend pas les **données** de l'utilisateur.
+- Ce sont des **minimums** : en pratique, **8 Go de RAM** et un **SSD**.
+- **Toujours le 64 bits** : le 32 bits est limité à **4 Go de RAM**, et Windows 11 n'existe qu'en 64 bits.
 
-!!! abstract "En clair : 32 bits ou 64 bits ?"
-    Prends **toujours le 64 bits**. Le 32 bits ne peut pas utiliser plus de **4 Go de RAM**, et Windows 11 n'existe qu'en 64 bits. Le 64 bits apporte aussi le **démarrage sécurisé** (*UEFI Secure Boot*) et n'accepte que des **pilotes signés par Microsoft**, ce qui fait moins d'**écrans bleus**.
-
-!!! abstract "En clair : TPM, UEFI, Secure Boot ?"
-    - **UEFI** : le logiciel de la carte mère qui démarre le PC (le remplaçant moderne du **BIOS**).
-    - **Secure Boot** : l'UEFI vérifie que le système qui démarre est authentique, ce qui bloque les virus de démarrage.
-    - **TPM 2.0** : une puce qui garde des clés de sécurité, utilisée notamment par **BitLocker** pour chiffrer le disque.
+| Mot | En clair |
+|---|---|
+| **UEFI** | Le logiciel de la carte mère qui démarre le PC (remplace le **BIOS**) |
+| **Secure Boot** | L'UEFI vérifie que le système qui démarre est authentique (bloque les virus de démarrage) |
+| **TPM 2.0** | Puce qui garde des clés de sécurité, utilisée par **BitLocker** |
 
 ---
 
 ### 2. Le support d'installation
 
-Windows est livré sous forme d'**images** : de gros fichiers `.wim` (*Windows Imaging*) qui contiennent tout le système.
+Windows est livré en **images** `.wim` :
 
-| Fichier | Rôle | Image |
-|---|---|---|
-| **`boot.wim`** | Un **mini-Windows** qui démarre en premier et lance l'assistant d'installation | Le « livreur » |
-| **`install.wim`** | **Tout Windows**, qui sera copié sur le disque | Le « colis » |
-
-**Où trouver l'image ?**
+- **`boot.wim`** : un **mini-Windows** qui démarre et lance l'assistant (le « livreur ») ;
+- **`install.wim`** : **tout Windows**, copié sur le disque (le « colis »).
 
 | Support | Usage |
 |---|---|
-| **Clé USB « bootable »** (sur laquelle le PC peut démarrer) | Le plus courant sur un vrai PC (créée avec l'outil *Media Creation Tool* de Microsoft) |
-| **Fichier ISO** | Un « DVD virtuel » : idéal pour les **machines virtuelles** |
-| **Partage réseau** | Pour installer **beaucoup de PC** en entreprise (voir module 12) |
+| **Clé USB bootable** (*Media Creation Tool*) | Vrai PC |
+| **Fichier ISO** (« DVD virtuel ») | Machines virtuelles |
+| **Partage réseau** | Beaucoup de PC en entreprise ([module 12](../module-12-introduction-a-la-capture-et-au-deploiement-d-images/index.md)) |
 
 ---
 
 ### 3. Nouvelle installation ou mise à niveau ?
 
-| | **Nouvelle installation** (*Personnalisée*) | **Mise à niveau** |
+| | **Nouvelle installation** (*Personnalisée*) ✅ | **Mise à niveau** |
 |---|---|---|
-| **Principe** | On **efface** le disque et on repart de zéro | On installe **par-dessus** l'ancien Windows |
-| **Données et logiciels** | ❌ Perdus (à sauvegarder avant) | ✅ Conservés |
-| **Fiabilité** | ✅ Système propre | ⚠️ Garde les problèmes de l'ancien système |
-| **Avis du technicien** | **Recommandée** | À éviter, sauf cas particulier (logiciel qu'on ne sait plus réinstaller) |
+| **Principe** | On **efface** et on repart de zéro | On installe **par-dessus** l'ancien Windows |
+| **Données et logiciels** | ❌ Perdus (sauvegarder avant) | ✅ Conservés |
+| **Résultat** | Système **propre** | Garde les problèmes de l'ancien |
 
-⚠️ Impossible de mettre à niveau depuis **Windows XP ou Vista** : il faut faire une nouvelle installation.
+⚠️ Depuis **Windows XP ou Vista** : mise à niveau **impossible**.
 
 ---
 
-### 4. Le déroulé d'une installation, pas à pas
+### 4. L'installation, pas à pas
 
 | # | Écran | Ce que tu fais |
 |---|---|---|
-| ① | Démarrage | Le PC démarre sur la clé ou l'ISO (« *Press any key to boot from CD or DVD* » → appuie sur une touche) |
-| ② | Langue | Français, puis **Installer maintenant** |
-| ③ | Clé de produit | La saisir, ou **« Je n'ai pas de clé de produit »** : Windows fonctionne sans être activé, et on l'active plus tard |
-| ④ | Édition | Ex. **Windows 10 Professionnel**. L'édition **N** est la même, mais **sans le lecteur multimédia** (pour le marché européen) |
+| ① | Démarrage | Démarrer sur la clé / l'ISO (« *Press any key…* » → une touche) |
+| ② | Langue | Français → **Installer maintenant** |
+| ③ | Clé de produit | La saisir, ou **« Je n'ai pas de clé »** (activation plus tard) |
+| ④ | Édition | Ex. **Professionnel** (l'édition **N** = sans lecteur multimédia) |
 | ⑤ | Licence | Accepter le **CLUF** |
-| ⑥ | Type | **Personnalisé** (nouvelle installation) |
-| ⑦ | Disque | Choisir le disque. Il sera formaté en **NTFS** |
-| ⑧ | Copie | Windows copie les fichiers, puis **redémarre tout seul** |
-| ⑨ | **OOBE** | La « première mise en route » (*Out-Of-Box Experience*) : région, clavier, réseau |
-| ⑩ | Compte | Création du **premier utilisateur** (il sera **administrateur**), mot de passe, questions de sécurité |
+| ⑥ | Type | **Personnalisé** |
+| ⑦ | Disque | Choisir le disque → formaté en **NTFS** |
+| ⑧ | Copie | Copie des fichiers, **redémarrage automatique** |
+| ⑨ | **OOBE** | Première mise en route : région, clavier, réseau |
+| ⑩ | Compte | **Premier utilisateur** (= **administrateur**), mot de passe |
 
-💡 À l'étape ⑨, choisir **« Je n'ai pas Internet »** permet de créer un **compte local**, sans compte Microsoft (pratique en machine virtuelle).
-
-!!! tip "Astuce Windows 11 : installer sans compte Microsoft"
-    Windows 11 impose un compte Microsoft en ligne. Pour créer un compte local : sur l'écran du choix de la région, appuie sur ++shift+f10++, puis tape `start ms-cxh:localonly` et Entrée. Microsoft change régulièrement ces astuces : elle peut ne plus marcher sur les versions récentes.
+- 💡 À l'étape ⑨, **« Je n'ai pas Internet »** = compte **local**, sans compte Microsoft.
+- 💡 Windows 11 impose un compte Microsoft : ++shift+f10++ puis `start ms-cxh:localonly` crée un compte local (astuce qui peut cesser de marcher).
 
 ---
 
 ### 5. Migrer un utilisateur vers un nouveau PC
 
-Quand on remplace le PC d'un utilisateur, il doit **retrouver son environnement** : ses fichiers, ses réglages et ses logiciels.
-
 | À transférer | Comment |
 |---|---|
-| **Fichiers et dossiers** | La **sauvegarde centralisée** de l'entreprise, ou à défaut l'outil Windows **Sauvegarder et restaurer (Windows 7)** |
-| **Comptes, profils, paramètres** (fond d'écran, favoris, réglages Outlook…) | **USMT** (*User State Migration Tool*) de Microsoft |
-| **Logiciels** | À **réinstaller** sur le nouveau poste |
-
-USMT fonctionne en **2 commandes** :
+| **Fichiers** | Sauvegarde centralisée, ou **Sauvegarder et restaurer (Windows 7)** |
+| **Profil et paramètres** (fond d'écran, favoris, Outlook…) | **USMT** (*User State Migration Tool*) |
+| **Logiciels** | À **réinstaller** |
 
 ```
-scanstate \\serveur\migration\dupont /i:migapp.xml /i:miguser.xml   ← sur l'ANCIEN PC : capture
-loadstate \\serveur\migration\dupont /i:migapp.xml /i:miguser.xml   ← sur le NOUVEAU PC : restauration
+scanstate \\serveur\migration\dupont /i:migapp.xml /i:miguser.xml   ← ANCIEN PC : capture
+loadstate \\serveur\migration\dupont /i:migapp.xml /i:miguser.xml   ← NOUVEAU PC : restauration
 ```
 
-📌 Une migration réussie, c'est un utilisateur qui **retrouve tout** et **ne perd pas de temps de travail**.
+📌 Réussie = l'utilisateur **retrouve tout**, sans perte de temps de travail.
 
 ## 📝 Fiche de révision
 
