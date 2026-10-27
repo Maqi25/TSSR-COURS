@@ -202,7 +202,7 @@ html[data-tssr-theme] body[data-md-color-scheme="slate"] {
 
   /* Sous-menus : décalés sous leur bouton, avec un trait guide */
   .md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav > .md-nav__list {
-    margin: 0.1rem 0.6rem 0.4rem 1.9rem;
+    margin: 0.1rem 0.4rem 0.4rem 1.3rem;
     padding-left: 0.6rem;
     border-left: 1px solid rgba(148, 197, 255, 0.18);
   }
@@ -1040,5 +1040,21 @@ html[data-tssr-theme] body[data-md-color-scheme="slate"] {
     z-index: 2;
     background: #0a1f36;
     box-shadow: 0 8px 12px -10px rgba(0, 0, 0, 0.8);
+  }
+}
+
+/* Menu de gauche plus large pour lire les titres en entier ; la zone de la page
+   s'élargit d'autant pour que le texte du cours garde sa largeur */
+@media screen and (min-width: 76.25em) {
+  .md-grid {
+    max-width: 68rem;
+  }
+  .md-sidebar--primary {
+    width: 15.5rem;
+  }
+  /* Material réserve tout ce qui dépasse 11.5rem en marge vide à droite :
+     on l'enlève pour que le menu occupe tout le panneau */
+  [dir="ltr"] .md-sidebar--primary .md-sidebar__inner {
+    padding-right: 0;
   }
 }
