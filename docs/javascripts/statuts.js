@@ -5,6 +5,8 @@
  *   "verrouille" → carte grisée + 🔒, le clic affiche un message au lieu
  *                  d'ouvrir le cours (cartes, menu, accueil) ;
  *   "en-cours"   → badge lumineux EN COURS ;
+ *   "en-cours-ferme" → badge EN COURS 🔒, mais accès fermé comme un cours
+ *                  verrouillé (le clic affiche un message) ;
  *   "termine"    → badge ✓ Terminé ;
  *   (cours absent de la liste → aucun badge, accès normal).
  *
@@ -23,7 +25,7 @@
 window.TSSRStatuts = (function () {
   var STATUTS = {
     "cours-01-bases-des-reseaux": "termine",
-    "cours-02-systeme-client-microsoft": "en-cours",
+    "cours-02-systeme-client-microsoft": "en-cours-ferme",
     "cours-03-utilisateur-d-une-distribution-gnu-linux": "verrouille",
     "cours-04-administration-d-une-distribution-gnu-linux": "verrouille",
     "cours-05-mise-en-situation-professionnelle-systeme-client": "verrouille",
@@ -90,7 +92,7 @@ window.TSSRStatuts = (function () {
 
   function isLocked(href) {
     var s = get(href);
-    return !!(s && s.statut === "verrouille");
+    return !!(s && (s.statut === "verrouille" || s.statut === "en-cours-ferme"));
   }
 
   // ------------------------------------------------------------------
@@ -113,7 +115,9 @@ window.TSSRStatuts = (function () {
     var b = document.createElement("b");
     b.textContent = title || "Ce cours est verrouillé";
     var small = document.createElement("small");
-    small.textContent = info.date ? "Il sera disponible le " + info.date + "." : "Il n'est pas encore ouvert.";
+    small.textContent = info.statut === "en-cours-ferme"
+      ? "Le cours a lieu en ce moment, mais l'accès est fermé pour l'instant."
+      : info.date ? "Il sera disponible le " + info.date + "." : "Il n'est pas encore ouvert.";
     text.appendChild(b);
     text.appendChild(small);
     toast.appendChild(icon);
@@ -128,11 +132,16 @@ window.TSSRStatuts = (function () {
   // ------------------------------------------------------------------
   // Badges sur les cartes, les tuiles de l'accueil et le menu
   // ------------------------------------------------------------------
-  var LABELS = { "verrouille": "🔒 Verrouillé", "en-cours": "En cours", "termine": "✓ Terminé" };
+  var LABELS = { "verrouille": "🔒 Verrouillé", "en-cours": "En cours", "en-cours-ferme": "En cours 🔒", "termine": "✓ Terminé" };
+
+  // Classes CSS d'un statut : « en cours fermé » = style « en cours » + accès fermé
+  function classesOf(statut) {
+    return statut === "en-cours-ferme" ? ["is-en-cours", "is-ferme"] : ["is-" + statut];
+  }
 
   function badge(statut, date) {
     var span = document.createElement("span");
-    span.className = "tssr-statut tssr-statut--" + statut;
+    span.className = "tssr-statut tssr-statut--" + (statut === "en-cours-ferme" ? "en-cours" : statut);
     // verrouillé avec une date : juste « 🔒 09/11/2026 » (court, ne cache pas l'icône)
     span.textContent = statut === "verrouille" && date ? "🔒 " + date : LABELS[statut];
     if (statut === "verrouille") span.title = "Verrouillé" + (date ? " jusqu'au " + date : "");
@@ -144,7 +153,7 @@ window.TSSRStatuts = (function () {
     document.querySelectorAll("a.tssr-card, a.tssr-home-module").forEach(function (a) {
       var s = get(a.href);
       if (!s || !s.statut) return;
-      a.classList.add("is-" + s.statut);
+      classesOf(s.statut).forEach(function (c) { a.classList.add(c); });
       var isCoursePage = new URL(a.href, location.href).pathname === root + "cours/" + s.course + "/";
       if (isCoursePage) a.appendChild(badge(s.statut, s.date));
     });
@@ -152,19 +161,21 @@ window.TSSRStatuts = (function () {
     // menu de gauche : cours et modules
     document.querySelectorAll(".md-nav--primary a.md-nav__link").forEach(function (a) {
       var s = get(a.href);
-      if (s && s.statut) a.classList.add("is-" + s.statut);
+      if (s && s.statut) classesOf(s.statut).forEach(function (c) { a.classList.add(c); });
     });
 
     // page d'un cours verrouillé ouverte directement par son adresse
     var here = get(location.href);
-    if (here && here.statut === "verrouille") {
+    if (here && (here.statut === "verrouille" || here.statut === "en-cours-ferme")) {
       var h1 = document.querySelector(".md-content h1");
       if (h1) {
         var banner = document.createElement("div");
         banner.className = "tssr-lock-banner";
         banner.textContent = owner
           ? "🔓 Cours verrouillé pour les visiteurs (tu le vois car tu es en mode propriétaire)."
-          : "🔒 Ce cours est verrouillé" + (here.date ? " : il ouvrira le " + here.date + "." : ".");
+          : here.statut === "en-cours-ferme"
+            ? "🔒 Ce cours a lieu en ce moment, mais l'accès est fermé pour l'instant."
+            : "🔒 Ce cours est verrouillé" + (here.date ? " : il ouvrira le " + here.date + "." : ".");
         h1.insertAdjacentElement("afterend", banner);
       }
     }
@@ -185,8 +196,10 @@ window.TSSRStatuts = (function () {
       if (!a || !isLocked(a.href)) return;
       e.preventDefault();
       e.stopPropagation();
+      var info = get(a.href);
       var title = a.querySelector(".tssr-card-title, b, .md-ellipsis");
-      showLocked(get(a.href), title ? title.textContent.trim() + " est verrouillé" : null);
+      var suffix = info.statut === "en-cours-ferme" ? " : accès fermé" : " est verrouillé";
+      showLocked(info, title ? title.textContent.trim() + suffix : null);
     }, true);
   });
 

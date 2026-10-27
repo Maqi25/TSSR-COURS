@@ -1187,6 +1187,31 @@ html[data-tssr-theme] body[data-md-color-scheme="slate"] {
   font-weight: 900;
 }
 
+/* cours « en cours » mais accès fermé : reste orange (pas grisé), curseur interdit */
+.md-typeset .tssr-card.is-ferme,
+.md-typeset .tssr-home-module.is-ferme,
+.md-nav__link.is-ferme {
+  cursor: not-allowed;
+}
+
+.tssr-proprio .md-typeset .tssr-card.is-ferme,
+.tssr-proprio .md-typeset .tssr-home-module.is-ferme,
+.tssr-proprio .md-nav__link.is-ferme {
+  cursor: pointer;
+}
+
+.md-sidebar--primary .md-nav__link.is-en-cours.is-ferme > .md-ellipsis::after {
+  content: " 🔒";
+  width: auto;
+  height: auto;
+  margin-left: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font-size: 0.85em;
+  filter: drop-shadow(0 0 6px #f59e0b);
+}
+
 /* bandeau en haut d'un cours verrouillé ouvert par son adresse */
 .md-typeset .tssr-lock-banner {
   margin: -0.4rem 0 1.2rem;
