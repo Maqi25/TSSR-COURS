@@ -100,15 +100,6 @@ Chaque utilisateur a **un groupe principal** (souvent du même nom que lui) et p
 
 💡 Voir **qui est connecté** et **les dernières connexions** : `who`, `last`, et `lastlog` (dernière connexion de chaque compte).
 
-## ✅ Points clés à retenir
-
-- **`/etc/passwd`** (comptes : nom, **UID**, GID, dossier, shell) · **`/etc/shadow`** (mots de passe chiffrés, root seulement) · **`/etc/group`** (groupes).
-- UID **0** = root · **1-999** = comptes système · **≥ 1000** = utilisateurs.
-- Créer : **`adduser`** (Debian, interactif) ou `useradd -m -s /bin/bash` ; mot de passe : **`passwd`** ; verrouiller : `usermod -L` ; supprimer : `deluser --remove-home`.
-- Groupes : **`groupadd`**, **`usermod -aG groupe user`** (⚠️ **toujours `-a`**), `deluser user groupe`.
-- Admin : **`usermod -aG sudo user`** ; règles avancées avec **`visudo`** uniquement.
-- Nouveaux groupes pris en compte à la **prochaine connexion**.
-
 ## 📝 Fiche de révision
 
 | Commande | Rôle |

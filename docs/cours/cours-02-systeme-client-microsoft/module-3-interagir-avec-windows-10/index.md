@@ -199,16 +199,6 @@ Get-LocalUser demo-user | Select-Object Name, SID | Out-File C:\Users\demo-user\
 | **`Select-Object`** | Garde **les colonnes** (propriétés) choisies |
 | **`Out-File`** | Envoie le résultat **dans un fichier** |
 
-## ✅ Points clés à retenir
-
-- Outils graphiques : **`.msc`** = consoles MMC (`compmgmt`, `diskmgmt`, `devmgmt`, `lusrmgr`, `services`, `eventvwr`) · **`.cpl`** = panneau de configuration (`ncpa.cpl`).
-- **cmd** : 1er mot = commande, séparateur = espace, options en **`/`**, aide avec `help commande` ou `commande | Out-File fichier.txt`/?`.
-- Syntaxe d'aide : sans crochets = **obligatoire** · `[ ]` = **facultatif** · `|` = **choix** · `...` = **répétable**.
-- Modifier le système → **exécuter en tant qu'administrateur** (UAC).
-- **PowerShell** manipule des **objets** ; cmdlets en **Verbe-Nom** (`Get`, `Set`, `New`, `Remove`) ; paramètres en **`-`**.
-- Méthode : **`Get-Command`** (trouver) → **`Get-Help -Examples`** (comprendre) → **`Where-Object` / `Select-Object`** (filtrer) → agir.
-- **`Update-Help`** pour installer l'aide ; **`$PSVersionTable`** pour connaître la version.
-
 ## 📝 Fiche de révision
 
 ### 🧠 cmd et PowerShell côte à côte

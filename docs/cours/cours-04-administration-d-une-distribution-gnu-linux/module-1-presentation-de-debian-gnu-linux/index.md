@@ -94,14 +94,6 @@ flowchart LR
 | **debian.org/doc** | Le **manuel de l'administrateur Debian** (gratuit, en français) |
 | `/usr/share/doc/paquet/` | La documentation installée avec chaque logiciel |
 
-## ✅ Points clés à retenir
-
-- **Debian** : libre, gratuite, **très stable** → idéale pour les **serveurs** ; base d'Ubuntu et de beaucoup d'autres.
-- Branches : **stable** (production) · **testing** (future stable) · **unstable / Sid** (le plus récent).
-- Version actuelle : **Debian 13 « Trixie »** ; une version tous les **~2 ans**, suivie **~5 ans** (avec LTS).
-- Version installée : **`cat /etc/debian_version`**.
-- **root** = tout-puissant ; on préfère **`sudo commande`** (groupe `sudo`, commande tracée) à `su -`.
-
 ## 📝 Fiche de révision
 
 | Notion | À retenir |

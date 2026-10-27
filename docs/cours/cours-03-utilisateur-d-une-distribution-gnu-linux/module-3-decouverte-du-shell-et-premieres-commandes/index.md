@@ -193,17 +193,6 @@ man 5 passwd        # section 5 : le FICHIER /etc/passwd
 LANG=C man ls       # le manuel en anglais (souvent plus complet)
 ```
 
-## ✅ Points clés à retenir
-
-- **root** (`#`) = tout-puissant : à éviter au quotidien, **jamais en SSH direct**.
-- Qui ? **`logname`**, **`id`** (UID, GID, groupes), **`who`**, **`w`** ; depuis quand ? **`uptime`** ; mot de passe : **`passwd`**.
-- Où ? **`pwd`** (dossier), **`tty`** (terminal) ; **`~`** = dossier personnel.
-- **`date +"%d/%m/%Y"`** pour formater ; **`cal`** pour le calendrier.
-- Variable : **`nom=valeur`** (sans `$`, sans espaces) ; **`$nom`** pour la lire ; **`unset`** pour la supprimer.
-- Variables d'environnement en **MAJUSCULES** : **`$HOME`**, **`$USER`**, **`$PATH`**, `$SHELL`, `$PWD`, `$LANG` ; listées par `env`.
-- Gagner du temps : ++arrow-up++, **`history`**, **`!!`**, ++ctrl+r++, et **++tab++** partout.
-- Aide : **`--help`** (rapide), **`man`** (complet ; `/` pour chercher, `q` pour quitter).
-
 ## 📝 Fiche de révision
 
 ### 🧠 Les commandes du module

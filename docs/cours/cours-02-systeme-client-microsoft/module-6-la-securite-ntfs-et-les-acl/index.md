@@ -141,15 +141,6 @@ icacls D:\Partage\Compta /remove GRP_Stagiaires           ← retirer un groupe 
 
 ⚠️ Même un **administrateur** travaille avec des droits standard (**UAC**, module 5) : lance l'Explorateur ou la console **en tant qu'administrateur** si une modification de droits est refusée.
 
-## ✅ Points clés à retenir
-
-- **ACL** = liste des droits d'un fichier ou dossier NTFS ; chaque ligne est une **ACE** (« groupe → droits ») ; on y met des **groupes**, pas des utilisateurs.
-- 3 niveaux **cumulatifs** : **Lecture** < **Modification** (créer, modifier, supprimer) < **Contrôle total** (+ changer les droits, réservé aux administrateurs).
-- **Refus implicite** : pas dans la liste = refusé. **Cumul** : on garde le droit le plus fort. **Le refus explicite gagne** sur les autorisations.
-- **Héritage** : les droits descendent du dossier parent (grisés chez les enfants) ; pour un cas particulier, on **désactive l'héritage**.
-- **Couper-coller sur le même disque = droits conservés.** Copier, ou déplacer vers un autre disque = **droits du dossier de destination**.
-- Toujours **tester** : **Accès effectif** (Avancé) ou avec l'utilisateur. En ligne de commande : **`icacls`**.
-
 ## 📝 Fiche de révision
 
 ### 🧠 L'essentiel en un tableau

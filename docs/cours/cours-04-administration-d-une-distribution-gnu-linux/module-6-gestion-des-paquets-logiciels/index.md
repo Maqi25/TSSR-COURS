@@ -111,14 +111,6 @@ L'ancien format tient en une ligne par dépôt : `deb http://deb.debian.org/debi
 
 💡 Le **journal** des installations : `/var/log/apt/history.log` (qui a installé quoi, et quand).
 
-## ✅ Points clés à retenir
-
-- **Paquet** `.deb` = logiciel prêt à installer ; **dépôt** = serveur de paquets ; **apt** gère les **dépendances**.
-- **`sudo apt update`** (catalogue) puis **`sudo apt upgrade`** (installation) : toujours dans cet ordre.
-- **`apt install`**, **`apt remove`** (garde la configuration), **`apt purge`** (supprime tout), **`apt autoremove`**, `apt search`, `apt show`.
-- Sources : **`/etc/apt/sources.list.d/debian.sources`** (Debian 13) ou `/etc/apt/sources.list` ; ne jamais oublier **`-security`**.
-- **`dpkg`** : `-i` (installer un `.deb`), **`-l`** (lister), `-L` (fichiers d'un paquet), `-S` (paquet d'un fichier). Préférer **`apt install ./fichier.deb`**.
-
 ## 📝 Fiche de révision
 
 | Commande | Rôle |

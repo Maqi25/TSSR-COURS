@@ -121,15 +121,6 @@ ss -tulpn          # t = TCP, u = UDP, l = en écoute, p = programme, n = numér
 # tcp LISTEN 0 128 0.0.0.0:22  users:(("sshd",pid=612))   ← SSH écoute bien sur le port 22
 ```
 
-## ✅ Points clés à retenir
-
-- Voir : **`ip a`** (adresses), **`ip r`** (passerelle), `cat /etc/resolv.conf` (DNS), **`ss -tulpn`** (ports).
-- IP fixe d'un serveur : **`/etc/network/interfaces`** → `iface ens33 inet static`, `address`, `gateway` ; appliquer avec **`systemctl restart networking`**.
-- **`/etc/resolv.conf`** = DNS · **`/etc/hostname`** = nom · **`/etc/hosts`** = noms locaux (consultés avant le DNS).
-- Changer de nom : **`hostnamectl set-hostname`**.
-- En SSH, changer l'IP **coupe la connexion** : garde un accès console.
-- Dépannage : `ip a` → ping passerelle → ping 8.8.8.8 → ping d'un nom.
-
 ## 📝 Fiche de révision
 
 | Commande / fichier | Rôle |

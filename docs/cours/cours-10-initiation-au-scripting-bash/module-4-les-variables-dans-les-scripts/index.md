@@ -14,10 +14,6 @@ _À compléter. Tu peux utiliser un diagramme Mermaid ou un schéma « en couche
 
 _À compléter._
 
-## ✅ Points clés à retenir
-
-_À compléter._
-
 ## 📝 Fiche de révision
 
 _À compléter._

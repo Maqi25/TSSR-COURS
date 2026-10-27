@@ -172,16 +172,6 @@ unalias ll                     # supprimer un alias
 | `~/.bash_history` | Ton historique de commandes |
 | `~/.profile` | Lu à la **connexion** (variables d'environnement) |
 
-## ✅ Points clés à retenir
-
-- Jokers : **`*`** (n'importe quoi), **`?`** (un caractère), **`[abc]`**, **`[0-9]`** (un caractère parmi) ; c'est **Bash** qui les remplace.
-- **`"…"`** laisse passer les **variables** ; **`'…'`** protège **tout** ; **`\`** protège **un** caractère.
-- **`>`** écrase, **`>>`** ajoute, **`2>`** les erreurs, **`2> /dev/null`** jeter les erreurs, **`&>`** tout ensemble, **`<`** fichier en entrée.
-- **`|`** passe le résultat à la commande suivante.
-- **`;`** toujours, **`&&`** si réussite, **`||`** si échec ; code de retour avec **`echo $?`** (0 = OK).
-- **`$(commande)`** insère le résultat d'une commande.
-- **`alias ll='ls -lah'`** ; pour le garder, l'écrire dans **`~/.bashrc`** puis **`source ~/.bashrc`**.
-
 ## 📝 Fiche de révision
 
 ### 🧠 Les symboles de Bash

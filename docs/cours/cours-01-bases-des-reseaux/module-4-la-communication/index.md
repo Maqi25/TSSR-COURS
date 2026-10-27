@@ -240,7 +240,6 @@ Tape le sur-réseau trouvé : la plage d'hôtes doit contenir **tous** les rése
 
 <div class="tssr-calc" data-ip="192.168.64.0/18"></div>
 
-
 💡 **Raccourci** : regrouper **2ⁿ** réseaux /24 qui se suivent = retirer **n** bits : 2 réseaux → /23 · 4 → /22 · 8 → /21.
 
 ⚠️ **Pièges** :
@@ -248,16 +247,6 @@ Tape le sur-réseau trouvé : la plage d'hôtes doit contenir **tous** les rése
 - Les réseaux doivent être **contigus** et le premier **aligné** (multiple du nombre de réseaux) : 192.168.**1**.0 + 192.168.**2**.0 ne font **pas** un /23.
 - Le sur-réseau peut **couvrir plus** que les réseaux réels (le /18 ci-dessus englobe aussi 192.168.80.0, etc.) : ça marche si ces adresses ne sont **utilisées nulle part ailleurs**.
 - On perd la **finesse** : impossible de traiter un des réseaux regroupés à part.
-
-## ✅ Points clés à retenir
-
-- **Broadcast** : MAC `FF:FF:FF:FF:FF:FF` / IP bits hôte à 1 ; reçu par **tout le domaine de diffusion**.
-- **Switch = propage** le broadcast · **routeur = l'arrête** · **1 VLAN = 1 domaine**.
-- Avant d'envoyer : **IP ET masque** (avec son propre masque) → même réseau = direct ; sinon = **passerelle**.
-- **ARP** : IP → MAC ; requête en **broadcast**, réponse en **unicast**, stockée dans la **table ARP** (`arp -a`).
-- À chaque saut : **MAC réécrites**, **IP identiques**.
-- Routeur : **table de routage**, **0.0.0.0/0** = défaut, **métrique** la plus faible gagne ; **statique** (à la main) vs **dynamique** (RIP, OSPF, BGP).
-- **Sur-réseau** : regrouper des réseaux contigus ; masque = **bits communs** (ex. 6 réseaux → 192.168.64.0/18).
 
 ## 📝 Fiche de révision
 

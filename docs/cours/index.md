@@ -1,6 +1,6 @@
 # Cours
 
-Retrouve ici l'ensemble des cours de la formation TSSR. Chaque module suit toujours la même structure : objectif, résumé visuel, cours consolidé, points clés, fiche de révision, puis un quiz.
+Retrouve ici l'ensemble des cours de la formation TSSR. Chaque module suit toujours la même structure : objectif, résumé visuel, cours consolidé, fiche de révision avec exercices, puis un quiz.
 
 <div class="tssr-grid">
   <a class="tssr-card" href="cours-01-bases-des-reseaux/">

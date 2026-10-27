@@ -107,15 +107,6 @@ fsck -f /dev/sda1        # ⚠️ sur une partition NON montée (ou montée en l
 
 ⚠️ **Jamais de `fsck` sur une partition montée en écriture** : risque de tout casser. On le lance depuis le mode **emergency**, ou depuis un **live CD**.
 
-## ✅ Points clés à retenir
-
-- **GRUB** : ++e++ pour modifier une entrée (temporairement), ++ctrl+x++ pour démarrer ; « Options avancées » pour le **mode de dépannage** ou un **ancien noyau**.
-- **rescue.target** = minimum, disques montés, réseau coupé ; **emergency.target** = encore moins, `/` en lecture seule. Ajout sur la ligne `linux` : `systemd.unit=rescue.target`.
-- **Mot de passe root oublié** : `init=/bin/bash` → `mount -o remount,rw /` → `passwd root` → `exec /sbin/init`.
-- **GRUB cassé** : live CD → monter le disque → **`chroot /mnt`** → réparer (`grub-install`, `update-grub`).
-- **`fsck`** répare un système de fichiers **non monté**.
-- Accès à la console = accès root → protéger la **salle serveur**.
-
 ## 📝 Fiche de révision
 
 | Situation | Solution |

@@ -163,19 +163,6 @@ Une IPv4 = 4 octets écrits en décimal. Le **premier octet** donne la classe, d
 
 ---
 
-## ✅ Points clés à retenir
-
-- 4 bases à connaître : **binaire (2)**, **octale (8)**, **décimale (10)**, **hexadécimale (16)**.
-- Le principe est toujours le même : chaque position = une **puissance de la base**, en partant de la droite (position 0).
-- **Décimal → autre base** : divisions successives, lecture des restes **de bas en haut**.
-- Pour un **octet**, la méthode la plus rapide est le **tableau des poids** 128 · 64 · 32 · 16 · 8 · 4 · 2 · 1.
-- **Autre base → décimal** : multiplier chaque chiffre par (base)^position, puis additionner.
-- **Binaire ↔ octal** : regrouper par 3 bits. **Binaire ↔ hexadécimal** : regrouper par 4 bits.
-- **Bit** = 0/1 ; **Octet** = 8 bits.
-- Ne pas confondre les multiples **binaires** (Kio, Mio, Gio... en puissances de 2) et **décimaux** (Ko, Mo, Go... en puissances de 10) — c'est la source de l'écart entre la taille annoncée et la taille réelle d'un disque dur.
-- Classe d'une IPv4 d'après le 1er octet : **A** 1–126 (/8), **B** 128–191 (/16), **C** 192–223 (/24), **D** 224–239, **E** 240–255 ; 127 = loopback.
-- Les débits réseau (**bps, Kbps, Mbps, Gbps**) se mesurent en **bits**, pas en octets — attention au facteur 8 avec les tailles de fichiers.
-
 ## 📝 Fiche de révision
 
 | À retenir | |
@@ -375,7 +362,6 @@ Une IPv4 = 4 octets écrits en décimal. Le **premier octet** donne la classe, d
   }
 ]
 </script>
-
 
 <script>
   document.addEventListener("DOMContentLoaded", function () {

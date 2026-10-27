@@ -130,16 +130,6 @@ Format-Volume -DriveLetter E -FileSystem NTFS -NewFileSystemLabel "Donnees"   # 
 
 ⚠️ `diskpart` et ces cmdlets agissent **immédiatement et sans corbeille** : vérifie **deux fois le numéro du disque** avant d'agir.
 
-## ✅ Points clés à retenir
-
-- Rendre un disque utilisable : **initialiser (MBR/GPT) → partitionner → formater → lettre**.
-- **MBR** : BIOS, **4 partitions principales**, **2,2 To** maximum. **GPT** : UEFI, **128 partitions**, plus de 2,2 To, table en double. GPT est le standard aujourd'hui.
-- MBR : au-delà de 4 partitions, on passe par une **partition étendue** et des **lecteurs logiques**.
-- **Disque dynamique** : les partitions s'appellent des **volumes**, et on peut les agrandir avec de l'espace **non contigu**, même sur un autre disque.
-- **NTFS** = le standard Windows (droits, chiffrement EFS). **FAT32** = universel mais **4 Go par fichier**. **exFAT** = universel, sans limite de 4 Go. **ReFS** = serveurs de stockage.
-- **VHD / VHDX** = disque virtuel Microsoft, un simple fichier, montable et même bootable.
-- Outils : **`diskmgmt.msc`**, **`diskpart`**, PowerShell (`Get-Disk`, `Initialize-Disk`, `New-Partition`, `Format-Volume`).
-
 ## 📝 Fiche de révision
 
 ### 🧠 L'essentiel en un tableau

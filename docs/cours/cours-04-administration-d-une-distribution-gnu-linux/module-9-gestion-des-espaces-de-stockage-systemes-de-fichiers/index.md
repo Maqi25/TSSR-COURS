@@ -116,15 +116,6 @@ UUID=3f6a1c2e-8b7d-4c1e-9a0f-5d2e7b8c9a01  /data  ext4   defaults,nofail    0   
 
 💡 Un disque plein **à 100 %** fait planter les services. Le coupable est souvent **`/var/log`** (des journaux énormes) : voir le module 12.
 
-## ✅ Points clés à retenir
-
-- **ext4** = standard Debian ; **XFS** = gros volumes (ne se réduit pas) ; **swap** = mémoire d'appoint sur disque (lente).
-- Formater : **`mkfs.ext4 /dev/sdb1`** (efface tout) ; swap : `mkswap` + `swapon`.
-- Monter : **`mkdir /data`** + **`mount /dev/sdb1 /data`** ; démonter : **`umount /data`**.
-- Au démarrage : **`/etc/fstab`**, 6 colonnes : **UUID**, point de montage, type, options (`defaults,nofail`), `0`, `2`.
-- **Toujours tester** : **`mount -a`** avant de redémarrer.
-- Espace : **`df -h`** (partitions), **`du -sh`** (dossiers), `free -h` (RAM et swap).
-
 ## 📝 Fiche de révision
 
 | Commande / fichier | Rôle |

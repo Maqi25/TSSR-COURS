@@ -148,16 +148,6 @@ Get-Service | Format-Wide -Property Name -Column 4             # juste les noms,
 
 ⚠️ **Les `Format-*` se mettent TOUJOURS en dernier.** Ils transforment les objets en **simple affichage** : après eux, on ne peut plus filtrer, trier ni exporter proprement. Pour **exporter**, utilise `Select-Object` puis `Export-Csv` ou `Out-File`, **pas** `Format-Table`.
 
-## ✅ Points clés à retenir
-
-- 3 flux : **entrée (0)**, **sortie (1)**, **erreurs (2)**.
-- **`>`** écrase, **`>>`** ajoute, **`2>`** erreurs seules, **`2>&1`** tout ensemble, **`2>$null`** jeter les erreurs.
-- **`|`** passe le résultat d'une commande à la suivante.
-- **`Where-Object`** filtre les **lignes** (objets) ; **`Select-Object`** choisit les **colonnes** (propriétés).
-- Opérateurs : **`-eq -ne -gt -ge -lt -le -like -notlike`** ; `-like` avec des jokers **`*`** ; ajouter **`c`** pour respecter la casse.
-- Plusieurs conditions : **`Where-Object { $_.Prop1 -eq … -and $_.Prop2 -gt … }`** ; **`$_`** = l'objet en cours.
-- **`Format-Table`** (`ft`), **`Format-List`** (`fl`), **`Format-Wide`** : **toujours en dernier**.
-
 ## 📝 Fiche de révision
 
 ### 🧠 Les symboles en un tableau

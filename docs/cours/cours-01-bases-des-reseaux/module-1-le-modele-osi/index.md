@@ -62,186 +62,115 @@ Le modèle OSI découpe une communication en **sept responsabilités complément
 
 ## 📖 Cours consolidé
 
-### 1. Présentation générale du modèle OSI
+### 1. Le modèle OSI en bref
 
-Le modèle **OSI** (*Open Systems Interconnection*) est une norme qui définit comment les communications se font entre deux systèmes sur un réseau. C'est un modèle **théorique**, divisé en **7 couches distinctes** : chaque couche a une fonction précise et ne communique qu'avec celles situées directement au-dessus et en dessous d'elle.
-
-Pourquoi découper la communication réseau en 7 couches plutôt que de la traiter comme un tout ? Cette segmentation permet de **structurer** les processus réseau, et surtout de **faciliter le développement et le débogage** des protocoles : chaque couche peut évoluer ou être corrigée indépendamment des autres, tant que l'interface avec ses voisines reste respectée.
+- **OSI** (*Open Systems Interconnection*) : modèle **théorique** qui découpe une communication réseau en **7 couches**.
+- Chaque couche a **un seul travail** et ne parle qu'à ses **voisines directes**.
+- Intérêt : on peut **faire évoluer** ou **dépanner** une couche sans toucher aux autres (« le problème est en couche 2 »).
 
 ---
 
-### 2. Le vocabulaire de l'encapsulation : PDU, SDU, PCI
+### 2. Encapsulation : PDU, SDU, PCI
 
-Avant de détailler chaque couche, il faut comprendre trois notions qui reviennent à chaque échange de données entre couches :
-
-| Terme | Définition |
+| Terme | En clair |
 |---|---|
-| **PDU** (*Protocol Data Unit*) | L'unité de données échangée par une couche donnée. Elle contient à la fois les données utilisateur et les informations de contrôle ajoutées par cette couche. Chaque couche a son propre PDU (voir tableau en section 3). |
-| **SDU** (*Service Data Unit*) | Les données brutes fournies par la couche N+1 à la couche N, **avant** que cette dernière n'y ajoute ses propres informations. |
-| **PCI** (*Protocol Control Information*) | Les informations de contrôle qu'une couche ajoute (adresses, numéros de séquence, contrôle d'erreur...). C'est l'ajout du PCI à un SDU qui forme un nouveau PDU. |
+| **SDU** (*Service Data Unit*) | Ce que la couche **reçoit** de la couche du dessus |
+| **PCI** (*Protocol Control Information*) | Ce qu'elle **ajoute** : adresses, ports, contrôle d'erreur… |
+| **PDU** (*Protocol Data Unit*) | Le résultat : **SDU + PCI**, transmis à la couche du dessous |
 
-**Le mécanisme, en résumé** : quand la couche N+1 termine son travail, son PDU devient le **SDU** de la couche N. Cette dernière y ajoute son **PCI** (c'est l'étape d'**encapsulation**), ce qui forme un **nouveau PDU**, transmis à son tour à la couche N-1 — et ainsi de suite jusqu'à la couche Physique, où les données sont converties en signaux et transmises sur le réseau.
+**Exemple (couche 4 → couche 3)** : le **segment TCP** devient le SDU de la couche Réseau, qui ajoute les **adresses IP** (PCI) → on obtient un **paquet IP**.
 
-**Exemple concret (couche Transport → couche Réseau)** :
-1. La couche Transport prépare un **segment TCP** (son PDU), contenant les données applicatives + ses infos de contrôle (ports, numéro de séquence...).
-2. Ce segment devient le **SDU** de la couche Réseau.
-3. La couche Réseau ajoute son **PCI** (adresses IP source/destination...).
-4. Le résultat est un nouveau PDU : le **paquet IP**.
-
-À l'arrivée, le processus s'inverse : chaque couche **désencapsule** le PDU reçu (elle retire son en-tête) jusqu'à reconstituer les données d'origine, livrées à l'application finale.
+- **Envoi** : on descend de 7 à 1, chaque couche **ajoute** son en-tête (= encapsulation).
+- **Réception** : on remonte de 1 à 7, chaque couche **retire** le sien (= désencapsulation).
 
 ---
 
-### 3. Les 7 couches du modèle OSI
-
-Pour chaque couche : son rôle, le nom de son PDU, ses protocoles principaux, ses équipements associés et, si pertinent, les ports qu'elle utilise.
+### 3. Les 7 couches
 
 #### Vue d'ensemble
 
-| N° | Couche | PDU (nom) | Équipements typiques |
-|---|---|---|---|
-| 7 | Application | APDU | — (logiciel uniquement) |
-| 6 | Présentation | PPDU | — (logiciel uniquement) |
-| 5 | Session | SPDU | — (logiciel uniquement) |
-| 4 | Transport | TPDU / **Segment** | Firewalls (filtrage par port) |
-| 3 | Réseau | RPDU / **Paquet** | Routeurs, passerelles |
-| 2 | Liaison de données | LPDU / **Trame** | Commutateurs (switches), ponts (bridges) |
-| 1 | Physique | Bits | Câbles, connecteurs, hubs, répéteurs, modems |
+| N° | Couche | PDU | Rôle en un mot | Protocoles / normes | Équipements |
+|---|---|---|---|---|---|
+| 7 | **Application** | Données | Services à l'utilisateur | HTTP(S), FTP, SMTP, DNS | — (logiciel) |
+| 6 | **Présentation** | Données | Traduire, compresser, **chiffrer** | TLS, JPEG, MPEG | — (logiciel) |
+| 5 | **Session** | Données | Ouvrir / gérer / fermer les **sessions** | RPC, NetBIOS | — (logiciel) |
+| 4 | **Transport** | **Segment** | Livraison **de bout en bout**, **ports** | TCP, UDP | Pare-feu (filtrage par port) |
+| 3 | **Réseau** | **Paquet** | **Routage** entre réseaux, adresse **IP** | IP, ICMP, ARP, OSPF, RIP | **Routeur** |
+| 2 | **Liaison** | **Trame** | Transfert **local**, adresse **MAC**, erreurs | Ethernet, Wi-Fi, PPP | **Switch**, pont |
+| 1 | **Physique** | **Bits** | Signaux sur le support | Ethernet 802.3, Wi-Fi 802.11 | Câbles, hub, répéteur |
+
+💡 Les noms longs (APDU, PPDU, SPDU, TPDU, RPDU, LPDU) existent, mais on dit surtout **données, segment, paquet, trame, bits**.
 
 ---
 
-#### 3.1 Couche Physique (couche 1)
+#### 3.1 Couche Physique (1)
 
-**Rôle** : transmettre les données brutes sous forme de **signaux** (électriques, optiques ou radio) à travers un support physique (câbles, fibre, ondes). Elle encode et synchronise les bits, contrôle le débit de transmission, définit la topologie physique du réseau (étoile, bus, anneau, maillé), et gère l'établissement/la coupure des connexions physiques.
-
-📌 Elle **ne gère ni les erreurs ni la vérification de destination** — elle se limite strictement au transport des bits, sans se soucier de leur contenu. C'est pourquoi elle dépend entièrement des couches supérieures pour le reste.
-
-*Analogie* : la couche Physique, c'est la route — elle fournit le chemin, sans se soucier du contenu des voitures (données) qui y circulent.
-
-**Protocoles/normes** : pas de protocoles au sens classique, mais des normes physiques — **Ethernet** (IEEE 802.3), **Wi-Fi** (IEEE 802.11), Bluetooth.
-
-**Équipements** : câbles (Ethernet, fibre, coaxial), connecteurs (RJ45...), émetteurs/récepteurs radio, hubs et répéteurs, modems.
+- Transporte les **bits** sous forme de **signaux** (électriques, lumineux, radio). C'est la **route** : elle ne regarde pas ce qui circule.
+- Ne gère **ni les erreurs ni la destination**.
 
 ##### Focus pratique : les câbles à paires torsadées
 
-Le câble à paires torsadées (fils de cuivre torsadés pour réduire les interférences) est le plus utilisé en Ethernet (catégories CAT5e, CAT6, CAT6a, jusqu'à 10 Gbps, portée max 100 m). Deux variantes : **UTP** (sans blindage, léger et économique) et **STP** (blindé, plus cher, mieux protégé des interférences).
+- Le plus courant en Ethernet : **CAT5e, CAT6, CAT6a** (jusqu'à 10 Gbit/s), **100 m maximum**.
+- **UTP** = non blindé (léger, pas cher) · **STP** = blindé (protège des interférences).
 
-On distingue aussi deux façons de câbler ces paires, selon les appareils à relier :
-
-| Type | Usage | Principe |
+| Câble | Pour relier | Câblage |
 |---|---|---|
-| **Câble droit** | Relier des appareils de **types différents** (PC ↔ switch, PC ↔ routeur, switch ↔ routeur) | Même ordre de fils aux deux extrémités (ex. standard T568B des deux côtés) |
-| **Câble croisé** | Relier des appareils de **même type** directement (2 PC, 2 switches, 2 routeurs) | Un côté en T568A, l'autre en T568B → croise les fils TX/RX pour que l'émission d'un appareil arrive sur la réception de l'autre |
+| **Droit** | Appareils **différents** (PC ↔ switch, switch ↔ routeur) | Même norme aux 2 bouts (T568B) |
+| **Croisé** | Appareils **identiques** (PC ↔ PC, switch ↔ switch) | T568A d'un côté, T568B de l'autre |
 
-💡 **T568A ou T568B ?** Les deux normes ne diffèrent que d'un point : les paires **orange** et **verte** échangent leur place. En entreprise, on câble presque toujours en **T568B** des deux côtés : blanc-orange, orange, blanc-vert, bleu, blanc-bleu, vert, blanc-marron, marron.
-
-📌 Les équipements modernes intègrent souvent la fonction **Auto MDI-X**, qui détecte automatiquement le type de câble nécessaire — un câble droit peut alors être utilisé même entre deux appareils de même type.
-
----
-
-#### 3.2 Couche Liaison de données (couche 2)
-
-**Rôle** : assurer un transfert **fiable** des données entre deux équipements **adjacents sur le même réseau local** — elle détecte (et parfois corrige) les erreurs de transmission, et structure les données en **trames**.
-
-Elle se divise en 2 sous-couches :
-
-| Sous-couche | Rôle |
-|---|---|
-| **LLC** (*Logical Link Control*) | Gère les connexions logiques, permet à plusieurs protocoles réseau (IP, IPX...) de partager un même support |
-| **MAC** (*Media Access Control*) | Contrôle l'accès au support physique (ex. CSMA/CD en Ethernet) et gère l'**adressage physique** (adresses MAC) |
-
-**La trame a un début et une fin** : c'est la seule couche qui ajoute aussi une **fin de trame**, le **FCS** (*Frame Check Sequence*). L'émetteur y range un calcul de contrôle (**CRC**) ; le récepteur refait le calcul et, si les résultats diffèrent, la trame abîmée est **jetée**.
-
-*Analogie* : un centre de tri postal local — la lettre est identifiée et vérifiée (contrôle d'erreur), puis acheminée localement, sans se soucier des étapes plus lointaines (qui relèvent de la couche Réseau).
-
-**Protocoles** : Ethernet (IEEE 802.3), Wi-Fi (IEEE 802.11), PPP, HDLC.
-
-**Équipements** : commutateurs (switches), ponts (bridges) — tous deux fonctionnent via les adresses MAC.
-
-⚠️ La couche Liaison est limitée à la communication **au sein d'un même réseau local** ; pour joindre un autre réseau, elle dépend de la couche Réseau.
+- **T568A / T568B** : seules les paires **orange** et **verte** sont inversées. En entreprise : **T568B** partout (blanc-orange, orange, blanc-vert, bleu, blanc-bleu, vert, blanc-marron, marron).
+- **Auto MDI-X** : les équipements récents s'adaptent seuls → un câble droit marche partout.
 
 ---
 
-#### 3.3 Couche Réseau (couche 3)
+#### 3.2 Couche Liaison de données (2)
 
-**Rôle** : acheminer les données (sous forme de **paquets**) à travers **différents réseaux**, via des **adresses logiques** (IP). Elle détermine le meilleur chemin (routage), gère l'adressage, et peut fragmenter/réassembler les paquets trop volumineux.
-
-*Analogie* : le système postal international — il détermine le meilleur itinéraire pour un colis, en tenant compte des modes de transport et de l'adresse du destinataire.
-
-**Fonctions principales** :
-- **Routage** : détermination du chemin optimal (distance, bande passante, congestion).
-- **Adressage** : via les adresses IP — contrairement aux adresses MAC (physiques, fixes), les IP peuvent être dynamiques (DHCP) ou statiques.
-- **Fragmentation/réassemblage** des paquets trop volumineux.
-- **Contrôle de congestion** et détection de certaines erreurs (même si ce rôle revient surtout à la couche Liaison).
-
-**Protocoles** : **IP** (IPv4 sur 32 bits, IPv6 sur 128 bits), **ICMP** (diagnostic, ping), **ARP** (traduit IP ↔ MAC), protocoles de routage (**OSPF**, **RIP**).
-
-**Équipements** : routeurs, passerelles.
-
-⚠️ La couche Réseau ne s'occupe **ni de la transmission physique** (couches 1-2), **ni de la garantie de livraison** des paquets (rôle de la couche Transport) — elle se contente d'acheminer.
+- Transfert **fiable** entre deux équipements **du même réseau local**, en **trames**, avec l'adresse **MAC**.
+- 2 sous-couches : **LLC** (lien avec la couche 3) et **MAC** (accès au support, adressage physique).
+- Seule couche qui ajoute une **fin de trame** : le **FCS** (calcul **CRC**). Si le calcul ne correspond pas à l'arrivée, la trame est **jetée**.
+- ⚠️ Limitée au **réseau local** : pour aller plus loin, il faut la couche 3.
 
 ---
 
-#### 3.4 Couche Transport (couche 4)
+#### 3.3 Couche Réseau (3)
 
-**Rôle** : assurer une transmission **fiable et efficace de bout en bout** entre deux hôtes, via la **segmentation** des données et un **numérotage** qui permet leur réassemblage dans le bon ordre à l'arrivée.
-
-**Fonctions principales** :
-
-| Fonction | Description |
-|---|---|
-| **Segmentation/réassemblage** | Découpage des données en segments numérotés, réassemblés dans l'ordre à réception |
-| **Contrôle de flux** | Ajuste la vitesse d'envoi pour ne pas saturer le récepteur |
-| **Contrôle d'erreur** | Vérifie l'intégrité des segments, redemande un renvoi si besoin |
-| **Gestion des connexions** | Établit, maintient et termine les connexions logiques entre applications |
-| **Multiplexage** | Permet à plusieurs applications de partager la même connexion réseau, via les **ports** |
-
-**Protocoles** :
-
-| Protocole | Caractéristiques |
-|---|---|
-| **TCP** | Orienté connexion, fiable (ordre + intégrité garantis), mais plus lent — idéal pour le transfert de fichiers, le web |
-| **UDP** | Sans connexion, plus léger et rapide, mais sans garantie d'ordre ni d'intégrité — utilisé pour le streaming, la VoIP, où la rapidité prime sur la fiabilité |
-
-**Les ports** : un numéro qui désigne **l'application** visée sur la machine, comme le numéro d'appartement dans une adresse (l'IP serait l'immeuble).
-
-- **Côté serveur**, le port est **fixe et connu** : 443 pour un site HTTPS, 25 pour SMTP, etc.
-- **Côté client**, le système choisit un **port source temporaire** (au-dessus de 1024) : c'est lui qui permet de renvoyer la réponse au bon onglet ou au bon logiciel.
-- La plupart des services passent par **TCP**, mais **DNS (53), DHCP (67/68) et SNMP (161/162)** utilisent surtout **UDP**, car ce sont des échanges courts où la rapidité compte.
-
-La liste complète des ports à connaître se trouve dans la **fiche de révision** en bas de page.
-
-**Équipements** : la couche Transport est essentiellement **logicielle** (systèmes d'exploitation, applications), mais les **firewalls** s'appuient sur ses numéros de port pour filtrer le trafic.
+- Achemine les **paquets** **d'un réseau à l'autre** grâce aux adresses **IP** (IPv4 = 32 bits, IPv6 = 128 bits).
+- **Routage** (meilleur chemin), **adressage**, **fragmentation** des paquets trop gros.
+- **ICMP** = diagnostic (`ping`) · **ARP** = trouve la MAC qui correspond à une IP.
+- ⚠️ Ne **garantit pas** la livraison : c'est le rôle de la couche 4.
 
 ---
 
-#### 3.5 Couche Session (couche 5)
+#### 3.4 Couche Transport (4)
 
-**Rôle** : établir, gérer et terminer les **sessions** de communication entre deux applications, en assurant la synchronisation des échanges et la reprise en cas d'interruption.
+- Livraison **de bout en bout** : découpe en **segments numérotés**, remet dans l'ordre, contrôle le **débit** et les **erreurs**.
+- **Ports** = le numéro de l'**application** visée (l'IP est l'immeuble, le port l'appartement).
 
-**Protocoles** : **RPC** (*Remote Procedure Call*, exécution de procédures à distance), **NetBIOS** (gestion des connexions/échanges sur un réseau local).
+| | **TCP** | **UDP** |
+|---|---|---|
+| Connexion | Oui (établie avant l'envoi) | Non |
+| Fiabilité | Ordre + intégrité **garantis** | Aucune garantie |
+| Vitesse | Plus lent | **Rapide** |
+| Exemples | Web, fichiers, e-mails | Streaming, VoIP, **DNS (53)**, **DHCP (67/68)**, SNMP |
+
+- **Serveur** : port **fixe** connu (443 = HTTPS, 25 = SMTP). **Client** : port **temporaire** (> 1024), pour recevoir la réponse au bon endroit.
+- La liste des ports à connaître est dans la **fiche de révision**.
 
 ---
 
-#### 3.6 Couche Présentation (couche 6)
+#### 3.5 · 3.6 · 3.7 Couches hautes (5, 6, 7) : logicielles
 
-**Rôle** : la « traductrice de données ». Elle convertit les données dans un format compréhensible par l'application, et gère la **compression** et le **chiffrement**.
-
-**Protocoles** : **SSL/TLS** (chiffrement des communications, base du HTTPS), **JPEG**, **MPEG** (codage des données multimédia).
-
----
-
-#### 3.7 Couche Application (couche 7)
-
-**Rôle** : la couche la plus élevée, celle où se trouvent les applications utilisées au quotidien (navigateur, messagerie...). Elle fournit les services directement à l'utilisateur final.
-
-**Protocoles** : **HTTP/HTTPS** (web), **FTP** (transfert de fichiers), **SMTP** (envoi d'emails), **DNS** (résolution de noms).
+| Couche | Rôle | Exemples |
+|---|---|---|
+| **5 Session** | Ouvre, synchronise, ferme et reprend les **sessions** entre 2 applications | RPC, NetBIOS |
+| **6 Présentation** | « Traductrice » : format des données, **compression**, **chiffrement** | **TLS** (le S de HTTPS), JPEG, MPEG |
+| **7 Application** | Les services utilisés directement | HTTP(S), FTP, SMTP, DNS |
 
 ---
 
 ### 4. L'encapsulation en image : un email qui descend les couches
 
-Imagine des **poupées russes** : chaque couche emballe le colis de la couche du dessus dans sa propre boîte, avec son étiquette. Voici ce que devient un email envoyé en SMTP :
+Comme des **poupées russes** : chaque couche emballe le colis de la couche du dessus, avec son étiquette.
 
 <div class="tssr-encap">
   <div class="tssr-encap-row"><span class="tssr-encap-lvl">7 · 6 · 5</span><span class="tssr-encap-box is-data">📧 Email (texte + pièce jointe)</span></div>
@@ -251,15 +180,11 @@ Imagine des **poupées russes** : chaque couche emballe le colis de la couche du
   <div class="tssr-encap-row"><span class="tssr-encap-lvl">1 · Bits</span><span class="tssr-encap-box is-bits">0110 1001 0011 1100 0101 1010 …</span></div>
 </div>
 
-- **À l'envoi**, on descend de 7 à 1 et chaque couche **ajoute** son en-tête (la couche 2 ajoute aussi le FCS à la fin).
-- **À la réception**, on remonte de 1 à 7 et chaque couche **vérifie puis retire** son propre en-tête : la carte réseau regarde la **MAC** (« c'est pour moi ? »), la couche 3 regarde l'**IP**, la couche 4 regarde le **port** pour savoir à quel logiciel donner les données (ici le serveur de messagerie).
-- Si une vérification échoue (mauvaise MAC, FCS incorrect, IP qui n'est pas la sienne), la donnée est **ignorée ou transmise plus loin** : elle ne remonte pas.
+À la réception, chaque couche **vérifie puis retire** son en-tête : la **MAC** (« c'est pour moi ? »), puis l'**IP**, puis le **port** (à quel logiciel donner les données). Si une vérification échoue, la donnée **ne remonte pas**.
 
-💡 Les noms longs des PDU (APDU, PPDU, SPDU, TPDU, RPDU, LPDU) existent, mais on utilise surtout **données, segment, paquet, trame, bits**.
+---
 
 ### 5. Exemple vécu : tu ouvres un site web en HTTPS
-
-Ce qui se passe, couche par couche, quand ton PC (derrière ta box) affiche une page :
 
 ```mermaid
 sequenceDiagram
@@ -273,40 +198,24 @@ sequenceDiagram
     Note over PC,Web: TLS chiffre l'échange (couche 6),<br/>le navigateur affiche la page (couche 7)
 ```
 
-À retenir de cet exemple :
-
-- La **MAC de destination** est celle de la **box** (le prochain saut), alors que l'**IP de destination** est celle du **serveur** (le but final). La MAC change à chaque saut, l'IP reste la même.
-- Le **port de destination** est celui du service (**443**), le **port source** est un numéro temporaire choisi par ton PC ; la réponse fait le chemin inverse en échangeant les deux.
-
-### 6. Le modèle TCP/IP : celui qu'on utilise vraiment
-
-Le modèle OSI est **théorique** : il sert à **expliquer** et à **dépanner** (« le problème est en couche 2 »). Le modèle réellement utilisé par Internet est le **modèle TCP/IP**, en **4 couches**, qui regroupe certaines couches OSI.
-
-| Couches OSI | Couche TCP/IP | Protocoles | PDU |
-|---|---|---|---|
-| 7 Application · 6 Présentation · 5 Session | **4 – Application** | HTTP(S), DNS, DHCP, SMTP, SSH, FTP | Données |
-| 4 Transport | **3 – Transport** | TCP, UDP | Segment |
-| 3 Réseau | **2 – Internet** | IP, ICMP | Paquet |
-| 2 Liaison · 1 Physique | **1 – Accès réseau** | Ethernet, Wi-Fi | Trame / bits |
-
-📌 Les numéros diffèrent : la couche **Transport** est la **4** en OSI, mais la **3** en TCP/IP. Quand on parle d'un « switch de niveau 2 » ou d'un « routeur de niveau 3 », c'est la numérotation **OSI** qui est utilisée.
-
-💡 **ARP** fait le lien entre l'adresse IP (couche 3) et l'adresse MAC (couche 2) : on le place selon les cours en couche 2 ou 3 ; retiens qu'il est « **entre les deux** ».
+- **MAC de destination** = la **box** (le prochain saut) · **IP de destination** = le **serveur** (le but final). La MAC change à chaque saut, l'IP jamais.
+- **Port de destination** = le service (**443**) · **port source** = numéro temporaire du PC. La réponse inverse les deux.
 
 ---
 
-## ✅ Points clés à retenir
+### 6. Le modèle TCP/IP : celui qu'on utilise vraiment
 
-- Le modèle OSI structure la communication réseau en **7 couches indépendantes**, chacune ne dialoguant qu'avec ses voisines directes.
-- **PDU** = unité de données d'une couche ; **SDU** = ce qu'elle reçoit de la couche du dessus ; **PCI** = ce qu'elle y ajoute (encapsulation).
-- Chaque couche a un nom de PDU spécifique : **Segment** (Transport), **Paquet** (Réseau), **Trame** (Liaison), **bits** (Physique).
-- Les couches 5, 6, 7 (Session, Présentation, Application) sont **logicielles** ; les couches 1 à 4 impliquent des équipements matériels (câbles, switches, routeurs, firewalls).
-- La couche **Transport** utilise les **ports** pour permettre à plusieurs applications de communiquer simultanément (TCP = fiable, UDP = rapide mais non garanti).
-- L'**encapsulation** se fait à l'envoi (couche 7 → 1), la **désencapsulation** à la réception (couche 1 → 7) — chaque couche ne retire que l'information qu'elle avait elle-même ajoutée côté émetteur.
-- Pour joindre un serveur sur Internet, la **MAC de destination** est celle de la **passerelle** (box, routeur), l'**IP de destination** celle du serveur.
-- En pratique, on utilise le **modèle TCP/IP** à **4 couches** : Application · Transport · Internet · Accès réseau.
-- **Câble droit** = appareils de types différents ; **câble croisé** = appareils de même type (sauf Auto MDI-X, qui rend cette distinction automatique aujourd'hui).
+L'OSI sert à **expliquer** et **dépanner** ; Internet fonctionne avec le modèle **TCP/IP**, en **4 couches**.
 
+| Couches OSI | Couche TCP/IP | Protocoles | PDU |
+|---|---|---|---|
+| 7 · 6 · 5 | **4 – Application** | HTTP(S), DNS, DHCP, SMTP, SSH, FTP | Données |
+| 4 Transport | **3 – Transport** | TCP, UDP | Segment |
+| 3 Réseau | **2 – Internet** | IP, ICMP | Paquet |
+| 2 · 1 | **1 – Accès réseau** | Ethernet, Wi-Fi | Trame / bits |
+
+- ⚠️ La couche Transport est la **4** en OSI mais la **3** en TCP/IP. « Switch de niveau 2 », « routeur de niveau 3 » : c'est la numérotation **OSI**.
+- **ARP** fait le lien IP (couche 3) ↔ MAC (couche 2) : retiens qu'il est « **entre les deux** ».
 
 ## 📝 Fiche de révision
 

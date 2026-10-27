@@ -75,14 +75,6 @@ Ensuite, **tout se fait à distance** depuis ton PC : `ssh tech@IP-du-serveur` (
 
 💡 **Dans une VM VMware** : `apt install open-vm-tools` améliore l'intégration (l'équivalent des VMware Tools).
 
-## ✅ Points clés à retenir
-
-- Image **netinst** (petite, installe par le réseau) ; VM avec **2 Go de RAM** et **20 Go** suffit.
-- Choix clés : **nom de machine**, mot de passe **root** (vide = root désactivé + `sudo` pour le 1ᵉʳ utilisateur), **utilisateur**, partitionnement **assisté**.
-- Logiciels pour un serveur : ☑ **SSH** ☑ **utilitaires usuels** ☐ **pas de bureau**.
-- **GRUB** sur le disque principal.
-- Après l'installation : `ip a`, **`apt update && apt upgrade`**, `sudo` (`usermod -aG sudo utilisateur`), puis administration en **SSH**.
-
 ## 📝 Fiche de révision
 
 | Étape | À retenir |

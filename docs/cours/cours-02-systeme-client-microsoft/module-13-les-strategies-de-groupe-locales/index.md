@@ -134,16 +134,6 @@ Double-clic sur un paramètre :
 | **`gpupdate /force`** | Appliquer **immédiatement** les stratégies, sans attendre ni redémarrer |
 | **`gpresult /r`** | Afficher les stratégies **réellement appliquées** à l'ordinateur et à l'utilisateur |
 
-## ✅ Points clés à retenir
-
-- **Registre** = la base de configuration de Windows (**`regedit`**), en **ruches → clés → valeurs**. Toujours **exporter** avant de modifier.
-- Ruches clés : **HKLM** (la **machine**, tous les utilisateurs) et **HKCU** (l'**utilisateur connecté**).
-- Types de valeurs : **REG_SZ** (texte), **REG_DWORD** (nombre, souvent 0/1), REG_BINARY, REG_MULTI_SZ.
-- **LGPO** = stratégies de groupe **locales** : **`gpedit.msc`** (tout) et **`secpol.msc`** (sécurité). Absentes de l'édition **Famille**.
-- **Configuration ordinateur → HKLM** · **Configuration utilisateur → HKCU**.
-- 3 états : **Non configuré** (par défaut) / **Activé** / **Désactivé**. Vérifier **« Pris en charge sur »** et lire l'**aide**.
-- **`gpupdate /force`** pour appliquer, **`gpresult /r`** pour vérifier.
-
 ## 📝 Fiche de révision
 
 ### 🧠 L'essentiel en un tableau

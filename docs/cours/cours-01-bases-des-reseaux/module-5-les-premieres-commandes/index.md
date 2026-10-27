@@ -38,18 +38,11 @@ flowchart TD
 
 ## 📖 Cours consolidé
 
-### 1. `ipconfig` (Windows) et `ip` (Linux) : voir sa configuration
+💡 Toutes les commandes Windows ↔ Linux sont regroupées dans la **fiche de révision**. Ici : à quoi sert chaque commande et **comment lire** ce qu'elle affiche.
 
-**À quoi ça sert ?** Afficher l'**adresse IP**, le **masque** et la **passerelle** de ta machine. C'est **toujours la première commande** à taper en cas de problème.
+### 1. `ipconfig` / `ip a` : voir sa configuration
 
-| Je veux… | Windows | Linux |
-|---|---|---|
-| Voir mon IP, masque, passerelle | `ipconfig` | `ip a` (adresses) · `ip r` (passerelle) |
-| Tout voir (MAC, DNS, DHCP) | `ipconfig /all` | `ip a` + `cat /etc/resolv.conf` (DNS) |
-| Rendre mon IP au DHCP / en redemander une | `ipconfig /release` puis `ipconfig /renew` | — |
-| Vider le cache DNS | `ipconfig /flushdns` | — |
-
-**Exemple : lire un `ipconfig`**
+La **première commande** en cas de problème : IP, masque, passerelle.
 
 ```
 Carte Ethernet Ethernet :
@@ -58,106 +51,67 @@ Carte Ethernet Ethernet :
    Passerelle par défaut. . . . . . . . . : 192.168.1.1      ← ma box / mon routeur
 ```
 
-**Sous Linux, `ip r`** affiche la passerelle sur la ligne `default` :
-
-```
-default via 192.168.1.1 dev eth0      ← passerelle = 192.168.1.1
-192.168.1.0/24 dev eth0 ...           ← mon réseau local
-```
-
-🩺 **Le réflexe** : une IP en **169.254.x.x** = le poste n'a pas trouvé de serveur **DHCP** → `ipconfig /release` puis `ipconfig /renew`, et vérifier le câble ou le Wi-Fi.
+- Sous Linux : `ip a` (adresses) et `ip r` (passerelle sur la ligne `default via 192.168.1.1`).
+- `ipconfig /all` ajoute la **MAC**, les **DNS** et le **DHCP**.
+- 🩺 IP en **169.254.x.x** = pas de réponse **DHCP** → `ipconfig /release` puis `/renew`, vérifier câble ou Wi-Fi.
 
 ---
 
-### 2. `ping` : tester si une machine répond
+### 2. `ping` : la machine répond-elle ?
 
-**À quoi ça sert ?** Envoyer un petit message « tu es là ? » (**ICMP Echo Request**) et attendre la réponse (**Echo Reply**). On sait alors si la machine est **joignable** et **en combien de temps**.
-
-| Je veux… | Windows | Linux |
-|---|---|---|
-| Tester une machine | `ping 192.168.1.1` (4 essais puis s'arrête) | `ping 192.168.1.1` (**sans fin** → ++ctrl+c++ pour arrêter) |
-| Choisir le nombre d'essais | `ping -n 10 8.8.8.8` | `ping -c 10 8.8.8.8` |
-| Ping en continu | `ping -t 8.8.8.8` | (par défaut) |
-
-**Exemple : lire un `ping`**
+Envoie un **ICMP Echo Request** et attend l'**Echo Reply**. Windows s'arrête après **4 essais** ; Linux continue **sans fin** (++ctrl+c++).
 
 ```
 Réponse de 8.8.8.8 : octets=32 temps=18 ms TTL=115
-Réponse de 8.8.8.8 : octets=32 temps=17 ms TTL=115
 Paquets : envoyés = 4, reçus = 4, perdus = 0 (perte 0%)
 ```
 
-| Élément | Ce que ça veut dire |
+| Je lis… | Ça veut dire… |
 |---|---|
-| `temps=18 ms` | Temps de l'**aller-retour** : plus c'est petit, mieux c'est (< 50 ms = bien) |
+| `temps=18 ms` | Durée de l'**aller-retour** (< 50 ms = bien) |
 | `TTL=115` | Nombre de routeurs que le paquet pouvait encore traverser |
-| `perdus = 0` | Aucun message perdu : la liaison est bonne |
+| `Délai d'attente dépassé` | Machine éteinte, injoignable **ou pare-feu** qui bloque le ping |
+| `Impossible de joindre l'hôte` | Pas de chemin : souvent une **passerelle** absente ou fausse |
+| `ping 8.8.8.8` OK mais `ping google.fr` KO | Internet OK, **DNS** en panne |
 
-| Ce que j'obtiens | Ça veut dire… |
-|---|---|
-| `Délai d'attente de la demande dépassé` | Machine éteinte, injoignable, **ou un pare-feu bloque le ping** |
-| `Impossible de joindre l'hôte de destination` | Pas de chemin : souvent une **passerelle** absente ou fausse |
-| `ping 8.8.8.8` marche mais pas `ping google.fr` | Internet OK, mais **DNS** en panne |
-
-⚠️ Une machine qui ne répond pas au ping **n'est pas forcément éteinte** : beaucoup de pare-feu (dont celui de Windows) bloquent le ping par défaut.
+⚠️ Pas de réponse **≠** machine éteinte : le pare-feu de Windows bloque le ping par défaut.
 
 ---
 
-### 3. `tracert` (Windows) / `traceroute` (Linux) : voir le chemin
+### 3. `tracert` / `traceroute` : où ça bloque ?
 
-**À quoi ça sert ?** Afficher **chaque routeur traversé** (chaque « saut ») jusqu'à la destination, pour voir **où ça bloque**.
-
-| Je veux… | Windows | Linux |
-|---|---|---|
-| Voir le chemin | `tracert 8.8.8.8` | `traceroute 8.8.8.8` |
-| Plus rapide (sans les noms) | `tracert -d 8.8.8.8` | `traceroute -n 8.8.8.8` |
-
-**Exemple : lire un `tracert`**
+Affiche **chaque routeur traversé** (« saut ») jusqu'à la destination.
 
 ```
  1    <1 ms   <1 ms   <1 ms   192.168.1.1     ← ma box (1er saut)
- 2    12 ms   10 ms   11 ms   10.0.0.1        ← le réseau du fournisseur d'accès
- 3     *       *       *      Délai dépassé   ← ce routeur ne répond pas (souvent filtré)
+ 2    12 ms   10 ms   11 ms   10.0.0.1        ← le fournisseur d'accès
+ 3     *       *       *      Délai dépassé   ← routeur qui ne répond pas (souvent filtré)
  4    20 ms   19 ms   19 ms   8.8.8.8         ← arrivé !
 ```
 
-| Ce que je vois | Ça veut dire… |
-|---|---|
-| Le **1er saut** ne répond pas | Problème **chez moi** (câble, box, passerelle) |
-| Ça s'arrête **plus loin** | Problème **à l'extérieur** (fournisseur d'accès, Internet) |
-| Une ligne `* * *` puis ça repart | Normal : ce routeur ne répond juste pas aux tests |
-
-💡 **Comment ça marche ?** `tracert` envoie des paquets avec un **TTL** de 1, puis 2, puis 3… Chaque routeur retire 1 au TTL ; celui qui le fait tomber à 0 renvoie une erreur et **révèle ainsi son adresse**.
+- **1er saut** muet → problème **chez moi** (câble, box) · arrêt **plus loin** → problème **à l'extérieur**.
+- `* * *` puis ça repart : **normal**, ce routeur ne répond juste pas aux tests.
+- 💡 Principe : TTL = 1, puis 2, puis 3… Le routeur qui fait tomber le TTL à 0 renvoie une erreur et **révèle son adresse**.
 
 ---
 
-### 4. `arp -a` : voir les adresses MAC connues
+### 4. `arp -a` : les MAC déjà connues
 
-**À quoi ça sert ?** Afficher la **table ARP** : la liste des correspondances **IP ↔ MAC** que ton poste a déjà apprises (voir le [module 4](../module-4-la-communication/index.md#2-communication-dans-le-meme-reseau-arp)).
-
-| Je veux… | Windows | Linux |
-|---|---|---|
-| Voir la table ARP | `arp -a` | `ip neigh` (ou `arp -a`) |
-| Vider la table ARP | `arp -d *` (en administrateur) | `sudo ip neigh flush all` |
+Affiche la **table ARP** : les couples **IP ↔ MAC** appris par le poste (voir le [module 4](../module-4-la-communication/index.md#2-ping-dans-le-meme-reseau-arp)).
 
 ```
   Adresse Internet      Adresse physique      Type
   192.168.1.1           a4-2b-b0-12-34-56     dynamique    ← la MAC de ma box
-  192.168.1.255         ff-ff-ff-ff-ff-ff     statique     ← l'adresse de broadcast
+  192.168.1.255         ff-ff-ff-ff-ff-ff     statique     ← le broadcast
 ```
 
-💡 Astuce : fais un `ping` vers une machine de ton réseau, puis `arp -a` : sa MAC est apparue dans la liste.
+💡 Fais un `ping` vers un voisin, puis `arp -a` : sa MAC apparaît.
 
 ---
 
-### 5. `netstat` : voir les connexions ouvertes
+### 5. `netstat` / `ss` : les connexions ouvertes
 
-**À quoi ça sert ?** Lister les **connexions** en cours et les **ports en écoute** sur ton poste (quels programmes communiquent, et avec qui).
-
-| Je veux… | Windows | Linux |
-|---|---|---|
-| Voir toutes les connexions (en chiffres) | `netstat -an` | `ss -tuan` |
-| Savoir quel programme utilise quel port | `netstat -ano` (n° de processus) | `sudo ss -tulpn` |
+Liste les **connexions en cours** et les **ports en écoute**.
 
 ```
   Proto  Adresse locale         Adresse distante       État
@@ -165,21 +119,8 @@ Paquets : envoyés = 4, reçus = 4, perdus = 0 (perte 0%)
   TCP    192.168.1.100:52314    142.250.74.68:443      ESTABLISHED   ← connexion ouverte vers un site HTTPS
 ```
 
-| État | Ça veut dire… |
-|---|---|
-| **LISTENING** | Un programme **attend** des connexions sur ce port |
-| **ESTABLISHED** | Une connexion est **ouverte** et active |
-
-💡 Sous Linux, `netstat` est remplacé par **`ss`** (mêmes options), et sous PowerShell par `Get-NetTCPConnection`.
-
-## ✅ Points clés à retenir
-
-- **Toujours commencer par `ipconfig`** : une IP en **169.254.x.x** = problème de **DHCP**.
-- **`ping`** teste si une machine répond (ICMP) ; pas de réponse ≠ forcément éteinte (pare-feu).
-- **Méthode de dépannage** : `ping 127.0.0.1` → `ping passerelle` → `ping 8.8.8.8` → `ping un nom`. La première étape qui échoue localise la panne.
-- **`ping 8.8.8.8` OK mais `ping google.fr` KO** = problème de **DNS**.
-- **`tracert`** montre chaque routeur traversé, grâce au **TTL** qui augmente de 1 à chaque essai.
-- **`arp -a`** affiche les correspondances IP ↔ MAC ; **`netstat -an`** les connexions et ports ouverts.
+- **LISTENING** = un programme **attend** des connexions · **ESTABLISHED** = connexion **active**.
+- `netstat -ano` donne aussi le **n° du processus** ; sous Linux, `netstat` est remplacé par **`ss`**.
 
 ## 📝 Fiche de révision
 

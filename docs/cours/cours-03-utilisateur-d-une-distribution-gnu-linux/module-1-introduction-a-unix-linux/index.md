@@ -155,15 +155,6 @@ Debian repose sur un **contrat social** : elle restera **totalement libre**, ne 
 | **CeCILL** | Licence libre **française** (CEA, CNRS, INRIA), adaptée au droit français | |
 | **Creative Commons** | Pour les **œuvres** (images, musiques, textes), pas pour le code | |
 
-## ✅ Points clés à retenir
-
-- **Unix** (1969, Bell Labs : Thompson, Ritchie, Kernighan) est l'ancêtre ; réécrit en **C** (1973), donc portable ; branche **BSD** (1977).
-- **GNU** (Stallman, 1983) = un OS libre sans noyau ; **Linux** (Torvalds, 1991) = un noyau → **GNU/Linux**.
-- Une **distribution** = noyau + outils GNU + logiciels, assemblés et maintenus : **Debian**, **Ubuntu**, **Red Hat**, Rocky/Alma, SUSE.
-- Linux est partout : **serveurs, cloud, Android, objets connectés**. Un technicien l'utilise surtout en **ligne de commande**.
-- **Libre ≠ gratuit** ; en entreprise : versions **LTS** et durée de support vérifiée.
-- Licences : **GPL** (copyleft, 4 libertés), **BSD** (sans copyleft), **Apache**, **CeCILL** (française), **Creative Commons** (œuvres).
-
 ## 📝 Fiche de révision
 
 ### 🧠 L'essentiel en un tableau

@@ -153,17 +153,6 @@ flowchart LR
 
 💡 Pour voir **ton SID et tes groupes** : `whoami /user` et `whoami /groups`.
 
-## ✅ Points clés à retenir
-
-- **1 personne = 1 compte**, jamais de compte partagé.
-- **Compte local** : base **SAM**, valable sur un seul PC. **Compte de domaine** : **Active Directory**, valable sur tous les PC joints au domaine.
-- Windows identifie tout par le **SID** : un compte recréé avec le même nom a un **autre SID**, donc plus ses droits.
-- Types : **standard** (groupe Utilisateurs), **administrateur** (groupe Administrateurs), **invité**. Les comptes intégrés **Administrateur** et **Invité** sont **désactivés par défaut**.
-- **Jeton d'accès** = SID de l'utilisateur + SID de ses groupes ; recalculé **à chaque ouverture de session**.
-- Groupes **locaux** (droits sur les ressources), **prédéfinis** (délégation, ex. Opérateurs de sauvegarde), **identités spéciales** (automatiques, ex. Tout le monde).
-- Profil = `C:\Users\nom`, créé à la 1ʳᵉ connexion ; on le gère par **`sysdm.cpl`**, jamais à la main.
-- **UAC** : même un administrateur doit confirmer les actions qui modifient le système (🛡️). Ne pas le désactiver.
-
 ## 📝 Fiche de révision
 
 ### 🧠 L'essentiel en un tableau

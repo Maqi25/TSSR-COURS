@@ -190,17 +190,6 @@ Le **serveur d'impression** centralise toutes les imprimantes réseau :
 
 Mise en place : Propriétés de l'imprimante → **Ports** → cocher **« Activer le pool d'imprimantes »** → cocher les ports des différentes machines.
 
-## ✅ Points clés à retenir
-
-- Un **pilote** = le mode d'emploi d'un matériel pour Windows. Gestion dans **`devmgmt.msc`** : mettre à jour, **restaurer**, désactiver, désinstaller.
-- ⚠️ jaune = problème de pilote ; « Périphérique inconnu » = pas de pilote → chercher **`VEN_`** (fabricant) et **`DEV_`** (modèle).
-- Fichiers d'un pilote : **`.inf`** (notice), **`.sys`** (pilote), **`.cat`** (signature). Windows 64 bits exige des **pilotes signés**.
-- **Magasin de pilotes** (`DriverStore`) = pilotes génériques (fonctions de base), géré avec **`pnputil`**.
-- **Imprimante** = logiciel (pilote + file d'attente + port) ≠ **périphérique d'impression** = la machine.
-- Locale (USB) · **partagée** (le PC hôte doit rester allumé) · **réseau** (sa propre IP).
-- Le **spouleur** gère la file d'attente ; impression bloquée → **redémarrer le spouleur**.
-- **Serveur d'impression** = gestion centralisée ; **pool** = 1 imprimante logique pour plusieurs machines identiques.
-
 ## 📝 Fiche de révision
 
 ### 🧠 L'essentiel en un tableau

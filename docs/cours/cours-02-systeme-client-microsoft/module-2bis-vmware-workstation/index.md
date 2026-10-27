@@ -172,15 +172,6 @@ Une VM, c'est **un dossier de fichiers** : on peut donc la **copier** comme n'im
 
 📌 Workstation est fait pour les **tests et maquettes**, pas pour faire tourner des serveurs de **production** (on utilise alors ESXi ou Hyper-V). Depuis fin 2024, **VMware Workstation Pro est gratuit**, y compris pour un usage professionnel.
 
-## ✅ Points clés à retenir
-
-- **Hôte** = vrai PC · **VM** = ordinateur virtuel · **Hyperviseur** = le logiciel qui fait tourner et isole les VM.
-- **Type 2** (Workstation, sur un OS) pour les tests ; **Type 1** (ESXi, Hyper-V, directement sur le serveur) pour la production.
-- La **RAM** d'une VM est prise sur l'hôte **dès le démarrage** ; le **disque** est un fichier `.vmdk` **dynamique**.
-- Réseau : **Bridge** (vrai réseau) · **NAT / VMnet8** (Internet via l'hôte) · **Host-only / VMnet1** (hôte + VM) · **LAN Segment** (VM entre elles uniquement).
-- **Snapshot avant toute action risquée** ; **clone** pour dupliquer ; **VMware Tools** à installer dans chaque VM.
-- Une VM = **`.vmx`** (configuration) + **`.vmdk`** (disque) ; échange au format **OVA / OVF**.
-
 ## 📝 Fiche de révision
 
 ### 🧠 L'essentiel en un tableau

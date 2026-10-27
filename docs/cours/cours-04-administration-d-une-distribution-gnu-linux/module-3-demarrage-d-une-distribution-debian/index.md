@@ -107,15 +107,6 @@ sudo systemctl set-default multi-user.target   # démarrer sans interface graphi
 
 ⚠️ **Ne jamais couper le courant** d'un serveur : un arrêt propre laisse les services enregistrer leurs données.
 
-## ✅ Points clés à retenir
-
-- Démarrage : **firmware (BIOS/UEFI) → GRUB → noyau + initramfs → systemd (PID 1) → services → login**.
-- Un **service** (démon) tourne en arrière-plan ; on le gère avec **`systemctl`** : `status`, `start`, `stop`, `restart`, **`enable`**, `disable`, `enable --now`.
-- **`start`** = maintenant ; **`enable`** = à chaque démarrage.
-- `Active: active (running)` ✅ · `failed` ❌ → **`journalctl -u service`**.
-- Cibles : **`multi-user.target`** (serveur) · `graphical.target` (bureau) · `rescue.target` (secours).
-- Arrêt : **`systemctl reboot`** / **`poweroff`**, ou **`shutdown`** programmé.
-
 ## 📝 Fiche de révision
 
 | Commande | Rôle |

@@ -145,15 +145,6 @@ New-NetFirewallRule -DisplayName "Autoriser ping" -Direction Inbound -Protocol I
 
 ⚠️ **Ne désactive jamais complètement le pare-feu** pour « régler » un problème : **ouvre seulement ce qui est nécessaire**, avec une règle.
 
-## ✅ Points clés à retenir
-
-- 3 profils réseau : **Domaine** (automatique, confiance maximale), **Privé** (réseau de confiance, choisi par toi), **Public** (par défaut, pare-feu le plus strict, PC invisible).
-- Carte réseau : **`ncpa.cpl`** ; **DHCP** pour les postes clients, **IP fixe** pour les serveurs et imprimantes.
-- **169.254.x.x** = APIPA = **aucun serveur DHCP** n'a répondu.
-- Diagnostic : `ipconfig /all`, `ping`, `tracert`, `nslookup`, `arp -a`, `netstat -an`.
-- Pare-feu **activé par défaut** : **entrant bloqué**, **sortant autorisé**. Il **bloque le ping entrant**.
-- 3 niveaux de réglage : **ON/OFF par profil** → **par application** (`firewall.cpl`) → **règles avancées** (**`wf.msc`**).
-
 ## 📝 Fiche de révision
 
 ### 🧠 L'essentiel en un tableau

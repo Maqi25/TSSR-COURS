@@ -121,15 +121,6 @@ getfacl /srv/compta                        # voir les ACL
 
 Un **`+`** à la fin des droits dans `ls -l` (`drwxrws---+`) signale des ACL. Le paquet `acl` est parfois à installer.
 
-## ✅ Points clés à retenir
-
-- Linux regarde **propriétaire → groupe → autres** et applique **la première case qui correspond**.
-- **`chmod`** (droits), **`chown user:groupe`** (propriétaire et groupe), **`chgrp`** ; **`-R`** = récursif.
-- **`umask 022`** → fichiers en **644**, dossiers en **755** par défaut.
-- **SUID** (`4`, programme exécuté avec les droits du propriétaire, ex. `passwd`) · **SGID** (`2`, sur un dossier : le groupe est hérité) · **sticky** (`1`, chacun supprime seulement ses fichiers, ex. `/tmp`).
-- Dossier partagé : `chown root:groupe` + **`chmod 3770`**.
-- **ACL** (`setfacl` / `getfacl`) pour des droits au cas par cas.
-
 ## 📝 Fiche de révision
 
 | Commande | Rôle |

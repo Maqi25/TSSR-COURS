@@ -127,16 +127,6 @@ Au redémarrage, le PC affiche l'écran **OOBE** : il devient **un PC unique**, 
 
 💡 **Avant de déployer**, vérifie que le PC cible respecte les **prérequis** de l'OS (module 2 : TPM 2.0 pour Windows 11, par exemple).
 
-## ✅ Points clés à retenir
-
-- Un **master** (image de référence) = Windows + pilotes + logiciels + réglages, prêt à être cloné. Il fait **gagner énormément de temps**.
-- Étapes : **installer → configurer → logiciels → sysprep → capturer → déployer**.
-- **`sysprep /generalize /oobe /shutdown`** : retire l'identité du PC (SID…) ; au démarrage, chaque clone repasse par l'**OOBE**.
-- ⚠️ Après sysprep, **ne jamais redémarrer le master sur son Windows** avant la capture.
-- Pièges : applications du **Store** (à désinstaller), **pilotes** supprimés (`/PersistAllDevicesInstall`), **comptes locaux** conservés. Journaux dans `Sysprep\Panther`.
-- Capture et déploiement : **PXE** (démarrage réseau + serveur de déploiement, pour beaucoup de PC) ou **WinPE + `dism`** (au cas par cas). Format d'image : **`.wim`**.
-- **`dism`** : capturer (`/Capture-Image`), appliquer (`/Apply-Image`), mettre à jour une image hors ligne.
-
 ## 📝 Fiche de révision
 
 ### 🧠 L'essentiel en un tableau

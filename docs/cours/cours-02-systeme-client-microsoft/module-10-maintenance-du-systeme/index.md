@@ -143,14 +143,6 @@ Les journaux à regarder sont dans **Journaux Windows** :
 | **Vidéo basse résolution** | Le **pilote graphique** empêche l'affichage |
 | **Désactiver la signature des pilotes** | Tester un pilote **non signé** |
 
-## ✅ Points clés à retenir
-
-- **Performance** = CPU, RAM, disque, réseau ; **fiabilité** = le système fait-il ce qu'on attend de lui ?
-- **En direct** : Gestionnaire des tâches, **`resmon`**. **Après coup** : Historique de fiabilité (**`perfmon /rel`**). **Toujours** : Observateur d'événements (**`eventvwr.msc`**, journaux Système / Application, filtrer sur Erreur et Critique).
-- Réparer Windows : **`sfc /scannow`** → si échec : **`DISM … /RestoreHealth`** puis sfc ; disque : **`chkdsk /f`**.
-- **Point de restauration** = registre, système, pilotes, programmes, **pas les documents**. Souvent désactivé par défaut (`sysdm.cpl` → Protection du système).
-- **WinRE** = Windows de secours : Maj + Redémarrer, `shutdown /r /o`, ou automatique après **2 échecs de démarrage**. Il contient la réparation du démarrage, le mode sans échec, la restauration, la désinstallation des mises à jour, l'invite de commandes et la réinitialisation.
-
 ## 📝 Fiche de révision
 
 ### 🧠 Les commandes à connaître

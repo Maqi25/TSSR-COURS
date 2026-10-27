@@ -216,15 +216,6 @@ tar -xzvf sauvegarde.tar.gz -C /tmp          # EXTRAIRE dans /tmp
 
 ⚠️ **`gzip` remplace le fichier** d'origine par sa version `.gz`, et ne compresse qu'**un seul fichier**. Pour un **dossier**, on utilise **`tar -czf`**.
 
-## ✅ Points clés à retenir
-
-- Droits **`rwx`** pour **u** (propriétaire), **g** (groupe), **o** (autres) ; **r = 4, w = 2, x = 1**. `chmod 755`, `chmod 644`, `chmod u+x`.
-- Sur un dossier : **r** = lister, **w** = créer/supprimer dedans, **x** = entrer.
-- **`ln -s cible lien`** = raccourci (cassé si la cible disparaît).
-- Processus : **`ps aux`**, **`top`**, **`kill PID`** (puis `kill -9` en dernier recours) ; **`&`**, ++ctrl+z++, **`bg`**, **`fg`**, **`jobs`**.
-- Regex : **`^`** début, **`$`** fin, **`.`** un caractère, **`*`** répétition, **`[0-9]`** ; **`grep -E "a|b"`** pour OU.
-- **`tar -czvf archive.tar.gz dossier`** (créer), **`tar -xzvf archive.tar.gz`** (extraire), **`tar -tzvf`** (lister).
-
 ## 📝 Fiche de révision
 
 ### 🧠 Les commandes du module

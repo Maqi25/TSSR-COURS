@@ -143,15 +143,6 @@ On **tape directement** le texte et on se déplace avec les flèches. Les raccou
 
 📌 Dans les fichiers de configuration, une ligne qui commence par **`#`** est un **commentaire** : elle est **ignorée**. **« Décommenter »** une ligne = retirer le `#` pour l'activer.
 
-## ✅ Points clés à retenir
-
-- **nano** : simple ; ++ctrl+o++ enregistrer, ++ctrl+x++ quitter, ++ctrl+w++ chercher.
-- **vim** : présent partout ; **3 modes** : **Normal** (au démarrage) · **Insertion** (`i`, `a`, `o`) · **Commande** (`:`).
-- **Échap** = retour au mode Normal (le réflexe quand on est perdu).
-- Mode Normal : **`dd`** supprimer une ligne, **`yy`** copier, **`p`** coller, **`x`** supprimer un caractère, **`u`** annuler, `gg` / `G` début / fin.
-- **`:w`** enregistrer · **`:q`** quitter · **`:wq`** les deux · **`:q!`** quitter **sans** enregistrer · **`/mot`** chercher.
-- Avant de modifier une configuration : **faire une copie `.bak`**. Le **`#`** marque un commentaire.
-
 ## 📝 Fiche de révision
 
 ### 🧠 nano et vim côte à côte

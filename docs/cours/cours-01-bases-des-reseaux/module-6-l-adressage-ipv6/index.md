@@ -60,40 +60,36 @@ flowchart LR
 | | IPv4 | IPv6 |
 |---|---|---|
 | **Taille** | 32 bits | **128 bits** |
-| **Écriture** | 4 nombres décimaux, séparés par `.` | **8 groupes hexadécimaux**, séparés par `:` |
+| **Écriture** | 4 nombres décimaux séparés par `.` | **8 groupes hexadécimaux** séparés par `:` |
 | **Exemple** | `192.168.1.10` | `2001:db8:85a3::8a2e:370:7334` |
-| **Masque** | `255.255.255.0` ou `/24` | toujours en **préfixe** : `/64` |
+| **Masque** | `255.255.255.0` ou `/24` | toujours un **préfixe** : `/64` |
 | **Nombre d'adresses** | 4,3 milliards | ≈ 3,4 × 10³⁸ |
-| **Broadcast** | Oui | **Non** → remplacé par le **multicast** |
-| **NAT** | Indispensable (manque d'adresses) | **Inutile** : chaque appareil a son adresse publique |
-| **Configuration automatique** | DHCP | **SLAAC** (le poste se configure seul) ou DHCPv6 |
+| **Broadcast** | Oui | **Non** → **multicast** |
+| **NAT** | Indispensable | **Inutile** (assez d'adresses publiques) |
+| **Config. automatique** | DHCP | **SLAAC** (le poste se configure seul) ou DHCPv6 |
 
-💡 **Hexadécimal** (vu au [module 2](../module-2-les-unites-informatiques/index.md)) : chiffres de 0 à 9 puis **a à f**. Un caractère = 4 bits, donc un groupe de 4 caractères = **16 bits**.
+💡 **Hexadécimal** ([module 2](../module-2-les-unites-informatiques/index.md)) : 0 à 9 puis **a à f**. 1 caractère = 4 bits → 1 groupe de 4 caractères = **16 bits**.
 
 ---
 
 ### 2. Écrire une adresse en version courte
 
-Deux règles, **dans cet ordre** :
-
-| Règle | Ce qu'on fait | Exemple |
-|---|---|---|
-| **① Zéros de tête** | Dans chaque groupe, on supprime les 0 **au début** | `0db8` → `db8` · `0042` → `42` · `0000` → `0` |
-| **② Le `::`** | On remplace **la plus longue suite de groupes à 0** par `::`, **une seule fois** | `2001:db8:0:0:0:ff00:42:8329` → `2001:db8::ff00:42:8329` |
-
-**Exemple complet, pas à pas**
+| Règle (dans cet ordre) | Exemple |
+|---|---|
+| **① Zéros de tête** : dans chaque groupe, on retire les 0 **du début** | `0db8` → `db8` · `0042` → `42` · `0000` → `0` |
+| **② Le `::`** : la plus longue suite de groupes à 0 devient `::`, **une seule fois** | `2001:db8:0:0:0:ff00:42:8329` → `2001:db8::ff00:42:8329` |
 
 ```
-Adresse complète :  fe80:0000:0000:0000:020c:29ff:fe3a:0b12
-① zéros de tête  :  fe80:0:0:0:20c:29ff:fe3a:b12
-② le ::          :  fe80::20c:29ff:fe3a:b12
+Complète      :  fe80:0000:0000:0000:020c:29ff:fe3a:0b12
+① zéros       :  fe80:0:0:0:20c:29ff:fe3a:b12
+② ::          :  fe80::20c:29ff:fe3a:b12
 ```
 
-⚠️ **Les pièges**
+⚠️ Pièges :
 
-- On ne retire que les zéros **au début** d'un groupe : `0370` → `370`, mais `ff00` reste `ff00`.
-- **Un seul `::`** par adresse. Sinon on ne saurait plus combien de groupes il remplace : `2001:db8:0:0:1:0:0:1` devient `2001:db8::1:0:0:1`, et **pas** `2001:db8::1::1`.
-- Pour **décompresser**, on compte les groupes présents : le `::` remplace **ce qu'il manque pour arriver à 8**.
+- Seulement les zéros **du début** : `0370` → `370`, mais `ff00` reste `ff00`.
+- **Un seul `::`** : `2001:db8:0:0:1:0:0:1` → `2001:db8::1:0:0:1` (et **pas** `2001:db8::1::1`).
+- Pour décompresser : le `::` remplace **ce qui manque pour arriver à 8 groupes**.
 
 ---
 
@@ -101,68 +97,45 @@ Adresse complète :  fe80:0000:0000:0000:020c:29ff:fe3a:0b12
 
 | Type | Envoyé à… | Image | Exemple |
 |---|---|---|---|
-| **Unicast** | **Une seule** machine | Une lettre à une personne | Ton PC qui parle à un serveur |
-| **Multicast** | **Un groupe** de machines abonnées | Un message à un groupe WhatsApp | `ff02::1` = tous les appareils du réseau local |
-| **Anycast** | **La plus proche** d'un groupe de machines qui partagent la même adresse | Appeler le « 112 » : tu tombes sur le centre le plus proche | Serveurs DNS répartis dans le monde |
+| **Unicast** | **Une** machine | Une lettre | PC → serveur |
+| **Multicast** | **Un groupe** abonné | Un groupe WhatsApp | `ff02::1` = tous les appareils du lien · `ff02::2` = tous les routeurs |
+| **Anycast** | **La plus proche** d'un groupe | Le 112 : le centre le plus proche répond | Serveurs DNS mondiaux |
 
-📌 **Il n'y a plus de broadcast en IPv6** : le multicast le remplace. Les 2 adresses à retenir :
-
-| Adresse | Groupe visé |
-|---|---|
-| **`ff02::1`** | Tous les appareils du réseau local |
-| **`ff02::2`** | Tous les routeurs du réseau local |
+📌 **Plus de broadcast en IPv6** : le multicast le remplace.
 
 ---
 
-### 4. Les types d'adresses à connaître
+### 4. Les types d'adresses à reconnaître
 
 | Début | Nom | Rôle | Équivalent IPv4 |
 |---|---|---|---|
-| **`::1`** | Boucle locale | La machine se teste elle-même | `127.0.0.1` |
-| **`fe80::/10`** | **Lien-local** | Parler aux voisins du **même réseau local**, sans aucune configuration. **Jamais routée.** | APIPA `169.254.x.x` |
-| **`fc00::/7`** (en pratique `fd…`) | **Locale unique** (ULA) | Réseau privé interne, pas routée sur Internet | Adresses privées (`10.x`, `192.168.x`) |
-| **`2000::/3`** (commence par `2` ou `3`) | **Globale** (GUA) | Joignable sur **Internet** | Adresse publique |
+| **`::1`** | Boucle locale | Se tester soi-même | `127.0.0.1` |
+| **`fe80::/10`** | **Lien-local** | Parler au **réseau local**, créée **automatiquement** par chaque carte · **jamais routée** | APIPA `169.254.x.x` |
+| **`fc00::/7`** (en pratique `fd…`) | **Locale unique** (ULA) | Réseau **privé** interne | `10.x`, `192.168.x` |
+| **`2000::/3`** (`2…` ou `3…`) | **Globale** (GUA) | Joignable sur **Internet** | Adresse publique |
 | **`ff00::/8`** | Multicast | Envoi à un groupe | (broadcast) |
 | **`::/0`** | Route par défaut | « Tout le reste » | `0.0.0.0/0` |
 
-#### Zoom : l'adresse lien-local (`fe80::`)
+**Structure d'une adresse globale** : **48 bits** de préfixe (donné par le FAI) + **16 bits** de sous-réseau + **64 bits** d'identifiant d'interface (la machine). Un réseau standard est donc un **/64**.
 
-Chaque carte réseau **se crée toute seule** une adresse `fe80::…`, même si on n'a rien configuré. Elle sert à parler aux machines du **même réseau local** (par exemple pour trouver le routeur). Le routeur ne la fait jamais passer vers un autre réseau.
-
-#### Zoom : l'adresse globale (GUA)
-
-| Préfixe global | Sous-réseau | Identifiant d'interface |
-|---|---|---|
-| **48 bits** : donné au fournisseur d'accès / à l'entreprise | **16 bits** : pour découper en sous-réseaux | **64 bits** : la machine |
-
-💡 L'identifiant d'interface est soit **tiré au hasard**, soit **calculé à partir de l'adresse MAC** (méthode **EUI-64**, qui insère `ff:fe` au milieu de la MAC).
+💡 L'identifiant d'interface est **tiré au hasard** ou **calculé depuis la MAC** (**EUI-64** : on insère `ff:fe` au milieu de la MAC).
 
 ---
 
-### 5. Combien d'adresses a un poste ?
+### 5. Un poste a plusieurs adresses IPv6
 
-**En IPv4 : une adresse par carte. En IPv6 : toujours plusieurs en même temps.**
+En IPv4 : **une** adresse par carte. En IPv6 : **toujours plusieurs** à la fois.
 
-| Adresse | Toujours présente ? | Exemple |
+| Adresse | Présente ? | Exemple |
 |---|---|---|
-| Boucle locale | ✅ Oui | `::1` |
-| Lien-local | ✅ Oui, une par carte réseau | `fe80::20c:29ff:fe3a:b12` |
+| Boucle locale | ✅ Toujours | `::1` |
+| Lien-local | ✅ Toujours, une par carte | `fe80::20c:29ff:fe3a:b12` |
+| Multicast | ✅ Toujours | `ff02::1` |
 | Globale | Si le réseau a IPv6 vers Internet | `2a01:cb00:1234:5600::10` |
 | Locale unique | Si le réseau en utilise | `fd12:3456:789a::10` |
-| Multicast | ✅ Oui, automatiquement | `ff02::1` |
 
-🩺 **Pour les voir** : `ipconfig` sous Windows (ligne « Adresse IPv6 de liaison locale : fe80::…%12 »), `ip -6 a` sous Linux.
-
-💡 **IPv4 et IPv6 en même temps** : aujourd'hui, la plupart des postes utilisent la **double pile** (*dual stack*) : ils ont une adresse IPv4 **et** des adresses IPv6, et utilisent l'une ou l'autre selon la destination.
-
-## ✅ Points clés à retenir
-
-- IPv6 = **128 bits** = **8 groupes de 4 caractères hexadécimaux** (16 bits chacun), séparés par `:`.
-- Un réseau IPv6 standard est un **/64** : 64 bits de réseau + 64 bits d'**identifiant d'interface**.
-- Écriture courte : ① on retire les **zéros de tête** de chaque groupe ; ② on remplace **une seule** suite de groupes à 0 par **`::`**.
-- **Unicast** = 1 machine · **Multicast** = un groupe · **Anycast** = la plus proche. **Pas de broadcast** en IPv6.
-- À reconnaître : **`::1`** boucle locale · **`fe80`** lien-local · **`fd`** locale unique (privée) · **`2`/`3`** globale (publique) · **`ff`** multicast.
-- Un poste IPv6 a **toujours plusieurs adresses** : au minimum `::1`, une `fe80::` par carte et des adresses multicast.
+- 🩺 Pour les voir : `ipconfig` (ligne « Adresse IPv6 de liaison locale : fe80::…%12 ») ou `ip -6 a` sous Linux.
+- **Double pile** (*dual stack*) : la plupart des postes ont une IPv4 **et** des IPv6, et choisissent selon la destination.
 
 ## 📝 Fiche de révision
 

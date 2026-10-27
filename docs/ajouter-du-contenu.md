@@ -40,9 +40,8 @@ Les 17 cours et tous leurs modules sont déjà créés. Chaque page de module co
 |---|---|
 | 🎯 Objectif du module | 2-3 phrases : ce que le module t'apprend |
 | 🖼️ Résumé visuel | Un schéma (voir [plus bas](#schemas-et-diagrammes)) |
-| 📖 Cours consolidé | Le cours lui-même, avec titres `###`, tableaux, blocs de code |
-| ✅ Points clés à retenir | Une liste courte |
-| 📝 Fiche de révision | L'essentiel à relire la veille de l'examen |
+| 📖 Cours consolidé | Le cours lui-même, **court** : titres `###`, tableaux et listes plutôt que de longues phrases |
+| 📝 Fiche de révision | L'essentiel à relire la veille de l'examen, les pièges et les exercices corrigés |
 | 🧠 Quiz | Les questions au format JSON (voir ci-dessous) |
 
 Sur la page d'accueil de chaque cours (`docs/cours/cours-XX-.../index.md`), complète aussi l'encadré **Informations pratiques** (dates, formateur).

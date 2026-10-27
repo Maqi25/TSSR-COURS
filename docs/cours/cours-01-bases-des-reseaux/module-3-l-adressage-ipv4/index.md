@@ -329,17 +329,6 @@ Souvent, la consigne n'est pas « X sous-réseaux » mais « **au moins Y machin
 
 💡 Pense **large** : prévois de la marge pour la croissance (et une adresse pour la passerelle, qui est aussi un hôte !).
 
-## ✅ Points clés à retenir
-
-- IPv4 = **32 bits = 4 octets** (0 à 255) = **ID réseau + ID hôte** ; il faut **IP + masque**.
-- Classes (1er octet) : **A 1–126 (/8)** · **B 128–191 (/16)** · **C 192–223 (/24)** · D multicast · E expérimental · **127 = boucle locale**.
-- **Réseau** = hôte tout à 0 · **broadcast** = hôte tout à 1 → jamais attribuées → **− 2**.
-- **Réseau = IP ET masque** (255 → on recopie, 0 → on met 0).
-- **/n = nombre de 1 du masque** ; hôtes = **2^(32 − n) − 2**.
-- **Pas = 256 − octet coupé du masque** : les réseaux démarrent sur ses multiples.
-- Privées : **10/8 · 172.16/12 · 192.168/16** → **NAT** pour Internet. **169.254.x.x = DHCP injoignable**.
-- ⭐ Subnetting : on **emprunte n bits** à l'hôte → **2ⁿ sous-réseaux** de **2ʰ − 2 hôtes** ; on liste en ajoutant le pas, avec **retenue** sur l'octet de gauche.
-
 ## 📝 Fiche de révision
 
 ### 🧠 Par cœur

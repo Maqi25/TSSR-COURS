@@ -141,15 +141,6 @@ drwxr-xr-x 2 user30 user30  4096 20 oct. 09:00 Documents
 
 ⚠️ **Les espaces dans les noms** : `mkdir Mes Documents` crée **deux** dossiers, `Mes` et `Documents`. Il faut écrire `mkdir "Mes Documents"` ou `mkdir Mes\ Documents`. Le plus simple : **éviter les espaces** (`Mes_Documents`).
 
-## ✅ Points clés à retenir
-
-- Un seul arbre qui part de **`/`** ; « **tout est fichier** ».
-- Dossiers clés : **`/home`** (utilisateurs), **`/etc`** (configuration), **`/var/log`** (journaux), **`/tmp`** (temporaire), `/usr/bin` (commandes), `/dev` (périphériques), `/root`.
-- Chemin **absolu** = commence par **`/`** ; **relatif** = depuis le dossier actuel. **`.`** ici, **`..`** parent, **`~`** chez moi.
-- Se déplacer : **`cd`** ; lister : **`ls -l`**, **`ls -a`** (fichiers cachés = nom commençant par un **point**).
-- **`mkdir -p`**, **`touch`**, **`cp -r`**, **`mv`** (déplacer **et** renommer), **`rm`**, **`rm -r`**, **`rmdir`**.
-- **Pas de corbeille** : `rm` est définitif → **relire** ; `-i` pour confirmer.
-
 ## 📝 Fiche de révision
 
 ### 🧠 Les commandes du module

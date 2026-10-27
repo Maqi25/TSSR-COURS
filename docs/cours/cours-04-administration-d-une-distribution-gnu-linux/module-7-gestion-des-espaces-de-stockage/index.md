@@ -114,14 +114,6 @@ $ sudo blkid /dev/sdb1
 
 ✅ C'est l'UUID qu'on utilise dans **`/etc/fstab`** pour monter les partitions au démarrage (module 9) : il ne change jamais.
 
-## ✅ Points clés à retenir
-
-- Disques : **`/dev/sda`**, `/dev/sdb`… (partitions **`sda1`**, `sda2`) ; NVMe : **`/dev/nvme0n1`** (partitions `p1`).
-- Voir : **`lsblk`** (arbre), `lsblk -f`, `sudo fdisk -l`, **`sudo blkid`** (UUID).
-- Partitionner : **`sudo fdisk /dev/sdb`** → `g` (GPT) → `n` → `p` → **`w`** ; **`q`** pour annuler. Rien n'est écrit avant `w`.
-- **UUID** = identifiant **unique et fixe** d'une partition (les noms `sdX` peuvent changer).
-- Suite : formater et monter (module 9) ou LVM (module 8).
-
 ## 📝 Fiche de révision
 
 | Notion / commande | À retenir |

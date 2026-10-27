@@ -126,15 +126,6 @@ loadstate \\serveur\migration\dupont /i:migapp.xml /i:miguser.xml   ← sur le N
 
 📌 Une migration réussie, c'est un utilisateur qui **retrouve tout** et **ne perd pas de temps de travail**.
 
-## ✅ Points clés à retenir
-
-- Prérequis Windows 10 64 bits : **1 GHz, 2 Go de RAM, 32 Go**. **Windows 11** : **4 Go, 64 Go, UEFI + Secure Boot, TPM 2.0**.
-- **Toujours le 64 bits** : plus de 4 Go de RAM, Secure Boot, pilotes signés.
-- **`boot.wim`** = mini-Windows qui lance l'installation · **`install.wim`** = Windows complet à copier.
-- **Nouvelle installation** (recommandée, système propre) ≠ **mise à niveau** (garde tout, y compris les problèmes ; impossible depuis XP/Vista).
-- Déroulé : **démarrage sur le support → langue → clé → édition → CLUF → Personnalisé → disque (NTFS) → copie → redémarrage → OOBE → compte**.
-- Migration : fichiers (sauvegarde), profils (**USMT** : `scanstate` puis `loadstate`), logiciels (réinstallation).
-
 ## 📝 Fiche de révision
 
 ### 🧠 L'essentiel en un tableau

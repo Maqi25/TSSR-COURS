@@ -140,14 +140,6 @@ rsync -av /srv/compta/ tech@srv-backup:/backup/compta/
 !!! tip "La règle 3-2-1 des sauvegardes (cours 15)"
     **3** copies des données, sur **2** supports différents, dont **1** hors du site. Et une sauvegarde **qu'on n'a jamais essayé de restaurer** ne compte pas : **teste les restaurations**.
 
-## ✅ Points clés à retenir
-
-- Surveiller : **`uptime`** (charge à comparer au nombre de processeurs), **`free -h`** (regarder **available**), **`df -h`** (plus de 90 % = urgent), **`htop`**, **`systemctl --failed`**.
-- Journaux : **`journalctl -p err`**, **`-u service`**, **`-f`** (en direct), **`--since`** ; fichiers dans **`/var/log`** (**`auth.log`** = connexions et sudo) ; **logrotate** archive les anciens.
-- **cron** : **`crontab -e`** ; 5 champs **min heure jour mois jour-semaine** + commande ; `*/15`, `1-5`, `@reboot` ; chemins complets.
-- Mises à jour : `apt update && apt upgrade` + **`unattended-upgrades`** pour la sécurité.
-- Sauvegardes : **`tar -czf`** (archive), **`rsync -av`** (copie synchronisée), règle **3-2-1**, **tester la restauration**.
-
 ## 📝 Fiche de révision
 
 | Commande | Rôle |

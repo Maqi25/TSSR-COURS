@@ -149,15 +149,6 @@ Exemple : un technicien tape `\\PC-COMPTA05\C$` pour aller chercher un fichier s
 
 💡 **Pour aider un utilisateur en le voyant travailler** (sans le déconnecter), on utilise un outil de **prise en main partagée** : **Assistance rapide** (intégrée à Windows, ++ctrl+win+q++), TeamViewer, AnyDesk, VNC…
 
-## ✅ Points clés à retenir
-
-- Un partage = **ressource + serveur + client + réseau**. Créer un partage nécessite d'être **administrateur**.
-- **Double vérification** : droits de **partage** (réseau seulement) puis droits **NTFS** → **le plus restrictif gagne**.
-- Bonne pratique : partage = **Utilisateurs authentifiés en Contrôle total** (sans « Tout le monde »), et les vrais droits en **NTFS**.
-- Chemin **UNC** : `\\serveur\partage` ; lecteur réseau : `net use Z: \\serveur\partage`.
-- Partages **administratifs** cachés : **`C$`**, **`ADMIN$`**, **`IPC$`** (le `$` cache un partage).
-- **Bureau à distance** : protocole **RDP**, port **TCP 3389**, désactivé par défaut, **NLA** recommandée, client **`mstsc`** ; **1 session** sur un poste client, **2** sur un serveur (plus avec **RDS**).
-
 ## 📝 Fiche de révision
 
 ### 🧠 L'essentiel en un tableau

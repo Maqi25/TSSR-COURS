@@ -119,16 +119,6 @@ sudo lvextend -r -l +100%FREE /dev/vg_data/lv_web   # donner toute la place au v
 
 ⚠️ **Réduire** un volume est **risqué** (perte de données possible) et impossible à chaud en ext4. On évite : mieux vaut créer des volumes un peu petits et les agrandir au besoin.
 
-## ✅ Points clés à retenir
-
-- **PV** (disque préparé) → **VG** (le pot commun) → **LV** (le volume qu'on formate et monte).
-- Créer : **`pvcreate /dev/sdb`** → **`vgcreate vg_data /dev/sdb`** → **`lvcreate -n lv_web -L 8G vg_data`** → `mkfs.ext4` → `mount`.
-- Chemin d'un LV : **`/dev/vg_data/lv_web`**.
-- Voir : **`pvs`**, **`vgs`** (VFree = place libre), **`lvs`**.
-- Agrandir à chaud : **`lvextend -r -L +2G /dev/vg_data/lv_web`** (**`-r`** agrandit aussi le système de fichiers).
-- VG plein : **`pvcreate`** + **`vgextend`** avec un nouveau disque.
-- LVM n'est **ni une sauvegarde ni du RAID**.
-
 ## 📝 Fiche de révision
 
 | Étape | Commande |

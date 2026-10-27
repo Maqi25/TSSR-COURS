@@ -145,15 +145,6 @@ diff sshd_config sshd_config.sauvegarde
 
 Pas de résultat = les fichiers sont **identiques**. Très utile pour voir **ce qui a changé** dans une configuration.
 
-## ✅ Points clés à retenir
-
-- Lire : **`cat`** (petit fichier), **`less`** (gros fichier, `q` pour quitter), **`head`** / **`tail`** (début / fin, `-n` pour le nombre de lignes).
-- **`tail -f`** suit un journal **en direct** (++ctrl+c++ pour arrêter) : réflexe de dépannage.
-- **`wc -l`** compte les lignes, **`sort`** trie, **`uniq`** supprime les doublons (après `sort`), **`cut -d: -f1`** découpe des colonnes.
-- **`grep mot fichier`** cherche **dans** les fichiers : `-i` (casse), `-n` (numéros), `-v` (inverser), `-r` (dossier entier), `-c` (compter).
-- **`find où -name "motif"`** cherche **des fichiers** : `-type f/d`, `-size +100M`, `-mtime -7`.
-- **`diff`** compare deux fichiers.
-
 ## 📝 Fiche de révision
 
 ### 🧠 Les commandes du module
