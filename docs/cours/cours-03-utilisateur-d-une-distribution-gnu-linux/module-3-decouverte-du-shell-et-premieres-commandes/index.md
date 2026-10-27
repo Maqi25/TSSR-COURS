@@ -48,7 +48,7 @@ flowchart LR
 | Commande | Répond à… | Exemple de résultat |
 |---|---|---|
 | **`logname`** | Mon nom d'utilisateur | `user30` |
-| **`id`** | Mon **UID** (numéro d'utilisateur), mon **GID** (numéro de groupe) et mes **groupes** | `uid=1031(user01) gid=1031(user01) groupes=1031(user01),1002(ENI)` |
+| **`id`** | Mon **UID** (numéro d'utilisateur), mon **GID** (numéro de groupe) et mes **groupes** | `uid=1031(user01) gid=1031(user01) groupes=1031(user01),1002(tssr)` |
 | `id -u` · `id -g` · `id -G` | Seulement l'UID · le GID · les groupes | `1031` |
 | `id -u user5` | L'UID **d'un autre** utilisateur | `1061` |
 | **`who`** | Qui est connecté (et depuis quand) | `user30  pts/0  2026-10-21 10:30` |

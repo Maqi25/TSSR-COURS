@@ -9,7 +9,7 @@ Ce que le jury attend de toi le jour du titre, et **où le réviser sur ce site*
 !!! abstract "Quelle version te concerne ?"
     Le titre **Technicien supérieur systèmes et réseaux** (niveau 5, bac + 2) a été **révisé par l'arrêté du 16 juin 2026** (NOR : TRSD2612221A, *Journal officiel* n° 0142 du 19 juin 2026, texte 5). La nouvelle version, enregistrée sous le code **RNCP 42463** (fiche France Compétences), s'applique aux parcours **commencés à partir du 1ᵉʳ septembre 2026**, pour 5 ans (jusqu'au 31/08/2031).
 
-    Ta formation a commencé le **12/10/2026** : c'est **cette version** qui s'applique. L'ancienne (arrêté du 26 avril 2023, RNCP 37682, 2 blocs) ne concerne que les parcours commencés avant. **Fais-le confirmer par ton centre (ENI)**, qui organise ta session d'examen.
+    Ta formation a commencé le **12/10/2026** : c'est **cette version** qui s'applique. L'ancienne (arrêté du 26 avril 2023, RNCP 37682, 2 blocs) ne concerne que les parcours commencés avant. **Fais-le confirmer par ton centre de cours**, qui organise ta session d'examen.
 
 ## 🧭 Les 3 CCP et les 10 compétences
 
@@ -84,7 +84,7 @@ D'après le [programme officiel de l'école](../programme/index.md) (MàJ 23/02/
 | 9 | Continuité et reprise | ✅ [Cours 2, module 10](../cours/cours-02-systeme-client-microsoft/module-10-maintenance-du-systeme/index.md) (WinRE, restauration) · ✅ [Cours 4, modules 4 et 12](../cours/cours-04-administration-d-une-distribution-gnu-linux/module-4-debian-en-mode-maintenance/index.md) · ⏳ [Cours 15](../cours/cours-15-sauvegarde-et-restauration/index.md) (sauvegarde, sauvegarde des VM) |
 | 10 | Mises à jour et supervision | ✅ [Cours 2, module 1](../cours/cours-02-systeme-client-microsoft/module-1-les-systemes-d-exploitation-et-microsoft-windows-10/index.md) · ✅ [Cours 4, modules 6 et 12](../cours/cours-04-administration-d-une-distribution-gnu-linux/module-12-maintenance-d-un-systeme-en-production/index.md) · ⏳ [Cours 15](../cours/cours-15-sauvegarde-et-restauration/index.md) (superviser les sauvegardes) · ⏳ [Cours 16](../cours/cours-16-reseau-et-securite/index.md) (journalisation centralisée) · ⏳ [Cours 17 · Supervision](../cours/cours-17-supervision/index.md) |
 
-✅ **Bonne nouvelle** : le programme ENI de 2026 a été adapté au nouveau référentiel. Il ajoute un cours **Automatisation et IA** (cours 12), un cours **Services Cloud** (cours 14) et un cours **Supervision** (cours 17) : les 10 compétences ont toutes un cours correspondant.
+✅ **Bonne nouvelle** : le programme 2026 du centre de cours a été adapté au nouveau référentiel. Il ajoute un cours **Automatisation et IA** (cours 12), un cours **Services Cloud** (cours 14) et un cours **Supervision** (cours 17) : les 10 compétences ont toutes un cours correspondant.
 
 ## ⚠️ Points de vigilance par rapport au programme
 

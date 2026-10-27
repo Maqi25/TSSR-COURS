@@ -225,6 +225,164 @@ html[data-tssr-theme] body[data-md-color-scheme="slate"] {
 }
 
 /* --------------------------------------------------------------------
+   3 bis. La barre du haut : barre flottante en verre bleu nuit, liseré
+   lumineux en bas, logo en tuile dégradée, badge « TSSR » doré
+   -------------------------------------------------------------------- */
+.md-header {
+  background-color: rgba(7, 24, 44, 0.82);
+  background-image: linear-gradient(90deg,
+    color-mix(in srgb, var(--md-primary-fg-color) 30%, transparent) 0%,
+    transparent 35%,
+    transparent 65%,
+    color-mix(in srgb, var(--md-accent-fg-color) 16%, transparent) 100%);
+  border-bottom: 1px solid rgba(148, 197, 255, 0.12);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07) inset, 0 12px 32px -16px rgba(0, 0, 0, 0.7);
+  -webkit-backdrop-filter: blur(18px) saturate(160%);
+          backdrop-filter: blur(18px) saturate(160%);
+}
+
+.md-header--shadow {
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.07) inset, 0 16px 36px -14px rgba(0, 0, 0, 0.8);
+}
+
+/* liseré lumineux sous la barre, aux couleurs du thème */
+.md-header::after {
+  content: "";
+  position: absolute;
+  left: 12%;
+  right: 12%;
+  bottom: -1px;
+  height: 2px;
+  border-radius: 2px;
+  background: linear-gradient(90deg, transparent, var(--md-accent-fg-color), var(--tssr-nav-gold), transparent);
+  opacity: 0.75;
+  pointer-events: none;
+}
+
+/* sur grand écran : la barre flotte, décollée des bords */
+@media screen and (min-width: 60em) {
+  .md-header {
+    top: 0.6rem;
+    width: calc(100% - 1.6rem);
+    margin: 0.6rem auto 0;
+    border: 1px solid rgba(148, 197, 255, 0.14);
+    border-radius: 18px;
+  }
+  .md-header::after {
+    left: 22%;
+    right: 22%;
+  }
+}
+
+/* logo dans une tuile en dégradé */
+.md-header__button.md-logo {
+  margin: 0.2rem 0.3rem 0.2rem 0.2rem;
+  padding: 0.35rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, var(--md-primary-fg-color), var(--md-accent-fg-color));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.3) inset, 0 6px 16px -6px var(--md-accent-fg-color);
+  transition: transform 0.25s var(--tssr-ease);
+}
+
+.md-header__button.md-logo:hover {
+  opacity: 1;
+  transform: rotate(-6deg) scale(1.06);
+}
+
+.md-header__button.md-logo :is(img, svg) {
+  height: 1.05rem;
+}
+
+/* titre : badge « TSSR » doré + nom du site (découpés par theme.js) */
+.tssr-brand {
+  display: inline-block;
+  margin-right: 0.5rem;
+  padding: 0.1rem 0.45rem;
+  border-radius: 8px;
+  font-size: 0.72rem;
+  font-weight: 900;
+  line-height: 1.5;   /* sinon le badge prend toute la hauteur de la barre */
+  letter-spacing: 0.06em;
+  color: #2a1a02;
+  background: linear-gradient(135deg, #ffd27a, var(--tssr-nav-gold));
+  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.5) inset, 0 4px 12px -4px var(--tssr-nav-gold);
+  vertical-align: 0.05em;
+}
+
+.tssr-brand-sub {
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: #e8f1fb;
+}
+
+/* boutons ronds (couleur, mode clair/sombre, menu) */
+.md-header__button.md-icon,
+.tssr-theme-btn {
+  border-radius: 12px;
+  transition: background-color 0.2s ease, transform 0.25s var(--tssr-ease);
+}
+
+.md-header__button.md-icon:hover {
+  opacity: 1;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+/* recherche : champ en verre, raccourci « / » affiché à droite */
+@media screen and (min-width: 60em) {
+  .md-search__form {
+    height: 1.9rem;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
+    background: rgba(255, 255, 255, 0.07);
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25) inset;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+  }
+
+  .md-search__form:hover {
+    background: rgba(255, 255, 255, 0.12);
+    border-color: color-mix(in srgb, var(--md-accent-fg-color) 50%, transparent);
+  }
+
+  .md-search__input {
+    height: 1.9rem;
+  }
+
+  .md-search__form::after {
+    content: "/";
+    position: absolute;
+    top: 50%;
+    right: 0.5rem;
+    transform: translateY(-50%);
+    padding: 0.05rem 0.4rem;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    font-family: var(--md-code-font-family);
+    font-size: 0.6rem;
+    color: rgba(255, 255, 255, 0.7);
+    pointer-events: none;
+  }
+
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__form {
+    border-radius: 12px 12px 0 0;
+  }
+
+  [data-md-toggle="search"]:checked ~ .md-header .md-search__form::after {
+    display: none;
+  }
+
+  /* lien vers le dépôt GitHub : petite carte */
+  .md-header__source .md-source {
+    padding: 0.25rem 0.5rem;
+    border-radius: 12px;
+    transition: background-color 0.2s ease;
+  }
+
+  .md-header__source .md-source:hover {
+    background: rgba(255, 255, 255, 0.08);
+  }
+}
+
+/* --------------------------------------------------------------------
    4. Le sélecteur de couleur (bouton 🎨 dans l'en-tête)
    -------------------------------------------------------------------- */
 .tssr-theme-picker {

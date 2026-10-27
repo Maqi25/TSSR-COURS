@@ -4,10 +4,10 @@ title: Programme de la formation
 
 # Programme de la formation
 
-Le planning officiel de la formation TSSR (ENI École Informatique, programme mis à jour le 23/02/2026) : **24 semaines de cours** (819 heures) du 12/10/2026 au 02/04/2027, puis le **stage en entreprise**, soit **1085 heures** au total. L'étape en cours est mise en évidence automatiquement.
+Le planning officiel de la formation TSSR (centre de cours, programme mis à jour le 23/02/2026) : **24 semaines de cours** (819 heures) du 12/10/2026 au 02/04/2027, puis le **stage en entreprise**, soit **1085 heures** au total. L'étape en cours est mise en évidence automatiquement.
 
 !!! info "Source"
-    Annexe 1 « Programme de la formation » du contrat de formation à distance ENI (réf. FORAMM58D, MàJ 23/02/2026). Les dates du stage (05/04/2027 → 28/05/2027, 266 h) ont été confirmées par l'école.
+    Annexe 1 « Programme de la formation » du contrat de formation à distance du centre de cours (réf. FORAMM58D, MàJ 23/02/2026). Les dates du stage (05/04/2027 → 28/05/2027, 266 h) ont été confirmées par l'école.
 
 ## 🗓️ Vue d'ensemble
 

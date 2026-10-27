@@ -1,6 +1,6 @@
 # TSSR · Mon espace de révision
 
-Mes cours, TP, fiches de révision, mémos de commandes et glossaire pour la formation **TSSR** (ENI, octobre 2026 – mai 2027).
+Mes cours, TP, fiches de révision, mémos de commandes et glossaire pour la formation **TSSR** suivie en centre de cours (octobre 2026 – mai 2027).
 
 **Site en ligne : <https://maqi25.github.io/TSSR-COURS/>**
 

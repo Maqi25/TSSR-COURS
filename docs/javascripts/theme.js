@@ -228,9 +228,30 @@
     update();
   }
 
+  // ------------------------------------------------------------------
+  // Titre de la barre du haut : « TSSR · Mon espace de révision »
+  // devient un badge « TSSR » + « Mon espace de révision »
+  // ------------------------------------------------------------------
+  function setupBrand() {
+    var topic = document.querySelector(".md-header__topic:first-child .md-ellipsis");
+    if (!topic) return;
+    var parts = topic.textContent.trim().split("·");
+    if (parts.length < 2) return;
+    topic.textContent = "";
+    var brand = document.createElement("span");
+    brand.className = "tssr-brand";
+    brand.textContent = parts[0].trim();
+    var sub = document.createElement("span");
+    sub.className = "tssr-brand-sub";
+    sub.textContent = parts.slice(1).join("·").trim();
+    topic.appendChild(brand);
+    topic.appendChild(sub);
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     setupPicker();
     setupNav();
+    setupBrand();
     markSeenCards();
     setupTocProgress();
   });
