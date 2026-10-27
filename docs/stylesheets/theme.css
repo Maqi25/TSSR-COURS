@@ -569,6 +569,115 @@ html[data-tssr-theme] body[data-md-color-scheme="slate"] {
   color: #fff;
 }
 
+/* --- Sommaire « Sur cette page » : même style que le menu MON ESPACE ----- */
+@media screen and (min-width: 60em) {
+  .md-sidebar--secondary .md-sidebar__scrollwrap {
+    padding: 0.6rem 0 0.8rem;
+    border: 1px solid rgba(148, 197, 255, 0.14);
+    background: var(--tssr-nav-bg);
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.08) inset, 0 20px 44px -18px rgba(0, 0, 0, 0.7);
+    scrollbar-width: thin;
+    scrollbar-color: color-mix(in srgb, var(--md-accent-fg-color) 55%, transparent) transparent;
+  }
+
+  /* titre doré + barre de lecture (remplie par theme.js) */
+  .md-sidebar--secondary .md-nav--secondary > .md-nav__title {
+    padding: 0.5rem 1.1rem 0.7rem;
+    font-size: 0.6rem;
+    font-weight: 800;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--tssr-nav-gold);
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .tssr-toc-progress {
+    height: 4px;
+    margin-top: 0.5rem;
+    border-radius: 4px;
+    background: rgba(255, 255, 255, 0.08);
+    overflow: hidden;
+  }
+
+  .tssr-toc-progress span {
+    display: block;
+    height: 100%;
+    width: var(--read, 0%);
+    border-radius: inherit;
+    background: linear-gradient(90deg, var(--tssr-nav-gold), var(--md-accent-fg-color));
+    box-shadow: 0 0 8px var(--md-accent-fg-color);
+    transition: width 0.15s linear;
+  }
+
+  /* le décalage des niveaux est géré plus bas (trait guide), pas par Material */
+  .md-sidebar--secondary .md-nav--secondary .md-nav__item {
+    padding: 0;
+  }
+
+  /* chaque titre devient un petit bouton */
+  .md-sidebar--secondary .md-nav--secondary .md-nav__link {
+    position: relative;
+    margin: 0.05rem 0.5rem 0.05rem 0;
+    padding: 0.3rem 0.55rem;
+    border-radius: 10px;
+    font-size: 0.66rem;
+    line-height: 1.35;
+    color: var(--tssr-nav-muted);
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s var(--tssr-ease);
+  }
+
+  .md-sidebar--secondary .md-nav--secondary .md-nav__link:hover {
+    color: var(--tssr-nav-fg);
+    background: rgba(255, 255, 255, 0.06);
+    transform: translateX(3px);
+  }
+
+  /* niveau principal (Objectif, Résumé, Cours…) : en gras et plus clair */
+  .md-sidebar--secondary .md-nav--secondary > .md-nav__list > .md-nav__item > .md-nav__link {
+    margin-left: 0.5rem;
+    font-weight: 700;
+    color: var(--tssr-nav-fg);
+  }
+
+  /* sections déjà lues : un peu plus discrètes */
+  .md-sidebar--secondary .md-nav--secondary .md-nav__link--passed {
+    color: color-mix(in srgb, var(--tssr-nav-muted) 75%, transparent);
+  }
+
+  /* section en cours de lecture : surlignée avec la barre lumineuse */
+  .md-sidebar--secondary .md-nav--secondary .md-nav__link--active {
+    color: #fff;
+    background: linear-gradient(90deg,
+      color-mix(in srgb, var(--md-accent-fg-color) 24%, transparent),
+      color-mix(in srgb, var(--md-accent-fg-color) 6%, transparent));
+    box-shadow: 0 6px 16px -10px var(--md-accent-fg-color);
+  }
+
+  .md-sidebar--secondary .md-nav--secondary .md-nav__link--active::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 20%;
+    bottom: 20%;
+    width: 3px;
+    border-radius: 3px;
+    background: var(--md-accent-fg-color);
+    box-shadow: 0 0 10px var(--md-accent-fg-color);
+  }
+
+  /* sous-niveaux : décalés, avec un trait guide */
+  .md-sidebar--secondary .md-nav--secondary .md-nav .md-nav__list {
+    margin-left: 0.75rem;
+    padding-left: 0.3rem;
+    border-left: 1px solid rgba(148, 197, 255, 0.16);
+  }
+
+  .md-sidebar--secondary .md-nav--secondary .md-nav .md-nav__link {
+    margin-left: 0;
+  }
+}
+
 /* Pages sans sommaire : on n'affiche pas un cadre vide à droite */
 @media screen and (min-width: 60em) {
   .md-sidebar--secondary:not(:has(.md-nav__link)) .md-sidebar__scrollwrap {

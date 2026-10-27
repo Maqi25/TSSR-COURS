@@ -200,9 +200,38 @@
     });
   }
 
+  // ------------------------------------------------------------------
+  // Barre de lecture sous « Sur cette page » : se remplit quand on descend
+  // ------------------------------------------------------------------
+  function setupTocProgress() {
+    var title = document.querySelector(".md-sidebar--secondary .md-nav--secondary > .md-nav__title");
+    if (!title) return;
+    var bar = document.createElement("div");
+    bar.className = "tssr-toc-progress";
+    bar.setAttribute("aria-hidden", "true");
+    bar.appendChild(document.createElement("span"));
+    title.appendChild(bar);
+
+    var pending = false;
+    function update() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var ratio = max > 0 ? Math.min(window.scrollY / max, 1) : 1;
+      bar.style.setProperty("--read", Math.round(ratio * 100) + "%");
+      bar.title = Math.round(ratio * 100) + " % lu";
+      pending = false;
+    }
+    window.addEventListener("scroll", function () {
+      if (pending) return;
+      pending = true;
+      requestAnimationFrame(update);   // au plus une mise à jour par image
+    }, { passive: true });
+    update();
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     setupPicker();
     setupNav();
     markSeenCards();
+    setupTocProgress();
   });
 })();
