@@ -665,3 +665,100 @@
   background: linear-gradient(90deg, #0891b2, #ff2e88);
 }
 .md-typeset .tssr-home-memo.is-prog .tssr-home-memo-icon { background: var(--tssr-home-cyan); }
+
+/* --------------------------------------------------------------------
+   Coin proverbe (home.js) : bulle discrète en bas du menu de gauche,
+   ou dans la page sur petit écran
+   -------------------------------------------------------------------- */
+.tssr-proverbe {
+  position: relative;
+  margin: 1.2rem 0.8rem 0.6rem 1.1rem;
+  padding: 0.65rem 0.8rem 0.6rem;
+  border-radius: 16px 16px 16px 4px;
+  border: 1px solid rgba(148, 197, 255, 0.16);
+  background: rgba(255, 255, 255, 0.05);
+  color: #c9d6e4;
+  font-size: 0.62rem;
+  line-height: 1.5;
+}
+
+/* la petite queue de la bulle, en bas à gauche */
+.tssr-proverbe::after {
+  content: "";
+  position: absolute;
+  left: -1px;
+  bottom: -0.45rem;
+  width: 0.9rem;
+  height: 0.45rem;
+  border-left: 1px solid rgba(148, 197, 255, 0.16);
+  background: inherit;
+  clip-path: polygon(0 0, 100% 0, 0 100%);
+}
+
+.tssr-proverbe-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem;
+  margin-bottom: 0.3rem;
+}
+
+.tssr-proverbe-titre {
+  font-size: 0.55rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #f5a524;
+}
+
+.tssr-proverbe-next {
+  padding: 0 0.3rem;
+  border-radius: 6px;
+  font-size: 0.75rem;
+  color: inherit;
+  opacity: 0.55;
+  cursor: pointer;
+  transition: opacity 0.2s ease, transform 0.35s ease;
+}
+
+.tssr-proverbe-next:hover {
+  opacity: 1;
+  transform: rotate(180deg);
+}
+
+.tssr-proverbe p {
+  margin: 0;
+}
+
+.tssr-proverbe-texte {
+  font-style: italic;
+}
+
+.tssr-proverbe-source {
+  margin-top: 0.3rem !important;
+  font-size: 0.55rem;
+  text-align: right;
+  opacity: 0.7;
+}
+
+.tssr-proverbe.is-new .tssr-proverbe-texte {
+  animation: tssr-proverbe-in 0.5s ease;
+}
+
+@keyframes tssr-proverbe-in {
+  from { opacity: 0; transform: translateY(4px); }
+}
+
+/* sur petit écran, la bulle est dans la page : couleurs de la page */
+.md-typeset .tssr-proverbe {
+  margin: 0;
+  max-width: 34rem;
+  color: var(--md-default-fg-color--light);
+  background: var(--tssr-glass);
+  border-color: var(--tssr-glass-border);
+  box-shadow: var(--tssr-shadow);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tssr-proverbe.is-new .tssr-proverbe-texte { animation: none; }
+}

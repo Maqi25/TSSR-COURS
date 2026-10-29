@@ -280,6 +280,64 @@
     });
   }
 
+  // ------------------------------------------------------------------
+  // Le coin proverbe : une bulle discrète, en bas du menu de gauche.
+  // Un proverbe par jour (le même toute la journée), ↻ pour en voir un autre.
+  // ------------------------------------------------------------------
+  var PROVERBES = [
+    { texte: "Un voyage de mille lieues commence par un premier pas.", source: "Lao-tseu, Tao-tö-king", pays: "chine" },
+    { texte: "Apprendre, c'est ramer à contre-courant : dès qu'on cesse, on recule.", source: "Proverbe chinois", pays: "chine" },
+    { texte: "N'aie pas peur d'avancer lentement, aie peur de t'arrêter.", source: "Proverbe chinois", pays: "chine" },
+    { texte: "Les gouttes d'eau finissent par percer la pierre.", source: "Proverbe chinois", pays: "chine" },
+    { texte: "L'habileté naît de la pratique.", source: "Proverbe chinois", pays: "chine" },
+    { texte: "J'entends et j'oublie, je vois et je me souviens, je fais et je comprends.", source: "Proverbe chinois", pays: "chine" },
+    { texte: "Celui qui pose une question est bête cinq minutes ; celui qui n'en pose pas le reste toute sa vie.", source: "Proverbe chinois", pays: "chine" },
+    { texte: "Le meilleur moment pour planter un arbre, c'était il y a vingt ans. Le deuxième meilleur moment, c'est maintenant.", source: "Proverbe chinois", pays: "chine" },
+    { texte: "Goutte après goutte, la cruche se remplit.", source: "Dhammapada (Inde)", pays: "inde" },
+    { texte: "Le savoir donne l'humilité ; l'humilité donne la valeur.", source: "Hitopadesha (Inde)", pays: "inde" },
+    { texte: "Agis selon ton devoir, sans t'inquiéter du résultat.", source: "Bhagavad-Gita (Inde)", pays: "inde" },
+    { texte: "Vis comme si tu devais mourir demain. Apprends comme si tu devais vivre toujours.", source: "Attribué à Gandhi (Inde)", pays: "inde" },
+  ];
+
+  function setupProverbe() {
+    // numéro du jour depuis 1970 : change à minuit, identique toute la journée
+    var day = Math.floor((Date.now() - new Date().getTimezoneOffset() * 60000) / DAY);
+    var index = day % PROVERBES.length;
+
+    var bubble = document.createElement("aside");
+    bubble.className = "tssr-proverbe";
+    bubble.setAttribute("aria-label", "Proverbe du jour");
+    bubble.innerHTML =
+      '<div class="tssr-proverbe-head"><span class="tssr-proverbe-titre"></span>' +
+      '<button type="button" class="tssr-proverbe-next" title="Un autre proverbe" aria-label="Un autre proverbe">↻</button></div>' +
+      '<p class="tssr-proverbe-texte"></p><p class="tssr-proverbe-source"></p>';
+
+    function show(i) {
+      var p = PROVERBES[i];
+      bubble.querySelector(".tssr-proverbe-titre").textContent = p.pays === "inde" ? "🪷 Sagesse indienne" : "🏮 Sagesse chinoise";
+      bubble.querySelector(".tssr-proverbe-texte").textContent = "« " + p.texte + " »";
+      bubble.querySelector(".tssr-proverbe-source").textContent = "— " + p.source;
+      bubble.classList.remove("is-new");
+      void bubble.offsetWidth;          // relance la petite animation d'apparition
+      bubble.classList.add("is-new");
+    }
+
+    bubble.querySelector(".tssr-proverbe-next").addEventListener("click", function () {
+      index = (index + 1) % PROVERBES.length;
+      show(index);
+    });
+    show(index);
+
+    // Grand écran : en bas du menu de gauche. Sinon : dans la page, sous la progression.
+    var sidebar = document.querySelector(".md-sidebar--primary .md-sidebar__inner");
+    var wide = window.matchMedia("(min-width: 76.25em)").matches;
+    if (wide && sidebar) sidebar.appendChild(bubble);
+    else {
+      var row = document.querySelector(".tssr-home-row");
+      if (row) row.insertAdjacentElement("afterend", bubble);
+    }
+  }
+
   document.addEventListener("DOMContentLoaded", function () {
     rememberPage();
     markProgramme();
@@ -292,5 +350,6 @@
     suggestNext(markSeenModules());
     setupEntrance();
     setupTilt();
+    setupProverbe();
   });
 })();
