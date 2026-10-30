@@ -283,21 +283,64 @@
   // ------------------------------------------------------------------
   // Le coin proverbe : une bulle discrète, en bas du menu de gauche.
   // Un proverbe par jour (le même toute la journée), ↻ pour en voir un autre.
+  // Des proverbes de motivation du monde entier : effort, patience,
+  // apprentissage, entraide. Rien qui vise ou caricature un peuple, une
+  // religion ou un groupe.
+  // terre : 🌍 Europe / Afrique · 🌏 Asie / Océanie · 🌎 Amériques
   // ------------------------------------------------------------------
   var PROVERBES = [
-    { texte: "Un voyage de mille lieues commence par un premier pas.", source: "Lao-tseu, Tao-tö-king", pays: "chine" },
-    { texte: "Apprendre, c'est ramer à contre-courant : dès qu'on cesse, on recule.", source: "Proverbe chinois", pays: "chine" },
-    { texte: "N'aie pas peur d'avancer lentement, aie peur de t'arrêter.", source: "Proverbe chinois", pays: "chine" },
-    { texte: "Les gouttes d'eau finissent par percer la pierre.", source: "Proverbe chinois", pays: "chine" },
-    { texte: "L'habileté naît de la pratique.", source: "Proverbe chinois", pays: "chine" },
-    { texte: "J'entends et j'oublie, je vois et je me souviens, je fais et je comprends.", source: "Proverbe chinois", pays: "chine" },
-    { texte: "Celui qui pose une question est bête cinq minutes ; celui qui n'en pose pas le reste toute sa vie.", source: "Proverbe chinois", pays: "chine" },
-    { texte: "Le meilleur moment pour planter un arbre, c'était il y a vingt ans. Le deuxième meilleur moment, c'est maintenant.", source: "Proverbe chinois", pays: "chine" },
-    { texte: "Goutte après goutte, la cruche se remplit.", source: "Dhammapada (Inde)", pays: "inde" },
-    { texte: "Le savoir donne l'humilité ; l'humilité donne la valeur.", source: "Hitopadesha (Inde)", pays: "inde" },
-    { texte: "Agis selon ton devoir, sans t'inquiéter du résultat.", source: "Bhagavad-Gita (Inde)", pays: "inde" },
-    { texte: "Vis comme si tu devais mourir demain. Apprends comme si tu devais vivre toujours.", source: "Attribué à Gandhi (Inde)", pays: "inde" },
+    { texte: "Un voyage de mille lieues commence par un premier pas.", source: "Lao-tseu, Tao-tö-king", pays: "Chine", terre: "🌏" },
+    { texte: "Apprendre, c'est ramer à contre-courant : dès qu'on cesse, on recule.", source: "Proverbe chinois", pays: "Chine", terre: "🌏" },
+    { texte: "N'aie pas peur d'avancer lentement, aie peur de t'arrêter.", source: "Proverbe chinois", pays: "Chine", terre: "🌏" },
+    { texte: "L'habileté naît de la pratique.", source: "Proverbe chinois", pays: "Chine", terre: "🌏" },
+    { texte: "Tombe sept fois, relève-toi huit.", source: "Proverbe japonais", pays: "Japon", terre: "🌏" },
+    { texte: "La poussière accumulée finit par former une montagne.", source: "Proverbe japonais", pays: "Japon", terre: "🌏" },
+    { texte: "Commencer, c'est déjà avoir fait la moitié du chemin.", source: "Proverbe coréen", pays: "Corée", terre: "🌏" },
+    { texte: "Même si le ciel s'écroule, il reste un trou par où s'en sortir.", source: "Proverbe coréen", pays: "Corée", terre: "🌏" },
+    { texte: "À force de limer une barre de fer, on finit par en faire une aiguille.", source: "Proverbe vietnamien", pays: "Viêt Nam", terre: "🌏" },
+    { texte: "Goutte après goutte, la cruche se remplit.", source: "Dhammapada", pays: "Inde", terre: "🌏" },
+    { texte: "Le savoir donne l'humilité ; l'humilité donne la valeur.", source: "Hitopadesha", pays: "Inde", terre: "🌏" },
+    { texte: "Goutte à goutte, on finit par faire un lac.", source: "Proverbe turc", pays: "Turquie", terre: "🌏" },
+    { texte: "Qui persévère réussit.", source: "Proverbe arabe", pays: "Monde arabe", terre: "🌍" },
+    { texte: "Peu à peu, on remplit la mesure.", source: "Proverbe swahili", pays: "Afrique de l'Est", terre: "🌍" },
+    { texte: "Doucement, doucement, on attrape le singe dans la forêt.", source: "Proverbe wolof", pays: "Sénégal", terre: "🌍" },
+    { texte: "Quand les toiles d'araignée s'unissent, elles peuvent arrêter un lion.", source: "Proverbe éthiopien", pays: "Éthiopie", terre: "🌍" },
+    { texte: "Il n'est jamais trop tard pour revenir chercher ce qu'on a oublié.", source: "Sankofa, proverbe akan", pays: "Ghana", terre: "🌍" },
+    { texte: "Petit à petit, l'oiseau fait son nid.", source: "Proverbe français", pays: "France", terre: "🌍" },
+    { texte: "C'est en forgeant qu'on devient forgeron.", source: "Proverbe français", pays: "France", terre: "🌍" },
+    { texte: "Qui va doucement va sûrement, et va loin.", source: "Proverbe italien", pays: "Italie", terre: "🌍" },
+    { texte: "Peu à peu, on va loin.", source: "Proverbe espagnol", pays: "Espagne", terre: "🌍" },
+    { texte: "C'est l'exercice qui fait le maître.", source: "Proverbe allemand", pays: "Allemagne", terre: "🌍" },
+    { texte: "Là où il y a une volonté, il y a un chemin.", source: "Proverbe anglais", pays: "Royaume-Uni", terre: "🌍" },
+    { texte: "La répétition est la mère de l'apprentissage.", source: "Proverbe russe", pays: "Russie", terre: "🌍" },
+    { texte: "Par des chemins difficiles, jusqu'aux étoiles.", source: "Locution latine", pays: "Rome antique", terre: "🌍" },
+    { texte: "Eau tendre sur pierre dure, tant elle frappe qu'elle la perce.", source: "Proverbe brésilien", pays: "Brésil", terre: "🌎" },
+    { texte: "Qui persévère finit par atteindre son but.", source: "Proverbe hispano-américain", pays: "Amérique latine", terre: "🌎" },
   ];
+
+  // Le petit hibou savant, perché sur la bulle (dessin SVG original).
+  // Ses paupières (.tssr-hibou-lids) clignent et il sautille grâce au CSS (home.css).
+  var HIBOU =
+    '<svg class="tssr-hibou" viewBox="0 0 64 64" role="img" aria-label="Un petit hibou à lunettes">' +
+    '<defs><linearGradient id="hibou-plume" x1="0" y1="0" x2="0" y2="1">' +
+    '<stop offset="0" stop-color="#a0714a"/><stop offset="1" stop-color="#6b4429"/></linearGradient></defs>' +
+    '<path d="M17 20 L14 7 L25 15 Z M47 20 L50 7 L39 15 Z" fill="#6b4429"/>' +                 // aigrettes
+    '<ellipse cx="32" cy="36" rx="19" ry="21" fill="url(#hibou-plume)"/>' +                      // corps
+    '<ellipse cx="32" cy="45" rx="11" ry="11" fill="#f1dfc0"/>' +                                // ventre
+    '<path d="M25 42 q3 2 6 0 M33 46 q3 2 6 0 M26 50 q3 2 6 0" stroke="#d8bf96" stroke-width="1.2" fill="none"/>' +
+    '<g class="tssr-hibou-aile"><ellipse cx="14.5" cy="38" rx="5" ry="10" fill="#5a3822"/></g>' +
+    '<ellipse cx="49.5" cy="38" rx="5" ry="10" fill="#5a3822"/>' +
+    '<circle cx="24" cy="27" r="8.5" fill="#fff"/><circle cx="40" cy="27" r="8.5" fill="#fff"/>' + // yeux
+    '<circle cx="25" cy="28" r="4" fill="#2b1a10"/><circle cx="41" cy="28" r="4" fill="#2b1a10"/>' +
+    '<circle cx="26.3" cy="26.6" r="1.4" fill="#fff"/><circle cx="42.3" cy="26.6" r="1.4" fill="#fff"/>' +
+    '<g class="tssr-hibou-lids" fill="#8a5c3a">' +                                                // paupières
+    '<rect x="15" y="18" width="18" height="18" rx="9"/><rect x="31" y="18" width="18" height="18" rx="9"/></g>' +
+    '<circle cx="24" cy="27" r="9.5" fill="none" stroke="#f5a524" stroke-width="1.8"/>' +           // lunettes
+    '<circle cx="40" cy="27" r="9.5" fill="none" stroke="#f5a524" stroke-width="1.8"/>' +
+    '<path d="M33.5 27 h-3" stroke="#f5a524" stroke-width="1.8"/>' +
+    '<path d="M29 34 L32 39 L35 34 Z" fill="#f59e0b"/>' +                                        // bec
+    '<path d="M25 56 v3 M28 56 v3 M36 56 v3 M39 56 v3" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>' +
+    '</svg>';
 
   function setupProverbe() {
     // numéro du jour depuis 1970 : change à minuit, identique toute la journée
@@ -310,11 +353,12 @@
     bubble.innerHTML =
       '<div class="tssr-proverbe-head"><span class="tssr-proverbe-titre"></span>' +
       '<button type="button" class="tssr-proverbe-next" title="Un autre proverbe" aria-label="Un autre proverbe">↻</button></div>' +
-      '<p class="tssr-proverbe-texte"></p><p class="tssr-proverbe-source"></p>';
+      '<p class="tssr-proverbe-texte"></p><p class="tssr-proverbe-source"></p>' +
+      HIBOU;
 
     function show(i) {
       var p = PROVERBES[i];
-      bubble.querySelector(".tssr-proverbe-titre").textContent = p.pays === "inde" ? "🪷 Sagesse indienne" : "🏮 Sagesse chinoise";
+      bubble.querySelector(".tssr-proverbe-titre").textContent = p.terre + " " + p.pays;
       bubble.querySelector(".tssr-proverbe-texte").textContent = "« " + p.texte + " »";
       bubble.querySelector(".tssr-proverbe-source").textContent = "— " + p.source;
       bubble.classList.remove("is-new");
@@ -322,9 +366,19 @@
       bubble.classList.add("is-new");
     }
 
+    // le hibou sautille quand on demande un autre proverbe (ou qu'on le clique)
+    var hibou = bubble.querySelector(".tssr-hibou");
+    function hop() {
+      hibou.classList.remove("is-hop");
+      void hibou.offsetWidth;
+      hibou.classList.add("is-hop");
+    }
+    hibou.addEventListener("click", hop);
+
     bubble.querySelector(".tssr-proverbe-next").addEventListener("click", function () {
       index = (index + 1) % PROVERBES.length;
       show(index);
+      hop();
     });
     show(index);
 

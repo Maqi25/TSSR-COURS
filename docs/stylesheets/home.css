@@ -762,3 +762,80 @@
 @media (prefers-reduced-motion: reduce) {
   .tssr-proverbe.is-new .tssr-proverbe-texte { animation: none; }
 }
+
+/* Le petit hibou savant perché sur la bulle du proverbe (home.js) */
+.tssr-proverbe {
+  margin-top: 2.6rem;
+}
+
+.md-typeset .tssr-proverbe {
+  margin-top: 2.2rem;
+}
+
+.tssr-hibou {
+  position: absolute;
+  top: -2.35rem;
+  right: 1.9rem;
+  width: 2.6rem;
+  height: 2.6rem;
+  cursor: pointer;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.35));
+  transform-origin: 50% 100%;
+  animation:
+    tssr-hibou-arrive 0.7s cubic-bezier(0.2, 0.9, 0.3, 1.4) 0.8s backwards,
+    tssr-hibou-tete 7s ease-in-out 2s infinite;
+}
+
+/* clignement : les paupières descendent un court instant */
+.tssr-hibou-lids {
+  transform-box: fill-box;
+  transform-origin: 50% 0;
+  transform: scaleY(0);
+  animation: tssr-hibou-cligne 4.5s ease-in-out 1.6s infinite;
+}
+
+.tssr-hibou.is-hop {
+  animation: tssr-hibou-saut 0.6s ease;
+}
+
+.tssr-hibou.is-hop .tssr-hibou-aile {
+  transform-box: fill-box;
+  transform-origin: 70% 20%;
+  animation: tssr-hibou-aile 0.6s ease;
+}
+
+@keyframes tssr-hibou-arrive {
+  from { opacity: 0; transform: translateY(1.2rem) scale(0.4); }
+}
+
+@keyframes tssr-hibou-tete {
+  0%, 80%, 100% { transform: rotate(0); }
+  85%           { transform: rotate(-9deg); }
+  92%           { transform: rotate(6deg); }
+}
+
+@keyframes tssr-hibou-cligne {
+  0%, 92%, 100% { transform: scaleY(0); }
+  95%           { transform: scaleY(1); }
+}
+
+@keyframes tssr-hibou-saut {
+  0%, 100% { transform: translateY(0); }
+  40%      { transform: translateY(-0.6rem) rotate(-6deg); }
+  70%      { transform: translateY(0.1rem) scale(1.05, 0.95); }
+}
+
+@keyframes tssr-hibou-aile {
+  0%, 100% { transform: rotate(0); }
+  30%, 70% { transform: rotate(35deg); }
+  50%      { transform: rotate(10deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tssr-hibou,
+  .tssr-hibou.is-hop,
+  .tssr-hibou-lids,
+  .tssr-hibou.is-hop .tssr-hibou-aile {
+    animation: none;
+  }
+}
