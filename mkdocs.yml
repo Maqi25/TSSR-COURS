@@ -243,6 +243,8 @@ nav:
       - "Bases des réseaux": revisions/fiche-bases-des-reseaux.md
       - "Utilisation de GNU/Linux": revisions/fiche-utilisation-gnu-linux.md
       - "L'IA au service du technicien": revisions/fiche-ia.md
+      - "Mémo commandes Windows": revisions/memo-commandes-windows.md
+      - "Mémo commandes Linux / Unix": revisions/memo-commandes-linux.md
   - Commandes:
       - commandes/index.md
       - PowerShell: commandes/powershell/index.md
