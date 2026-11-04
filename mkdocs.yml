@@ -249,5 +249,6 @@ nav:
       - commandes/index.md
       - PowerShell: commandes/powershell/index.md
       - Bash: commandes/bash/index.md
+  - Mémo: memo/index.md
   - Glossaire: glossaire/index.md
   - "+ Ajouter du contenu": ajouter-du-contenu.md

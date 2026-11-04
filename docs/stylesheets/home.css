@@ -574,6 +574,7 @@
 .md-typeset .tssr-home-memo.is-bash .tssr-home-memo-icon { background: var(--tssr-home-green); }
 .md-typeset .tssr-home-memo.is-glo  .tssr-home-memo-icon { background: var(--tssr-home-orange); }
 .md-typeset .tssr-home-memo.is-add  .tssr-home-memo-icon { background: var(--tssr-home-pink); }
+.md-typeset .tssr-home-memo.is-memo .tssr-home-memo-icon { background: var(--tssr-home-cyan); }
 
 /* --------------------------------------------------------------------
    Petits écrans

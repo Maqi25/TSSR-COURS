@@ -36,6 +36,7 @@
     terminal: "M4 17l6-6-6-6M12 19h8",
     search: "M11 19a8 8 0 1 0 0-16 8 8 0 0 0 0 16zM21 21l-4.3-4.3",
     plus: "M12 5v14M5 12h14",
+    clipboard: "M9 4h6v3H9zM9 5H6a1 1 0 0 0-1 1v14a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V6a1 1 0 0 0-1-1h-3M8 11h8M8 15h8M8 19h5",
     dot: "M12 13a1 1 0 1 0 0-2 1 1 0 0 0 0 2z",
   };
 
@@ -48,6 +49,7 @@
     "travaux-pratiques": "tool",
     revisions: "sparkle",
     commandes: "terminal",
+    memo: "clipboard",
     glossaire: "search",
     "ajouter-du-contenu": "plus",
   };

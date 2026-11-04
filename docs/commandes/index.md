@@ -20,6 +20,11 @@ Mémos de commandes, séparés par langage : chaque langage a sa propre page pou
 Les commandes essentielles regroupées par thème, avec exemples, pièges d'examen et quiz.
 
 <div class="tssr-grid">
+  <a class="tssr-card" href="../memo/">
+    <span class="tssr-card-icon">📋</span>
+    <span class="tssr-card-title">Mémo synthèse</span>
+    <span class="tssr-card-desc">Toutes les commandes sur une page : CMD, PowerShell et Linux côte à côte.</span>
+  </a>
   <a class="tssr-card" href="../revisions/memo-commandes-windows/">
     <span class="tssr-card-icon">🪟</span>
     <span class="tssr-card-title">Mémo Windows</span>

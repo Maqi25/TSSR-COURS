@@ -105,6 +105,7 @@ hide:
     <a href="commandes/">Voir tous →</a>
   </div>
   <div class="tssr-home-memos">
+    <a class="tssr-home-memo is-memo" href="memo/"><span class="tssr-home-memo-icon">📋</span><span><b>Mémo synthèse</b><small>Toutes les commandes, Windows ↔ Linux</small></span><span class="tssr-home-chevron">›</span></a>
     <a class="tssr-home-memo is-ps" href="commandes/powershell/"><span class="tssr-home-memo-icon">⚡</span><span><b>PowerShell</b><small>Cmdlets et exemples</small></span><span class="tssr-home-chevron">›</span></a>
     <a class="tssr-home-memo is-bash" href="commandes/bash/"><span class="tssr-home-memo-icon">🐧</span><span><b>Bash</b><small>Commandes Linux</small></span><span class="tssr-home-chevron">›</span></a>
     <a class="tssr-home-memo is-glo" href="glossaire/"><span class="tssr-home-memo-icon">🔎</span><span><b>Glossaire</b><small>Termes et acronymes</small></span><span class="tssr-home-chevron">›</span></a>
