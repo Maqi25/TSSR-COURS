@@ -95,6 +95,29 @@ Droits effectifs = **identité + groupes + ACL NTFS + droits de partage + strat�
 | `icacls chemin /grant …` | — | Accorder des droits NTFS ciblés. | Privilège minimal ; vérifier syntaxe et héritage. |
 | — | `Get-ExecutionPolicy -List` | Voir les stratégies PowerShell par portée. | Ne pas contourner une politique pour lancer un script. |
 
+## 🪟 Consoles à taper dans ++win+r++
+
+Ouvrent directement l'outil graphique, sans passer par les menus. Les `.msc` sont des consoles MMC, les `.cpl` des pages du Panneau de configuration.
+
+| Raccourci | Ce qu'il ouvre | Usage typique en TP | Vu dans |
+| --- | --- | --- | --- |
+| `ncpa.cpl` | **Connexions réseau** (cartes réseau) | Propriétés de la carte → **TCP/IPv4** : IP, masque, passerelle, DNS. | [Module 7](../cours/cours-02-systeme-client-microsoft/module-7-la-gestion-du-reseau-et-du-pare-feu/index.md) |
+| `sysdm.cpl` | **Propriétés système** | Nom du poste / groupe de travail, **Bureau à distance**, **Protection du système** (points de restauration), **Profils des utilisateurs**. | [Module 10](../cours/cours-02-systeme-client-microsoft/module-10-maintenance-du-systeme/index.md) |
+| `firewall.cpl` | **Pare-feu Windows** (vue simple) | Activer / désactiver, autoriser une application. | [Module 7](../cours/cours-02-systeme-client-microsoft/module-7-la-gestion-du-reseau-et-du-pare-feu/index.md) |
+| `wf.msc` | **Pare-feu avancé** | Règles entrantes / sortantes, ports, profils. | [Module 7](../cours/cours-02-systeme-client-microsoft/module-7-la-gestion-du-reseau-et-du-pare-feu/index.md) |
+| `compmgmt.msc` | **Gestion de l'ordinateur** | Regroupe disques, périphériques, utilisateurs, services, journaux. | [Module 3](../cours/cours-02-systeme-client-microsoft/module-3-interagir-avec-windows-10/index.md) |
+| `diskmgmt.msc` | **Gestion des disques** | Initialiser, partitionner, formater, attribuer une lettre. | [Module 4](../cours/cours-02-systeme-client-microsoft/module-4-la-gestion-du-stockage/index.md) |
+| `devmgmt.msc` | **Gestionnaire de périphériques** | Pilotes : mettre à jour, restaurer, désactiver. | [Module 9](../cours/cours-02-systeme-client-microsoft/module-9-les-pilotes-et-imprimantes/index.md) |
+| `lusrmgr.msc` | **Utilisateurs et groupes locaux** | Créer un compte, l'ajouter à un groupe. | [Module 5](../cours/cours-02-systeme-client-microsoft/module-5-les-utilisateurs-et-les-groupes/index.md) |
+| `fsmgmt.msc` | **Dossiers partagés** | Voir les partages, sessions et fichiers ouverts. | [Module 8](../cours/cours-02-systeme-client-microsoft/module-8-le-partage-de-ressources/index.md) |
+| `services.msc` | **Services** | Démarrer / arrêter, type de démarrage. | [Module 3](../cours/cours-02-systeme-client-microsoft/module-3-interagir-avec-windows-10/index.md) |
+| `eventvwr.msc` | **Observateur d'événements** | Journaux Système / Application : erreur, source, ID. | [Module 10](../cours/cours-02-systeme-client-microsoft/module-10-maintenance-du-systeme/index.md) |
+| `gpedit.msc` | **Stratégie de groupe locale** | Configuration ordinateur / utilisateur. | [Module 13](../cours/cours-02-systeme-client-microsoft/module-13-les-strategies-de-groupe-locales/index.md) |
+| `secpol.msc` | **Stratégie de sécurité locale** | Mots de passe, verrouillage de compte, droits. | [Module 13](../cours/cours-02-systeme-client-microsoft/module-13-les-strategies-de-groupe-locales/index.md) |
+
+!!! tip "Astuce"
+    La plupart demandent des **droits administrateur** pour modifier quelque chose : ++win+r++, taper le raccourci, puis ++ctrl+shift+enter++ pour l'ouvrir en admin. `gpedit.msc` et `secpol.msc` n'existent pas sur les éditions **Famille**.
+
 ## 🔎 Dépannage & journaux
 
 Conserver **l'erreur exacte, l'horodatage et les commandes exécutées** : ce sont des preuves de diagnostic.
@@ -185,6 +208,18 @@ La réponse attendue est souvent **une démarche argumentée**, pas une commande
     "options": ["net user / Get-LocalUser", "icacls / Get-Acl", "whoami /groups", "Get-ExecutionPolicy -List"],
     "correctIndex": 1,
     "explanation": "icacls chemin ou Get-Acl chemin. Les droits effectifs combinent aussi groupes et droits de partage."
+  },
+  {
+    "question": "Quel raccourci Win+R ouvre directement les cartes réseau pour régler l'IPv4 ?",
+    "options": ["sysdm.cpl", "ncpa.cpl", "devmgmt.msc", "wf.msc"],
+    "correctIndex": 1,
+    "explanation": "ncpa.cpl ouvre les Connexions réseau : clic droit sur la carte → Propriétés → TCP/IPv4."
+  },
+  {
+    "question": "Où activer la protection du système (points de restauration) ?",
+    "options": ["sysdm.cpl → Protection du système", "services.msc", "diskmgmt.msc", "eventvwr.msc"],
+    "correctIndex": 0,
+    "explanation": "sysdm.cpl ouvre les Propriétés système ; l'onglet Protection du système active les points de restauration disque par disque."
   }
 ]
 </script>
