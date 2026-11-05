@@ -23,20 +23,20 @@ Le planning officiel de la formation TSSR (centre de cours, programme mis à jou
 | 08 | 30/11 → 04/12/2026 | **Mise en situation professionnelle : systèmes clients** | 35 h | Alexandre CHAUSSIER |
 | 09 | 07/12 → 11/12/2026 | **Sensibilisation ITIL et Gestion de parc (1/2)** | 35 h | Cédric RICHEZ |
 | 10 | 14/12 → 18/12/2026 | **Sensibilisation ITIL et Gestion de parc (2/2)** | 35 h | Cédric RICHEZ |
-| 11 | 21/12 → 25/12/2026 | **Les infrastructures réseaux (1/2)** | 28 h | — |
-| 12 | 04/01 → 08/01/2027 | **Les infrastructures réseaux (2/2)** | 35 h | — |
+| 11 | 21/12 → 25/12/2026 | **Les infrastructures réseaux (1/2)** | 28 h | Paul HUVELIN |
+| 12 | 04/01 → 08/01/2027 | **Les infrastructures réseaux (2/2)** | 35 h | Paul HUVELIN |
 | 13 | 11/01 → 15/01/2027 | **Services réseau en environnement Microsoft (1/2)** | 35 h | — |
 | 14 | 18/01 → 22/01/2027 | **Services réseau en environnement Microsoft (2/2)** | 35 h | — |
 | 15 | 25/01 → 29/01/2027 | **Mise en situation professionnelle : services réseau** | 35 h | — |
 | 16 | 01/02 → 05/02/2027 | **Initiation au scripting Bash** | 35 h | — |
-| 17 | 08/02 → 12/02/2027 | **Initiation à PowerShell** | 35 h | — |
-| 18 | 15/02 → 19/02/2027 | **Automatisation et IA appliquées au support et au MCO** | 35 h | — |
-| 19 | 22/02 → 26/02/2027 | **Virtualisation de serveurs** | 35 h | — |
+| 17 | 08/02 → 12/02/2027 | **Initiation à PowerShell** | 35 h | Cédric RICHEZ |
+| 18 | 15/02 → 19/02/2027 | **Automatisation et IA appliquées au support et au MCO** | 35 h | Cédric RICHEZ |
+| 19 | 22/02 → 26/02/2027 | **Virtualisation de serveurs** | 35 h | Damien LORILLON |
 | 20 | 01/03 → 05/03/2027 | **Services Cloud** | 35 h | — |
 | 21 | 08/03 → 12/03/2027 | **Sauvegarde et restauration** | 35 h | — |
-| 22 | 15/03 → 19/03/2027 | **Réseau et sécurité (1/2)** | 35 h | — |
-| 23 | 22/03 → 26/03/2027 | **Réseau et sécurité (2/2)** | 35 h | — |
-| 24 | 29/03 → 02/04/2027 | **Supervision** | 28 h | — |
+| 22 | 15/03 → 19/03/2027 | **Réseau et sécurité (1/2)** | 35 h | Cédric RICHEZ |
+| 23 | 22/03 → 26/03/2027 | **Réseau et sécurité (2/2)** | 35 h | Cédric RICHEZ |
+| 24 | 29/03 → 02/04/2027 | **Supervision** | 28 h | Alexandre CHAUSSIER |
 | 25 | 05/04 → 28/05/2027 | **Stage en entreprise** | 266 h | — |
 | | | **Total** | **1085 h** | |
 
@@ -214,7 +214,7 @@ Le planning officiel de la formation TSSR (centre de cours, programme mis à jou
 
 ### 11 · Les infrastructures réseaux (1/2)
 
-<span class="tssr-prog-meta">📅 21/12 → 25/12/2026 · ⏱️ 28 h</span>
+<span class="tssr-prog-meta">📅 21/12 → 25/12/2026 · ⏱️ 28 h · 👤 Paul HUVELIN</span>
 
 - Introduction au réseau
 - Équipements de couche 2 : le switch, les VLAN, la sécurité des ports des switchs, le Wi-Fi
@@ -231,7 +231,7 @@ Le planning officiel de la formation TSSR (centre de cours, programme mis à jou
 
 ### 12 · Les infrastructures réseaux (2/2)
 
-<span class="tssr-prog-meta">📅 04/01 → 08/01/2027 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 04/01 → 08/01/2027 · ⏱️ 35 h · 👤 Paul HUVELIN</span>
 
 - Suite du module précédent
 
@@ -305,7 +305,7 @@ Le planning officiel de la formation TSSR (centre de cours, programme mis à jou
 
 ### 17 · Initiation à PowerShell
 
-<span class="tssr-prog-meta">📅 08/02 → 12/02/2027 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 08/02 → 12/02/2027 · ⏱️ 35 h · 👤 Cédric RICHEZ</span>
 
 - Découverte de PowerShell Core
 - Structure des commandes
@@ -323,7 +323,7 @@ Le planning officiel de la formation TSSR (centre de cours, programme mis à jou
 
 ### 18 · Automatisation et IA appliquées au support et au MCO
 
-<span class="tssr-prog-meta">📅 15/02 → 19/02/2027 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 15/02 → 19/02/2027 · ⏱️ 35 h · 👤 Cédric RICHEZ</span>
 
 - Détail non communiqué dans le programme
 
@@ -335,7 +335,7 @@ Le planning officiel de la formation TSSR (centre de cours, programme mis à jou
 
 ### 19 · Virtualisation de serveurs
 
-<span class="tssr-prog-meta">📅 22/02 → 26/02/2027 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 22/02 → 26/02/2027 · ⏱️ 35 h · 👤 Damien LORILLON</span>
 
 - Présentation
 - La virtualisation de serveurs
@@ -380,7 +380,7 @@ Le planning officiel de la formation TSSR (centre de cours, programme mis à jou
 
 ### 22 · Réseau et sécurité (1/2)
 
-<span class="tssr-prog-meta">📅 15/03 → 19/03/2027 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 15/03 → 19/03/2027 · ⏱️ 35 h · 👤 Cédric RICHEZ</span>
 
 - Sécuriser les accès réseau : le pare-feu, la matrice de flux
 - Exposer des services vers l'extérieur : la DMZ, le proxy
@@ -397,7 +397,7 @@ Le planning officiel de la formation TSSR (centre de cours, programme mis à jou
 
 ### 23 · Réseau et sécurité (2/2)
 
-<span class="tssr-prog-meta">📅 22/03 → 26/03/2027 · ⏱️ 35 h</span>
+<span class="tssr-prog-meta">📅 22/03 → 26/03/2027 · ⏱️ 35 h · 👤 Cédric RICHEZ</span>
 
 - Suite du module précédent
 
@@ -409,7 +409,7 @@ Le planning officiel de la formation TSSR (centre de cours, programme mis à jou
 
 ### 24 · Supervision
 
-<span class="tssr-prog-meta">📅 29/03 → 02/04/2027 · ⏱️ 28 h</span>
+<span class="tssr-prog-meta">📅 29/03 → 02/04/2027 · ⏱️ 28 h · 👤 Alexandre CHAUSSIER</span>
 
 - Détail non communiqué dans le programme
 

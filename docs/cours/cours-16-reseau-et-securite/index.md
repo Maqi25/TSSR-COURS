@@ -7,7 +7,7 @@
 
     **Lieu :** En ligne (Campus en ligne)
 
-    **Formateur(s) :** _à compléter_
+    **Formateur(s) :** Cédric RICHEZ (1/2 et 2/2)
 
 Retrouve ici l'ensemble des modules de ce cours.
 

@@ -7,7 +7,7 @@
 
     **Lieu :** En ligne (Campus en ligne)
 
-    **Formateur(s) :** _à compléter_
+    **Formateur(s) :** Alexandre CHAUSSIER
 
 !!! info "Détail des modules non communiqué"
     Le programme de l'école donne l'intitulé de ce cours, mais pas encore la liste de ses modules. Les modules seront ajoutés quand tu auras le support du formateur.
