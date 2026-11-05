@@ -53,7 +53,7 @@ extra_css:
   - stylesheets/animations.css
   - stylesheets/home.css
   - stylesheets/theme.css
-  - stylesheets/retro.css?v=20261105-3
+  - stylesheets/retro.css?v=20261105-4
 
 extra_javascript:
   - javascripts/theme.js
@@ -65,7 +65,7 @@ extra_javascript:
   - javascripts/home.js
   - javascripts/calculatrice-ip.js
   - javascripts/bonhomme.js
-  - javascripts/retro.js?v=20261105-3
+  - javascripts/retro.js?v=20261105-4
 
 markdown_extensions:
   - attr_list
