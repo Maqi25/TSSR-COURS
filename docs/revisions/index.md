@@ -1,5 +1,8 @@
 # Fiches de révision
 
+<div class="tssr-revisions" markdown>
+<div class="tssr-revisions-liste" markdown>
+
 Sommaire de toutes tes fiches de révision. Clique sur un titre pour aller directement à la fiche correspondante.
 
 - [Bases des réseaux](fiche-bases-des-reseaux.md) — CIDR, ports, plages privées, diagnostic
@@ -7,6 +10,12 @@ Sommaire de toutes tes fiches de révision. Clique sur un titre pour aller direc
 - [L'IA au service du technicien](fiche-ia.md) — usages, risques, RGPD, prompts, scripts (REAC 2026)
 - [Mémo commandes Windows](memo-commandes-windows.md) — CMD + PowerShell : fichiers, réseau, services, droits, journaux
 - [Mémo commandes Linux / Unix](memo-commandes-linux.md) — fichiers, droits, systemd, paquets, réseau, stockage, SSH
+
+</div>
+<figure class="tssr-revisions-image" markdown>
+![Félicitations ! Le monde t'attend.](../assets/images/felicitations.gif){ loading=lazy }
+</figure>
+</div>
 
 !!! tip "Ajouter une fiche"
     Crée un fichier `docs/revisions/fiche-nom-du-sujet.md` (par exemple `fiche-NAT.md`), puis ajoute une ligne ici sous la forme `- [Le NAT](fiche-NAT.md)`. Détails sur la page [+ Ajouter du contenu](../ajouter-du-contenu.md).

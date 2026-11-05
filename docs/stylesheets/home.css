@@ -505,6 +505,48 @@
   box-shadow: 0 0 0 1px color-mix(in srgb, var(--mc) 45%, transparent), 0 0 22px -6px var(--mc);
 }
 
+/* Page Révisions : liste des fiches à gauche, image à droite
+   (l'image passe en dessous sur petit écran) */
+.md-typeset .tssr-revisions {
+  display: flex;
+  align-items: flex-start;
+  gap: 1.5rem;
+}
+
+.md-typeset .tssr-revisions-liste {
+  flex: 1;
+  min-width: 0;
+}
+
+.md-typeset .tssr-revisions-image {
+  flex: none;
+  width: 14rem;
+  margin: 0;
+}
+
+.md-typeset .tssr-revisions-image p {
+  margin: 0;
+}
+
+.md-typeset .tssr-revisions-image img {
+  display: block;
+  width: 100%;
+  border-radius: 12px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  box-shadow: 0 0 24px -8px var(--tssr-home-cyan);
+}
+
+@media (max-width: 60em) {
+  .md-typeset .tssr-revisions {
+    flex-direction: column;
+  }
+
+  .md-typeset .tssr-revisions-image {
+    width: min(100%, 18rem);
+    align-self: center;
+  }
+}
+
 /* les cours verrouillés reprennent un peu de couleur au survol */
 .md-typeset .tssr-home-module.is-verrouille:hover {
   filter: grayscale(0.2);
