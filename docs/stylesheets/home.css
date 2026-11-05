@@ -482,13 +482,32 @@
   border-radius: 12px;
   border: 1px solid var(--md-default-fg-color--lightest);
   background: color-mix(in srgb, var(--md-default-bg-color) 55%, transparent);
-  transition: border-color 0.2s ease, transform 0.2s var(--tssr-ease);
+  transition: border-color 0.2s ease, background-color 0.25s ease, box-shadow 0.25s ease,
+    filter 0.25s ease, opacity 0.25s ease, transform 0.2s var(--tssr-ease);
 }
 
 .md-typeset .tssr-home-recent-item:hover,
-.md-typeset .tssr-home-module:hover,
 .md-typeset .tssr-home-memo:hover {
   border-color: var(--md-accent-fg-color);   /* le mouvement vient de .tssr-tilt */
+}
+
+/* Mes modules : chaque tuile a sa couleur néon (cyan, rose, violet, vert, orange)
+   qui s'allume au survol : bordure, fond teinté et halo */
+.md-typeset .tssr-home-module { --mc: var(--tssr-home-cyan); }
+.md-typeset .tssr-home-module:nth-child(5n + 2) { --mc: var(--tssr-home-pink); }
+.md-typeset .tssr-home-module:nth-child(5n + 3) { --mc: var(--tssr-home-violet); }
+.md-typeset .tssr-home-module:nth-child(5n + 4) { --mc: var(--tssr-home-green); }
+.md-typeset .tssr-home-module:nth-child(5n + 5) { --mc: var(--tssr-home-orange); }
+
+.md-typeset .tssr-home-module:hover {
+  border-color: var(--mc);
+  background-color: color-mix(in srgb, var(--mc) 16%, var(--md-default-bg-color));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--mc) 45%, transparent), 0 0 22px -6px var(--mc);
+}
+
+/* les cours verrouillés reprennent un peu de couleur au survol */
+.md-typeset .tssr-home-module.is-verrouille:hover {
+  filter: grayscale(0.2);
 }
 
 .md-typeset .tssr-home-recent-item > span:nth-child(2),
