@@ -106,6 +106,7 @@ Ouvrent directement l'outil graphique, sans passer par les menus. Les `.msc` son
 | `firewall.cpl` | **Pare-feu Windows** (vue simple) | Activer / désactiver, autoriser une application. | [Module 7](../cours/cours-02-systeme-client-microsoft/module-7-la-gestion-du-reseau-et-du-pare-feu/index.md) |
 | `wf.msc` | **Pare-feu avancé** | Règles entrantes / sortantes, ports, profils. | [Module 7](../cours/cours-02-systeme-client-microsoft/module-7-la-gestion-du-reseau-et-du-pare-feu/index.md) |
 | `compmgmt.msc` | **Gestion de l'ordinateur** | Regroupe disques, périphériques, utilisateurs, services, journaux. | [Module 3](../cours/cours-02-systeme-client-microsoft/module-3-interagir-avec-windows-10/index.md) |
+| `mmc` (`mmc.exe`) | **Console MMC vide** | *Fichier → Ajouter/Supprimer un composant logiciel enfichable* : se composer sa propre console (Services + Observateur + Disques…), puis l'enregistrer en `.msc`. | — |
 | `diskmgmt.msc` | **Gestion des disques** | Initialiser, partitionner, formater, attribuer une lettre. | [Module 4](../cours/cours-02-systeme-client-microsoft/module-4-la-gestion-du-stockage/index.md) |
 | `devmgmt.msc` | **Gestionnaire de périphériques** | Pilotes : mettre à jour, restaurer, désactiver. | [Module 9](../cours/cours-02-systeme-client-microsoft/module-9-les-pilotes-et-imprimantes/index.md) |
 | `lusrmgr.msc` | **Utilisateurs et groupes locaux** | Créer un compte, l'ajouter à un groupe. | [Module 5](../cours/cours-02-systeme-client-microsoft/module-5-les-utilisateurs-et-les-groupes/index.md) |
