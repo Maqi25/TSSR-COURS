@@ -214,7 +214,7 @@
 /* le soleil se lève derrière l'horizon de la grille */
 .md-typeset .tssr-home-hero::after {
   right: auto;
-  left: 62%;
+  left: 72%;
   bottom: 45%;   /* posé sur l'horizon de la grille */
   width: 200px;
   height: 200px;
@@ -273,29 +273,32 @@
   width: 100%;
   max-width: 30rem !important;
   margin: 1rem 0 0.4rem;
-  padding: 0.7rem;
+  padding: 0.7rem 0.8rem;
   border-radius: 14px;
-  background:
-    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.025) 0 2px, transparent 2px 6px),
-    linear-gradient(180deg, #2a2d33, #16181c);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  box-shadow:
-    0 1px 0 rgba(255, 255, 255, 0.18) inset,
-    0 -2px 0 rgba(0, 0, 0, 0.5) inset,
-    0 14px 28px -12px rgba(0, 0, 0, 0.8);
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  -webkit-backdrop-filter: blur(6px);
+          backdrop-filter: blur(6px);
   cursor: pointer;
   user-select: none;
+  transition: border-color 0.2s ease, background-color 0.2s ease;
 }
 
+.md-typeset .tssr-tc:hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.07);
+}
+
+/* une seule couleur de chiffres ; seule la pastille de l'étiquette change */
 .tssr-tc-row {
-  --led: #ff3b30;
-  --led-glow: rgba(255, 59, 48, 0.75);
+  --led: #e6f6ff;
+  --dot: #f87171;
   display: grid;
-  gap: 0.25rem;
+  gap: 0.2rem;
 }
 
-.tssr-tc-row.is-present { --led: #39ff6a; --led-glow: rgba(57, 255, 106, 0.7); }
-.tssr-tc-row.is-depart  { --led: #ffb020; --led-glow: rgba(255, 176, 32, 0.7); }
+.tssr-tc-row.is-present { --dot: #4ade80; }
+.tssr-tc-row.is-depart  { --dot: #fbbf24; }
 
 .tssr-tc-fields {
   display: grid;
@@ -312,41 +315,36 @@
 }
 
 .tssr-tc-field small {
-  font-family: var(--retro-title-font);
   font-size: 0.42rem;
-  font-weight: 800;
+  font-weight: 700;
   letter-spacing: 0.1em;
-  color: #ff5a4e;
+  color: rgba(255, 255, 255, 0.4);
 }
 
 .tssr-tc-led {
   position: relative;
   display: block;
   width: 100%;
-  padding: 0.12rem 0.25rem;
-  border-radius: 4px;
-  background: #0b0b0b;
-  box-shadow: 0 0 0 1px #000 inset, 0 2px 4px rgba(0, 0, 0, 0.8) inset;
+  padding: 0.1rem 0.25rem;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.25);
   font-family: var(--retro-led-font);
-  font-size: 1.15rem;
+  font-size: 1.05rem;
   line-height: 1.15;
   text-align: center;
   white-space: nowrap;
 }
 
-/* segments éteints */
+/* réserve la largeur des chiffres (invisible), le vrai texte est posé dessus */
 .tssr-tc-led::before {
   content: attr(data-ghost);
-  color: var(--led);
-  opacity: 0.12;
+  visibility: hidden;
 }
 
-/* segments allumés, posés exactement sur les éteints */
 .tssr-tc-led > span {
   position: absolute;
-  inset: 0.12rem 0.25rem;
+  inset: 0.1rem 0.25rem;
   color: var(--led);
-  text-shadow: 0 0 6px var(--led-glow), 0 0 14px var(--led-glow);
 }
 
 /* le « : » des minutes clignote sur l'afficheur du présent */
@@ -356,42 +354,47 @@
   right: -0.32rem;
   top: 0.1rem;
   color: var(--led);
-  text-shadow: 0 0 6px var(--led-glow);
+  opacity: 0.6;
   animation: tssr-blink 1s steps(1) infinite;
 }
 
 .tssr-tc-label {
-  justify-self: center;
-  padding: 0.08rem 0.7rem;
-  border-radius: 3px;
-  font-family: var(--retro-title-font);
-  font-size: 0.48rem;
-  font-weight: 800;
-  letter-spacing: 0.18em;
-  color: #111;
-  background: #d9d4c7;
-  box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  justify-self: start;
+  font-size: 0.5rem;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.55);
 }
 
-/* compteur de vitesse : apparaît pendant le saut dans le temps */
+.tssr-tc-label::before {
+  content: "";
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+  background: var(--dot);
+}
+
+/* compteur de vitesse : discret, ressort pendant le saut dans le temps */
 .tssr-tc-speed {
   justify-self: end;
   font-family: var(--retro-led-font);
-  font-size: 0.75rem;
-  color: #ff3b30;
-  text-shadow: 0 0 6px rgba(255, 59, 48, 0.8);
-  opacity: 0.55;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.35);
+  transition: color 0.2s ease;
 }
 
 .tssr-tc.is-jumping .tssr-tc-speed {
-  opacity: 1;
+  color: #fbbf24;
 }
 
 .tssr-tc-hint {
   margin: 0 !important;
-  font-size: 0.55rem;
+  font-size: 0.52rem;
   text-align: right;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.35);
 }
 
 @media screen and (max-width: 30em) {
