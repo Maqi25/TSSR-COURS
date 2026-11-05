@@ -14,18 +14,19 @@
  * POUR AJOUTER UN MODULE : ajouter une ligne dans ICONES ci-dessous
  *   "dossier-du-cours/dossier-du-module": "nom-de-l-icone",
  * puis déposer assets/icones/nom-de-l-icone.svg (sinon l'emoji d'origine reste).
+ * Pour une image PNG, mettre l'extension dans le nom : "3d-serveur.png".
  * ---------------------------------------------------------------------
  */
 
 (function () {
   var ICONES = {
     // Cours 1 · Bases des réseaux
-    "cours-01-bases-des-reseaux": "globe-with-meridians",
+    "cours-01-bases-des-reseaux": "3d-globe-reseau.png",
     "cours-01-bases-des-reseaux/module-1-le-modele-osi": "pancakes",
     "cours-01-bases-des-reseaux/module-2-les-unites-informatiques": "abacus",
     "cours-01-bases-des-reseaux/module-3-l-adressage-ipv4": "round-pushpin",
     "cours-01-bases-des-reseaux/module-4-la-communication": "speech-balloon",
-    "cours-01-bases-des-reseaux/module-5-les-premieres-commandes": "keyboard",
+    "cours-01-bases-des-reseaux/module-5-les-premieres-commandes": "3d-terminal.png",
     "cours-01-bases-des-reseaux/module-6-l-adressage-ipv6": "ringed-planet",
 
     // Cours 2 · Système client Microsoft
@@ -34,37 +35,37 @@
     "cours-02-systeme-client-microsoft/module-2-installation-de-windows-10": "optical-disk",
     "cours-02-systeme-client-microsoft/module-2bis-vmware-workstation": "nesting-dolls",
     "cours-02-systeme-client-microsoft/module-3-interagir-avec-windows-10": "computer-mouse",
-    "cours-02-systeme-client-microsoft/module-4-la-gestion-du-stockage": "card-file-box",
+    "cours-02-systeme-client-microsoft/module-4-la-gestion-du-stockage": "3d-disque-dur.png",
     "cours-02-systeme-client-microsoft/module-5-les-utilisateurs-et-les-groupes": "busts-in-silhouette",
     "cours-02-systeme-client-microsoft/module-6-la-securite-ntfs-et-les-acl": "locked-with-key",
     "cours-02-systeme-client-microsoft/module-7-la-gestion-du-reseau-et-du-pare-feu": "brick",
-    "cours-02-systeme-client-microsoft/module-8-le-partage-de-ressources": "open-file-folder",
+    "cours-02-systeme-client-microsoft/module-8-le-partage-de-ressources": "3d-dossier-bleu.png",
     "cours-02-systeme-client-microsoft/module-9-les-pilotes-et-imprimantes": "printer",
-    "cours-02-systeme-client-microsoft/module-10-maintenance-du-systeme": "hammer-and-wrench",
+    "cours-02-systeme-client-microsoft/module-10-maintenance-du-systeme": "3d-engrenage.png",
     "cours-02-systeme-client-microsoft/module-11-aller-plus-loin-avec-powershell": "rocket",
     "cours-02-systeme-client-microsoft/module-12-introduction-a-la-capture-et-au-deploiement-d-images": "camera-with-flash",
     "cours-02-systeme-client-microsoft/module-13-les-strategies-de-groupe-locales": "bookmark-tabs",
 
     // Cours 3 · Utilisateur GNU/Linux
-    "cours-03-utilisateur-d-une-distribution-gnu-linux": "penguin",
-    "cours-03-utilisateur-d-une-distribution-gnu-linux/module-1-introduction-a-unix-linux": "t-rex",
+    "cours-03-utilisateur-d-une-distribution-gnu-linux": "3d-tux.png",
+    "cours-03-utilisateur-d-une-distribution-gnu-linux/module-1-introduction-a-unix-linux": "3d-pingouin-salut.png",
     "cours-03-utilisateur-d-une-distribution-gnu-linux/module-2-decouverte-du-systeme-d-exploitation-linux": "compass",
-    "cours-03-utilisateur-d-une-distribution-gnu-linux/module-3-decouverte-du-shell-et-premieres-commandes": "spiral-shell",
-    "cours-03-utilisateur-d-une-distribution-gnu-linux/module-4-fichiers-et-dossiers-sous-linux": "file-folder",
-    "cours-03-utilisateur-d-une-distribution-gnu-linux/module-5-utiliser-des-fichiers-sous-linux": "page-facing-up",
+    "cours-03-utilisateur-d-une-distribution-gnu-linux/module-3-decouverte-du-shell-et-premieres-commandes": "3d-fenetre-terminal.png",
+    "cours-03-utilisateur-d-une-distribution-gnu-linux/module-4-fichiers-et-dossiers-sous-linux": "3d-dossier-arborescence.png",
+    "cours-03-utilisateur-d-une-distribution-gnu-linux/module-5-utiliser-des-fichiers-sous-linux": "3d-fichier-texte.png",
     "cours-03-utilisateur-d-une-distribution-gnu-linux/module-6-specificites-du-shell-bash": "sparkles",
     "cours-03-utilisateur-d-une-distribution-gnu-linux/module-7-editer-du-texte-sous-linux": "memo",
-    "cours-03-utilisateur-d-une-distribution-gnu-linux/module-8-mecanismes-avances-de-linux-et-bash": "gear",
+    "cours-03-utilisateur-d-une-distribution-gnu-linux/module-8-mecanismes-avances-de-linux-et-bash": "3d-engrenage-config.png",
 
     // Cours 4 · Administration GNU/Linux
-    "cours-04-administration-d-une-distribution-gnu-linux": "hammer-and-wrench",
+    "cours-04-administration-d-une-distribution-gnu-linux": "3d-pingouin-bravo.png",
     "cours-04-administration-d-une-distribution-gnu-linux/module-1-presentation-de-debian-gnu-linux": "cyclone",
     "cours-04-administration-d-une-distribution-gnu-linux/module-2-installation-d-une-distribution-debian": "dvd",
     "cours-04-administration-d-une-distribution-gnu-linux/module-3-demarrage-d-une-distribution-debian": "rocket",
     "cours-04-administration-d-une-distribution-gnu-linux/module-4-debian-en-mode-maintenance": "adhesive-bandage",
     "cours-04-administration-d-une-distribution-gnu-linux/module-5-gestion-du-reseau": "link",
-    "cours-04-administration-d-une-distribution-gnu-linux/module-6-gestion-des-paquets-logiciels": "package",
-    "cours-04-administration-d-une-distribution-gnu-linux/module-7-gestion-des-espaces-de-stockage": "computer-disk",
+    "cours-04-administration-d-une-distribution-gnu-linux/module-6-gestion-des-paquets-logiciels": "3d-paquet-deb.png",
+    "cours-04-administration-d-une-distribution-gnu-linux/module-7-gestion-des-espaces-de-stockage": "3d-disque-dur.png",
     "cours-04-administration-d-une-distribution-gnu-linux/module-8-gestion-avancee-des-espaces-de-stockage-lvm": "building-construction",
     "cours-04-administration-d-une-distribution-gnu-linux/module-9-gestion-des-espaces-de-stockage-systemes-de-fichiers": "card-index-dividers",
     "cours-04-administration-d-une-distribution-gnu-linux/module-10-gestion-des-utilisateurs-et-des-groupes": "bust-in-silhouette",
@@ -93,9 +94,9 @@
     "cours-06-sensibilisation-itil-et-gestion-de-parc/module-15-presentation-des-plugins-inventaire-avec-fusioninventory": "magnifying-glass-tilted-left",
 
     // Cours 7 · Infrastructures réseau
-    "cours-07-les-infrastructures-reseau": "satellite-antenna",
-    "cours-07-les-infrastructures-reseau/module-1-la-configuration-initiale-des-peripheriques": "control-knobs",
-    "cours-07-les-infrastructures-reseau/module-2-la-commutation-ethernet": "electric-plug",
+    "cours-07-les-infrastructures-reseau": "3d-routeur-wifi.png",
+    "cours-07-les-infrastructures-reseau/module-1-la-configuration-initiale-des-peripheriques": "3d-routeur-noir.png",
+    "cours-07-les-infrastructures-reseau/module-2-la-commutation-ethernet": "3d-switch-stockage.png",
     "cours-07-les-infrastructures-reseau/module-3-le-routage": "world-map",
     "cours-07-les-infrastructures-reseau/module-4-les-reseaux-sans-fil": "antenna-bars",
     "cours-07-les-infrastructures-reseau/module-5-les-listes-de-controle-d-acces": "no-entry",
@@ -103,8 +104,8 @@
     "cours-07-les-infrastructures-reseau/module-7-la-sauvegarde-et-la-maintenance": "nut-and-bolt",
 
     // Cours 8 · Services réseau Microsoft
-    "cours-08-les-services-reseau-en-environnement-microsoft": "office-building",
-    "cours-08-les-services-reseau-en-environnement-microsoft/module-1-administration-windows": "laptop",
+    "cours-08-les-services-reseau-en-environnement-microsoft": "3d-serveur.png",
+    "cours-08-les-services-reseau-en-environnement-microsoft/module-1-administration-windows": "3d-portable-reseau-2.png",
     "cours-08-les-services-reseau-en-environnement-microsoft/module-2-active-directory": "classical-building",
     "cours-08-les-services-reseau-en-environnement-microsoft/module-3-les-strategies-de-groupe": "page-with-curl",
     "cours-08-les-services-reseau-en-environnement-microsoft/module-4-le-routage": "motorway",
@@ -115,7 +116,7 @@
     "cours-09-mise-en-situation-professionnelle-services-reseau": "1st-place-medal",
 
     // Cours 10 · Scripting Bash
-    "cours-10-initiation-au-scripting-bash": "scroll",
+    "cours-10-initiation-au-scripting-bash": "3d-script-bash.png",
     "cours-10-initiation-au-scripting-bash/module-1-analyse": "magnifying-glass-tilted-right",
     "cours-10-initiation-au-scripting-bash/module-2-ecriture-des-scripts": "fountain-pen",
     "cours-10-initiation-au-scripting-bash/module-3-premieres-commandes-utiles-aux-scripts": "hammer",
@@ -136,7 +137,7 @@
     "cours-11-initiation-a-powershell/module-7-gestion-des-erreurs": "bug",
 
     // Cours 12 · Automatisation et IA
-    "cours-12-automatisation-et-ia-appliquees-au-support-et-au-mco": "robot",
+    "cours-12-automatisation-et-ia-appliquees-au-support-et-au-mco": "3d-engrenages.png",
 
     // Cours 13 · Virtualisation de serveurs
     "cours-13-virtualisation-de-serveurs": "milky-way",
@@ -155,23 +156,23 @@
     "cours-13-virtualisation-de-serveurs/module-8-la-gestion-du-datacenter": "office-building",
 
     // Cours 14 · Services Cloud
-    "cours-14-services-cloud": "cloud",
+    "cours-14-services-cloud": "3d-nuages.png",
 
     // Cours 15 · Sauvegarde et restauration
-    "cours-15-sauvegarde-et-restauration": "floppy-disk",
+    "cours-15-sauvegarde-et-restauration": "3d-cle-usb.png",
     "cours-15-sauvegarde-et-restauration/module-1-concepts-enjeux-definitions": "light-bulb",
     "cours-15-sauvegarde-et-restauration/module-1-concepts-enjeux-et-definitions": "light-bulb",
     "cours-15-sauvegarde-et-restauration/module-2-types-de-sauvegarde": "card-index-dividers",
     "cours-15-sauvegarde-et-restauration/module-3-gestion-du-stockage": "file-cabinet",
-    "cours-15-sauvegarde-et-restauration/module-3-stocker-les-sauvegardes": "file-cabinet",
+    "cours-15-sauvegarde-et-restauration/module-3-stocker-les-sauvegardes": "3d-nuage-stockage.png",
     "cours-15-sauvegarde-et-restauration/module-4-la-redondance-des-donnees-raid": "mirror",
     "cours-15-sauvegarde-et-restauration/module-4-sauvegarder-des-machines-virtuelles": "nesting-dolls",
     "cours-15-sauvegarde-et-restauration/module-5-superviser-les-sauvegardes": "eyes",
 
     // Cours 16 · Réseau et sécurité
-    "cours-16-reseau-et-securite": "shield",
+    "cours-16-reseau-et-securite": "3d-bouclier.png",
     "cours-16-reseau-et-securite/module-1-rappels-de-notions-sur-le-reseau": "books",
-    "cours-16-reseau-et-securite/module-1-securiser-les-acces-reseau": "locked-with-key",
+    "cours-16-reseau-et-securite/module-1-securiser-les-acces-reseau": "3d-bouclier-cadenas.png",
     "cours-16-reseau-et-securite/module-2-exposer-des-services-vers-l-exterieur": "satellite",
     "cours-16-reseau-et-securite/module-2-le-pare-feu": "fire",
     "cours-16-reseau-et-securite/module-3-le-nat": "performing-arts",
@@ -179,14 +180,14 @@
     "cours-16-reseau-et-securite/module-4-exposer-des-services-vers-l-exterieur": "satellite",
     "cours-16-reseau-et-securite/module-4-relier-des-sites-distants-de-maniere-securisee": "bridge-at-night",
     "cours-16-reseau-et-securite/module-5-authentifier-et-securiser-les-echanges": "key",
-    "cours-16-reseau-et-securite/module-5-securiser-la-navigation-internet": "globe-showing-europe-africa",
+    "cours-16-reseau-et-securite/module-5-securiser-la-navigation-internet": "3d-globe-terre.png",
     "cours-16-reseau-et-securite/module-6-centraliser-les-informations-de-journalisation": "ledger",
     "cours-16-reseau-et-securite/module-6-la-gestion-des-certificats": "rosette",
     "cours-16-reseau-et-securite/module-7-connecter-les-collaborateurs-pour-le-teletravail": "house-with-garden",
     "cours-16-reseau-et-securite/module-8-connecter-les-collaborateurs-entre-sites": "bridge-at-night",
 
     // Cours 17 · Supervision
-    "cours-17-supervision": "chart-increasing",
+    "cours-17-supervision": "3d-portable-reseau.png",
   };
 
   var root = "";   // adresse de la racine du site, ex. /TSSR-COURS/
@@ -205,7 +206,8 @@
   // la bonne taille (16 px dans le menu, plus grande sur les cartes).
   function makeImg(name, className, size) {
     var img = document.createElement("img");
-    img.src = root + "assets/icones/" + name + ".svg";
+    // un nom sans extension = SVG Fluent Emoji ; sinon le fichier tel quel (ex. "3d-serveur.png")
+    img.src = root + "assets/icones/" + name + (/\.\w+$/.test(name) ? "" : ".svg");
     img.alt = "";                    // décorative : le titre à côté suffit
     img.className = className;
     img.decoding = "async";

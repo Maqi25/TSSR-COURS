@@ -51,19 +51,19 @@ theme:
 extra_css:
   - stylesheets/extra.css
   - stylesheets/animations.css
-  - stylesheets/home.css?v=20261105-2
+  - stylesheets/home.css?v=20261105-4
   - stylesheets/theme.css
   - stylesheets/retro.css?v=20261105-4
 
 extra_javascript:
   - javascripts/mermaid-survol.js?v=20261105-1
   - javascripts/theme.js
-  - javascripts/icones.js
+  - javascripts/icones.js?v=20261105-3
   - javascripts/statuts.js
   - javascripts/filter.js
   - javascripts/quiz.js
   - javascripts/animations.js
-  - javascripts/home.js
+  - javascripts/home.js?v=20261105-2
   - javascripts/calculatrice-ip.js
   - javascripts/bonhomme.js
   - javascripts/retro.js?v=20261105-4

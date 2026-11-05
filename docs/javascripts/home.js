@@ -318,29 +318,78 @@
     { texte: "Qui persévère finit par atteindre son but.", source: "Proverbe hispano-américain", pays: "Amérique latine", terre: "🌎" },
   ];
 
-  // Le petit hibou savant, perché sur la bulle (dessin SVG original).
-  // Ses paupières (.tssr-hibou-lids) clignent et il sautille grâce au CSS (home.css).
-  var HIBOU =
-    '<svg class="tssr-hibou" viewBox="0 0 64 64" role="img" aria-label="Un petit hibou à lunettes">' +
-    '<defs><linearGradient id="hibou-plume" x1="0" y1="0" x2="0" y2="1">' +
-    '<stop offset="0" stop-color="#a0714a"/><stop offset="1" stop-color="#6b4429"/></linearGradient></defs>' +
-    '<path d="M17 20 L14 7 L25 15 Z M47 20 L50 7 L39 15 Z" fill="#6b4429"/>' +                 // aigrettes
-    '<ellipse cx="32" cy="36" rx="19" ry="21" fill="url(#hibou-plume)"/>' +                      // corps
-    '<ellipse cx="32" cy="45" rx="11" ry="11" fill="#f1dfc0"/>' +                                // ventre
-    '<path d="M25 42 q3 2 6 0 M33 46 q3 2 6 0 M26 50 q3 2 6 0" stroke="#d8bf96" stroke-width="1.2" fill="none"/>' +
-    '<g class="tssr-hibou-aile"><ellipse cx="14.5" cy="38" rx="5" ry="10" fill="#5a3822"/></g>' +
-    '<ellipse cx="49.5" cy="38" rx="5" ry="10" fill="#5a3822"/>' +
-    '<circle cx="24" cy="27" r="8.5" fill="#fff"/><circle cx="40" cy="27" r="8.5" fill="#fff"/>' + // yeux
-    '<circle cx="25" cy="28" r="4" fill="#2b1a10"/><circle cx="41" cy="28" r="4" fill="#2b1a10"/>' +
-    '<circle cx="26.3" cy="26.6" r="1.4" fill="#fff"/><circle cx="42.3" cy="26.6" r="1.4" fill="#fff"/>' +
-    '<g class="tssr-hibou-lids" fill="#8a5c3a">' +                                                // paupières
-    '<rect x="15" y="18" width="18" height="18" rx="9"/><rect x="31" y="18" width="18" height="18" rx="9"/></g>' +
-    '<circle cx="24" cy="27" r="9.5" fill="none" stroke="#f5a524" stroke-width="1.8"/>' +           // lunettes
-    '<circle cx="40" cy="27" r="9.5" fill="none" stroke="#f5a524" stroke-width="1.8"/>' +
-    '<path d="M33.5 27 h-3" stroke="#f5a524" stroke-width="1.8"/>' +
-    '<path d="M29 34 L32 39 L35 34 Z" fill="#f59e0b"/>' +                                        // bec
-    '<path d="M25 56 v3 M28 56 v3 M36 56 v3 M39 56 v3" stroke="#f59e0b" stroke-width="2" stroke-linecap="round"/>' +
-    '</svg>';
+  // Le petit hibou savant, perché sur la bulle. Il est fait de deux calques :
+  // le corps (assets/images/hibou-corps.png) et la tête (hibou-tete.png), pour
+  // que la tête bouge pendant que les pattes restent plantées sur la bulle.
+  // Les paupières (.tssr-hibou-paupiere) sont posées sur ses yeux.
+  // Les gestes sont dans home.css ; animerHibou() les déclenche au hasard.
+  function hibouHTML() {
+    var logo = document.querySelector('[data-md-component="logo"]');
+    function src(nom) { return new URL("assets/images/" + nom, logo ? logo.href : location.href).href; }
+    var img = function (nom) {
+      return '<img src="' + src(nom) + '" alt="" width="185" height="240" draggable="false" decoding="async">';
+    };
+    return '<span class="tssr-hibou" role="img" aria-label="Un petit hibou">' +
+      '<span class="tssr-hibou-souffle"><span class="tssr-hibou-plumes">' +
+      '<span class="tssr-hibou-corps">' + img("hibou-corps.png") + '</span>' +
+      '<span class="tssr-hibou-tete">' + img("hibou-tete.png") +
+      '<span class="tssr-hibou-paupiere is-gauche"></span>' +
+      '<span class="tssr-hibou-paupiere is-droite"></span></span>' +
+      '</span></span>' +
+      '<span class="tssr-hibou-bulle">Hou hou !</span>' +
+      '</span>';
+  }
+
+  // Gestes du hibou : nom → durée (ms). Le clignement revient plus souvent.
+  var GESTES = {
+    "cligne": 220, "double": 580, "penche-g": 1750, "penche-d": 1750,
+    "regarde": 2350, "ebouriffe": 650, "hop": 700, "dodo": 2850,
+  };
+  var TIRAGE = ["cligne", "cligne", "cligne", "double", "penche-g", "penche-d",
+    "regarde", "regarde", "ebouriffe", "hop", "dodo"];
+
+  function animerHibou(hibou) {
+    var occupe = false;
+
+    function geste(nom, puis) {
+      if (occupe) return;
+      occupe = true;
+      hibou.classList.remove("is-" + nom);
+      void hibou.offsetWidth;                // relance l'animation CSS
+      hibou.classList.add("is-" + nom);
+      setTimeout(function () {
+        hibou.classList.remove("is-" + nom);
+        occupe = false;
+        if (puis) geste(puis);
+      }, GESTES[nom]);
+    }
+
+    function parler() {
+      hibou.classList.add("is-parle");
+      clearTimeout(parler.t);
+      parler.t = setTimeout(function () { hibou.classList.remove("is-parle"); }, 1400);
+    }
+
+    // un geste au hasard toutes les 2,5 à 6 s (rien si l'onglet est caché)
+    function suivant() {
+      if (!document.hidden) {
+        var nom = TIRAGE[Math.floor(Math.random() * TIRAGE.length)];
+        geste(nom, nom === "dodo" ? "ebouriffe" : null);   // il se réveille en s'ébrouant
+      }
+      setTimeout(suivant, 2500 + Math.random() * 3500);
+    }
+
+    var reduce = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (!reduce) setTimeout(suivant, 2200);
+
+    hibou.addEventListener("click", function () {
+      occupe = false;
+      geste("hop");
+      parler();
+    });
+
+    return { hop: function () { occupe = false; geste("hop"); } };
+  }
 
   function setupProverbe() {
     // numéro du jour depuis 1970 : change à minuit, identique toute la journée
@@ -354,7 +403,7 @@
       '<div class="tssr-proverbe-head"><span class="tssr-proverbe-titre"></span>' +
       '<button type="button" class="tssr-proverbe-next" title="Un autre proverbe" aria-label="Un autre proverbe">↻</button></div>' +
       '<p class="tssr-proverbe-texte"></p><p class="tssr-proverbe-source"></p>' +
-      HIBOU;
+      hibouHTML();
 
     function show(i) {
       var p = PROVERBES[i];
@@ -366,14 +415,9 @@
       bubble.classList.add("is-new");
     }
 
-    // le hibou sautille quand on demande un autre proverbe (ou qu'on le clique)
-    var hibou = bubble.querySelector(".tssr-hibou");
-    function hop() {
-      hibou.classList.remove("is-hop");
-      void hibou.offsetWidth;
-      hibou.classList.add("is-hop");
-    }
-    hibou.addEventListener("click", hop);
+    // le hibou vit sa vie ; il sautille quand on demande un autre proverbe
+    var hibou = animerHibou(bubble.querySelector(".tssr-hibou"));
+    function hop() { hibou.hop(); }
 
     bubble.querySelector(".tssr-proverbe-next").addEventListener("click", function () {
       index = (index + 1) % PROVERBES.length;
