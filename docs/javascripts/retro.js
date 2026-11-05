@@ -113,6 +113,7 @@
     box.innerHTML = "";
     box.setAttribute("role", "button");
     box.setAttribute("tabindex", "0");
+    box.title = "Clique pour faire un saut dans le temps";
     box.setAttribute("aria-label", "Circuits temporels : destination " + dest.toLocaleDateString("fr-FR") +
       ", départ " + depart.toLocaleDateString("fr-FR") + ". Appuie pour faire un saut dans le temps.");
 

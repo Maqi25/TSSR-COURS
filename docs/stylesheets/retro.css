@@ -271,9 +271,9 @@
   display: grid;
   gap: 0.55rem;
   width: 100%;
-  max-width: 30rem !important;
+  max-width: 20rem !important;
   margin: 1rem 0 0.4rem;
-  padding: 0.7rem 0.8rem;
+  padding: 0.55rem 0.65rem;
   border-radius: 14px;
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(255, 255, 255, 0.1);
@@ -291,14 +291,33 @@
 
 /* une seule couleur de chiffres ; seule la pastille de l'étiquette change */
 .tssr-tc-row {
-  --led: #e6f6ff;
-  --dot: #f87171;
+  --led: rgba(230, 240, 250, 0.82);
+  --dot: rgba(248, 113, 113, 0.7);
   display: grid;
-  gap: 0.2rem;
+  gap: 0.15rem;
 }
 
-.tssr-tc-row.is-present { --dot: #4ade80; }
-.tssr-tc-row.is-depart  { --dot: #fbbf24; }
+.tssr-tc-row.is-present { --dot: rgba(74, 222, 128, 0.7); }
+.tssr-tc-row.is-depart  { --dot: rgba(251, 191, 36, 0.7); }
+
+/* noms des colonnes (MOIS, JOUR…) : seulement sur la première ligne */
+.tssr-tc-row:not(:first-child) .tssr-tc-field small {
+  display: none;
+}
+
+/* le texte d'aide devient une info-bulle (title posé par retro.js) ;
+   le compteur n'apparaît que pendant le saut dans le temps */
+.tssr-tc-hint {
+  display: none;
+}
+
+.md-typeset .tssr-tc > div:last-child {
+  display: none !important;   /* ligne du compteur, cachée au repos */
+}
+
+.md-typeset .tssr-tc.is-jumping > div:last-child {
+  display: flex !important;
+}
 
 .tssr-tc-fields {
   display: grid;
@@ -315,10 +334,10 @@
 }
 
 .tssr-tc-field small {
-  font-size: 0.42rem;
+  font-size: 0.38rem;
   font-weight: 700;
   letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.4);
+  color: rgba(255, 255, 255, 0.35);
 }
 
 .tssr-tc-led {
@@ -327,9 +346,9 @@
   width: 100%;
   padding: 0.1rem 0.25rem;
   border-radius: 6px;
-  background: rgba(0, 0, 0, 0.25);
+  background: rgba(0, 0, 0, 0.18);
   font-family: var(--retro-led-font);
-  font-size: 1.05rem;
+  font-size: 0.8rem;
   line-height: 1.15;
   text-align: center;
   white-space: nowrap;
@@ -363,10 +382,10 @@
   align-items: center;
   gap: 0.35rem;
   justify-self: start;
-  font-size: 0.5rem;
+  font-size: 0.44rem;
   font-weight: 700;
   letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.55);
+  color: rgba(255, 255, 255, 0.45);
 }
 
 .tssr-tc-label::before {
@@ -398,7 +417,7 @@
 }
 
 @media screen and (max-width: 30em) {
-  .tssr-tc-led { font-size: 0.85rem; }
+  .tssr-tc-led { font-size: 0.75rem; }
   .tssr-tc-row.is-present .tssr-tc-field:nth-child(4) .tssr-tc-led::after { content: none; }
   .tssr-tc-field small { font-size: 0.36rem; }
 }
