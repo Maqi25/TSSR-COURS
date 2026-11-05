@@ -7,12 +7,11 @@ hide:
 <div class="tssr-home">
 
 <section class="tssr-home-hero">
-  <div class="tssr-home-date" data-home-date>&nbsp;</div>
-  <div class="tssr-home-clock" data-home-clock>&nbsp;</div>
   <h1 class="tssr-home-title"><span class="tssr-greet" data-home-greeting>Bonjour !</span> <span class="tssr-home-wave">👋</span></h1>
   <p class="tssr-home-subtitle">Bienvenue sur ton espace TSSR</p>
   <p class="tssr-hero-typing"><span class="tssr-prompt">$</span> réviser <span class="tssr-typing" data-words="les réseaux|Windows Server|Linux et Bash|PowerShell|Active Directory|la virtualisation|la sécurité">les réseaux</span></p>
   <p class="tssr-home-lead">Tous tes cours, fiches, quiz et mémos au même endroit pour progresser efficacement — accessibles depuis n'importe quel appareil, y compris en stage.</p>
+  <div class="tssr-tc" data-dest="2027-04-05T08:00" data-depart="2026-10-12T09:00"></div>
   <img class="tssr-home-buddy" src="assets/images/bonhomme-ordi.svg?v=20261026-1" alt="Un technicien aux yeux verts, avec un casque, tape des commandes dans son terminal, avec un café et une plante sur le bureau" width="480" height="400">
 </section>
 
