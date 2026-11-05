@@ -56,6 +56,7 @@ extra_css:
   - stylesheets/retro.css?v=20261105-4
 
 extra_javascript:
+  - javascripts/mermaid-survol.js?v=20261105-1
   - javascripts/theme.js
   - javascripts/icones.js
   - javascripts/statuts.js
