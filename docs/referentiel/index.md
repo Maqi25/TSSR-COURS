@@ -15,12 +15,21 @@ Ce que le jury attend de toi le jour du titre, et **où le réviser sur ce site*
 
 Le titre est découpé en **3 blocs**, chacun validé par un **CCP** (*certificat de compétences professionnelles*). Pour avoir le titre, il faut valider les 3.
 
+<div class="tssr-revisions tssr-referentiel-ccp" markdown>
+<div class="tssr-revisions-liste" markdown>
+
 ```mermaid
 flowchart LR
     T(["🎓 Titre TSSR<br/>RNCP 42463"]) --> C1["<b>CCP 1</b><br/>Assurer le support<br/>aux utilisateurs"]
     T --> C2["<b>CCP 2</b><br/>Exploiter les éléments<br/>de l'infrastructure"]
     T --> C3["<b>CCP 3</b><br/>Maintenir en conditions<br/>opérationnelles l'infrastructure"]
 ```
+
+</div>
+<figure class="tssr-revisions-image" markdown>
+![Un professeur en costume, tout sourire devant son tableau noir, ouvre grand les bras pour présenter le titre TSSR](../assets/images/referentiel-technicien.jpg){ loading=lazy width="610" height="655" }
+</figure>
+</div>
 
 | CCP | N° | Compétence |
 |---|---|---|
