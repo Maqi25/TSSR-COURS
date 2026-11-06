@@ -51,7 +51,7 @@ theme:
 extra_css:
   - stylesheets/extra.css
   - stylesheets/animations.css
-  - stylesheets/home.css?v=20261105-4
+  - stylesheets/home.css?v=20261106-2
   - stylesheets/theme.css
   - stylesheets/retro.css?v=20261105-4
 
@@ -63,7 +63,7 @@ extra_javascript:
   - javascripts/filter.js
   - javascripts/quiz.js
   - javascripts/animations.js
-  - javascripts/home.js?v=20261105-2
+  - javascripts/home.js?v=20261106-1
   - javascripts/calculatrice-ip.js
   - javascripts/bonhomme.js
   - javascripts/retro.js?v=20261105-4

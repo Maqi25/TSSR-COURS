@@ -330,12 +330,12 @@
       return '<img src="' + src(nom) + '" alt="" width="185" height="240" draggable="false" decoding="async">';
     };
     return '<span class="tssr-hibou" role="img" aria-label="Un petit hibou">' +
-      '<span class="tssr-hibou-souffle"><span class="tssr-hibou-plumes">' +
+      '<span class="tssr-hibou-saut"><span class="tssr-hibou-souffle"><span class="tssr-hibou-plumes">' +
       '<span class="tssr-hibou-corps">' + img("hibou-corps.png") + '</span>' +
       '<span class="tssr-hibou-tete">' + img("hibou-tete.png") +
       '<span class="tssr-hibou-paupiere is-gauche"></span>' +
       '<span class="tssr-hibou-paupiere is-droite"></span></span>' +
-      '</span></span>' +
+      '</span></span></span>' +
       '<span class="tssr-hibou-bulle">Hou hou !</span>' +
       '</span>';
   }
@@ -349,17 +349,25 @@
     "regarde", "regarde", "ebouriffe", "hop", "dodo"];
 
   function animerHibou(hibou) {
-    var occupe = false;
+    var enCours = null;      // geste en train d'être joué
+    var minuteur = null;
 
-    function geste(nom, puis) {
-      if (occupe) return;
-      occupe = true;
-      hibou.classList.remove("is-" + nom);
+    // arrête net le geste en cours (et annule celui qui devait suivre)
+    function stop() {
+      clearTimeout(minuteur);
+      if (enCours) hibou.classList.remove("is-" + enCours);
+      enCours = null;
+    }
+
+    function geste(nom, puis, force) {
+      if (enCours && !force) return;
+      stop();
       void hibou.offsetWidth;                // relance l'animation CSS
+      enCours = nom;
       hibou.classList.add("is-" + nom);
-      setTimeout(function () {
+      minuteur = setTimeout(function () {
         hibou.classList.remove("is-" + nom);
-        occupe = false;
+        enCours = null;
         if (puis) geste(puis);
       }, GESTES[nom]);
     }
@@ -383,12 +391,11 @@
     if (!reduce) setTimeout(suivant, 2200);
 
     hibou.addEventListener("click", function () {
-      occupe = false;
-      geste("hop");
+      geste("hop", null, true);
       parler();
     });
 
-    return { hop: function () { occupe = false; geste("hop"); } };
+    return { hop: function () { geste("hop", null, true); } };
   }
 
   function setupProverbe() {
