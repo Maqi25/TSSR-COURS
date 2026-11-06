@@ -17,7 +17,7 @@ hide:
 
 <div class="tssr-home-shortcuts">
   <a class="tssr-home-shortcut is-cours" href="cours/">
-    <span class="tssr-home-shortcut-icon">📖</span>
+    <span class="tssr-home-shortcut-icon is-3d"><img src="assets/icones/3d-livre.png" alt="" width="160" height="160"></span>
     <span><b>Mes cours</b><small>Accéder aux cours par module</small></span>
     <span class="tssr-home-arrow">↗</span>
   </a>

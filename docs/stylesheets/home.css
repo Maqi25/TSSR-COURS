@@ -260,6 +260,23 @@
   background: var(--c);
 }
 
+/* icône 3D (ex. le livre de « Mes cours ») : pas de carré de couleur derrière */
+.md-typeset .tssr-home-shortcut-icon.is-3d {
+  background: none;
+}
+
+.md-typeset .tssr-home-shortcut-icon.is-3d img {
+  width: 2.9rem;
+  height: auto;
+  max-width: none;
+  filter: drop-shadow(0 4px 6px rgba(0, 0, 0, 0.3));
+  transition: transform 0.25s var(--tssr-ease);
+}
+
+.md-typeset .tssr-home-shortcut:hover .tssr-home-shortcut-icon.is-3d img {
+  transform: translateY(-2px) rotate(-4deg);
+}
+
 .md-typeset .tssr-home-arrow {
   position: absolute;
   top: 0.8rem;
