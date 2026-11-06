@@ -22,7 +22,7 @@ hide:
     <span class="tssr-home-arrow">↗</span>
   </a>
   <a class="tssr-home-shortcut is-fiches" href="revisions/">
-    <span class="tssr-home-shortcut-icon">📇</span>
+    <span class="tssr-home-shortcut-icon is-3d"><img src="assets/icones/3d-fiches-revision.png" alt="" width="160" height="160"></span>
     <span><b>Fiches de révision</b><small>L'essentiel à relire avant l'examen</small></span>
     <span class="tssr-home-arrow">↗</span>
   </a>
