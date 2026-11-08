@@ -1,0 +1,99 @@
+/* ==========================================================================
+   tableaux-mobile.css — sur téléphone, chaque ligne de tableau devient une
+   carte (les titres de colonnes sont posés par javascripts/tableaux-mobile.js).
+   Sur grand écran, les tableaux gardent leur affichage habituel.
+   ========================================================================== */
+
+@media screen and (max-width: 44.9375em) {
+  /* le conteneur de Material ne défile plus : tout tient dans la largeur */
+  .md-typeset .md-typeset__scrollwrap:has(table[data-cartes]) {
+    margin: 1em 0;
+    overflow: visible;
+  }
+
+  .md-typeset .md-typeset__table:has(table[data-cartes]) {
+    display: block;
+    padding: 0;
+    box-shadow: none;
+    border-radius: 0;
+  }
+
+  .md-typeset table[data-cartes] {
+    display: block;
+    width: 100%;
+    border: 0;
+    border-radius: 0;
+    box-shadow: none;
+    background: none;
+    overflow: visible;
+    font-size: 0.75rem;
+  }
+
+  /* titres de colonnes masqués à l'écran (ils sont repris dans chaque carte)
+     mais toujours lus par les lecteurs d'écran */
+  .md-typeset table[data-cartes] thead {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+  }
+
+  .md-typeset table[data-cartes] tbody {
+    display: grid;
+    gap: 0.7rem;
+  }
+
+  .md-typeset table[data-cartes] tbody tr {
+    display: block;
+    padding: 0.55rem 0.8rem;
+    border: 1px solid var(--tssr-glass-border, var(--md-default-fg-color--lightest));
+    border-radius: 12px;
+    background: var(--md-code-bg-color);
+    box-shadow: 0 4px 14px -10px rgba(0, 0, 0, 0.4);
+  }
+
+  .md-typeset table[data-cartes] tbody tr:hover {
+    background: var(--md-code-bg-color);
+  }
+
+  .md-typeset table[data-cartes] td {
+    display: grid;
+    grid-template-columns: minmax(5.5rem, 35%) minmax(0, 1fr);
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+    border: 0;
+    border-top: 1px solid var(--md-default-fg-color--lightest);
+    text-align: left !important;
+    overflow-wrap: anywhere;
+  }
+
+  .md-typeset table[data-cartes] td:first-child {
+    border-top: 0;
+  }
+
+  .md-typeset table[data-cartes] td::before {
+    content: attr(data-label);
+    font-weight: 700;
+    color: var(--md-accent-fg-color);
+  }
+
+  /* cellule sans titre de colonne : la valeur prend toute la largeur */
+  .md-typeset table[data-cartes] td:not([data-label]) {
+    display: block;
+  }
+
+  .md-typeset table[data-cartes] td:not([data-label])::before {
+    content: none;
+  }
+
+  /* cellule vide : inutile de l'afficher dans la carte */
+  .md-typeset table[data-cartes] td:empty {
+    display: none;
+  }
+
+  .md-typeset table[data-cartes] td code {
+    word-break: break-word;
+  }
+}

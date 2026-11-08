@@ -69,9 +69,12 @@
 }
 
 
+/* Pas de z-index ici : il enfermerait le menu mobile (z-index 5) dans un
+   calque de niveau 1, sous le voile gris de Material (z-index 4), et le
+   menu deviendrait grisé et impossible à cliquer. Le fond (.tssr-bg) est
+   inséré en premier dans <body>, donc le contenu passe déjà devant lui. */
 .md-container {
   position: relative;
-  z-index: 1;
 }
 
 /* Panneau de verre derrière le texte pour garder une bonne lisibilité */

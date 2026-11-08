@@ -50,10 +50,11 @@ theme:
 
 extra_css:
   - stylesheets/extra.css
-  - stylesheets/animations.css
-  - stylesheets/home.css?v=20261106-4
+  - stylesheets/animations.css?v=20261108-1
+  - stylesheets/home.css?v=20261108-1
   - stylesheets/theme.css
   - stylesheets/retro.css?v=20261105-4
+  - stylesheets/tableaux-mobile.css?v=20261108-1
 
 extra_javascript:
   - javascripts/mermaid-survol.js?v=20261105-1
@@ -67,6 +68,7 @@ extra_javascript:
   - javascripts/calculatrice-ip.js
   - javascripts/bonhomme.js
   - javascripts/retro.js?v=20261105-4
+  - javascripts/tableaux-mobile.js?v=20261108-1
 
 markdown_extensions:
   - attr_list

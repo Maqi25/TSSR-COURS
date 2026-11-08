@@ -26,6 +26,10 @@
 .md-typeset .tssr-home {
   display: grid;
   gap: 1rem;
+  /* Le bouton « modifier la page » de Material flotte à droite en haut de
+     l'article : sans clear, la grille s'écarte de lui sur toute sa hauteur
+     et l'accueil paraît décalé vers la gauche (très visible sur mobile). */
+  clear: both;
 }
 
 .md-typeset .tssr-home a {
