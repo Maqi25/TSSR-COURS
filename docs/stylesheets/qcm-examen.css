@@ -1,0 +1,130 @@
+/* =====================================================================
+   QCM examen (page qcm-examen/) : cartes des épreuves, barre de chrono,
+   résultats par compétence. Les questions réutilisent le style .tssr-quiz.
+   ===================================================================== */
+
+#qcm-examen { margin: 1.5rem 0; }
+
+.qcm-option-chrono {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1rem;
+  font-size: 0.75rem;
+  cursor: pointer;
+}
+
+.qcm-grille {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr));
+  gap: 1rem;
+}
+
+.qcm-carte {
+  display: flex;
+  flex-direction: column;
+  padding: 1rem 1.2rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: var(--tssr-btn-radius, 16px);
+  background: var(--md-code-bg-color);
+  box-shadow: var(--tssr-btn-relief, none);
+}
+
+.md-typeset .qcm-carte h3 { margin: 0 0 0.6rem; font-size: 0.85rem; }
+.md-typeset .qcm-carte ul { flex: 1; margin: 0 0 0.6rem; font-size: 0.7rem; }
+.md-typeset .qcm-carte ul li { margin-bottom: 0.2rem; }
+.md-typeset .qcm-carte .md-button { align-self: flex-start; margin-top: 0.4rem; }
+
+.qcm-carte-entrainement { margin-top: 1rem; }
+
+.qcm-select {
+  width: 100%;
+  max-width: 100%;
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 10px;
+  font: inherit;
+  font-size: 0.72rem;
+  color: var(--md-default-fg-color);
+  background: var(--md-default-bg-color);
+}
+
+.md-typeset .qcm-meta { margin: 0.3rem 0; font-size: 0.68rem; color: var(--md-default-fg-color--light); }
+.md-typeset .qcm-meilleur { margin: 0.2rem 0; font-size: 0.7rem; font-weight: 700; }
+
+/* barre collée en haut pendant l'épreuve */
+.qcm-barre {
+  position: sticky;
+  top: 3rem;
+  z-index: 3;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem 1rem;
+  padding: 0.6rem 1rem;
+  border-radius: 14px;
+  font-size: 0.75rem;
+  background: var(--md-primary-fg-color);
+  color: var(--md-primary-bg-color);
+  box-shadow: 0 6px 16px -8px rgba(0, 0, 0, 0.45);
+}
+.qcm-barre strong { flex: 1 1 12rem; }
+.qcm-temps { font-family: var(--md-code-font-family); font-weight: 800; font-size: 0.9rem; }
+.qcm-temps-urgent { color: #fff; background: #c62828; padding: 0.1rem 0.5rem; border-radius: 8px; }
+
+.qcm-tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 0.3rem; }
+.qcm-tag {
+  padding: 0.05rem 0.5rem;
+  border-radius: 20px;
+  font-size: 0.6rem;
+  font-weight: 700;
+  color: var(--md-accent-fg-color);
+  background: var(--md-accent-fg-color--transparent);
+}
+.qcm-tag-en { color: #1d4ed8; background: rgba(29, 78, 216, 0.12); }
+[data-md-color-scheme="slate"] .qcm-tag-en { color: #93c5fd; background: rgba(147, 197, 253, 0.14); }
+
+.qcm-copie .tssr-quiz-question { margin-bottom: 1rem; }
+
+.md-typeset .qcm-explication {
+  margin: 0.7rem 0 0;
+  padding: 0.5rem 0.75rem;
+  border-left: 4px solid;
+  border-radius: 8px;
+  font-size: 0.72rem;
+}
+.qcm-ok { border-color: #2e7d32; background: rgba(46, 125, 50, 0.1); }
+.qcm-ko { border-color: #c62828; background: rgba(198, 40, 40, 0.1); }
+
+.qcm-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.5rem; }
+
+.qcm-resultat {
+  margin: 1rem 0;
+  padding: 1.2rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 20px;
+  background: var(--md-code-bg-color);
+}
+.md-typeset .qcm-score { margin: 0 0 0.3rem; font-size: 1.5rem; font-weight: 800; text-align: center; }
+.md-typeset .qcm-alerte { font-weight: 700; color: #c62828; }
+
+.qcm-comps { display: flex; flex-direction: column; gap: 0.6rem; margin: 1rem 0; }
+.qcm-comp {
+  display: grid;
+  grid-template-columns: 1fr 8rem 3rem;
+  align-items: center;
+  gap: 0.75rem;
+  font-size: 0.72rem;
+}
+.qcm-jauge { height: 0.6rem; border-radius: 10px; overflow: hidden; background: var(--md-default-fg-color--lightest); }
+.qcm-jauge span { display: block; height: 100%; border-radius: 10px; }
+.qcm-comp.is-bon .qcm-jauge span { background: #2e7d32; }
+.qcm-comp.is-moyen .qcm-jauge span { background: #ef8f00; }
+.qcm-comp.is-faible .qcm-jauge span { background: #c62828; }
+.qcm-comp-score { font-weight: 700; text-align: right; }
+
+@media (max-width: 600px) {
+  .qcm-comp { grid-template-columns: 1fr 3rem; }
+  .qcm-comp a { grid-column: 1 / -1; }
+  .qcm-barre { top: 2.4rem; }
+}
