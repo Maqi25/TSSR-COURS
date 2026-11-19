@@ -17,6 +17,42 @@
     - **Autre rue** : on confie la lettre au **bureau de poste** du coin → la **passerelle** (le routeur), qui sait par où l'envoyer.
     - Le **haut-parleur** (broadcast) ne s'entend que **dans sa rue** : le routeur ne le laisse jamais passer.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 4 : Exploiter un réseau IP.** Le schéma du poste qui envoie un paquet et celui des domaines de diffusion sont juste en dessous, dans le résumé visuel. Ici, la décision du **routeur** et le **sur-réseau**.
+
+**① Ce que fait le routeur quand un paquet arrive**
+
+```mermaid
+flowchart TD
+    A["📥 Paquet reçu<br/>lecture de l'IP de destination (couche 3)"] --> B{"Une route vers ce réseau<br/>dans la table de routage ?"}
+    B -->|"plusieurs"| M["Il prend la plus petite métrique"]
+    B -->|"une"| C{"Réseau branché sur<br/>une de ses interfaces ?"}
+    M --> C
+    B -->|"aucune"| D{"Route par défaut<br/>0.0.0.0/0 ?"}
+    D -->|"oui"| N
+    D -->|"non"| X["🗑️ Paquet détruit<br/>+ erreur ICMP"]
+    C -->|"oui"| E["ARP pour la MAC de la cible<br/>réécrit les MAC, envoie"]
+    C -->|"non"| N["Envoi au routeur suivant<br/>(prochain saut)"]
+```
+
+**② Sur-réseau : 4 réseaux /24 → 1 seule route**
+
+```mermaid
+flowchart LR
+    R0["192.168.0.0/24"] --> S
+    R1["192.168.1.0/24"] --> S
+    R2["192.168.2.0/24"] --> S
+    R3["192.168.3.0/24"] --> S
+    S["3ᵉ octet en binaire :<br/>000000|00 → 000000|11<br/>6 bits communs<br/>8 + 8 + 6 = /22"] --> T["✅ 192.168.0.0/22<br/>1 ligne dans la table"]
+```
+
+| ⚠️ Piège classique | À retenir |
+|---|---|
+| Statique ou dynamique ? | **statique** = routes à la main · **dynamique** (RIP, OSPF, BGP) = s'adapte seul aux pannes |
+| Regrouper 192.168.1.0 + 192.168.2.0 | **impossible** en /23 : le bloc doit être **aligné** (commencer à un multiple) |
+
 ## 🖼️ Résumé visuel
 
 **① Le routeur coupe le réseau en domaines de diffusion**

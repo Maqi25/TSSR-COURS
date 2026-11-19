@@ -14,6 +14,42 @@
 !!! abstract "En clair : pourquoi IPv6 ?"
     En IPv4, il n'y a que **4,3 milliards** d'adresses : il n'y en a plus assez pour tous les appareils du monde (d'où le NAT et les box qui partagent une seule adresse publique). IPv6 passe à **128 bits**, soit environ **3,4 × 10³⁸** adresses : de quoi donner une adresse publique à **chaque appareil**, sans NAT.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 4 : Exploiter un réseau IP** (IPv4 **et** IPv6). Le schéma pour reconnaître une adresse à son début est juste en dessous, dans le résumé visuel.
+
+**① Compresser une adresse en 2 étapes**
+
+```mermaid
+flowchart TD
+    A["Complète<br/>fe80:0000:0000:0000:020c:29ff:fe3a:0b12"] -->|"① retirer les 0 du début<br/>de chaque groupe"| B["fe80:0:0:0:20c:29ff:fe3a:b12"]
+    B -->|"② plus longue suite de 0 → ::<br/>une seule fois"| C["✅ fe80::20c:29ff:fe3a:b12"]
+```
+
+**② Structure d'une adresse globale (un réseau standard = /64)**
+
+```mermaid
+flowchart LR
+    P["48 bits<br/>préfixe donné par le FAI"] --- S["16 bits<br/>sous-réseau"] --- I["64 bits<br/>identifiant d'interface<br/>(hasard ou EUI-64 depuis la MAC)"]
+```
+
+**③ Unicast, multicast, anycast**
+
+```mermaid
+flowchart LR
+    U["Unicast"] --> U1["1 machine<br/>(une lettre)"]
+    M["Multicast · ff…"] --> M1["1 groupe abonné<br/>ff02::1 tous · ff02::2 routeurs"]
+    A["Anycast"] --> A1["la plus proche d'un groupe<br/>(comme le 112)"]
+```
+
+| ⚠️ Piège classique | À retenir |
+|---|---|
+| Plusieurs `::` | **un seul** `::` par adresse |
+| `ff00` → `ff` ? | **non** : on ne retire que les zéros **du début** |
+| Broadcast en IPv6 ? | **n'existe plus** : remplacé par le multicast |
+| 3 adresses IPv6 sur une carte | **normal** : boucle locale, lien-local `fe80`, globale… |
+
 ## 🖼️ Résumé visuel
 
 **① Une adresse IPv6 = 8 groupes de 4 caractères hexadécimaux. La 1ʳᵉ moitié désigne le réseau, la 2ᵉ la machine.**

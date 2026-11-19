@@ -16,6 +16,35 @@
     Une adresse IP, c'est comme une adresse postale : **une rue + un numéro de maison**. La rue, c'est le **réseau** ; le numéro, c'est l'**hôte** (la machine). Le **masque** est la règle qui dit où s'arrête le nom de la rue et où commence le numéro.
     Faire des **sous-réseaux**, c'est couper une longue rue en plusieurs petites rues : on prend quelques chiffres du numéro de maison pour en faire un numéro de rue. Plus de rues, mais moins de maisons dans chacune.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 4 : Exploiter un réseau IP.** Calculer un plan d'adressage et reconnaître une adresse anormale (APIPA) font partie du quotidien du technicien.
+
+**① Reconnaître une adresse IPv4 en un coup d'œil**
+
+```mermaid
+flowchart LR
+    A{"L'adresse commence par…"}
+    A -->|"127"| L["🔁 Boucle locale<br/>la machine elle-même"]
+    A -->|"169.254"| AP["⚠️ APIPA<br/>pas de réponse DHCP"]
+    A -->|"10 · 172.16 à 172.31 · 192.168"| PR["🔒 Privée (RFC 1918)<br/>sort sur Internet par NAT"]
+    A -->|"autre"| PU["🌍 Publique<br/>⚠️ 172.32.x.x est publique"]
+```
+
+**② Découper un réseau : je pars de la consigne**
+
+```mermaid
+flowchart TD
+    C{"La consigne donne…"}
+    C -->|"un nombre de sous-réseaux"| N["Plus petit n tel que<br/>2ⁿ ≥ sous-réseaux voulus<br/>nouveau masque = /ancien + n"]
+    C -->|"un nombre d'hôtes"| H["Plus petit h tel que<br/>2ʰ − 2 ≥ hôtes voulus<br/>nouveau masque = /(32 − h)"]
+    N --> P["Pas = 256 − octet coupé du masque"]
+    H --> P
+    P --> L["Liste : réseau de départ + pas, + pas…<br/>arrivé à 256 → 0 et +1 sur l'octet de gauche"]
+    L --> R["Pour chaque sous-réseau :<br/>réseau · 1er hôte (+1) · broadcast (suivant − 1)"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Une adresse IPv4 = 4 octets. Le masque dit où s'arrête le réseau et où commence l'hôte.**

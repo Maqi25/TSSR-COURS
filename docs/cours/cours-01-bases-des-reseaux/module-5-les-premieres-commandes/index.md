@@ -18,6 +18,44 @@ Connaître **les 5 commandes de base** pour voir sa configuration réseau et tro
     - **Windows** : touche ++win++, tape `cmd`, puis Entrée → l'**invite de commandes** s'ouvre.
     - **Linux** : ouvre le **Terminal** (++ctrl+alt+t++ sur Ubuntu/Debian).
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 1 · compétence 3 : Apporter une assistance technique** (diagnostiquer la panne d'un utilisateur) et **CCP 2 · compétence 4 : Exploiter un réseau IP**. La méthode de dépannage complète est juste en dessous, dans le résumé visuel.
+
+**① Une question → une commande (Windows | Linux)**
+
+```mermaid
+flowchart LR
+    Q1["Quelle est ma config ?"] --> C1["ipconfig /all | ip a · ip r"]
+    Q2["Cette machine répond ?"] --> C2["ping | ping -c 4"]
+    Q3["Où ça bloque en route ?"] --> C3["tracert | traceroute"]
+    Q4["Quelles MAC je connais ?"] --> C4["arp -a | ip neigh"]
+    Q5["Quels ports sont ouverts ?"] --> C5["netstat -ano | ss -tulpn"]
+```
+
+**② Comment `tracert` découvre chaque routeur**
+
+```mermaid
+sequenceDiagram
+    participant PC as 💻 PC
+    participant R1 as 📦 Box (saut 1)
+    participant R2 as 🛜 Routeur FAI (saut 2)
+    participant D as 🌐 8.8.8.8
+    PC->>R1: paquet avec TTL = 1
+    R1-->>PC: TTL tombé à 0 → erreur, je révèle mon adresse
+    PC->>R2: paquet avec TTL = 2
+    R2-->>PC: TTL tombé à 0 → erreur, je révèle mon adresse
+    PC->>D: paquet avec TTL = 3
+    D-->>PC: réponse : destination atteinte
+```
+
+| ⚠️ Piège classique | À retenir |
+|---|---|
+| Pas de réponse au `ping` | ≠ machine éteinte : le **pare-feu** peut bloquer l'ICMP |
+| `* * *` dans un `tracert` | souvent un routeur qui ne répond pas aux tests, **pas une panne** |
+| IP en **169.254.x.x** | pas de réponse **DHCP** → `ipconfig /release` puis `/renew` |
+
 ## 🖼️ Résumé visuel
 
 **La méthode de dépannage : on part de son poste et on s'éloigne, étape par étape.** La première étape qui échoue indique où est la panne.

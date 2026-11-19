@@ -9,6 +9,38 @@ Savoir passer d'une base à l'autre (binaire, octal, décimal, hexadécimal) et 
 !!! abstract "En clair"
     Un ordinateur ne connaît que deux états : courant ou pas de courant, **1** ou **0**. Tout ce qu'il manipule (une adresse IP, une photo, un mot de passe) est une suite de 0 et de 1. Pour que les humains s'y retrouvent, on réécrit ces suites en **décimal** (adresses IPv4) ou en **hexadécimal** (adresses MAC, IPv6). En réseau, la compétence clé est de **convertir un octet** (8 bits) entre décimal et binaire : c'est la base du calcul des masques au module 3.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 4 : Exploiter un réseau IP** (masques, adresses MAC et IPv6) et **compétence 5 : serveurs Windows et Linux** (droits Linux en octal, tailles de disques).
+
+**① Quelle méthode de conversion ?**
+
+```mermaid
+flowchart LR
+    Q{"Je pars de…"}
+    Q -->|"décimal → autre base"| D["Divisions successives par la base<br/>restes lus de bas en haut<br/>45 → 101101₂ → 2D₁₆"]
+    Q -->|"décimal ↔ binaire<br/>sur 1 octet"| P["⭐ Tableau des poids<br/>128 64 32 16 8 4 2 1<br/>150 → 10010110"]
+    Q -->|"autre base → décimal"| S["Somme chiffre × base^position<br/>1B4₁₆ = 256 + 176 + 4 = 436"]
+    Q -->|"binaire ↔ hexa / octal"| G["Paquets depuis la droite<br/>4 bits = 1 chiffre hexa<br/>3 bits = 1 chiffre octal<br/>300 → 12C₁₆ → 454₈"]
+```
+
+**② Stocker en octets, transmettre en bits**
+
+```mermaid
+flowchart LR
+    B["1 bit<br/>0 ou 1"] -->|"× 8"| O["1 octet (o / B)<br/>0 à 255"]
+    O --> K["Fabricant : × 1 000<br/>Ko · Mo · Go · To"]
+    O --> KI["Windows : × 1 024<br/>Kio · Mio · Gio · Tio<br/>(affiché « Go »)"]
+    R["Débit réseau<br/>Mbit/s"] -->|"÷ 8"| V["Vitesse de téléchargement<br/>100 Mbit/s ≈ 12,5 Mo/s"]
+```
+
+| ⚠️ Piège classique | À retenir |
+|---|---|
+| `Mb` ou `MB` ? | petit **b** = bit, grand **B** = octet (*byte*) |
+| Disque de 1 To affiché 931 Go | rien n'est perdu : Windows compte en **Gio** (× 1 024) |
+| Paquets de bits pour l'hexa | on coupe **depuis la droite**, on complète à gauche avec des 0 |
+
 ## 🖼️ Résumé visuel
 
 Les 4 bases à connaître, de la plus « machine » à la plus « humaine », et les unités qui en découlent :
