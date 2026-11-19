@@ -16,7 +16,10 @@ Un **examen blanc** calqué sur le [référentiel TSSR 2026](../referentiel/inde
     - Les questions sont **tirées au hasard** et réparties équitablement entre les compétences du CCP : chaque tentative est différente.
     - Comme à l'examen, chaque épreuve contient **au moins une question en anglais** 🇬🇧.
     - À la fin, tu obtiens ton score **par compétence** avec un lien pour la réviser, et l'explication de chaque réponse.
-    - Seul ton meilleur score est gardé, dans ton navigateur.
+    - Crée ton **profil** pour suivre ta **progression** : historique de chaque tentative, courbe par CCP, maîtrise des 10 compétences, **commentaire automatique** après chaque copie et **tes propres notes**.
+    - La rubrique **« Ce qu'il faut réviser »** classe tes compétences de la plus faible à la plus solide, avec un conseil, le lien vers le cours et un entraînement ciblé.
+    - **« Revoir mes erreurs »** te repose les questions ratées jusqu'à ce que tu les réussisses.
+    - Tout reste **dans ton navigateur** : utilise *Exporter* pour garder une copie ou changer d'appareil.
 
 !!! warning "À savoir"
     Le nombre de questions est un choix du site pour s'entraîner au rythme de l'épreuve. Le vrai questionnaire professionnel peut aussi contenir des **questions ouvertes** : entraîne-toi à justifier tes réponses à voix haute.
