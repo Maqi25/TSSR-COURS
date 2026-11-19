@@ -11,6 +11,59 @@ Ce module présente le modèle OSI : sa logique en 7 couches, le vocabulaire de 
 
     En pratique, Internet utilise le **modèle TCP/IP** (4 couches), plus simple : il est expliqué en section 6.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 4 : Exploiter un réseau IP.** Le modèle OSI est le langage commun du dépannage : « le problème est en couche 2 ».
+
+**① Encapsulation : chaque couche emballe le colis du dessus**
+
+```mermaid
+flowchart LR
+    A["SDU<br/>reçu de la couche N+1"] --> P(("+"))
+    B["PCI<br/>en-tête de la couche N<br/>(adresses, ports…)"] --> P
+    P --> C["PDU de la couche N<br/>= SDU de la couche N−1"]
+```
+
+**② Qui lit quoi en chemin**
+
+```mermaid
+flowchart TD
+    PC["💻 PC<br/>couches 1 → 7"] -->|"trame<br/>MAC de la box"| SW["🔀 Switch<br/>couche 2 : lit la MAC"]
+    SW --> R["📦 Routeur / box<br/>couche 3 : lit l'IP"]
+    R -->|"nouvelle trame<br/>même IP"| SRV["🌐 Serveur<br/>couche 4 : lit le port 443"]
+```
+
+La **MAC change à chaque saut**, l'**IP reste la même** de bout en bout, le **port** désigne l'application.
+
+**③ OSI (7 couches) ↔ TCP/IP (4 couches)**
+
+```mermaid
+flowchart LR
+    O765["OSI 7 · 6 · 5<br/>Application, Présentation, Session"] --> T4["TCP/IP <b>Application</b><br/>HTTP(S), DNS, DHCP, SMTP · données"]
+    O4["OSI 4<br/>Transport"] --> T3["TCP/IP <b>Transport</b><br/>TCP, UDP · segment"]
+    O3["OSI 3<br/>Réseau"] --> T2["TCP/IP <b>Internet</b><br/>IP, ICMP · paquet"]
+    O21["OSI 2 · 1<br/>Liaison, Physique"] --> T1["TCP/IP <b>Accès réseau</b><br/>Ethernet, Wi-Fi · trame, bits"]
+```
+
+**④ Dépanner de bas en haut**
+
+```mermaid
+flowchart TD
+    A{"Voyant de la prise<br/>allumé ?"} -- non --> A1["Couche 1<br/>câble, prise, carte réseau"]
+    A -- oui --> B{"ping 8.8.8.8<br/>répond ?"}
+    B -- non --> B1["Couches 2-3<br/>IP, masque, passerelle :<br/>ipconfig /all"]
+    B -- oui --> C{"Les sites s'ouvrent<br/>par leur nom ?"}
+    C -- non --> C1["Couche 7 : DNS<br/>nslookup"]
+    C -- oui --> D["✅ Réseau OK :<br/>chercher côté application"]
+```
+
+| ⚠️ Piège classique | À retenir |
+|---|---|
+| Transport = couche **4** en OSI | mais **3** en TCP/IP (« routeur de niveau 3 » = numérotation OSI) |
+| Seule la couche **2** ajoute une **fin** | le **FCS** (contrôle CRC) : trame abîmée = trame jetée |
+| La couche 3 ne garantit **pas** la livraison | c'est **TCP** (couche 4) qui le fait ; **UDP** ne garantit rien |
+
 ## 🖼️ Résumé visuel
 
 Le modèle OSI découpe une communication en **sept responsabilités complémentaires**. À l’émission, chaque couche prépare les données pour la couche inférieure ; à la réception, le traitement se fait dans l’ordre inverse.
