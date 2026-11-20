@@ -95,6 +95,12 @@
 }
 .qcm-ok { border-color: #2e7d32; background: rgba(46, 125, 50, 0.1); }
 .qcm-ko { border-color: #c62828; background: rgba(198, 40, 40, 0.1); }
+.md-typeset .qcm-explication p { margin: 0.25rem 0; }
+.md-typeset .qcm-expl-titre { font-weight: 800; }
+.md-typeset .qcm-expl-bonne { font-weight: 700; color: #2e7d32; }
+[data-md-color-scheme="slate"] .md-typeset .qcm-expl-bonne { color: #81c784; }
+.md-typeset .qcm-expl-pourquoi { line-height: 1.55; }
+.md-typeset .qcm-expl-revoir { font-size: 0.68rem; }
 
 .qcm-actions { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 0.5rem; }
 
@@ -236,3 +242,34 @@ textarea.qcm-input { width: 100%; resize: vertical; }
 .qcm-reglages { margin-top: 1.5rem; font-size: 0.72rem; }
 .qcm-reglages summary { cursor: pointer; font-weight: 700; }
 .md-typeset .md-button.qcm-danger { color: #c62828; border-color: #c62828; }
+
+/* ---------- base de profils (page du QCM) ---------- */
+.qcm-profil-choix { display: flex; flex-wrap: wrap; align-items: center; gap: 0.5rem 0.8rem; margin: 0.4rem 0; font-size: 0.72rem; }
+.qcm-profil-choix label { display: flex; align-items: center; gap: 0.4rem; font-weight: 700; }
+.qcm-profil-choix .qcm-select { width: auto; max-width: 16rem; }
+
+/* ---------- tableau de bord des profils ---------- */
+#qcm-tableau-de-bord { margin: 1.5rem 0; }
+.qcm-tdb-nouveau { margin: 0.8rem 0; }
+.qcm-tdb-nouveau[hidden] { display: none; }
+.qcm-table-wrap { overflow-x: auto; margin: 0.6rem 0 1rem; }
+.md-typeset .qcm-table-wrap table { display: table; width: 100%; font-size: 0.72rem; }
+.md-typeset .qcm-table-wrap td { vertical-align: top; }
+.md-typeset .qcm-table-wrap tr.is-actif td { background: var(--md-accent-fg-color--transparent); }
+.md-typeset .qcm-table-wrap .md-button { margin: 0; padding: 0.3em 0.8em; font-size: 0.66rem; }
+.qcm-td-nom { font-weight: 800; white-space: nowrap; }
+.qcm-td-ccp { white-space: nowrap; }
+.qcm-niv.is-bon { color: #2e7d32; }
+.qcm-niv.is-moyen { color: #b26a00; }
+.qcm-niv.is-faible { color: #c62828; }
+[data-md-color-scheme="slate"] .qcm-niv.is-bon { color: #81c784; }
+[data-md-color-scheme="slate"] .qcm-niv.is-moyen { color: #ffb74d; }
+[data-md-color-scheme="slate"] .qcm-niv.is-faible { color: #ef9a9a; }
+.qcm-td-commentaire { display: flex; flex-direction: column; gap: 0.25rem; min-width: 14rem; }
+.qcm-td-note { font-size: 0.68rem; color: var(--md-default-fg-color--light); }
+.qcm-tdb-detail { scroll-margin-top: 4rem; }
+.md-typeset .qcm-bilan ul { margin: 0.4rem 0 0.8rem; font-size: 0.74rem; }
+@media screen and (max-width: 44.9375em) {
+  .qcm-td-commentaire { min-width: 0; }
+  .qcm-td-nom, .qcm-td-ccp { white-space: normal; }
+}

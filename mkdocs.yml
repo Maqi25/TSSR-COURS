@@ -55,7 +55,7 @@ extra_css:
   - stylesheets/theme.css
   - stylesheets/retro.css?v=20261105-4
   - stylesheets/tableaux-mobile.css?v=20261121-1
-  - stylesheets/qcm-examen.css?v=20261120-1
+  - stylesheets/qcm-examen.css?v=20261121-1
 
 extra_javascript:
   - javascripts/mermaid-survol.js?v=20261121-1
@@ -71,7 +71,7 @@ extra_javascript:
   - javascripts/retro.js?v=20261105-4
   - javascripts/tableaux-mobile.js?v=20261108-1
   - javascripts/qcm-examen-banque.js?v=20261117-1
-  - javascripts/qcm-examen.js?v=20261120-1
+  - javascripts/qcm-examen.js?v=20261121-1
 
 markdown_extensions:
   - attr_list
@@ -112,7 +112,9 @@ nav:
   - Accueil: index.md
   - Programme: programme/index.md
   - Référentiel TSSR: referentiel/index.md
-  - QCM examen: qcm-examen/index.md
+  - QCM examen:
+      - qcm-examen/index.md
+      - "Tableau de bord des profils": qcm-examen/tableau-de-bord.md
   - Cours:
       - cours/index.md
       - "Cours 1 · Bases des réseaux":

@@ -17,6 +17,7 @@ Un **examen blanc** calqué sur le [référentiel TSSR 2026](../referentiel/inde
     - Comme à l'examen, chaque épreuve contient **au moins une question en anglais** 🇬🇧.
     - À la fin, tu obtiens ton score **par compétence** avec un lien pour la réviser, et l'explication de chaque réponse.
     - Crée ton **profil** pour suivre ta **progression** : historique de chaque tentative, courbe par CCP, maîtrise des 10 compétences, **commentaire automatique** après chaque copie et **tes propres notes**.
+    - **Plusieurs profils** peuvent cohabiter (ex. Ana, Léo) : choisis le **profil actif** avant de passer une épreuve. Le [📋 tableau de bord des profils](tableau-de-bord.md) récapitule l'évolution, le taux de réussite, les points forts et les points faibles de chacun.
     - La rubrique **« Ce qu'il faut réviser »** classe tes compétences de la plus faible à la plus solide, avec un conseil, le lien vers le cours et un entraînement ciblé.
     - **« Revoir mes erreurs »** te repose les questions ratées jusqu'à ce que tu les réussisses.
     - Tout reste **dans ton navigateur** : utilise *Exporter* pour garder une copie ou changer d'appareil.
