@@ -70,7 +70,7 @@ extra_javascript:
   - javascripts/bonhomme.js
   - javascripts/retro.js?v=20261105-4
   - javascripts/tableaux-mobile.js?v=20261108-1
-  - javascripts/qcm-examen-banque.js?v=20261117-1
+  - javascripts/qcm-examen-banque.js?v=20261121-1
   - javascripts/qcm-examen.js?v=20261121-1
 
 markdown_extensions:
