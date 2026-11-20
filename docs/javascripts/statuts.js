@@ -40,9 +40,9 @@ window.TSSRStatuts = (function () {
     "cours-01-bases-des-reseaux/module-5-les-premieres-commandes": "",
     "cours-01-bases-des-reseaux/module-6-l-adressage-ipv6": "",
 
-    "cours-02-systeme-client-microsoft": "en-cours-ferme",
-    "cours-03-utilisateur-d-une-distribution-gnu-linux": "verrouille",
-    "cours-04-administration-d-une-distribution-gnu-linux": "verrouille",
+    "cours-02-systeme-client-microsoft": "termine",
+    "cours-03-utilisateur-d-une-distribution-gnu-linux": "termine",
+    "cours-04-administration-d-une-distribution-gnu-linux": "en-cours",
     "cours-05-mise-en-situation-professionnelle-systeme-client": "verrouille",
     "cours-06-sensibilisation-itil-et-gestion-de-parc": "verrouille",
     "cours-07-les-infrastructures-reseau": "verrouille",
