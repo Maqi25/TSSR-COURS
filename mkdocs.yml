@@ -256,9 +256,19 @@ nav:
       - "TP - Plan d'adressage IP": travaux-pratiques/cours-01-bases-des-reseaux/tp-plan-adressage.md
   - Révisions:
       - revisions/index.md
-      - "Bases des réseaux": revisions/fiche-bases-des-reseaux.md
-      - "Utilisation de GNU/Linux": revisions/fiche-utilisation-gnu-linux.md
-      - "L'IA au service du technicien": revisions/fiche-ia.md
+      - "Cours 1 · Bases des réseaux": revisions/fiche-bases-des-reseaux.md
+      - "Cours 2 · Système client Microsoft": revisions/fiche-systeme-client-microsoft.md
+      - "Cours 3 · Utilisation de GNU/Linux": revisions/fiche-utilisation-gnu-linux.md
+      - "Cours 4 · Administration GNU/Linux": revisions/fiche-administration-gnu-linux.md
+      - "Cours 6 · ITIL et gestion de parc": revisions/fiche-itil-gestion-de-parc.md
+      - "Cours 8 · Services réseau Microsoft": revisions/fiche-services-reseau-microsoft.md
+      - "Cours 10 · Scripting Bash": revisions/fiche-scripting-bash.md
+      - "Cours 11 · PowerShell": revisions/fiche-powershell.md
+      - "Cours 12 · L'IA au service du technicien": revisions/fiche-ia.md
+      - "Cours 13 · Virtualisation de serveurs": revisions/fiche-virtualisation.md
+      - "Cours 15 · Sauvegarde et restauration": revisions/fiche-sauvegarde.md
+      - "Cours 16 · Réseau et sécurité": revisions/fiche-reseau-et-securite.md
+      - "Bonus · Microsoft 365": revisions/fiche-microsoft-365.md
       - "Mémo commandes Windows": revisions/memo-commandes-windows.md
       - "Mémo commandes Linux / Unix": revisions/memo-commandes-linux.md
   - Commandes:
