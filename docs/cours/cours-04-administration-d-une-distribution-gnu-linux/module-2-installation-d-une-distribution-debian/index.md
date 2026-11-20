@@ -11,6 +11,31 @@
 !!! abstract "En clair"
     On installe Debian comme Windows ([cours 2, module 2](../../cours-02-systeme-client-microsoft/module-2-installation-de-windows-10/index.md)) : on démarre sur une **ISO**, un assistant pose des questions, puis on redémarre. La différence : pour un **serveur**, on n'installe **pas d'interface graphique**, seulement le strict nécessaire et le **serveur SSH** pour l'administrer à distance.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Installer et assurer l'exploitation de serveurs Linux.** Installer un serveur Debian prêt à être administré à distance.
+
+**① L'installation d'un serveur, étape par étape**
+
+```mermaid
+flowchart TD
+    A["ISO netinst"] --> B["Nom clair<br/>srv-web01"]
+    B --> C["Mot de passe root VIDE<br/>→ 1er utilisateur dans sudo"]
+    C --> D["Partitionnement assisté<br/>disque entier (LVM en option)"]
+    D --> E["Logiciels : serveur SSH<br/>+ utilitaires · ❌ pas de bureau"]
+    E --> F["GRUB sur /dev/sda"]
+    F --> G["sudo apt update<br/>&& sudo apt upgrade"]
+```
+
+**② J'ai oublié quelque chose…**
+
+```mermaid
+flowchart LR
+    A["Pas de SSH ?"] --> A1["Sur la console :<br/>apt install openssh-server"]
+    B["Pas de sudo pour tech ?"] --> B1["En root :<br/>usermod -aG sudo tech<br/>puis se reconnecter"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Les étapes de l'installateur Debian**

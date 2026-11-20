@@ -17,6 +17,33 @@
 
     Quand tu ouvres un fichier, tu présentes ton **badge** (le **jeton d'accès** du [module 5](../module-5-les-utilisateurs-et-les-groupes/index.md) : ton SID et ceux de tes groupes). Windows le compare à la liste. Si tu n'es **pas sur la liste**, c'est **non**.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 7 : Gérer les accès et la sécurité.** Le calcul d'un droit (refus, cumul) et l'héritage sont dans le résumé visuel juste en dessous.
+
+**① Mettre des droits sur un dossier, dans le bon ordre**
+
+```mermaid
+flowchart LR
+    A["Créer un groupe<br/>ex. Compta"] --> B["Y mettre<br/>les utilisateurs"]
+    B --> C["Ajouter une ACE :<br/>Compta → Modification"]
+    C --> D["Vérifier avec<br/>« Accès effectif »"]
+```
+
+**② Je copie ou je déplace : que deviennent les droits ?**
+
+```mermaid
+flowchart TD
+    A{"Couper-coller<br/>sur le MÊME disque ?"} -- oui --> K["✅ Droits d'origine conservés"]
+    A -- non --> H["🔄 Le fichier prend les droits<br/>du dossier de destination"]
+```
+
+| ⚠️ Piège classique | À retenir |
+|---|---|
+| Contrôle total à un utilisateur | il peut **retirer l'accès aux autres** : on le réserve aux administrateurs |
+| Un refus explicite | gagne même contre un Contrôle total donné par un autre groupe |
+
 ## 🖼️ Résumé visuel
 
 **① Comment Windows décide**

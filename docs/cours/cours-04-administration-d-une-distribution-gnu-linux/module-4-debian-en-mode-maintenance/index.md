@@ -12,6 +12,33 @@
 !!! abstract "En clair"
     Un jour, un serveur ne démarrera plus (mauvaise configuration, disque abîmé), ou tu auras **oublié le mot de passe root**. Comme pour Windows avec WinRE ([cours 2, module 10](../../cours-02-systeme-client-microsoft/module-10-maintenance-du-systeme/index.md)), Linux a des **modes de secours**. Il faut un **accès à la console** de la machine : c'est l'un des rares cas où SSH ne suffit pas.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 3 · compétence 9 : Assurer la continuité et la reprise** (remettre en route un serveur qui ne démarre plus) et **CCP 2 · compétence 5**.
+
+**① Le serveur ne démarre plus : quelle solution ?**
+
+```mermaid
+flowchart LR
+    A["Un service bloque"] --> A1["GRUB → mode de dépannage<br/>(rescue)"]
+    B["Erreur de disque / fstab"] --> B1["systemd.unit=emergency.target"]
+    C["Nouveau noyau qui plante"] --> C1["GRUB → Options avancées<br/>→ ancien noyau"]
+    D["GRUB cassé"] --> D1["Live CD → mount → chroot<br/>→ grub-install"]
+    E["Système de fichiers abîmé"] --> E1["fsck sur une partition<br/>DÉMONTÉE"]
+```
+
+**② Mot de passe root oublié**
+
+```mermaid
+flowchart TD
+    A["GRUB : touche e"] --> B["Ligne linux :<br/>ajouter init=/bin/bash"]
+    B --> C["Ctrl+X pour démarrer"]
+    C --> D["mount -o remount,rw /<br/>(sinon disque en lecture seule)"]
+    D --> E["passwd root"]
+    E --> F["exec /sbin/init"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Le serveur ne démarre plus : quelle porte de secours ?**

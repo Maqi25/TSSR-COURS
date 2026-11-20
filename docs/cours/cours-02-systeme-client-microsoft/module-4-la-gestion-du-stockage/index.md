@@ -17,6 +17,43 @@
     2. **Formater** = installer des **étagères et un classement** dans un compartiment : c'est le **système de fichiers** (NTFS…). Le compartiment devient un **volume**.
     3. **Attribuer une lettre** = coller une **étiquette** (`D:`, `E:`) pour le retrouver dans l'Explorateur.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Installer et assurer l'exploitation de serveurs Windows et Linux** (préparer les disques) et **CCP 1 · compétence 3** (dépanner un disque ou une clé USB illisible).
+
+**① Du disque neuf au lecteur E:**
+
+```mermaid
+flowchart LR
+    D["💽 Disque neuf"] --> I["Initialiser<br/>table MBR ou GPT"]
+    I --> P["Partitionner<br/>découper en zones"]
+    P --> F["Formater<br/>NTFS, exFAT, FAT32"]
+    F --> L["Attribuer une lettre<br/>E:"]
+```
+
+**② MBR ou GPT ?**
+
+```mermaid
+flowchart TD
+    A{"Disque de plus de 2,2 To<br/>ou PC en UEFI ?"} -- oui --> G["✅ GPT<br/>128 partitions, standard actuel"]
+    A -- non --> B{"Vieux PC en BIOS ?"}
+    B -- oui --> M["MBR<br/>4 partitions principales max"]
+    B -- non --> G
+```
+
+**③ Quel système de fichiers ?**
+
+```mermaid
+flowchart TD
+    A{"Disque interne Windows,<br/>besoin de droits (ACL) ?"} -- oui --> N["NTFS"]
+    A -- non --> B{"Clé ou disque partagé<br/>avec d'autres appareils ?"}
+    B -- oui --> C{"Fichiers de plus de 4 Go ?"}
+    C -- oui --> X["exFAT"]
+    C -- non --> F["FAT32 ou exFAT"]
+    B -- non --> N
+```
+
 ## 🖼️ Résumé visuel
 
 **① Les 3 étapes pour utiliser un nouveau disque**

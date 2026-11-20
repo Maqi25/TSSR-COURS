@@ -14,6 +14,30 @@
 
     **`apt`** est l'outil qui cherche, télécharge, installe et **met à jour** les paquets, en installant **automatiquement** tout ce dont ils ont besoin (les **dépendances**).
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Exploiter des serveurs Linux** et **CCP 3 · compétence 10 : Mettre à jour les éléments de l'infrastructure**.
+
+**① Le cycle de vie d'un logiciel avec apt**
+
+```mermaid
+flowchart LR
+    U["apt update<br/>rafraîchir le catalogue"] --> G["apt upgrade<br/>installer les mises à jour"]
+    U --> I["apt install apache2"]
+    I --> R["apt remove<br/>garde la configuration"]
+    I --> P["apt purge<br/>supprime aussi la configuration"]
+    R & P --> A["apt autoremove<br/>nettoyer les dépendances"]
+```
+
+**② Un fichier .deb à installer**
+
+```mermaid
+flowchart LR
+    D["paquet.deb"] --> A["✅ apt install ./paquet.deb<br/>installe aussi les dépendances"]
+    D --> K["⚠️ dpkg -i paquet.deb<br/>ne gère PAS les dépendances"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Comment `apt` installe un logiciel**

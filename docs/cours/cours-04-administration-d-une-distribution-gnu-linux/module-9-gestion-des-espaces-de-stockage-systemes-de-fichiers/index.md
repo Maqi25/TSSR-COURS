@@ -15,6 +15,30 @@
 
     Et pour que ce soit refait **à chaque démarrage**, on l'écrit dans **`/etc/fstab`**.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Installer et assurer l'exploitation de serveurs Linux.**
+
+**① Rendre une partition utilisable, même après un redémarrage**
+
+```mermaid
+flowchart TD
+    A["mkfs.ext4 /dev/sdb1<br/>formater"] --> B["mkdir /data"]
+    B --> C["mount /dev/sdb1 /data<br/>(temporaire)"]
+    C --> D["/etc/fstab<br/>UUID=…  /data  ext4  defaults,nofail  0  2"]
+    D --> E["sudo mount -a<br/>tester AVANT de redémarrer"]
+```
+
+**② Quelle commande pour quelle place ?**
+
+```mermaid
+flowchart LR
+    D["df -h"] --> D1["place libre<br/>sur chaque disque"]
+    U["du -sh dossier"] --> U1["poids d'un dossier"]
+    F["free -h"] --> F1["RAM et swap"]
+```
+
 ## 🖼️ Résumé visuel
 
 **De la partition au dossier utilisable**

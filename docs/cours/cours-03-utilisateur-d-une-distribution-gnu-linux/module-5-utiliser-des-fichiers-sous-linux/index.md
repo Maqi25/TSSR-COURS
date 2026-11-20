@@ -15,6 +15,28 @@
 !!! abstract "En clair"
     Sous Linux, presque tout est **du texte** : la configuration (`/etc`), les journaux (`/var/log`), les listes d'utilisateurs… Un technicien passe donc son temps à **lire**, **filtrer** et **chercher** dans des fichiers texte. Ce module te donne les outils pour ça, sans ouvrir le moindre éditeur.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Exploiter des serveurs Linux** et **CCP 3 · compétence 10 : Superviser** (lire et filtrer des journaux). Le choix entre `cat`, `less`, `head` et `tail` est dans le résumé visuel juste en dessous.
+
+**① grep ou find ?**
+
+```mermaid
+flowchart TD
+    A{"Je cherche…"} -->|"un MOT dans le contenu"| G["grep -in mot fichier<br/>grep -r mot dossier"]
+    A -->|"un FICHIER par son nom,<br/>sa taille, sa date"| F["find / -name &quot;*.conf&quot;"]
+```
+
+**② Enchaîner les filtres : combien de comptes différents ?**
+
+```mermaid
+flowchart LR
+    A["cut -d: -f1 /etc/passwd<br/>1ʳᵉ colonne"] --> B["sort<br/>trier"]
+    B --> C["uniq<br/>dédoublonner<br/>(toujours après sort)"]
+    C --> D["wc -l<br/>compter les lignes"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Quel outil pour lire un fichier ?**

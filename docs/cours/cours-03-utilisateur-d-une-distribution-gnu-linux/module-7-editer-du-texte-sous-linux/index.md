@@ -16,6 +16,30 @@
     - **nano** : simple, les raccourcis sont **écrits en bas de l'écran**. Parfait pour débuter.
     - **vi / vim** : plus difficile au début, mais **présent sur TOUS les systèmes Linux et Unix**, même les plus minimalistes. Un technicien **doit** savoir au moins **ouvrir, modifier, enregistrer et quitter** avec vim.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Exploiter des serveurs Linux** (modifier un fichier de configuration sur un serveur sans interface graphique). Les modes de vim sont dans le résumé visuel juste en dessous.
+
+**① Modifier une configuration sans risque**
+
+```mermaid
+flowchart LR
+    A["cp fichier.conf<br/>fichier.conf.bak<br/>sauvegarde"] --> B["Éditer<br/>nano ou vim<br/>(sudo pour /etc)"]
+    B --> C["Enregistrer<br/>Ctrl+O · :w"]
+    C --> D{"Ça marche ?"}
+    D -- non --> E["Remettre le .bak"]
+```
+
+**② Sortir de vim**
+
+```mermaid
+flowchart TD
+    A["Échap<br/>retour au mode Normal"] --> B{"J'ai modifié et je garde ?"}
+    B -- oui --> W[":wq"]
+    B -- non --> Q[":q!<br/>quitter sans enregistrer"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Les 3 modes de vim : on passe toujours par le mode Normal**

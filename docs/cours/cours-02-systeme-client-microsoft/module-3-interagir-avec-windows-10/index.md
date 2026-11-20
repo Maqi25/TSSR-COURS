@@ -19,6 +19,40 @@
 
     Un technicien utilise les deux. Ce module t'apprend les bases du clavier.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 1 · compétence 3 : Apporter une assistance technique** (dépanner en ligne de commande) et **CCP 3 · compétence 8 : Optimiser des scripts** (PowerShell est la base des scripts Windows).
+
+**① La méthode pour trouver et utiliser une commande PowerShell**
+
+```mermaid
+flowchart TD
+    A["Get-Command *service*<br/>trouver la commande"] --> B["Get-Help Get-Service -Examples<br/>lire des exemples"]
+    B --> C["Get-Service | Get-Member<br/>voir les propriétés"]
+    C --> D["Where-Object / Select-Object<br/>filtrer, choisir"]
+    D --> E["Out-File<br/>enregistrer"]
+```
+
+**② Le pipeline : des objets passent de commande en commande**
+
+```mermaid
+flowchart LR
+    G["Get-Service<br/>tous les services"] --> W["Where-Object<br/>garde les LIGNES<br/>Status -eq 'Running'"]
+    W --> S["Select-Object<br/>garde les COLONNES<br/>Name, Status"]
+    S --> O["Out-File services.txt"]
+```
+
+**③ Graphique, cmd ou PowerShell ?**
+
+```mermaid
+flowchart TD
+    A{"Une action ponctuelle,<br/>sur un seul poste ?"} -- oui --> G["Interface graphique<br/>consoles .msc, Paramètres"]
+    A -- non --> B{"Une vieille commande<br/>ou un script .bat ?"}
+    B -- oui --> C["cmd<br/>dir, copy, ipconfig"]
+    B -- non --> P["PowerShell<br/>objets, pipeline, automatisation"]
+```
+
 ## 🖼️ Résumé visuel
 
 **① Où trouver les outils ?**

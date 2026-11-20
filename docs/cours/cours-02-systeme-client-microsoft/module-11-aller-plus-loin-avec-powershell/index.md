@@ -19,6 +19,31 @@
     3. **on choisit** les colonnes (`Select-Object`) ;
     4. **on met en forme** ou **on enregistre** (`Format-Table`, `> fichier`).
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 3 · compétence 8 : Optimiser des scripts** (pipeline, filtres, redirections : la base de tout script PowerShell) et **CCP 1 · compétence 3** (extraire vite une information sur un poste). Le pipeline et les flux sont dans le résumé visuel juste en dessous.
+
+**① Le modèle de commande, dans cet ordre**
+
+```mermaid
+flowchart TD
+    G["Get-…<br/>récupérer"] --> W["Where-Object { $_.Prop -eq … }<br/>trier les LIGNES"]
+    W --> S["Select-Object Prop1, Prop2<br/>choisir les COLONNES"]
+    S --> F["Format-Table -AutoSize<br/>afficher (toujours en dernier)"]
+    S --> O["> fichier · >> ajoute · Export-Csv<br/>enregistrer"]
+```
+
+**② Quel opérateur dans Where-Object ?**
+
+```mermaid
+flowchart TD
+    A{"Je compare…"} -->|"une valeur exacte"| E["-eq / -ne<br/>-eq 'Running'"]
+    A -->|"un nombre"| N["-gt / -lt / -ge / -le"]
+    A -->|"un texte qui contient"| L["-like '*up*'<br/>avec les jokers *"]
+    A -->|"plusieurs conditions"| C["-and / -or"]
+```
+
 ## 🖼️ Résumé visuel
 
 **① Le pipeline : chaque étape travaille sur le résultat de la précédente**

@@ -20,6 +20,37 @@
     - **chercher intelligemment** dans du texte ;
     - **regrouper et compresser** des fichiers, par exemple pour une sauvegarde.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Exploiter des serveurs Linux** (droits, processus, archives) et **compétence 7 : Gérer les accès et la sécurité** (droits sur les fichiers). Le premier et l'arrière-plan sont dans le résumé visuel juste en dessous.
+
+**① Lire et calculer des droits : chmod 754**
+
+```mermaid
+flowchart LR
+    U["u (propriétaire)<br/>rwx = 4+2+1 = 7"] --> R["chmod 754 fichier"]
+    G["g (groupe)<br/>r-x = 4+1 = 5"] --> R
+    O["o (les autres)<br/>r-- = 4"] --> R
+```
+
+**② Un programme ne répond plus**
+
+```mermaid
+flowchart TD
+    A["ps aux | grep nom<br/>ou top / htop"] --> B["Noter le PID"]
+    B --> C["kill PID<br/>arrêt propre"]
+    C -->|"toujours là"| D["kill -9 PID<br/>en dernier recours"]
+```
+
+**③ tar : les lettres à retenir**
+
+```mermaid
+flowchart LR
+    C["tar -czvf archive.tar.gz dossier<br/>c = créer"] --- X["tar -xzvf archive.tar.gz<br/>x = extraire"]
+    X --- L["z = gzip · v = détails<br/>f = nom de l'archive, TOUJOURS en dernier"]
+```
+
 ## 🖼️ Résumé visuel
 
 **① Les droits d'un fichier : 3 publics × 3 droits**

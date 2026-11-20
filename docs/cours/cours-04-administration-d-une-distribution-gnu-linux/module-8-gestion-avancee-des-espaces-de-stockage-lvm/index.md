@@ -13,6 +13,30 @@
 
     Un volume est trop petit ? On l'**agrandit en une commande**, même pendant que le serveur tourne. Plus de place dans le pot ? On **ajoute un disque**, et le pot grossit.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Exploiter des serveurs Linux** et **CCP 3 · compétence 10** (agrandir un volume plein sans arrêter le serveur). L'empilement PV → VG → LV est dans le résumé visuel juste en dessous.
+
+**① Un volume est plein**
+
+```mermaid
+flowchart TD
+    A["vgs<br/>reste-t-il de la place (VFree) ?"] -->|"oui"| B["lvextend -r -L +2G<br/>/dev/vg_data/lv_web"]
+    A -->|"VFree = 0"| C["Nouveau disque :<br/>pvcreate /dev/sdc<br/>vgextend vg_data /dev/sdc"]
+    C --> B
+    B --> D["df -h<br/>le système de fichiers a grandi"]
+```
+
+**② -L 2G ou -L +2G ?**
+
+```mermaid
+flowchart LR
+    A["-L 2G"] --> A1["taille TOTALE = 2 Go"]
+    B["-L +2G"] --> B1["AJOUTER 2 Go"]
+    C["sans -r"] --> C1["⚠️ le système de fichiers<br/>ne grandit pas → resize2fs"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Les 3 étages de LVM**

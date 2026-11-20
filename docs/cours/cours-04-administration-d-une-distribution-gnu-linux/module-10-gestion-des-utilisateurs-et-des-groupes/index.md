@@ -12,6 +12,30 @@
 !!! abstract "En clair"
     Comme sous Windows ([cours 2, module 5](../../cours-02-systeme-client-microsoft/module-5-les-utilisateurs-et-les-groupes/index.md)) : **1 personne = 1 compte**, et on donne les droits **aux groupes**. Sous Linux, il n'y a pas de console graphique : tout est rangé dans **3 fichiers texte**, qu'on modifie avec des **commandes** (jamais à la main).
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 7 : Gérer les accès et la sécurité** (comptes, groupes, sudo) et **compétence 5**.
+
+**① Créer un utilisateur et l'ajouter à un groupe**
+
+```mermaid
+flowchart LR
+    A["sudo adduser paul"] --> B["sudo groupadd compta"]
+    B --> C["sudo usermod -aG compta paul<br/>⚠️ -a sinon les autres groupes sont effacés"]
+    C --> D["id paul<br/>vérifier"]
+```
+
+**② La vie d'un compte**
+
+```mermaid
+flowchart LR
+    A["Compte actif"] -->|"congé"| L["usermod -L paul<br/>verrouillé"]
+    L -->|"retour"| U["usermod -U paul"]
+    A -->|"départ"| D["deluser --remove-home paul"]
+    A -->|"mot de passe à changer"| E["passwd -e paul"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Les 3 fichiers des comptes**

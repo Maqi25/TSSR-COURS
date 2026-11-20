@@ -17,6 +17,30 @@
 
     Et sous Linux, **« tout est fichier »** : un document, un dossier, un disque, une imprimante… sont tous vus comme des fichiers.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Exploiter des serveurs Linux.** Se déplacer et manipuler des fichiers sans erreur. L'arborescence est dans le résumé visuel juste en dessous.
+
+**① Copier, déplacer, renommer**
+
+```mermaid
+flowchart LR
+    F["📄 Fichier"] -->|"copier"| CP["cp f1 f2"]
+    D["📁 Dossier"] -->|"copier"| CPR["cp -r d1 d2<br/>(sans -r : erreur)"]
+    X["📄 ou 📁"] -->|"déplacer OU renommer"| MV["mv ancien nouveau"]
+```
+
+**② Supprimer : quelle commande ?**
+
+```mermaid
+flowchart TD
+    A{"Je supprime…"} -->|"un fichier"| R["rm fichier"]
+    A -->|"un dossier vide"| RD["rmdir dossier"]
+    A -->|"un dossier plein"| RR["rm -r dossier"]
+    R & RD & RR --> W["⚠️ Pas de corbeille :<br/>c'est définitif"]
+```
+
 ## 🖼️ Résumé visuel
 
 **① L'arborescence Linux : les dossiers à connaître**

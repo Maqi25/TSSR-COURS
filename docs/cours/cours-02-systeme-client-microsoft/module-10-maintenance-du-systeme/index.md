@@ -20,6 +20,38 @@
 
     Le technicien **enquête** avec les outils de Windows, **répare**, et en dernier recours **revient en arrière** (point de restauration) ou **démarre sur l'environnement de secours** (WinRE).
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 1 · compétence 3 : Apporter une assistance technique** et **CCP 3 · compétence 9 : Assurer la continuité et la reprise** (points de restauration, WinRE). Le choix de l'outil de diagnostic et le démarrage sur WinRE sont dans le résumé visuel juste en dessous.
+
+**① La démarche de dépannage en 5 étapes**
+
+```mermaid
+flowchart TD
+    A["① Comprendre<br/>quoi, depuis quand, après quoi ?"] --> B["② Lire les journaux<br/>eventvwr.msc : Erreur, Critique"]
+    B --> C["③ Réparer<br/>sfc /scannow · DISM · chkdsk"]
+    C --> D{"Réparé ?"}
+    D -- non --> E["④ Revenir en arrière<br/>point de restauration (rstrui),<br/>désinstaller la mise à jour"]
+    E --> F{"Réparé ?"}
+    F -- non --> G["⑤ Dernier recours<br/>réinitialiser le PC"]
+```
+
+**② Quel outil de réparation ?**
+
+```mermaid
+flowchart LR
+    A["Fichiers système abîmés"] --> S["sfc /scannow<br/>(en administrateur)"]
+    S -->|"échoue"| D["DISM /Online /Cleanup-Image<br/>/RestoreHealth puis sfc"]
+    B["Erreurs sur le disque"] --> C["chkdsk C: /f"]
+    R["Mémoire suspecte"] --> M["mdsched"]
+```
+
+| ⚠️ Piège classique | À retenir |
+|---|---|
+| « J'ai un point de restauration » | il **ne sauvegarde pas les documents**, seulement le système |
+| Le mode sans échec fonctionne | le problème vient d'un **pilote ou logiciel** chargé au démarrage normal |
+
 ## 🖼️ Résumé visuel
 
 **① Quel outil pour quel problème ?**

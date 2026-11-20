@@ -18,6 +18,33 @@
 
     En tant que technicien, tu l'utiliseras surtout **au clavier, en ligne de commande**, sur des **serveurs**.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Installer et assurer l'exploitation de serveurs Windows et Linux.** Connaître les familles de Linux aide à choisir la bonne distribution pour un serveur. La frise historique est dans le résumé visuel juste en dessous.
+
+**① Ce qu'on appelle « Linux », en vrai**
+
+```mermaid
+flowchart LR
+    N["Noyau Linux<br/>Linus Torvalds, 1991"] --> S["GNU/Linux<br/>noyau + outils GNU"]
+    G["Outils GNU<br/>Stallman, 1983"] --> S
+    S --> D["Distribution<br/>GNU/Linux emballé, testé, mis à jour<br/>Debian, Ubuntu, Red Hat…"]
+```
+
+**② Les grandes familles**
+
+```mermaid
+flowchart LR
+    DEB["Debian (1993)<br/>libre, stable"] --> UBU["Ubuntu (2004)<br/>grand public, LTS 5 ans"]
+    RH["Red Hat Enterprise Linux<br/>payant, support pro"] --> CL["Rocky Linux · AlmaLinux<br/>(CentOS ne joue plus ce rôle)"]
+```
+
+| ⚠️ Piège classique | À retenir |
+|---|---|
+| « Linux » | seulement le **noyau** ; le système complet est **GNU/Linux** |
+| Libre = gratuit ? | **non** : Red Hat est libre et payant |
+
 ## 🖼️ Résumé visuel
 
 **① De Unix à Linux en 6 dates**

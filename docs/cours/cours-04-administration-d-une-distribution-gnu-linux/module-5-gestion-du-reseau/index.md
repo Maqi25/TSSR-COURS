@@ -12,6 +12,33 @@
 !!! abstract "En clair"
     Un serveur doit **toujours avoir la même adresse IP** : les postes et les autres serveurs doivent savoir où le trouver ([cours 2, module 7](../../cours-02-systeme-client-microsoft/module-7-la-gestion-du-reseau-et-du-pare-feu/index.md)). Sous Debian serveur, on l'écrit dans un **fichier texte** de configuration. C'est l'équivalent de la fenêtre « Propriétés IPv4 » de Windows, mais en texte.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 4 : Exploiter un réseau IP** et **compétence 5 : Exploiter des serveurs Linux**.
+
+**① Mettre un serveur en IP fixe**
+
+```mermaid
+flowchart TD
+    A["ip a<br/>nom exact de la carte (ens33)"] --> B["/etc/network/interfaces<br/>iface ens33 inet static<br/>address · gateway"]
+    B --> C["sudo systemctl restart networking"]
+    C --> D["ip a · ip r<br/>vérifier IP et passerelle"]
+    D --> E["ping -c 3 passerelle<br/>puis un nom"]
+```
+
+**② Ça ne marche pas : où regarder ?**
+
+```mermaid
+flowchart TD
+    A{"ping 8.8.8.8 ?"} -- non --> B{"ping passerelle ?"}
+    B -- non --> B1["Carte, IP, masque<br/>/etc/network/interfaces"]
+    B -- oui --> B2["Passerelle absente ou fausse<br/>ip r"]
+    A -- oui --> C{"ping debian.org ?"}
+    C -- non --> C1["DNS<br/>/etc/resolv.conf"]
+    C -- oui --> OK["✅ Réseau OK"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Les 4 fichiers du réseau Debian**

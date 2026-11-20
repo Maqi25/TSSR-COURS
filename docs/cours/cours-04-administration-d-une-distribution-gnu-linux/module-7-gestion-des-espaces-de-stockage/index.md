@@ -14,6 +14,29 @@
 
     Ce module couvre la **1ʳᵉ étape** : repérer le disque et le partitionner. Les modules 8 (LVM) et 9 (formater et monter) font la suite.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Installer et assurer l'exploitation de serveurs Linux** (ajouter un disque à un serveur).
+
+**① Ajouter un disque : de lsblk à la partition**
+
+```mermaid
+flowchart TD
+    A["lsblk<br/>repérer le nouveau disque (sdb)"] --> B["sudo fdisk /dev/sdb"]
+    B --> C["g = table GPT<br/>n = nouvelle partition<br/>p = vérifier · w = écrire"]
+    C --> D["lsblk : sdb1 apparaît"]
+    D --> E["sudo blkid<br/>noter l'UUID (pour fstab)"]
+```
+
+**② Lire le nom d'un disque**
+
+```mermaid
+flowchart LR
+    S["/dev/sda1"] --> S1["sd = disque SATA/SCSI<br/>a = 1er disque · 1 = 1re partition"]
+    N["/dev/nvme0n1p1"] --> N1["SSD NVMe<br/>p1 = 1re partition"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Comment Linux nomme les disques et les partitions**

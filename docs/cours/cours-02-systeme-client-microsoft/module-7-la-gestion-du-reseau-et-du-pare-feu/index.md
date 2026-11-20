@@ -16,6 +16,40 @@
     - Le **pare-feu** est le **vigile** du PC : il regarde chaque connexion qui **entre** ou qui **sort** et décide si elle passe.
     - Le **profil réseau** dit au vigile **où tu es** : à la maison ou au bureau (réseau de confiance), ou dans un café (réseau public, prudence).
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 4 : Exploiter un réseau IP** (configurer une carte réseau) et **compétence 7 : Gérer les accès et la sécurité** (pare-feu). Les 3 niveaux du pare-feu sont dans le résumé visuel juste en dessous.
+
+**① Quel profil réseau Windows choisit-il ?**
+
+```mermaid
+flowchart TD
+    A{"Le contrôleur de domaine<br/>est joignable ?"} -- oui --> D["Domaine<br/>automatique"]
+    A -- non --> B{"Réseau de confiance ?<br/>(maison, bureau)"}
+    B -- oui --> P["Privé<br/>partage possible"]
+    B -- non --> U["Public<br/>par défaut, le plus strict"]
+```
+
+**② IP fixe ou DHCP ?**
+
+```mermaid
+flowchart TD
+    A{"Serveur ou imprimante ?"} -- oui --> S["IP statique (ncpa.cpl)<br/>IP · masque · passerelle · ⚠️ DNS"]
+    A -- non --> C["DHCP<br/>poste client"]
+    C --> X{"ipconfig affiche<br/>169.254.x.x ?"}
+    X -- oui --> Y["APIPA : aucun serveur<br/>DHCP n'a répondu"]
+```
+
+**③ Un ping ne passe pas : panne ou pare-feu ?**
+
+```mermaid
+flowchart LR
+    A["ping sans réponse"] --> B["Le pare-feu bloque le ping<br/>entrant par défaut"]
+    B --> C["❌ Ne pas désactiver le pare-feu"]
+    B --> D["✅ Créer une règle<br/>dans wf.msc"]
+```
+
 ## 🖼️ Résumé visuel
 
 **① Le profil réseau règle la sévérité du pare-feu**

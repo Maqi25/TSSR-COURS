@@ -20,6 +20,39 @@
 
     📌 **Règle d'or : 1 personne = 1 compte.** Jamais de compte partagé.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 7 : Gérer les accès et la sécurité** (comptes, groupes, UAC) et **CCP 1 · compétence 3 : Apporter une assistance technique** (« je n'ai pas accès »). Le schéma local / domaine est juste en dessous, dans le résumé visuel.
+
+**① Le jeton d'accès : pourquoi il faut se reconnecter**
+
+```mermaid
+flowchart LR
+    S["🔑 Ouverture de session"] --> J["Jeton d'accès<br/>SID de l'utilisateur<br/>+ SID de ses groupes"]
+    J --> R["Présenté à chaque ressource<br/>(fichier, imprimante…)"]
+    G["➕ Ajout dans un groupe"] -.->|"pas dans le jeton actuel"| N["Se déconnecter puis<br/>se reconnecter"]
+    N --> S
+```
+
+**② Donner un accès : la bonne méthode**
+
+```mermaid
+flowchart LR
+    A["Créer le compte<br/>net user · New-LocalUser"] --> B["L'ajouter au groupe<br/>net localgroup · Add-LocalGroupMember"]
+    B --> C["Les droits sont donnés<br/>au GROUPE, jamais<br/>à la personne"]
+    C --> D["Vérifier : whoami /groups<br/>après reconnexion"]
+```
+
+**③ L'UAC : le bouclier 🛡️**
+
+```mermaid
+flowchart TD
+    A["Action qui modifie le système<br/>(installer, changer un réglage)"] --> B{"Compte administrateur ?"}
+    B -- oui --> C["Simple confirmation<br/>« Oui / Non »"]
+    B -- non --> D["Identifiants d'un<br/>administrateur demandés"]
+```
+
 ## 🖼️ Résumé visuel
 
 **① Compte local ou compte de domaine ?**

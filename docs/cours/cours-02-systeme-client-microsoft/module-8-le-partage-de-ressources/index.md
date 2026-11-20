@@ -20,6 +20,33 @@
     - le **client** qui y accède (le PC de Marie) ;
     - le **réseau** entre les deux.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Exploiter des serveurs Windows** (partages) et **CCP 1 · compétence 3 : Apporter une assistance technique** (prise en main à distance). Les deux « portes » partage + NTFS sont dans le résumé visuel juste en dessous.
+
+**① Créer un partage propre**
+
+```mermaid
+flowchart LR
+    A["📁 Dossier<br/>D:\Compta"] --> B["Partage<br/>Utilisateurs authentifiés :<br/>Contrôle total"]
+    B --> C["NTFS<br/>les VRAIS droits<br/>Compta : Modification"]
+    C --> D["Accès : \\SRV\Compta<br/>ou net use Z:"]
+```
+
+**② Le Bureau à distance ne marche pas ? Les 4 vérifications**
+
+```mermaid
+flowchart TD
+    A{"Le PC cible est en<br/>édition Pro ou plus ?"} -- non --> X1["❌ Impossible vers Famille"]
+    A -- oui --> B{"Bureau à distance activé ?"}
+    B -- non --> X2["L'activer dans les paramètres"]
+    B -- oui --> C{"L'utilisateur est admin ou<br/>dans « Utilisateurs du<br/>Bureau à distance » ?"}
+    C -- non --> X3["L'ajouter au groupe"]
+    C -- oui --> D{"Port TCP 3389 autorisé<br/>par le pare-feu ?"}
+    D -- oui --> OK["✅ mstsc → connexion"]
+```
+
 ## 🖼️ Résumé visuel
 
 **① La double porte : partage puis NTFS. Le plus strict gagne.**

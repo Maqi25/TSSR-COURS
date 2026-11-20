@@ -12,6 +12,30 @@
 !!! abstract "En clair"
     Un serveur « **en production** » est un serveur **utilisé pour de vrai** : s'il s'arrête, des gens ne peuvent plus travailler. Le travail de l'administrateur, c'est de **surveiller** (tout va bien ?), **comprendre** (que s'est-il passé ?), **automatiser** (les tâches répétitives) et **prévenir** (mises à jour, sauvegardes).
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 3 · compétence 10 : Mettre à jour et superviser les éléments de l'infrastructure** et **compétence 9 : Assurer la continuité** (sauvegardes planifiées).
+
+**① Le bilan de santé d'un serveur**
+
+```mermaid
+flowchart TD
+    A["uptime<br/>charge"] --> B["free -h<br/>colonne available"]
+    B --> C["df -h<br/>disques"]
+    C --> D["systemctl --failed<br/>services"]
+    D --> E["journalctl -p err<br/>--since today"]
+```
+
+**② Lire une ligne cron**
+
+```mermaid
+flowchart TD
+    M["30<br/>minute"] --- H["2<br/>heure"] --- J["*<br/>jour du mois"] --- MO["*<br/>mois"] --- S["*<br/>jour de la semaine<br/>(0 ou 7 = dimanche)"] --- C["/usr/local/bin/backup.sh<br/>chemin COMPLET"]
+```
+
+Ici : **tous les jours à 2 h 30**.
+
 ## 🖼️ Résumé visuel
 
 **La routine de l'administrateur**

@@ -19,6 +19,30 @@
     - Avec un pilote **générique** (fourni par Windows) : il fonctionne, mais seulement pour les **fonctions de base**.
     - Avec le pilote **du fabricant** : **toutes** les fonctions sont disponibles.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 1 · compétence 2 : Assurer le déploiement des équipements numériques** (installer pilotes et imprimantes) et **compétence 3 : Apporter une assistance technique**. Le trajet d'une impression est dans le résumé visuel juste en dessous.
+
+**① Un périphérique ne fonctionne pas : la méthode**
+
+```mermaid
+flowchart TD
+    A["devmgmt.msc<br/>point d'exclamation ⚠️ ?"] --> B["Propriétés → Détails<br/>ID matériel : VEN_ / DEV_"]
+    B --> C["Site officiel<br/>du fabricant"]
+    C --> D["Installer le pilote"]
+    D --> E{"Ça marche ?"}
+    E -- non --> F["Restaurer le pilote<br/>(version précédente)"]
+```
+
+**② Pilote générique ou pilote du fabricant ?**
+
+```mermaid
+flowchart LR
+    G["Pilote générique<br/>(DriverStore de Windows)"] --> G1["Fonctions de base<br/>imprimer, afficher"]
+    F["Pilote du fabricant"] --> F1["Toutes les fonctions<br/>recto-verso, agrafage…"]
+```
+
 ## 🖼️ Résumé visuel
 
 **① Le trajet d'une impression**

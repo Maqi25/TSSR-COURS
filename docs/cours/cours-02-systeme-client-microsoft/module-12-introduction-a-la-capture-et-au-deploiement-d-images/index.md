@@ -16,6 +16,34 @@
 
     Le **master** est le **moule** ; chaque PC déployé est un **gâteau** identique… mais il faut que chaque gâteau ait **son propre nom** : c'est le rôle de **sysprep**.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 1 · compétence 2 : Assurer le déploiement des équipements numériques.** Préparer un master et le déployer sur tout un parc. La préparation du master est dans le résumé visuel juste en dessous.
+
+**① Du master au parc de PC**
+
+```mermaid
+flowchart LR
+    M["🧱 Master<br/>Windows + pilotes + logiciels"] --> S["sysprep<br/>/generalize /oobe /shutdown"]
+    S --> C["Capture<br/>dism → image .wim"]
+    C --> D{"Déploiement"}
+    D -->|"clé USB"| P["WinPE<br/>dism /Apply-Image + bcdboot"]
+    D -->|"réseau"| X["PXE<br/>serveur de déploiement"]
+    P --> O["OOBE sur chaque PC<br/>nom et SID uniques"]
+    X --> O
+```
+
+**② sysprep a échoué ?**
+
+```mermaid
+flowchart TD
+    A["❌ Échec sysprep"] --> B["Lire les journaux<br/>dossier Panther"]
+    B --> C{"Application du Store<br/>en cause ?"}
+    C -- oui --> D["La désinstaller<br/>pour cet utilisateur"]
+    A --> E["⚠️ Master redémarré<br/>après sysprep ?<br/>→ sysprep à refaire"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Le cycle de vie d'un master**

@@ -11,6 +11,31 @@
 !!! abstract "En clair"
     Quand tu appuies sur le bouton, plusieurs programmes se passent le relais, comme dans une course de relais. Le dernier, **systemd**, lance tous les **services** : le réseau, SSH, le serveur web… Un **service** est un programme qui tourne **en arrière-plan**, sans fenêtre (on dit aussi « démon », *daemon*).
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Exploiter des serveurs Linux** et **CCP 3 · compétence 10 : Superviser** (repérer et relancer un service en panne).
+
+**① Maintenant ou au démarrage ?**
+
+```mermaid
+flowchart LR
+    N["MAINTENANT"] --> N1["systemctl start · stop · restart"]
+    D["AU DÉMARRAGE"] --> D1["systemctl enable · disable"]
+    B["LES DEUX"] --> B1["systemctl enable --now apache2"]
+```
+
+**② Un service est en panne (failed)**
+
+```mermaid
+flowchart TD
+    A["systemctl --failed<br/>lister les services en échec"] --> B["systemctl status ssh<br/>dernières lignes"]
+    B --> C["journalctl -u ssh<br/>le détail"]
+    C --> D["Corriger la configuration"]
+    D --> E["sudo systemctl restart ssh"]
+    E --> F["systemctl status ssh<br/>active (running) ✅"]
+```
+
 ## 🖼️ Résumé visuel
 
 **La course de relais du démarrage**

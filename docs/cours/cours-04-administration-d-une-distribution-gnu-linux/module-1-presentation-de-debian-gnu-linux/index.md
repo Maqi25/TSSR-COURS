@@ -11,6 +11,29 @@
 !!! abstract "En clair"
     Au [cours 3](../../cours-03-utilisateur-d-une-distribution-gnu-linux/index.md), tu as appris à **utiliser** Linux. Dans ce cours, tu apprends à l'**administrer** : l'installer, le configurer, créer les comptes, gérer les disques et le réseau, et le **maintenir en état de marche**. La distribution utilisée est **Debian**, réputée pour sa **stabilité** : c'est pour ça qu'on la met sur les serveurs.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Installer et assurer l'exploitation de serveurs Windows et Linux.** Choisir la bonne version de Debian et travailler avec les droits root sans danger.
+
+**① Quelle branche de Debian ?**
+
+```mermaid
+flowchart TD
+    A{"Pour quoi faire ?"} -->|"serveur en production"| S["✅ stable<br/>Debian 13 Trixie"]
+    A -->|"tester la future version"| T["testing"]
+    A -->|"le plus récent"| U["unstable (Sid)<br/>⛔ jamais en production"]
+```
+
+**② sudo ou su - ?**
+
+```mermaid
+flowchart LR
+    SU["sudo commande"] --> S1["TON mot de passe<br/>une seule commande<br/>tracée dans les journaux"]
+    S1 --> S2["Il faut être dans<br/>le groupe sudo"]
+    R["su -"] --> R1["Mot de passe de ROOT<br/>tu restes root<br/>jusqu'à exit"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Le parcours d'un logiciel dans Debian, du plus récent au plus sûr**

@@ -13,6 +13,30 @@
 !!! abstract "En clair"
     Sous Windows, on règle les droits avec l'onglet Sécurité ([cours 2, module 6](../../cours-02-systeme-client-microsoft/module-6-la-securite-ntfs-et-les-acl/index.md)). Sous Linux, c'est plus simple : chaque fichier a **un propriétaire**, **un groupe** et **3 séries de droits** (`rwx`) pour le **propriétaire**, le **groupe** et **les autres**. Root, lui, passe partout.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 7 : Gérer les accès et la sécurité.**
+
+**① Quels droits Linux applique-t-il ?**
+
+```mermaid
+flowchart TD
+    A{"Paul est le<br/>PROPRIÉTAIRE ?"} -- oui --> U["Droits u (propriétaire)<br/>et c'est tout"]
+    A -- non --> B{"Paul est dans<br/>le GROUPE du fichier ?"}
+    B -- oui --> G["Droits g (groupe)"]
+    B -- non --> O["Droits o (les autres)"]
+    U --> N["⚠️ Linux n'additionne pas<br/>les droits"]
+```
+
+**② umask : les droits par défaut**
+
+```mermaid
+flowchart LR
+    M["umask 022"] --> F["Nouveau fichier<br/>666 − 022 = 644 (rw-r--r--)"]
+    M --> D["Nouveau dossier<br/>777 − 022 = 755 (rwxr-xr-x)"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Comment Linux décide si tu peux lire un fichier**

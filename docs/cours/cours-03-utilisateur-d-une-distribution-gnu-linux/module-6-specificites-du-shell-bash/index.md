@@ -16,6 +16,36 @@
 !!! abstract "En clair"
     Avant d'exécuter ta commande, **Bash la relit et la transforme** : il remplace `*` par une liste de fichiers, `$HOME` par `/home/user30`, `$(date)` par la date… Ce module t'apprend ces « super-pouvoirs » de Bash, et comment l'**empêcher** de transformer quelque chose quand tu ne le veux pas (avec les guillemets).
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 3 · compétence 8 : Optimiser des scripts** (les symboles de Bash sont la base de tout script) et **CCP 2 · compétence 5**. Les flux (sortie, erreurs) sont dans le résumé visuel juste en dessous.
+
+**① Enchaîner des commandes selon le résultat**
+
+```mermaid
+flowchart LR
+    A["cmd1 ; cmd2"] --> B["cmd2 s'exécute TOUJOURS"]
+    C["cmd1 && cmd2"] --> D["cmd2 seulement si cmd1 RÉUSSIT<br/>($? = 0)"]
+    E["cmd1 || cmd2"] --> F["cmd2 seulement si cmd1 ÉCHOUE<br/>($? ≠ 0)"]
+```
+
+**② Les guillemets**
+
+```mermaid
+flowchart LR
+    D["echo &quot;$HOME&quot;<br/>guillemets doubles"] --> D1["/home/user<br/>$ est remplacé"]
+    S["echo '$HOME'<br/>guillemets simples"] --> S1["$HOME<br/>tout est protégé"]
+```
+
+**③ Un alias qui survit à la déconnexion**
+
+```mermaid
+flowchart LR
+    T["alias ll='ls -la'<br/>tapé dans le terminal"] --> P["❌ perdu à la déconnexion"]
+    B["Ajouté dans ~/.bashrc"] --> K["✅ chargé à chaque connexion"]
+```
+
 ## 🖼️ Résumé visuel
 
 **① Où va le résultat d'une commande ?**

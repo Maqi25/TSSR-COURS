@@ -17,6 +17,36 @@
     - Les **stratégies de groupe** (GPO) sont une **interface propre et documentée** pour modifier ces réglages sans aller fouiller dans le registre. Exemples : « interdire le Panneau de configuration », « mot de passe de 12 caractères minimum ».
     - En **local** (LGPO), elles s'appliquent à **un seul PC**. Dans un **domaine** (cours 8), on les applique à **des centaines de PC d'un coup**.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 7 : Gérer les accès et la sécurité** (verrouiller un poste par stratégie) et **CCP 1 · compétence 3**. Le choix entre registre et stratégie est dans le résumé visuel juste en dessous.
+
+**① Le registre : ruche → clé → valeur**
+
+```mermaid
+flowchart LR
+    R["regedit"] --> M["HKLM<br/>la machine,<br/>tous les utilisateurs"]
+    R --> U["HKCU<br/>l'utilisateur connecté"]
+    M --> K["Clé<br/>(comme un dossier)"]
+    K --> V["Valeur<br/>REG_SZ texte · REG_DWORD nombre"]
+```
+
+**② Appliquer une stratégie locale et vérifier**
+
+```mermaid
+flowchart LR
+    A["gpedit.msc<br/>(Pro ou plus)"] --> B["Activer / Désactiver /<br/>Non configuré"]
+    B --> C["Vérifier « Pris en charge sur »<br/>la bonne version de Windows"]
+    C --> D["gpupdate /force<br/>appliquer"]
+    D --> E["gpresult /r<br/>vérifier"]
+```
+
+| ⚠️ Piège classique | À retenir |
+|---|---|
+| « Désactiver X » réglé sur **Activé** | X est **désactivé** (double négation) |
+| Non configuré ≠ Désactivé | « Non configuré » laisse Windows décider |
+
 ## 🖼️ Résumé visuel
 
 **① Deux chemins vers le même registre**

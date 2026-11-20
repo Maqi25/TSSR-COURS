@@ -15,6 +15,41 @@
 !!! abstract "En clair"
     Installer Windows, c'est **copier le système** depuis une clé USB ou un fichier ISO **vers le disque dur** du PC, puis le **personnaliser** : langue, compte utilisateur, réseau. C'est une tâche que tu feras très souvent comme technicien.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 1 · compétence 2 : Assurer le déploiement des équipements numériques.** Installer, mettre à niveau et migrer un poste de travail.
+
+**① Nouvelle installation ou mise à niveau ?**
+
+```mermaid
+flowchart TD
+    A{"Le PC tourne sous<br/>XP ou Vista ?"} -- oui --> N["Nouvelle installation<br/>(Personnalisé)"]
+    A -- non --> B{"L'ancien Windows<br/>a des problèmes ?"}
+    B -- oui --> N
+    B -- non --> M["Mise à niveau possible<br/>garde fichiers et applis"]
+    N --> S["⚠️ Sauvegarder avant :<br/>le disque est effacé"]
+```
+
+**② L'installation, de la clé USB au bureau**
+
+```mermaid
+flowchart TD
+    I["💿 ISO / clé USB"] --> WP["boot.wim<br/>mini-Windows d'installation"]
+    WP --> C["Langue · clé · édition · CLUF<br/>type Personnalisé · disque"]
+    C --> CP["Copie de install.wim<br/>+ redémarrages"]
+    CP --> O["OOBE<br/>région, réseau, compte"]
+    O --> D["🖥️ Bureau"]
+```
+
+**③ Migrer un utilisateur vers un nouveau PC (USMT)**
+
+```mermaid
+flowchart LR
+    A["💻 Ancien PC<br/>scanstate (capture)"] --> S["📁 Partage réseau<br/>profil + paramètres"]
+    S --> B["💻 Nouveau PC<br/>loadstate (restauration)"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Les étapes d'une installation, du support jusqu'au bureau**

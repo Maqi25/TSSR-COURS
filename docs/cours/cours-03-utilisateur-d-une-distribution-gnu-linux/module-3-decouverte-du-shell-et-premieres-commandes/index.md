@@ -15,6 +15,28 @@
 !!! abstract "En clair"
     Ce module est ta **trousse de survie** dans le terminal : savoir **qui tu es**, **où tu es**, **retrouver une commande déjà tapée**, et surtout **trouver de l'aide tout seul**. Avec `man` et `--help`, tu n'as pas besoin de tout retenir par cœur.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 5 : Exploiter des serveurs Linux** et **CCP 1 · compétence 3** (savoir trouver l'aide d'une commande seul). Le tableau « une question → une commande » est dans le résumé visuel juste en dessous.
+
+**① Une variable, de la création à la suppression**
+
+```mermaid
+flowchart LR
+    C["Créer<br/>nom=valeur<br/>⚠️ sans espaces, sans $"] --> L["Lire<br/>echo $nom<br/>avec $"]
+    L --> U["Supprimer<br/>unset nom"]
+    E["Variables du système<br/>$HOME, $USER, $PATH"] --> V["Les voir toutes : env"]
+```
+
+**② Trouver de l'aide**
+
+```mermaid
+flowchart LR
+    A["commande --help<br/>résumé rapide"] --> B["man commande<br/>manuel complet<br/>/mot pour chercher · q pour quitter"]
+    B --> C["man 5 passwd<br/>section 5 = le FICHIER<br/>(pas la commande)"]
+```
+
 ## 🖼️ Résumé visuel
 
 **Les questions que tu te poses → la commande qui répond**

@@ -16,6 +16,31 @@
 
     C'est l'outil indispensable de la formation : tu pourras **tester, casser et recommencer** sans abîmer ton vrai PC.
 
+## 🗺️ L'essentiel en schémas
+
+!!! info "Référentiel TSSR 2026"
+    **CCP 2 · compétence 6 : Exploiter des serveurs dans une infrastructure virtualisée.** VMware Workstation est aussi l'outil de **tous tes TP** : savoir choisir le bon mode réseau évite la moitié des pannes.
+
+**① Hyperviseur de type 2 ou de type 1**
+
+```mermaid
+flowchart LR
+    H2["🖥️ Ton PC"] --> O2["Windows / Linux"] --> W2["Type 2<br/>VMware Workstation, VirtualBox"] --> V2["VM"]
+    H1["🗄️ Serveur"] --> E1["Type 1<br/>ESXi, Hyper-V<br/>directement sur le matériel"] --> V1["VM"]
+```
+
+**② Quel mode réseau pour ma VM ?**
+
+```mermaid
+flowchart TD
+    A{"La VM a besoin<br/>d'Internet ?"} -- oui --> B{"Doit-elle avoir une IP<br/>de ta box, comme un vrai PC ?"}
+    B -- oui --> BR["Bridge"]
+    B -- non --> NAT["NAT (VMnet8)<br/>sort via l'hôte"]
+    A -- non --> C{"L'hôte doit-il<br/>voir la VM ?"}
+    C -- oui --> HO["Host-only (VMnet1)"]
+    C -- non --> LS["LAN Segment<br/>VM entre elles seulement"]
+```
+
 ## 🖼️ Résumé visuel
 
 **① Qui fait quoi dans la virtualisation**
