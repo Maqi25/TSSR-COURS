@@ -333,6 +333,8 @@
       '<span class="tssr-hibou-saut"><span class="tssr-hibou-souffle"><span class="tssr-hibou-plumes">' +
       '<span class="tssr-hibou-corps">' + img("hibou-corps.png") + '</span>' +
       '<span class="tssr-hibou-tete">' + img("hibou-tete.png") +
+      '<span class="tssr-hibou-iris is-gauche"></span>' +   // teinte vert clair des yeux
+      '<span class="tssr-hibou-iris is-droite"></span>' +
       '<span class="tssr-hibou-paupiere is-gauche"></span>' +
       '<span class="tssr-hibou-paupiere is-droite"></span></span>' +
       '</span></span></span>' +
