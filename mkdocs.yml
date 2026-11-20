@@ -51,7 +51,7 @@ theme:
 extra_css:
   - stylesheets/extra.css
   - stylesheets/animations.css?v=20261108-1
-  - stylesheets/home.css?v=20261121-1
+  - stylesheets/home.css?v=20261121-2
   - stylesheets/theme.css
   - stylesheets/retro.css?v=20261105-4
   - stylesheets/tableaux-mobile.css?v=20261121-1

@@ -920,7 +920,7 @@
   transform: rotate(-11deg) translateY(-1px);     /* curieux quand on le survole */
 }
 
-/* iris vert clair : un anneau vert en mode « screen » sur l'iris sombre du
+/* iris vert foncé : un anneau vert en mode « screen » sur l'iris sombre du
    dessin. Le blanc de l'œil reste blanc, la pupille (centre transparent) reste
    noire. Positions mesurées sur hibou-tete.png (185 × 240 px). */
 .tssr-hibou-iris {
@@ -933,9 +933,9 @@
   pointer-events: none;
   background: radial-gradient(circle,
     transparent 0 40%,
-    rgba(110, 231, 183, 0.55) 50%,
-    rgba(167, 243, 208, 0.85) 66%,
-    rgba(52, 211, 153, 0.7) 84%,
+    rgba(20, 83, 45, 0.9) 50%,
+    rgba(22, 128, 61, 0.95) 66%,
+    rgba(21, 101, 52, 0.85) 84%,
     transparent 98%);
 }
 
