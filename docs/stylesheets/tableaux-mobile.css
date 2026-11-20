@@ -26,7 +26,7 @@
     box-shadow: none;
     background: none;
     overflow: visible;
-    font-size: 0.75rem;
+    font-size: 0.8rem;
   }
 
   /* titres de colonnes masqués à l'écran (ils sont repris dans chaque carte)
@@ -58,14 +58,15 @@
     background: var(--md-code-bg-color);
   }
 
+  /* le titre de la colonne au-dessus, la valeur en dessous : le texte de la
+     cellule (gras, code, liens) reste d'un seul tenant */
   .md-typeset table[data-cartes] td {
-    display: grid;
-    grid-template-columns: minmax(5.5rem, 35%) minmax(0, 1fr);
-    gap: 0.75rem;
-    padding: 0.4rem 0;
+    display: block;
+    padding: 0.45rem 0;
     border: 0;
     border-top: 1px solid var(--md-default-fg-color--lightest);
     text-align: left !important;
+    line-height: 1.5;
     overflow-wrap: anywhere;
   }
 
@@ -75,7 +76,11 @@
 
   .md-typeset table[data-cartes] td::before {
     content: attr(data-label);
+    display: block;
+    margin-bottom: 0.15rem;
+    font-size: 0.68rem;
     font-weight: 700;
+    letter-spacing: 0.02em;
     color: var(--md-accent-fg-color);
   }
 
@@ -95,5 +100,32 @@
 
   .md-typeset table[data-cartes] td code {
     word-break: break-word;
+  }
+
+  /* ----- schémas Mermaid : taille réelle, défilement horizontal ----- */
+  .md-typeset .mermaid {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    padding-bottom: 0.4rem;
+  }
+
+  /* ----- cadres (admonitions, blocs repliables) : texte plus lisible ----- */
+  .md-typeset .admonition,
+  .md-typeset details {
+    font-size: 0.78rem;
+    line-height: 1.55;
+    margin-left: 0;
+    margin-right: 0;
+  }
+
+  .md-typeset .admonition-title,
+  .md-typeset summary {
+    font-size: 0.78rem;
+  }
+
+  /* blocs de code : un peu plus grands, défilement horizontal */
+  .md-typeset pre > code {
+    font-size: 0.72rem;
   }
 }

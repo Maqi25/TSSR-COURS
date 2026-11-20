@@ -54,11 +54,11 @@ extra_css:
   - stylesheets/home.css?v=20261108-1
   - stylesheets/theme.css
   - stylesheets/retro.css?v=20261105-4
-  - stylesheets/tableaux-mobile.css?v=20261108-1
+  - stylesheets/tableaux-mobile.css?v=20261121-1
   - stylesheets/qcm-examen.css?v=20261120-1
 
 extra_javascript:
-  - javascripts/mermaid-survol.js?v=20261105-1
+  - javascripts/mermaid-survol.js?v=20261121-1
   - javascripts/theme.js
   - javascripts/icones.js?v=20261105-3
   - javascripts/statuts.js?v=20261117-2

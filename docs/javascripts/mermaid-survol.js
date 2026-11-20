@@ -32,6 +32,23 @@
   var feuille = new CSSStyleSheet();
   feuille.replaceSync(css);
 
+  /* Sur téléphone, Mermaid rétrécit le schéma à la largeur de l'écran : le
+     texte devient illisible. On lui rend sa taille réelle ; le cadre .mermaid
+     défile alors horizontalement (voir tableaux-mobile.css). */
+  var mobile = window.matchMedia("(max-width: 44.9375em)");
+
+  function tailleReelle(racine) {
+    var svg = racine.querySelector("svg");
+    if (!svg || svg.dataset.tssrTaille) return;
+    var max = parseFloat(svg.style.maxWidth);
+    if (!max) return;
+    svg.dataset.tssrTaille = "1";
+    if (mobile.matches) {
+      svg.style.width = max + "px";
+      svg.style.maxWidth = "none";
+    }
+  }
+
   var original = Element.prototype.attachShadow;
   Element.prototype.attachShadow = function (options) {
     var racine = original.call(this, options);
@@ -39,6 +56,10 @@
       try {
         racine.adoptedStyleSheets = racine.adoptedStyleSheets.concat(feuille);
       } catch (e) { /* navigateur trop ancien : pas d'animation, rien de cassé */ }
+      try {
+        new MutationObserver(function () { tailleReelle(racine); })
+          .observe(racine, { childList: true, subtree: true });
+      } catch (e) { /* rien de cassé : le schéma reste à la largeur de l'écran */ }
     }
     return racine;
   };
