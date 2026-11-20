@@ -66,7 +66,7 @@ Retrouve ici l'ensemble des cours de la formation TSSR. Chaque module suit toujo
   <a class="tssr-card" href="cours-13-virtualisation-de-serveurs/">
     <span class="tssr-card-icon">📗</span>
     <span class="tssr-card-title">Cours 13 · Virtualisation de serveurs</span>
-    <span class="tssr-card-desc">13 modules</span>
+    <span class="tssr-card-desc">6 modules</span>
   </a>
   <a class="tssr-card" href="cours-14-services-cloud/">
     <span class="tssr-card-icon">📗</span>
@@ -76,16 +76,21 @@ Retrouve ici l'ensemble des cours de la formation TSSR. Chaque module suit toujo
   <a class="tssr-card" href="cours-15-sauvegarde-et-restauration/">
     <span class="tssr-card-icon">📗</span>
     <span class="tssr-card-title">Cours 15 · Sauvegarde et restauration</span>
-    <span class="tssr-card-desc">8 modules</span>
+    <span class="tssr-card-desc">5 modules</span>
   </a>
   <a class="tssr-card" href="cours-16-reseau-et-securite/">
     <span class="tssr-card-icon">📗</span>
     <span class="tssr-card-title">Cours 16 · Réseau et sécurité</span>
-    <span class="tssr-card-desc">14 modules</span>
+    <span class="tssr-card-desc">6 modules</span>
   </a>
   <a class="tssr-card" href="cours-17-supervision/">
     <span class="tssr-card-icon">📗</span>
     <span class="tssr-card-title">Cours 17 · Supervision</span>
     <span class="tssr-card-desc">Modules à venir</span>
+  </a>
+  <a class="tssr-card" href="bonus-microsoft-365/">
+    <span class="tssr-card-icon">⭐</span>
+    <span class="tssr-card-title">Bonus · Microsoft 365</span>
+    <span class="tssr-card-desc">5 modules</span>
   </a>
 </div>

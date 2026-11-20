@@ -244,6 +244,13 @@ nav:
           - "Module 5 : Authentifier et sécuriser les échanges": cours/cours-16-reseau-et-securite/module-5-authentifier-et-securiser-les-echanges/index.md
           - "Module 6 : Centraliser les informations de journalisation": cours/cours-16-reseau-et-securite/module-6-centraliser-les-informations-de-journalisation/index.md
       - "Cours 17 · Supervision": cours/cours-17-supervision/index.md
+      - "Bonus · Microsoft 365":
+          - cours/bonus-microsoft-365/index.md
+          - "Module 1 : Découvrir Microsoft 365": cours/bonus-microsoft-365/module-1-decouvrir-microsoft-365/index.md
+          - "Module 2 : Les bases de Word": cours/bonus-microsoft-365/module-2-les-bases-de-word/index.md
+          - "Module 3 : Les bases d'Excel": cours/bonus-microsoft-365/module-3-les-bases-d-excel/index.md
+          - "Module 4 : Exploiter et dépanner Outlook": cours/bonus-microsoft-365/module-4-exploiter-et-depanner-outlook/index.md
+          - "Module 5 : Teams, SharePoint et OneDrive": cours/bonus-microsoft-365/module-5-teams-sharepoint-et-onedrive/index.md
   - Travaux pratiques:
       - travaux-pratiques/index.md
       - "TP - Plan d'adressage IP": travaux-pratiques/cours-01-bases-des-reseaux/tp-plan-adressage.md
