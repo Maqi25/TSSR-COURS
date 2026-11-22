@@ -61,7 +61,7 @@ extra_javascript:
   - javascripts/mermaid-survol.js?v=20261121-1
   - javascripts/theme.js
   - javascripts/icones.js?v=20261105-3
-  - javascripts/statuts.js?v=20261121-1
+  - javascripts/statuts.js?v=20261122-1
   - javascripts/filter.js
   - javascripts/quiz.js
   - javascripts/animations.js
