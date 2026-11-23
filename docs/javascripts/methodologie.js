@@ -90,7 +90,9 @@
     var examen = d(reglages.examen || DEFAUT.examen);
     if (examen < debut) examen = plusJours(debut, 28);
     var semaines = [];
-    var rattrapage = COURS.filter(function (c) { return d(c.fin) < lundi(debut) && c.site; });
+    // rattrapage dans l'ordre des cours : cours 1 d'abord, le bonus Microsoft 365 en dernier
+    var rattrapage = COURS.filter(function (c) { return d(c.fin) < lundi(debut) && c.site && c.n !== "B"; })
+      .concat(COURS.filter(function (c) { return c.n === "B" && d(c.fin) < lundi(debut); }));
     var lundiExamen = lundi(examen);
     var rotationCcp = 0;
 
