@@ -1,0 +1,139 @@
+/* =====================================================================
+   menu-anime.css · menu de gauche modernisé
+   - balayage lumineux et icône qui s'incline au survol ;
+   - bouton qui s'enfonce et onde lumineuse au clic (menu-anime.js) ;
+   - chevron qui tourne avec rebond, sous-menus qui apparaissent en cascade ;
+   - sous-entrées en « pastilles » au survol.
+   Tout est désactivé si l'appareil demande moins d'animations.
+   ===================================================================== */
+
+.md-sidebar--primary .md-nav__link {
+  position: relative;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ---------- entrées principales ---------- */
+.md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link {
+  overflow: hidden;
+  isolation: isolate;
+  transition: background-color 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease,
+              transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* balayage lumineux au survol */
+.md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 20%,
+    color-mix(in srgb, var(--md-accent-fg-color) 22%, transparent) 50%, transparent 80%);
+  transform: translateX(-110%);
+  transition: transform 0.6s ease;
+  pointer-events: none;
+}
+.md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link:hover::after {
+  transform: translateX(110%);
+}
+
+.md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link:hover {
+  border-color: color-mix(in srgb, var(--md-accent-fg-color) 25%, transparent);
+  box-shadow: 0 6px 18px -12px var(--md-accent-fg-color);
+}
+
+/* le bouton s'enfonce au clic */
+.md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item > .md-nav__link:active {
+  transform: scale(0.97);
+}
+
+/* icône dorée : s'incline au survol, saute au clic */
+.md-sidebar--primary .tssr-nav-icon {
+  transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), filter 0.3s ease;
+}
+.md-sidebar--primary .md-nav__link:hover .tssr-nav-icon {
+  transform: rotate(-10deg) scale(1.15);
+  filter: drop-shadow(0 0 9px color-mix(in srgb, var(--tssr-nav-gold, #f5a524) 70%, transparent));
+}
+.md-sidebar--primary .md-nav__link.tssr-menu-saut .tssr-nav-icon,
+.md-sidebar--primary .md-nav__link.tssr-menu-saut > .tssr-icone-nav {
+  animation: tssr-menu-saut 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+
+/* barre de l'entrée active : respiration lumineuse */
+.md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item--active > .md-nav__link::before {
+  animation: tssr-menu-respire 2.6s ease-in-out infinite;
+}
+
+/* ---------- onde au clic (ajoutée par menu-anime.js) ---------- */
+.tssr-onde {
+  position: absolute;
+  z-index: 0;
+  width: 12px;
+  height: 12px;
+  margin: -6px 0 0 -6px;
+  border-radius: 50%;
+  background: color-mix(in srgb, var(--md-accent-fg-color) 55%, transparent);
+  pointer-events: none;
+  animation: tssr-menu-onde 0.6s ease-out forwards;
+}
+
+/* ---------- chevron des sous-menus ---------- */
+.md-sidebar--primary .md-nav__icon::after {
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+}
+
+/* ---------- sous-entrées en pastilles ---------- */
+.md-sidebar--primary .md-nav .md-nav .md-nav__link {
+  border-radius: 10px;
+  padding: 0.2rem 0.45rem;
+  margin-left: -0.45rem;
+  overflow: hidden;
+  transition: background-color 0.2s ease, color 0.2s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.md-sidebar--primary .md-nav .md-nav .md-nav__link:hover {
+  background: color-mix(in srgb, var(--md-accent-fg-color) 12%, transparent);
+}
+.md-sidebar--primary .md-nav .md-nav .md-nav__link:active {
+  transform: scale(0.97);
+}
+.md-sidebar--primary .md-nav .md-nav .md-nav__link--active {
+  background: color-mix(in srgb, var(--md-accent-fg-color) 16%, transparent);
+}
+
+/* apparition en cascade quand un sous-menu s'ouvre */
+.md-sidebar--primary .md-nav__toggle:checked ~ .md-nav > .md-nav__list > .md-nav__item {
+  animation: tssr-menu-entree 0.35s ease both;
+  animation-delay: calc(var(--tssr-rang, 0) * 35ms);
+}
+
+@keyframes tssr-menu-entree {
+  from { opacity: 0; transform: translateX(-10px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes tssr-menu-onde {
+  from { transform: scale(0); opacity: 0.9; }
+  to   { transform: scale(28); opacity: 0; }
+}
+@keyframes tssr-menu-saut {
+  0%   { transform: none; }
+  35%  { transform: translateY(-5px) scale(1.25) rotate(-12deg); }
+  65%  { transform: translateY(1px) scale(0.95); }
+  100% { transform: none; }
+}
+@keyframes tssr-menu-respire {
+  0%, 100% { opacity: 1; box-shadow: 0 0 8px var(--md-accent-fg-color); }
+  50%      { opacity: 0.65; box-shadow: 0 0 16px var(--md-accent-fg-color); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-sidebar--primary .md-nav__link,
+  .md-sidebar--primary .md-nav__link::after,
+  .md-sidebar--primary .md-nav__link::before,
+  .md-sidebar--primary .tssr-nav-icon,
+  .md-sidebar--primary .md-nav__item,
+  .tssr-onde {
+    animation: none !important;
+    transition: none !important;
+  }
+  .tssr-onde { display: none; }
+}

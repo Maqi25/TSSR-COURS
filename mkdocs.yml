@@ -56,6 +56,7 @@ extra_css:
   - stylesheets/retro.css?v=20261105-4
   - stylesheets/tableaux-mobile.css?v=20261121-1
   - stylesheets/qcm-examen.css?v=20261121-1
+  - stylesheets/menu-anime.css?v=20261123-1
 
 extra_javascript:
   - javascripts/mermaid-survol.js?v=20261121-1
@@ -72,6 +73,7 @@ extra_javascript:
   - javascripts/tableaux-mobile.js?v=20261108-1
   - javascripts/qcm-examen-banque.js?v=20261121-1
   - javascripts/qcm-examen.js?v=20261121-1
+  - javascripts/menu-anime.js?v=20261123-1
 
 markdown_extensions:
   - attr_list
@@ -263,6 +265,7 @@ nav:
       - "Cours 3 · Utilisation de GNU/Linux": revisions/fiche-utilisation-gnu-linux.md
       - "Cours 4 · Administration GNU/Linux": revisions/fiche-administration-gnu-linux.md
       - "Cours 6 · ITIL et gestion de parc": revisions/fiche-itil-gestion-de-parc.md
+      - "Cours 7 · Les infrastructures réseau": revisions/fiche-infrastructures-reseau.md
       - "Cours 8 · Services réseau Microsoft": revisions/fiche-services-reseau-microsoft.md
       - "Cours 10 · Scripting Bash": revisions/fiche-scripting-bash.md
       - "Cours 11 · PowerShell": revisions/fiche-powershell.md

@@ -12,6 +12,7 @@ Sommaire de toutes tes fiches de révision, dans l'ordre des cours. Clique sur u
 - **Cours 3** · [Utilisation d'une distribution GNU/Linux](fiche-utilisation-gnu-linux.md) — commandes de base, grep/find, vim, tar
 - **Cours 4** · [Administration d'une distribution GNU/Linux](fiche-administration-gnu-linux.md) — systemd, apt, LVM, fstab, droits, cron
 - **Cours 6** · [ITIL et gestion de parc](fiche-itil-gestion-de-parc.md) — incident, problème, changement, CMDB, GLPI
+- **Cours 7** · [Les infrastructures réseau](fiche-infrastructures-reseau.md) — Cisco IOS, VLAN, routage, Wi-Fi, ACL, NAT
 - **Cours 8** · [Services réseau Microsoft](fiche-services-reseau-microsoft.md) — AD, GPO, routage, DHCP, DNS
 - **Cours 10** · [Scripting Bash](fiche-scripting-bash.md) — variables, tests, boucles, fonctions
 - **Cours 11** · [PowerShell](fiche-powershell.md) — objets, pipeline, export, erreurs, distance
