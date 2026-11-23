@@ -1,0 +1,99 @@
+/* =====================================================================
+   methodologie.css · planning de révision (page Méthodologie)
+   ===================================================================== */
+#tssr-planning { margin: 1rem 0 1.5rem; }
+
+.tssr-plan-reglages {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 0.6rem 1rem;
+  padding: 0.9rem 1rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 14px;
+  background: var(--md-code-bg-color);
+  font-size: 0.7rem;
+}
+.tssr-plan-reglages label { display: flex; flex-direction: column; gap: 0.25rem; font-weight: 700; }
+.tssr-plan-input {
+  padding: 0.4rem 0.55rem;
+  border: 1px solid var(--md-default-fg-color--lighter);
+  border-radius: 9px;
+  font: inherit;
+  font-size: 0.72rem;
+  color: var(--md-default-fg-color);
+  background: var(--md-default-bg-color);
+}
+.md-typeset .tssr-plan-meta { margin: 0.4rem 0; font-size: 0.66rem; color: var(--md-default-fg-color--light); }
+
+.tssr-plan-resume { display: grid; grid-template-columns: repeat(auto-fit, minmax(9rem, 1fr)); gap: 0.6rem; margin: 0.8rem 0; }
+.tssr-plan-stat {
+  display: flex; flex-direction: column; gap: 0.15rem;
+  padding: 0.6rem 0.8rem;
+  border-radius: 12px;
+  background: color-mix(in srgb, var(--md-accent-fg-color) 10%, transparent);
+  font-size: 0.66rem;
+}
+.tssr-plan-stat strong { font-size: 1rem; }
+
+.md-typeset ol.tssr-plan-semaines { list-style: none; margin: 0; padding: 0; }
+.md-typeset .tssr-plan-semaine {
+  margin: 0 0 0.8rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-left: 4px solid var(--md-default-fg-color--lighter);
+  border-radius: 12px;
+  background: var(--md-code-bg-color);
+}
+.md-typeset .tssr-plan-semaine.is-maintenant {
+  border-left-color: var(--md-accent-fg-color);
+  box-shadow: 0 8px 22px -16px var(--md-accent-fg-color);
+}
+.md-typeset .tssr-plan-semaine.is-passee { opacity: 0.7; }
+
+.tssr-plan-tete { display: flex; flex-wrap: wrap; align-items: baseline; gap: 0.3rem 0.7rem; font-size: 0.76rem; }
+.tssr-plan-num { font-size: 0.62rem; font-weight: 800; text-transform: uppercase; letter-spacing: 0.06em; color: var(--md-accent-fg-color); }
+.tssr-plan-dates { font-size: 0.66rem; color: var(--md-default-fg-color--light); }
+.tssr-plan-duree { margin-left: auto; font-size: 0.66rem; font-weight: 700; }
+.tssr-plan-duree.is-charge { color: #c62828; }
+[data-md-color-scheme="slate"] .tssr-plan-duree.is-charge { color: #ef9a9a; }
+.tssr-plan-badge {
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  font-size: 0.6rem;
+  font-weight: 800;
+  color: #fff;
+  background: var(--md-accent-fg-color);
+}
+
+.md-typeset ul.tssr-plan-taches { list-style: none; margin: 0.5rem 0 0.3rem; padding: 0; }
+.md-typeset ul.tssr-plan-taches > li {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.3rem 0.8rem;
+  margin: 0;
+  padding: 0.35rem 0;
+  border-top: 1px dashed var(--md-default-fg-color--lightest);
+  font-size: 0.7rem;
+}
+.md-typeset ul.tssr-plan-taches label { display: flex; gap: 0.45rem; flex: 1 1 18rem; cursor: pointer; }
+.md-typeset ul.tssr-plan-taches input[type="checkbox"] { margin-top: 0.15rem; accent-color: var(--md-accent-fg-color); }
+.md-typeset ul.tssr-plan-taches li.is-fait label span { text-decoration: line-through; opacity: 0.6; }
+.tssr-plan-actions { display: flex; align-items: center; gap: 0.6rem; font-size: 0.64rem; white-space: nowrap; }
+.tssr-plan-m { font-weight: 700; color: var(--md-default-fg-color--light); }
+.tssr-plan-suppr {
+  border: 0; background: none; cursor: pointer; padding: 0 0.2rem;
+  color: var(--md-default-fg-color--light); font-size: 0.7rem;
+}
+.tssr-plan-suppr:hover { color: #c62828; }
+.md-typeset .tssr-plan-vide { color: var(--md-default-fg-color--light); }
+
+.tssr-plan-outils { margin-top: 0.3rem; font-size: 0.68rem; }
+.tssr-plan-outils summary { cursor: pointer; font-weight: 700; color: var(--md-accent-fg-color); }
+.tssr-plan-ajout { display: flex; flex-wrap: wrap; align-items: center; gap: 0.4rem; margin: 0.5rem 0; }
+.tssr-plan-ajout .tssr-plan-input:first-child { flex: 1 1 14rem; }
+.tssr-plan-min { width: 4.5rem; }
+.tssr-plan-note { width: 100%; box-sizing: border-box; margin: 0.2rem 0 0.4rem; resize: vertical; }
+.md-typeset .tssr-plan-raz { margin-top: 0.5rem; color: #c62828; border-color: #c62828; }

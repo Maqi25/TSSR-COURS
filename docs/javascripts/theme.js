@@ -60,6 +60,7 @@
     programme: "programme",
     referentiel: "referentiel",
     "qcm-examen": "qcm",
+    methodologie: "methodologie",
     cours: "cours",
     "travaux-pratiques": "tp",
     revisions: "revisions",
