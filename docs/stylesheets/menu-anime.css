@@ -161,3 +161,18 @@
   }
   .tssr-onde { display: none; }
 }
+
+/* ---------- en-tête : le petit chat noir animé remplace le logo GitHub ---------- */
+.md-header__source .md-source__icon {
+  width: 2rem;
+  height: 2rem;
+  background: url("../assets/images/chat-noir.svg") center / contain no-repeat;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.md-header__source .md-source__icon svg { display: none; }
+.md-header__source .md-source:hover .md-source__icon {
+  transform: translateY(-3px) rotate(-6deg) scale(1.12);
+}
+.md-header__source .md-source:active .md-source__icon {
+  transform: scale(0.9);
+}

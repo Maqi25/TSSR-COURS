@@ -1,0 +1,55 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-2 0 70 66" role="img" aria-label="Petit chat noir">
+  <style>
+    .contour { fill: #111318; stroke: rgba(170, 220, 255, 0.55); stroke-width: 1.2; stroke-linejoin: round; }
+    .queue { fill: none; stroke: #111318; stroke-width: 5; stroke-linecap: round;
+             transform-origin: 40px 52px; animation: queue 2.4s ease-in-out infinite; }
+    .queue-bord { fill: none; stroke: rgba(170, 220, 255, 0.55); stroke-width: 7.2; stroke-linecap: round;
+                  transform-origin: 40px 52px; animation: queue 2.4s ease-in-out infinite; }
+    .corps { transform-origin: 32px 58px; animation: souffle 3s ease-in-out infinite; }
+    .tete { transform-origin: 30px 30px; animation: tete 6s ease-in-out infinite; }
+    .oreille-d { transform-origin: 38px 18px; animation: oreille 4.5s ease-in-out infinite; }
+    .oeil { fill: #b6f25b; transform-box: fill-box; transform-origin: center; animation: cligne 4s infinite; }
+    .pupille { fill: #111318; transform-box: fill-box; transform-origin: center; animation: cligne 4s infinite; }
+    .reflet { fill: #fff; animation: cligne-reflet 4s infinite; }
+    .nez { fill: #ff8fb1; }
+    .moustache { stroke: rgba(220, 235, 255, 0.75); stroke-width: 0.7; stroke-linecap: round; }
+    @keyframes queue { 0%, 100% { transform: rotate(0deg); } 50% { transform: rotate(-22deg); } }
+    @keyframes souffle { 0%, 100% { transform: scale(1, 1); } 50% { transform: scale(1.02, 0.975); } }
+    @keyframes tete { 0%, 40%, 100% { transform: rotate(0deg); } 50%, 65% { transform: rotate(-7deg); } 75% { transform: rotate(4deg); } }
+    @keyframes oreille { 0%, 82%, 100% { transform: rotate(0deg); } 86% { transform: rotate(-14deg); } 90% { transform: rotate(4deg); } 94% { transform: rotate(-8deg); } }
+    @keyframes cligne { 0%, 44%, 52%, 100% { transform: scaleY(1); } 48% { transform: scaleY(0.08); } }
+    @keyframes cligne-reflet { 0%, 44%, 52%, 100% { opacity: 1; } 46%, 50% { opacity: 0; } }
+    @media (prefers-reduced-motion: reduce) { * { animation: none !important; } }
+  </style>
+
+  <!-- queue (bordure claire dessous pour qu'elle se voie sur fond sombre) -->
+  <path class="queue-bord" d="M40 52 C 52 52, 58 44, 55 34 C 53 28, 57 24, 60 25"/>
+  <path class="queue" d="M40 52 C 52 52, 58 44, 55 34 C 53 28, 57 24, 60 25"/>
+
+  <!-- corps assis -->
+  <g class="corps">
+    <path class="contour" d="M18 58 C 15 48, 18 38, 28 35 C 38 33, 45 40, 45 50 C 45 55, 43 58, 40 58 Z"/>
+    <!-- pattes avant -->
+    <path class="contour" d="M24 58 C 24 52, 25 48, 27 46 C 29 48, 29 53, 29 58 Z"/>
+    <path class="contour" d="M32 58 C 32 53, 33 49, 35 47 C 37 49, 37 54, 37 58 Z"/>
+  </g>
+
+  <!-- tête -->
+  <g class="tete">
+    <!-- oreille gauche -->
+    <path class="contour" d="M19 22 L 18 9 L 27 16 Z"/>
+    <!-- oreille droite (qui frétille) -->
+    <g class="oreille-d"><path class="contour" d="M35 16 L 43 8 L 42 21 Z"/></g>
+    <ellipse class="contour" cx="30.5" cy="26" rx="13.5" ry="11.5"/>
+    <!-- yeux -->
+    <ellipse class="oeil" cx="25" cy="25" rx="3.2" ry="3.6"/>
+    <ellipse class="oeil" cx="36" cy="25" rx="3.2" ry="3.6"/>
+    <ellipse class="pupille" cx="25.3" cy="25.2" rx="1.1" ry="2.6"/>
+    <ellipse class="pupille" cx="36.3" cy="25.2" rx="1.1" ry="2.6"/>
+    <circle class="reflet" cx="24.2" cy="23.6" r="0.8"/>
+    <circle class="reflet" cx="35.2" cy="23.6" r="0.8"/>
+    <!-- nez et moustaches -->
+    <path class="nez" d="M29.3 30 L 31.7 30 L 30.5 31.6 Z"/>
+    <path class="moustache" d="M27 31 L 18 29.5 M27 32.3 L 18.5 33.5 M34 31 L 43 29.5 M34 32.3 L 42.5 33.5"/>
+  </g>
+</svg>
