@@ -54,6 +54,21 @@
     "ajouter-du-contenu": "plus",
   };
 
+  // Icônes 3D du menu (assets/icones/3d-nav-<nom>.png)
+  var NAV_3D = {
+    "": "accueil",
+    programme: "programme",
+    referentiel: "referentiel",
+    "qcm-examen": "qcm",
+    cours: "cours",
+    "travaux-pratiques": "tp",
+    revisions: "revisions",
+    commandes: "commandes",
+    memo: "memo",
+    glossaire: "glossaire",
+    "ajouter-du-contenu": "ajouter",
+  };
+
   function readTheme() {
     try { return localStorage.getItem(STORAGE_KEY) || "cyan"; } catch (e) { return "cyan"; }
   }
@@ -181,7 +196,20 @@
       if (!link) return;
       var path = new URL(link.href, location.href).pathname.slice(root.length);
       var folder = path.split("/")[0];
-      link.insertBefore(svgIcon(NAV_ICONS[folder] || "dot", "tssr-nav-icon"), link.firstChild);
+      var trait = svgIcon(NAV_ICONS[folder] || "dot", "tssr-nav-icon");
+      if (NAV_3D[folder]) {
+        // icône 3D (Fluent Emoji 3D, Microsoft, licence MIT) ; si l'image manque, on remet l'icône au trait
+        var img = document.createElement("img");
+        img.className = "tssr-nav-icon tssr-nav-3d";
+        img.alt = "";
+        img.width = 48; img.height = 48;
+        img.decoding = "async";
+        img.src = root + "assets/icones/3d-nav-" + NAV_3D[folder] + ".png";
+        img.addEventListener("error", function () { img.replaceWith(trait); });
+        link.insertBefore(img, link.firstChild);
+      } else {
+        link.insertBefore(trait, link.firstChild);
+      }
     });
   }
 

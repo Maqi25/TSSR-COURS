@@ -59,6 +59,30 @@
   animation: tssr-menu-saut 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
+/* ---------- icônes 3D (Fluent Emoji 3D) ---------- */
+.md-sidebar--primary img.tssr-nav-3d,
+.md-nav img.tssr-nav-3d {
+  width: 1.45rem;
+  height: 1.45rem;
+  margin: -0.15rem 0;
+  object-fit: contain;
+  filter: drop-shadow(0 3px 4px rgba(0, 0, 0, 0.45));
+}
+.md-sidebar--primary .md-nav__link:hover img.tssr-nav-3d {
+  transform: translateY(-2px) rotate(-10deg) scale(1.2);
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.5))
+          drop-shadow(0 0 10px color-mix(in srgb, var(--md-accent-fg-color) 45%, transparent));
+}
+/* l'icône de l'entrée active flotte doucement */
+.md-sidebar--primary .md-nav__item--active > .md-nav__link img.tssr-nav-3d,
+.md-sidebar--primary .md-nav__item--active > .md-nav__container img.tssr-nav-3d {
+  animation: tssr-menu-flotte 3s ease-in-out infinite;
+}
+@keyframes tssr-menu-flotte {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-3px) rotate(-4deg); }
+}
+
 /* barre de l'entrée active : respiration lumineuse */
 .md-sidebar--primary .md-nav--primary > .md-nav__list > .md-nav__item--active > .md-nav__link::before {
   animation: tssr-menu-respire 2.6s ease-in-out infinite;
