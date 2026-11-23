@@ -104,12 +104,12 @@ hide:
     <a href="commandes/">Voir tous →</a>
   </div>
   <div class="tssr-home-memos">
-    <a class="tssr-home-memo is-memo" href="memo/"><span class="tssr-home-memo-icon">📋</span><span><b>Mémo synthèse</b><small>Toutes les commandes, Windows ↔ Linux</small></span><span class="tssr-home-chevron">›</span></a>
-    <a class="tssr-home-memo is-ps" href="commandes/powershell/"><span class="tssr-home-memo-icon">⚡</span><span><b>PowerShell</b><small>Cmdlets et exemples</small></span><span class="tssr-home-chevron">›</span></a>
-    <a class="tssr-home-memo is-bash" href="commandes/bash/"><span class="tssr-home-memo-icon">🐧</span><span><b>Bash</b><small>Commandes Linux</small></span><span class="tssr-home-chevron">›</span></a>
-    <a class="tssr-home-memo is-glo" href="glossaire/"><span class="tssr-home-memo-icon">🔎</span><span><b>Glossaire</b><small>Termes et acronymes</small></span><span class="tssr-home-chevron">›</span></a>
-    <a class="tssr-home-memo is-prog" href="programme/"><span class="tssr-home-memo-icon">🗓️</span><span><b>Programme</b><small>Planning et dates</small></span><span class="tssr-home-chevron">›</span></a>
-    <a class="tssr-home-memo is-add" href="ajouter-du-contenu/"><span class="tssr-home-memo-icon">＋</span><span><b>Ajouter du contenu</b><small>Mode d'emploi du site</small></span><span class="tssr-home-chevron">›</span></a>
+    <a class="tssr-home-memo is-memo" href="memo/"><span class="tssr-home-memo-icon"><img src="assets/icones/3d-nav-memo.png" alt="" width="48" height="48"></span><span><b>Mémo synthèse</b><small>Toutes les commandes, Windows ↔ Linux</small></span><span class="tssr-home-chevron">›</span></a>
+    <a class="tssr-home-memo is-ps" href="commandes/powershell/"><span class="tssr-home-memo-icon"><img src="assets/icones/3d-eclair.png" alt="" width="48" height="48"></span><span><b>PowerShell</b><small>Cmdlets et exemples</small></span><span class="tssr-home-chevron">›</span></a>
+    <a class="tssr-home-memo is-bash" href="commandes/bash/"><span class="tssr-home-memo-icon"><img src="assets/icones/3d-tux.png" alt="" width="48" height="48"></span><span><b>Bash</b><small>Commandes Linux</small></span><span class="tssr-home-chevron">›</span></a>
+    <a class="tssr-home-memo is-glo" href="glossaire/"><span class="tssr-home-memo-icon"><img src="assets/icones/3d-nav-glossaire.png" alt="" width="48" height="48"></span><span><b>Glossaire</b><small>Termes et acronymes</small></span><span class="tssr-home-chevron">›</span></a>
+    <a class="tssr-home-memo is-prog" href="programme/"><span class="tssr-home-memo-icon"><img src="assets/icones/3d-nav-programme.png" alt="" width="48" height="48"></span><span><b>Programme</b><small>Planning et dates</small></span><span class="tssr-home-chevron">›</span></a>
+    <a class="tssr-home-memo is-add" href="ajouter-du-contenu/"><span class="tssr-home-memo-icon"><img src="assets/icones/3d-etincelles.png" alt="" width="48" height="48"></span><span><b>Ajouter du contenu</b><small>Mode d'emploi du site</small></span><span class="tssr-home-chevron">›</span></a>
   </div>
 </section>
 

@@ -1064,3 +1064,97 @@
     transition: none !important;
   }
 }
+
+/* --------------------------------------------------------------------
+   Mes mémos : icônes 3D (Fluent Emoji 3D, licence MIT) animées
+   - tuile colorée brillante, icône qui flotte doucement ;
+   - au survol : la tuile pivote, l'icône sort et se dandine,
+     un reflet traverse la carte, halo de la couleur du mémo ;
+   - au clic : la carte rebondit.
+   -------------------------------------------------------------------- */
+.md-typeset .tssr-home-memo { --mc: var(--tssr-home-cyan); position: relative; overflow: hidden; isolation: isolate; }
+.md-typeset .tssr-home-memo.is-ps   { --mc: var(--tssr-home-violet); }
+.md-typeset .tssr-home-memo.is-bash { --mc: var(--tssr-home-green); }
+.md-typeset .tssr-home-memo.is-glo  { --mc: var(--tssr-home-orange); }
+.md-typeset .tssr-home-memo.is-add  { --mc: var(--tssr-home-pink); }
+
+.md-typeset .tssr-home-memo .tssr-home-memo-icon {
+  position: relative;
+  width: 2.6rem;
+  height: 2.6rem;
+  border-radius: 14px;
+  background:
+    radial-gradient(circle at 30% 25%, rgba(255, 255, 255, 0.55), transparent 55%),
+    linear-gradient(145deg, color-mix(in srgb, var(--mc) 85%, #fff), var(--mc));
+  box-shadow: 0 6px 14px -6px var(--mc), inset 0 -3px 6px rgba(0, 0, 0, 0.18);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+}
+.md-typeset .tssr-home-memo .tssr-home-memo-icon img {
+  width: 2.05rem;
+  height: 2.05rem;
+  object-fit: contain;
+  filter: drop-shadow(0 4px 4px rgba(0, 0, 0, 0.35));
+  animation: tssr-memo-flotte 3.2s ease-in-out infinite;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+/* chaque icône flotte à son rythme */
+.md-typeset .tssr-home-memo:nth-child(2) .tssr-home-memo-icon img { animation-delay: -0.6s; }
+.md-typeset .tssr-home-memo:nth-child(3) .tssr-home-memo-icon img { animation-delay: -1.2s; }
+.md-typeset .tssr-home-memo:nth-child(4) .tssr-home-memo-icon img { animation-delay: -1.8s; }
+.md-typeset .tssr-home-memo:nth-child(5) .tssr-home-memo-icon img { animation-delay: -2.4s; }
+.md-typeset .tssr-home-memo:nth-child(6) .tssr-home-memo-icon img { animation-delay: -3s; }
+
+/* reflet qui traverse la carte */
+.md-typeset .tssr-home-memo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 25%, color-mix(in srgb, var(--mc) 22%, transparent) 50%, transparent 75%);
+  transform: translateX(-110%);
+  transition: transform 0.7s ease;
+  pointer-events: none;
+}
+
+.md-typeset .tssr-home-memo:hover {
+  border-color: var(--mc);
+  background-color: color-mix(in srgb, var(--mc) 10%, var(--md-default-bg-color));
+  box-shadow: 0 0 0 1px color-mix(in srgb, var(--mc) 40%, transparent), 0 10px 26px -12px var(--mc);
+}
+.md-typeset .tssr-home-memo:hover::after { transform: translateX(110%); }
+.md-typeset .tssr-home-memo:hover .tssr-home-memo-icon {
+  transform: rotate(-8deg) scale(1.08);
+  box-shadow: 0 10px 20px -6px var(--mc), inset 0 -3px 6px rgba(0, 0, 0, 0.18);
+}
+.md-typeset .tssr-home-memo:hover .tssr-home-memo-icon img {
+  animation: tssr-memo-dandine 0.7s ease both;
+}
+.md-typeset .tssr-home-memo .tssr-home-chevron { transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), color 0.2s ease; }
+.md-typeset .tssr-home-memo:hover .tssr-home-chevron { transform: translateX(4px); color: var(--mc); }
+
+/* au clic, la carte rebondit */
+.md-typeset .tssr-home-memo:active { animation: tssr-memo-clic 0.35s ease; }
+
+@keyframes tssr-memo-flotte {
+  0%, 100% { transform: translateY(0) rotate(0); }
+  50%      { transform: translateY(-3px) rotate(-3deg); }
+}
+@keyframes tssr-memo-dandine {
+  0%   { transform: translateY(0) scale(1); }
+  30%  { transform: translateY(-7px) scale(1.25) rotate(-12deg); }
+  55%  { transform: translateY(-4px) scale(1.2) rotate(10deg); }
+  75%  { transform: translateY(-5px) scale(1.22) rotate(-5deg); }
+  100% { transform: translateY(-4px) scale(1.2) rotate(0); }
+}
+@keyframes tssr-memo-clic {
+  0%   { scale: 1; }
+  40%  { scale: 0.95; }
+  100% { scale: 1; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset .tssr-home-memo .tssr-home-memo-icon img,
+  .md-typeset .tssr-home-memo:hover .tssr-home-memo-icon img,
+  .md-typeset .tssr-home-memo:active { animation: none; }
+  .md-typeset .tssr-home-memo::after { display: none; }
+}
