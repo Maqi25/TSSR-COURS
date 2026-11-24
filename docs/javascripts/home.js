@@ -235,6 +235,18 @@
     box.appendChild(a);
   }
 
+  // Icône selon le type de page consultée
+  function recentIcon(p) {
+    var s = ((p.url || "") + " " + (p.title || "")).toLowerCase();
+    if (/travaux-pratiques|\btp\b/.test(s)) return "🧪";
+    if (/qcm|quiz|examen/.test(s)) return "🎯";
+    if (/memo|fiche|glossaire/.test(s)) return "📌";
+    if (/programme|planning/.test(s)) return "🗓️";
+    if (/module/.test(s)) return "🧩";
+    if (/cours/.test(s)) return "📘";
+    return "✨";
+  }
+
   function renderRecent() {
     var box = document.querySelector("[data-home-recent]");
     if (!box) return;
@@ -247,7 +259,7 @@
       a.href = p.url;
       var icon = document.createElement("span");
       icon.className = "tssr-home-recent-icon";
-      icon.textContent = "▤";
+      icon.textContent = recentIcon(p);
       var text = document.createElement("span");
       var b = document.createElement("b");
       b.textContent = p.title;
