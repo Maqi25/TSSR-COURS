@@ -50,9 +50,10 @@ Chemin avec espaces : `cp "mon fichier" cible`. **Vérifier le chemin avant tout
 
 | Commande | Rôle / repère | Exemple |
 | --- | --- | --- |
-| `useradd` / `adduser` | Créer un compte ; l'interface varie selon le système | `sudo useradd -m alice` |
-| `passwd` | Définir ou changer un mot de passe | `sudo passwd alice` |
-| `usermod` | Modifier compte / groupes ; `-aG` ajoute **sans retirer** | `sudo usermod -aG sudo alice` |
+| `useradd` / `adduser` | Créer un compte ; `-m` home, `-s` shell, `-g` groupe principal, `-G` secondaires | `sudo useradd -m -s /bin/bash -G vip alice` |
+| `passwd` | Définir ou changer un mot de passe ; `-e` force le changement à la prochaine connexion | `sudo passwd -e alice` |
+| `usermod` | Modifier compte / groupes ; `-aG` ajoute **sans retirer** ; `-L -e 1` désactive le compte | `sudo usermod -L -e 1 alice` |
+| `chage` | Dates d'expiration du mot de passe et du compte | `sudo chage -l alice` |
 | `userdel` | Supprimer un compte ; `-r` retire son home | `sudo userdel -r alice` |
 | `groupadd` / `gpasswd` | Créer un groupe / administrer ses membres | `sudo groupadd ops` |
 | `getent passwd` | Interroger la base des comptes via NSS | `getent passwd alice` |

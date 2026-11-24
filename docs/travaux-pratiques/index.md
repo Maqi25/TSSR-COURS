@@ -58,6 +58,16 @@ Tous tes TP, rangés par **cours** puis par **module**. Utilise la recherche ou 
     "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-preparation-des-systemes-de-fichiers/"
   },
   {
+    "title": "TP - Gérer les groupes et utilisateurs",
+    "description": "Créer groupes et comptes avec useradd (shell, home, groupe principal et secondaires), forcer le changement de mot de passe, désactiver un compte.",
+    "course": "Cours 4 - Administration d'une distribution GNU/Linux",
+    "courseHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/",
+    "module": "Module 10 : Gestion des utilisateurs et des groupes",
+    "moduleHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-10-gestion-des-utilisateurs-et-des-groupes/",
+    "tags": ["useradd", "groupadd", "passwd", "usermod"],
+    "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-gerer-les-groupes-et-utilisateurs/"
+  },
+  {
     "title": "TP - Conversion en binaire",
     "description": "Convertir des octets du décimal au binaire et inversement (correction type).",
     "course": "Cours 1 - Bases des réseaux",
