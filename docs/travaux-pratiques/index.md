@@ -48,6 +48,16 @@ Tous tes TP, rangés par **cours** puis par **module**. Utilise la recherche ou 
     "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-manipuler-les-disques-et-lvm/"
   },
   {
+    "title": "TP - Préparation des systèmes de fichiers",
+    "description": "Créer un FS ext4 étiqueté, agrandir lvhome avec resize2fs, migrer /var vers son propre LV et le monter via /etc/fstab.",
+    "course": "Cours 4 - Administration d'une distribution GNU/Linux",
+    "courseHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/",
+    "module": "Module 9 : Gestion des espaces de stockage - Systèmes de fichiers",
+    "moduleHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-9-gestion-des-espaces-de-stockage-systemes-de-fichiers/",
+    "tags": ["ext4", "fstab", "resize2fs"],
+    "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-preparation-des-systemes-de-fichiers/"
+  },
+  {
     "title": "TP - Conversion en binaire",
     "description": "Convertir des octets du décimal au binaire et inversement (correction type).",
     "course": "Cours 1 - Bases des réseaux",

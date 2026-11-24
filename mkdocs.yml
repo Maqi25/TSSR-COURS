@@ -280,6 +280,7 @@ nav:
       - "Cours 4 · Administration d'une distribution GNU/Linux":
           - "TP - Gestion des paquets": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-des-paquets.md
           - "TP - Manipuler les disques et LVM": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-manipuler-les-disques-et-lvm.md
+          - "TP - Préparation des systèmes de fichiers": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-preparation-des-systemes-de-fichiers.md
   - Révisions:
       - revisions/index.md
       - "Cours 1 · Bases des réseaux": revisions/fiche-bases-des-reseaux.md
