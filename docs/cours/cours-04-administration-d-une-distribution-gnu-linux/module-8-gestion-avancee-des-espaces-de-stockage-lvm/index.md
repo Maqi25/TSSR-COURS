@@ -173,61 +173,63 @@ sudo lvextend -r -l +100%FREE /dev/vg_data/lv_web
 
 === "⌨️ Les commandes"
 
-    ??? question "Afficher les commandes du TP"
-        ```bash
-        # 1. Le disque est-il là ?
-        ls -l /dev/sd*                                   # seul sda au début
-        udevadm info --query=path --name=sda             # → …/host2/… : c'est host2
-        echo "- - -" > /sys/class/scsi_host/host2/scan   # rescan du bus SCSI
-        ls /dev/sd*                                      # sda  sda1  sdb ✅
+    ```bash
+    # 1. Le disque est-il là ?
+    ls -l /dev/sd*                                   # seul sda au début
+    udevadm info --query=path --name=sda             # → …/host2/… : c'est host2
+    echo "- - -" > /sys/class/scsi_host/host2/scan   # rescan du bus SCSI
+    ls /dev/sd*                                      # sda  sda1  sdb ✅
 
-        # 2. Partition LVM sur tout le disque
-        fdisk /dev/sdb        # n → p → 1 → Entrée → Entrée   puis   t → 8e   puis   w
+    # 2. Partition LVM sur tout le disque
+    fdisk /dev/sdb        # n → p → 1 → Entrée → Entrée   puis   t → 8e   puis   w
 
-        # 3. Ajouter la partition au VG existant
-        pvcreate /dev/sdb1
-        vgextend vgsystem /dev/sdb1
+    # 3. Ajouter la partition au VG existant
+    pvcreate /dev/sdb1
+    vgextend vgsystem /dev/sdb1
 
-        # 4. Créer lvvar (20 Go)
-        lvcreate -n lvvar -L 20G vgsystem
-        lvs
+    # 4. Créer lvvar (20 Go)
+    lvcreate -n lvvar -L 20G vgsystem
+    lvs
 
-        # 5. Donner tout le reste à lvhome
-        lvextend -l +100%FREE /dev/vgsystem/lvhome
-        ```
+    # 5. Donner tout le reste à lvhome
+    lvextend -l +100%FREE /dev/vgsystem/lvhome
+    ```
 
-        !!! note "Le nom du VG"
-            Ici le VG s'appelle **`vgsystem`** (celui créé à l'installation). Vérifie le tien avec **`vgs`** avant de taper les commandes.
+    !!! note "Le nom du VG"
+        Ici le VG s'appelle **`vgsystem`** (celui créé à l'installation). Vérifie le tien avec **`vgs`** avant de taper les commandes.
 
 === "✅ Corrigé expliqué"
 
-    *Clique sur une étape pour afficher sa correction.*
+    **1. Ajouter le disque de 40 Go**
 
-    ??? question "1. Ajouter le disque de 40 Go"
-        Dans les **paramètres de la VM** → *Add* → *Hard Disk* → options par défaut, taille **40 Go**.
-        `ls -l /dev/sd*` ne montre encore que `sda` et `sda1` : le système n'a pas vu le disque. `udevadm` indique que c'est **host2** qui gère les disques, on force donc le scan sur `host2` → **`/dev/sdb`** apparaît.
+    Dans les **paramètres de la VM** → *Add* → *Hard Disk* → options par défaut, taille **40 Go**.
+    `ls -l /dev/sd*` ne montre encore que `sda` et `sda1` : le système n'a pas vu le disque. `udevadm` indique que c'est **host2** qui gère les disques, on force donc le scan sur `host2` → **`/dev/sdb`** apparaît.
 
-    ??? question "2. Partitionner avec fdisk"
-        | Touche | Rôle |
-        |---|---|
-        | `n` | nouvelle partition |
-        | `p` / `1` / Entrée / Entrée | primaire, numéro 1, du 1er au dernier secteur (choix par défaut = **tout le disque**) |
-        | `t` puis `8e` | changer le **type** en **« Linux LVM »** |
-        | `w` | **écrire** la table et quitter (rien n'est modifié avant !) |
+    **2. Partitionner avec fdisk**
 
-    ??? question "3. Intégrer la partition au groupe de volumes"
-        - **`pvcreate /dev/sdb1`** → déclare la partition comme **volume physique** (PV) utilisable par LVM.
-        - **`vgextend vgsystem /dev/sdb1`** → **verse** ce PV dans le pot existant : `Volume group "vgsystem" successfully extended`.
+    | Touche | Rôle |
+    |---|---|
+    | `n` | nouvelle partition |
+    | `p` / `1` / Entrée / Entrée | primaire, numéro 1, du 1er au dernier secteur (choix par défaut = **tout le disque**) |
+    | `t` puis `8e` | changer le **type** en **« Linux LVM »** |
+    | `w` | **écrire** la table et quitter (rien n'est modifié avant !) |
 
-    ??? question "4. Créer lvvar (20 Go)"
-        `lvcreate -n lvvar -L 20G vgsystem` : **`-n`** = nom, **`-L`** = taille fixe, et **ne pas oublier le VG cible** en dernier. `lvs` affiche ensuite `lvvar  vgsystem  20,00g` à côté de `lvhome`, `lvroot`, `lvswap`…
+    **3. Intégrer au groupe de volumes**
 
-    ??? question "5. Agrandir lvhome avec tout l'espace restant"
-        `lvextend -l +100%FREE /dev/vgsystem/lvhome` : **`-l` minuscule** (en *extents* / pourcentage) + **`100%FREE`** = toute la place libre. Pour un LV existant, on donne le **chemin complet** `/dev/<VG>/<LV>`.
-        Résultat : `lvhome` passe de **< 14,86 Go à 34,85 Go**.
+    - **`pvcreate /dev/sdb1`** → déclare la partition comme **volume physique** (PV) utilisable par LVM.
+    - **`vgextend vgsystem /dev/sdb1`** → **verse** ce PV dans le pot existant : `Volume group "vgsystem" successfully extended`.
 
-        !!! warning "Ne pas oublier le système de fichiers"
-            Sans **`-r`**, seul le volume grandit : `df -h /home` affiche toujours l'ancienne taille. Soit on tape directement **`lvextend -r -l +100%FREE /dev/vgsystem/lvhome`**, soit on rattrape avec **`resize2fs /dev/vgsystem/lvhome`**.
+    **4. Créer lvvar**
+
+    `lvcreate -n lvvar -L 20G vgsystem` : **`-n`** = nom, **`-L`** = taille fixe, et **ne pas oublier le VG cible** en dernier. `lvs` affiche ensuite `lvvar  vgsystem  20,00g` à côté de `lvhome`, `lvroot`, `lvswap`…
+
+    **5. Agrandir lvhome**
+
+    `lvextend -l +100%FREE /dev/vgsystem/lvhome` : **`-l` minuscule** (en *extents* / pourcentage) + **`100%FREE`** = toute la place libre. Pour un LV existant, on donne le **chemin complet** `/dev/<VG>/<LV>`.
+    Résultat : `lvhome` passe de **< 14,86 Go à 34,85 Go**.
+
+    !!! warning "Ne pas oublier le système de fichiers"
+        Sans **`-r`**, seul le volume grandit : `df -h /home` affiche toujours l'ancienne taille. Soit on tape directement **`lvextend -r -l +100%FREE /dev/vgsystem/lvhome`**, soit on rattrape avec **`resize2fs /dev/vgsystem/lvhome`**.
 
 ## 🧠 Quiz — entraîne-toi
 
