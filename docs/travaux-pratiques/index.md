@@ -12,6 +12,20 @@ Tous tes TP, classés par cours. Utilise la recherche ou le filtre "Cours" pour 
     "course": "Cours 1 - Bases des réseaux",
     "tags": ["adressage", "sous-réseaux"],
     "href": "cours-01-bases-des-reseaux/tp-plan-adressage/"
+  },
+  {
+    "title": "TP - Gestion des paquets",
+    "description": "Dépôts dans sources.list, mises à jour, installation avec « Logiciels » et apt (vim, openssh-server, terminator, cifs-utils), connexion PuTTY et configuration de vim.",
+    "course": "Cours 4 - Administration d'une distribution GNU/Linux",
+    "tags": ["apt", "dépôts", "ssh", "module 6"],
+    "href": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-6-gestion-des-paquets-logiciels/#tp-gestion-des-paquets"
+  },
+  {
+    "title": "TP - Manipuler les disques et LVM",
+    "description": "Ajouter un disque de 40 Go, le partitionner avec fdisk, l'intégrer au VG, créer lvvar et agrandir lvhome.",
+    "course": "Cours 4 - Administration d'une distribution GNU/Linux",
+    "tags": ["lvm", "fdisk", "disques", "module 8"],
+    "href": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-8-gestion-avancee-des-espaces-de-stockage-lvm/#tp-manipuler-les-disques-et-lvm"
   }
 ]
 </script>
@@ -30,4 +44,4 @@ Tous tes TP, classés par cours. Utilise la recherche ou le filtre "Cours" pour 
 </script>
 
 !!! tip "Ajouter un TP"
-    Ajoute une ligne dans le tableau JSON ci-dessus (`title`, `description`, `course`, `tags`, `href`) et crée la page correspondante. Détails sur la page [+ Ajouter du contenu](../ajouter-du-contenu.md).
+    Les TP se rédigent **directement dans le module concerné**, dans une section `## 🛠️ TP — …` placée avant le quiz. Ajoute ensuite une ligne dans le tableau JSON ci-dessus (`title`, `description`, `course`, `tags`) avec un `href` qui pointe vers cette section : `../cours/<cours>/<module>/#<ancre-du-titre>`. Détails sur la page [+ Ajouter du contenu](../ajouter-du-contenu.md).
