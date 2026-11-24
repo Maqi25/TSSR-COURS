@@ -261,7 +261,22 @@ nav:
   - Travaux pratiques:
       - travaux-pratiques/index.md
       - "Cours 1 · Bases des réseaux":
+          - "TP - Conversion en binaire": travaux-pratiques/cours-01-bases-des-reseaux/tp-conversion-en-binaire.md
+          - "TP - Les classes IPv4": travaux-pratiques/cours-01-bases-des-reseaux/tp-les-classes-ipv4.md
+          - "TP - Calcul d'adresses": travaux-pratiques/cours-01-bases-des-reseaux/tp-calcul-d-adresses.md
+          - "TP - Calcul des sous-réseaux": travaux-pratiques/cours-01-bases-des-reseaux/tp-calcul-des-sous-reseaux.md
           - "TP - Plan d'adressage IP": travaux-pratiques/cours-01-bases-des-reseaux/tp-plan-adressage.md
+          - "TP - La communication": travaux-pratiques/cours-01-bases-des-reseaux/tp-la-communication.md
+          - "TP - Adressage IPv6": travaux-pratiques/cours-01-bases-des-reseaux/tp-adressage-ipv6.md
+      - "Cours 2 · Système client Microsoft":
+          - "TP - Prise en main de l'interface graphique": travaux-pratiques/cours-02-systeme-client-microsoft/tp-prise-en-main-de-l-interface-graphique.md
+          - "TP - Prise en main de la cmd": travaux-pratiques/cours-02-systeme-client-microsoft/tp-prise-en-main-de-la-cmd.md
+          - "TP - Premiers pas avec PowerShell": travaux-pratiques/cours-02-systeme-client-microsoft/tp-premiers-pas-avec-powershell.md
+          - "TP - Manipuler l'aide de PowerShell": travaux-pratiques/cours-02-systeme-client-microsoft/tp-manipuler-l-aide-de-powershell.md
+          - "TP - Devenir autonome avec PowerShell": travaux-pratiques/cours-02-systeme-client-microsoft/tp-devenir-autonome-avec-powershell.md
+          - "TP - Gérer le stockage": travaux-pratiques/cours-02-systeme-client-microsoft/tp-gestion-du-stockage.md
+          - "TP - Gestion des utilisateurs et des groupes": travaux-pratiques/cours-02-systeme-client-microsoft/tp-gestion-des-utilisateurs-et-des-groupes.md
+          - "TP - Les ACL": travaux-pratiques/cours-02-systeme-client-microsoft/tp-les-acl.md
       - "Cours 4 · Administration d'une distribution GNU/Linux":
           - "TP - Gestion des paquets": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-des-paquets.md
           - "TP - Manipuler les disques et LVM": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-manipuler-les-disques-et-lvm.md
