@@ -260,7 +260,11 @@ nav:
           - "Module 5 : Teams, SharePoint et OneDrive": cours/bonus-microsoft-365/module-5-teams-sharepoint-et-onedrive/index.md
   - Travaux pratiques:
       - travaux-pratiques/index.md
-      - "TP - Plan d'adressage IP": travaux-pratiques/cours-01-bases-des-reseaux/tp-plan-adressage.md
+      - "Cours 1 · Bases des réseaux":
+          - "TP - Plan d'adressage IP": travaux-pratiques/cours-01-bases-des-reseaux/tp-plan-adressage.md
+      - "Cours 4 · Administration d'une distribution GNU/Linux":
+          - "TP - Gestion des paquets": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-des-paquets.md
+          - "TP - Manipuler les disques et LVM": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-manipuler-les-disques-et-lvm.md
   - Révisions:
       - revisions/index.md
       - "Cours 1 · Bases des réseaux": revisions/fiche-bases-des-reseaux.md

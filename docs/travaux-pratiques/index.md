@@ -24,7 +24,7 @@ Tous tes TP, rangés par **cours** puis par **module**. Utilise la recherche ou 
     "module": "Module 6 : Gestion des paquets logiciels",
     "moduleHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-6-gestion-des-paquets-logiciels/",
     "tags": ["apt", "dépôts", "ssh"],
-    "href": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-6-gestion-des-paquets-logiciels/#tp-gestion-des-paquets"
+    "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-des-paquets/"
   },
   {
     "title": "TP - Manipuler les disques et LVM",
@@ -34,7 +34,7 @@ Tous tes TP, rangés par **cours** puis par **module**. Utilise la recherche ou 
     "module": "Module 8 : Gestion avancée des espaces de stockage - LVM",
     "moduleHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-8-gestion-avancee-des-espaces-de-stockage-lvm/",
     "tags": ["lvm", "fdisk", "disques"],
-    "href": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-8-gestion-avancee-des-espaces-de-stockage-lvm/#tp-manipuler-les-disques-et-lvm"
+    "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-manipuler-les-disques-et-lvm/"
   }
 ]
 </script>
@@ -54,4 +54,4 @@ Tous tes TP, rangés par **cours** puis par **module**. Utilise la recherche ou 
 </script>
 
 !!! tip "Ajouter un TP"
-    Les TP se rédigent **directement dans le module concerné**, dans une section `## 🛠️ TP — …` placée avant le quiz. Ajoute ensuite un bloc dans le tableau JSON ci-dessus avec `title`, `description`, `course` + `courseHref`, `module` + `moduleHref`, `tags`, et un `href` qui pointe vers la section : `../cours/<cours>/<module>/#<ancre-du-titre>`. Le TP se range tout seul sous son cours et son module. Détails sur la page [+ Ajouter du contenu](../ajouter-du-contenu.md).
+    Crée la page du TP dans `docs/travaux-pratiques/<cours>/tp-nom-du-tp.md` et ajoute-la au menu dans `mkdocs.yml`, sous son cours. Ajoute ensuite un bloc dans le tableau JSON ci-dessus avec `title`, `description`, `course` + `courseHref`, `module` + `moduleHref`, `tags`, et `href` : `<cours>/tp-nom-du-tp/`. Le TP se range tout seul sous son cours et son module. Détails sur la page [+ Ajouter du contenu](../ajouter-du-contenu.md).

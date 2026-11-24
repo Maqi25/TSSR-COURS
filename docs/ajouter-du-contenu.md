@@ -115,7 +115,7 @@ Fichiers à modifier :
 
 - Glossaire : `docs/glossaire/index.md`
 - Commandes : `docs/commandes/powershell/index.md` et `docs/commandes/bash/index.md`
-- TP : `docs/travaux-pratiques/index.md` (le TP lui-même s'écrit dans la page du module, section `## 🛠️ TP — …` ; le `href` pointe vers cette section, ex. `../cours/cours-04-.../module-8-.../#tp-manipuler-les-disques-et-lvm`)
+- TP : `docs/travaux-pratiques/index.md` (et crée la page du TP dans `docs/travaux-pratiques/cours-XX-.../`, puis ajoute-la au menu dans `mkdocs.yml` sous son cours)
 
 Ajoute une **virgule** après le dernier `}` existant, puis colle ton nouveau bloc `{ ... }`. La page se met à jour toute seule (recherche, filtres, compteur).
 
