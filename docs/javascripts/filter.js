@@ -46,6 +46,7 @@ window.TSSRFilter = (function () {
         showAlpha: true,
         courseLabel: "Cours",
         moduleLabel: "Module",
+        groupByCourseModule: false, // true : titres "Cours" puis "Module", cartes en dessous
       },
       options
     );
@@ -141,8 +142,61 @@ window.TSSRFilter = (function () {
     root.appendChild(countEl);
 
     var resultGrid = document.createElement("div");
-    resultGrid.className = "tssr-result-grid";
+    resultGrid.className = config.groupByCourseModule ? "tssr-filter-groups" : "tssr-result-grid";
     root.appendChild(resultGrid);
+
+    // Tri "naturel" : Cours 2 avant Cours 10, Module 3 avant Module 12
+    function naturalCompare(a, b) {
+      return (a || "").localeCompare(b || "", "fr", { numeric: true });
+    }
+
+    function linkOrText(text, href) {
+      return href ? '<a href="' + href + '">' + text + "</a>" : text;
+    }
+
+    // Regroupe les cartes : un titre par cours, un sous-titre par module
+    function renderGrouped(filtered, renderCard) {
+      var courses = [];
+      var byCourse = {};
+      filtered.forEach(function (item) {
+        var c = item.course || "Autres";
+        if (!byCourse[c]) {
+          byCourse[c] = { href: item.courseHref, modules: {}, moduleOrder: [] };
+          courses.push(c);
+        }
+        var m = item.module || "";
+        if (!byCourse[c].modules[m]) {
+          byCourse[c].modules[m] = { href: item.moduleHref, items: [] };
+          byCourse[c].moduleOrder.push(m);
+        }
+        byCourse[c].modules[m].items.push(item);
+      });
+
+      return courses
+        .sort(naturalCompare)
+        .map(function (c) {
+          var course = byCourse[c];
+          var modulesHtml = course.moduleOrder
+            .sort(naturalCompare)
+            .map(function (m) {
+              var mod = course.modules[m];
+              return (
+                '<div class="tssr-filter-group-module">' +
+                (m ? '<h3 class="tssr-filter-group-title">📗 ' + linkOrText(m, mod.href) + "</h3>" : "") +
+                '<div class="tssr-result-grid">' + mod.items.map(renderCard).join("") + "</div>" +
+                "</div>"
+              );
+            })
+            .join("");
+          return (
+            '<section class="tssr-filter-group">' +
+            '<h2 class="tssr-filter-group-title">📚 ' + linkOrText(c, course.href) + "</h2>" +
+            modulesHtml +
+            "</section>"
+          );
+        })
+        .join("");
+    }
 
     function populateModuleOptions(filteredByCourse) {
       if (!moduleSelect) return;
@@ -178,14 +232,13 @@ window.TSSRFilter = (function () {
         return true;
       });
 
-      filtered.sort((a, b) => a.title.localeCompare(b.title, "fr"));
+      filtered.sort((a, b) => naturalCompare(a.title, b.title));
 
       countEl.textContent =
         filtered.length + " " + config.itemLabel + " affiché" + (filtered.length > 1 ? "s" : "") +
         " sur " + items.length;
 
-      resultGrid.innerHTML = filtered
-        .map(function (item) {
+      function renderCard(item) {
           var tags = (item.tags || [])
             .map((t) => '<span class="tssr-tag">' + t + "</span>")
             .join("");
@@ -195,15 +248,16 @@ window.TSSRFilter = (function () {
 
           // Ligne "Cours / Module" : cliquable si un lien (courseHref / moduleHref)
           // a été renseigné, simple texte sinon.
+          // (inutile en mode groupé : le cours et le module sont déjà en titre)
           var metaParts = [];
-          if (item.course) {
+          if (item.course && !config.groupByCourseModule) {
             metaParts.push(
               item.courseHref
                 ? '<a href="' + item.courseHref + '">' + item.course + "</a>"
                 : item.course
             );
           }
-          if (item.module) {
+          if (item.module && !config.groupByCourseModule) {
             metaParts.push(
               item.moduleHref
                 ? '<a href="' + item.moduleHref + '">' + item.module + "</a>"
@@ -222,8 +276,11 @@ window.TSSRFilter = (function () {
             tags +
             "</div>"
           );
-        })
-        .join("");
+      }
+
+      resultGrid.innerHTML = config.groupByCourseModule
+        ? renderGrouped(filtered, renderCard)
+        : filtered.map(renderCard).join("");
 
       if (filtered.length === 0) {
         resultGrid.innerHTML =

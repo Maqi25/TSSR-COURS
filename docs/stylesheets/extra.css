@@ -221,6 +221,30 @@
   gap: 0.9rem;
 }
 
+/* Mode groupé (page Travaux pratiques) : Cours → Module → cartes */
+.md-typeset .tssr-filter-group + .tssr-filter-group {
+  margin-top: 1.8rem;
+}
+
+.md-typeset h2.tssr-filter-group-title {
+  margin: 0 0 0.6rem;
+  padding-bottom: 0.3rem;
+  border-bottom: 2px solid var(--md-accent-fg-color);
+}
+
+.md-typeset h3.tssr-filter-group-title {
+  margin: 1rem 0 0.6rem 0.2rem;
+  font-size: 0.95rem;
+}
+
+.md-typeset .tssr-filter-group-title a {
+  color: inherit;
+}
+
+.md-typeset .tssr-filter-group-title a:hover {
+  color: var(--md-accent-fg-color);
+}
+
 .tssr-result-card {
   padding: 0.9rem 1rem;
   border-radius: 0.4rem;
