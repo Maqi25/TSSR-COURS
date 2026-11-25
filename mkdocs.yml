@@ -282,6 +282,7 @@ nav:
           - "TP - Manipuler les disques et LVM": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-manipuler-les-disques-et-lvm.md
           - "TP - Préparation des systèmes de fichiers": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-preparation-des-systemes-de-fichiers.md
           - "TP - Gérer les groupes et utilisateurs": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-gerer-les-groupes-et-utilisateurs.md
+          - "TP - Gestion des permissions": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-des-permissions.md
   - Révisions:
       - revisions/index.md
       - "Cours 1 · Bases des réseaux": revisions/fiche-bases-des-reseaux.md

@@ -68,6 +68,16 @@ Tous tes TP, rangés par **cours** puis par **module**. Utilise la recherche ou 
     "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-gerer-les-groupes-et-utilisateurs/"
   },
   {
+    "title": "TP - Gestion des permissions",
+    "description": "Créer dans /srv des répertoires public, depot (sticky bit), admin (groupe seul) et documentation (SetGID), puis tester avec plusieurs comptes.",
+    "course": "Cours 4 - Administration d'une distribution GNU/Linux",
+    "courseHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/",
+    "module": "Module 11 : Droits sur les fichiers et répertoires",
+    "moduleHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-11-droits-sur-les-fichiers-et-repertoires/",
+    "tags": ["chmod", "chown", "sticky bit", "SetGID"],
+    "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-des-permissions/"
+  },
+  {
     "title": "TP - Conversion en binaire",
     "description": "Convertir des octets du décimal au binaire et inversement (correction type).",
     "course": "Cours 1 - Bases des réseaux",

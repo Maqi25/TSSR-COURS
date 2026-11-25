@@ -38,7 +38,8 @@ Chemin avec espaces : `cp "mon fichier" cible`. **Vérifier le chemin avant tout
 | --- | --- | --- |
 | `ls -l` | Lire les bits rwx : utilisateur / groupe / autres | `ls -l fichier` |
 | `chmod` | Modifier les permissions (symbolique ou octal) | `chmod 640 secret.txt` |
-| `chown` | Changer propriétaire et groupe (souvent root) | `sudo chown alice:ops fichier` |
+| `chmod` (droits spéciaux) | `1` sticky bit (seul le propriétaire supprime), `2` SetGID (le groupe du répertoire est hérité), `4` SetUID | `chmod 1777 /srv/depot` ; `chmod 2775 /srv/doc` |
+| `chown` | Changer propriétaire et groupe (souvent root) ; `:groupe` ne change que le groupe | `sudo chown :admin /srv/admin` |
 | `umask` | Masque des droits par défaut | `umask 027` |
 | `id` / `groups` | UID, GID et groupes effectifs | `id alice` ; `groups` |
 | `whoami` / `who` | Compte courant / sessions ouvertes | `whoami` ; `who` |
