@@ -35,7 +35,10 @@
     "tssr-visited-pages",
     "tssr-recent-pages",
     "tssr-theme",
+    "tssr-avatar",
   ];
+  var AVATAR_KEY = "tssr-avatar";
+  var NB_AVATARS = 5;            // images docs/assets/avatars/avatar-1.webp … avatar-5.webp
   var SESSION_KEY = "tssr-compte-session";
   var META_KEY = "tssr-compte-sync";
 
@@ -322,6 +325,27 @@
   // Interface : bouton 👤 dans l'en-tête et son panneau
   // ------------------------------------------------------------------
   var ui = {};
+  var ICONE_PERSONNE = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.5-8 5.5V21h16v-1.5c0-3-3.6-5.5-8-5.5z"/></svg>';
+
+  // ---------- avatar du profil ----------
+  function urlSite(chemin) {
+    var base = ".";
+    try { base = JSON.parse(document.getElementById("__config").textContent).base || "."; } catch (e) { /* défaut */ }
+    return base.replace(/\/$/, "") + "/" + chemin;
+  }
+  function avatarChoisi() {
+    var n = parseInt(orig.get.call(localStorage, AVATAR_KEY), 10);
+    return n >= 1 && n <= NB_AVATARS ? n : 0;
+  }
+  function imgAvatar(n, alt) {
+    return n ? '<img src="' + urlSite("assets/avatars/avatar-" + n + ".webp") + '" alt="' + (alt || "") + '" width="256" height="256">' : ICONE_PERSONNE;
+  }
+  function majBouton() {
+    if (!ui.visage) return;
+    var n = avatarChoisi();
+    ui.visage.innerHTML = imgAvatar(n);
+    ui.bouton.classList.toggle("a-avatar", !!n);
+  }
 
   function heure() { return new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }); }
 
@@ -414,8 +438,20 @@
     var s = session();
     ui.corps.innerHTML =
       '<p class="tssr-compte-titre">Mon compte</p>' +
-      '<p class="tssr-compte-qui">👤 <strong></strong></p>' +
-      '<p class="tssr-compte-statut"></p>' +
+      '<div class="tssr-compte-profil">' +
+      '<button type="button" class="tssr-compte-avatar" data-action="avatar" title="Changer d\'avatar">' +
+      imgAvatar(avatarChoisi(), "Mon avatar") + '<span aria-hidden="true">✏️</span></button>' +
+      '<div><p class="tssr-compte-qui"><strong></strong></p><p class="tssr-compte-statut"></p></div>' +
+      "</div>" +
+      '<div class="tssr-compte-avatars" hidden><p>Choisis ton avatar</p><div>' +
+      (function () {
+        var h = "", n = avatarChoisi();
+        for (var i = 1; i <= NB_AVATARS; i++) {
+          h += '<button type="button" data-avatar="' + i + '" aria-pressed="' + (i === n) + '" aria-label="Avatar ' + i + '">' + imgAvatar(i) + "</button>";
+        }
+        return h + '<button type="button" data-avatar="0" aria-pressed="' + (n === 0) + '" aria-label="Pas d\'avatar">' + ICONE_PERSONNE + "</button>";
+      })() +
+      "</div></div>" +
       resumeHTML() +
       '<div class="tssr-compte-actions">' +
       '<button type="button" class="md-button md-button--primary" data-action="sync">🔄 Synchroniser</button>' +
@@ -432,6 +468,19 @@
     ui.statut = ui.corps.querySelector(".tssr-compte-statut");
     ui.message = ui.corps.querySelector(".tssr-compte-msg");
     statut(etatSync.texte || "☁️ Données sauvegardées sur ton compte", etatSync.erreur);
+
+    var choix = ui.corps.querySelector(".tssr-compte-avatars");
+    ui.corps.querySelector('[data-action="avatar"]').addEventListener("click", function () {
+      choix.hidden = !choix.hidden;
+    });
+    choix.querySelectorAll("[data-avatar]").forEach(function (b) {
+      b.addEventListener("click", function () {
+        var n = Number(b.dataset.avatar);
+        if (n) localStorage.setItem(AVATAR_KEY, String(n)); else localStorage.removeItem(AVATAR_KEY);   // synchronisé
+        majBouton();
+        vueConnecte();
+      });
+    });
 
     ui.corps.querySelector('[data-action="sync"]').addEventListener("click", function () {
       synchroniser().then(function (change) {
@@ -471,12 +520,14 @@
     wrap.className = "tssr-compte";
     wrap.innerHTML =
       '<button type="button" class="tssr-compte-btn" aria-expanded="false" aria-label="Mon compte">' +
-      '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 12a4.5 4.5 0 1 0 0-9 4.5 4.5 0 0 0 0 9zm0 2c-4.4 0-8 2.5-8 5.5V21h16v-1.5c0-3-3.6-5.5-8-5.5z"/></svg>' +
+      '<span class="tssr-compte-visage"></span>' +
       '<span class="tssr-compte-point"></span></button>' +
       '<div class="tssr-compte-menu" role="dialog" aria-label="Mon compte"><div class="tssr-compte-corps"></div></div>';
     ui.bouton = wrap.querySelector(".tssr-compte-btn");
     ui.menu = wrap.querySelector(".tssr-compte-menu");
     ui.corps = wrap.querySelector(".tssr-compte-corps");
+    ui.visage = wrap.querySelector(".tssr-compte-visage");
+    majBouton();
 
     ui.bouton.addEventListener("click", function (e) {
       e.stopPropagation();

@@ -30,9 +30,147 @@
   transform: scale(1.08);
 }
 
-.tssr-compte-btn svg {
+.tssr-compte-visage svg {
   width: 1.2rem;
   height: 1.2rem;
+  fill: currentColor;
+}
+
+.tssr-compte-visage {
+  display: grid;
+  place-items: center;
+}
+
+/* avatar : portrait détouré sur un disque dégradé aux couleurs du thème */
+.tssr-compte-visage img,
+.tssr-compte-avatar img,
+.tssr-compte-avatars img {
+  display: block;
+  border-radius: 50%;
+  object-fit: cover;
+  background: radial-gradient(circle at 50% 35%, color-mix(in srgb, var(--md-accent-fg-color) 55%, #fff), var(--md-primary-fg-color) 75%);
+}
+
+.tssr-compte-visage img {
+  width: 1.9rem;
+  height: 1.9rem;
+  box-shadow: 0 0 0 2px rgba(255, 255, 255, 0.85);
+}
+
+.tssr-compte-btn.a-avatar:hover,
+.tssr-compte-btn.a-avatar[aria-expanded="true"] {
+  background: none;
+}
+
+.tssr-compte-btn.a-avatar .tssr-compte-point {
+  right: -0.05rem;
+  bottom: -0.05rem;
+}
+
+.tssr-compte-profil {
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  margin: 0 0 0.6rem;
+}
+
+.tssr-compte-profil .tssr-compte-qui,
+.tssr-compte-profil .tssr-compte-statut {
+  margin: 0;
+}
+
+.tssr-compte-avatar {
+  position: relative;
+  flex: none;
+  display: grid;
+  place-items: center;
+  width: 3.6rem;
+  height: 3.6rem;
+  border-radius: 50%;
+  background: var(--md-code-bg-color);
+  color: var(--md-default-fg-color--light);
+  cursor: pointer;
+  box-shadow: 0 0 0 2px var(--md-accent-fg-color);
+  transition: transform 0.2s ease;
+}
+
+.tssr-compte-avatar:hover {
+  transform: scale(1.05);
+}
+
+.tssr-compte-avatar img {
+  width: 100%;
+  height: 100%;
+}
+
+.tssr-compte-avatar svg {
+  width: 2rem;
+  height: 2rem;
+  fill: currentColor;
+}
+
+.tssr-compte-avatar span {
+  position: absolute;
+  right: -0.2rem;
+  bottom: -0.2rem;
+  display: grid;
+  place-items: center;
+  width: 1.2rem;
+  height: 1.2rem;
+  border-radius: 50%;
+  background: var(--md-default-bg-color);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.35);
+  font-size: 0.6rem;
+}
+
+.tssr-compte-avatars {
+  margin: 0 0 0.7rem;
+  padding: 0.6rem;
+  border-radius: 12px;
+  background: var(--md-code-bg-color);
+}
+
+.tssr-compte-avatars[hidden] {
+  display: none;
+}
+
+.tssr-compte-avatars p {
+  margin: 0 0 0.5rem;
+  font-weight: 700;
+}
+
+.tssr-compte-avatars > div {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 0.35rem;
+}
+
+.tssr-compte-avatars button {
+  display: grid;
+  place-items: center;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  color: var(--md-default-fg-color--light);
+  cursor: pointer;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.tssr-compte-avatars button:hover {
+  transform: scale(1.1);
+}
+
+.tssr-compte-avatars button[aria-pressed="true"] {
+  box-shadow: 0 0 0 2px var(--md-accent-fg-color);
+}
+
+.tssr-compte-avatars img {
+  width: 100%;
+  height: 100%;
+}
+
+.tssr-compte-avatars svg {
+  width: 60%;
+  height: 60%;
   fill: currentColor;
 }
 
