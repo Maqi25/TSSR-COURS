@@ -364,6 +364,8 @@
   }
 
   function ouvrir(oui) {
+    // à l'ouverture, on recalcule le panneau : un QCM ou un TP a pu être fait depuis le chargement de la page
+    if (oui && !ui.menu.classList.contains("is-open") && session()) vueConnecte();
     ui.menu.classList.toggle("is-open", oui);
     ui.bouton.setAttribute("aria-expanded", String(oui));
   }

@@ -63,7 +63,7 @@ extra_css:
 extra_javascript:
   # compte en premier : il doit voir toutes les écritures des autres scripts
   - javascripts/compte-config.js?v=20261125-2
-  - javascripts/compte.js?v=20261125-3
+  - javascripts/compte.js?v=20261125-4
   - javascripts/mermaid-survol.js?v=20261121-1
   - javascripts/theme.js?v=20261123-2
   - javascripts/icones.js?v=20261105-3
