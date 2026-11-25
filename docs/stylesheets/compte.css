@@ -1,0 +1,413 @@
+/* ==========================================================================
+   compte.css
+   1. Bouton 👤 et panneau « Mon compte » (compte.js)
+   2. Suivi des TP : bloc sur chaque TP, tableau et pastilles (suivi-tp.js)
+   ========================================================================== */
+
+/* ---------- 1. Mon compte ---------- */
+.tssr-compte {
+  position: relative;
+  display: flex;
+  align-items: center;
+}
+
+.tssr-compte-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  margin: 0 0.2rem;
+  border-radius: 50%;
+  color: inherit;
+  cursor: pointer;
+  transition: background-color 0.2s ease, transform 0.3s ease;
+}
+
+.tssr-compte-btn:hover,
+.tssr-compte-btn[aria-expanded="true"] {
+  background: rgba(255, 255, 255, 0.15);
+  transform: scale(1.08);
+}
+
+.tssr-compte-btn svg {
+  width: 1.2rem;
+  height: 1.2rem;
+  fill: currentColor;
+}
+
+.tssr-compte-point {
+  position: absolute;
+  right: 0.2rem;
+  bottom: 0.2rem;
+  width: 0.5rem;
+  height: 0.5rem;
+  border-radius: 50%;
+  background: #94a3b8;
+  box-shadow: 0 0 0 2px var(--md-primary-fg-color);
+}
+
+.tssr-compte-btn.is-connecte .tssr-compte-point {
+  background: #22c55e;
+  box-shadow: 0 0 0 2px var(--md-primary-fg-color), 0 0 8px #22c55e;
+}
+
+.tssr-compte-menu {
+  position: absolute;
+  top: calc(100% + 0.6rem);
+  right: 0;
+  z-index: 10;
+  width: 18rem;
+  max-width: calc(100vw - 1rem);
+  padding: 0.9rem;
+  border-radius: 16px;
+  border: 1px solid var(--tssr-glass-border, rgba(255, 255, 255, 0.12));
+  background: var(--md-default-bg-color);
+  box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.55);
+  color: var(--md-default-fg-color);
+  font-size: 0.7rem;
+  line-height: 1.45;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px) scale(0.97);
+  transform-origin: top right;
+  transition: opacity 0.18s ease, transform 0.18s ease, visibility 0.18s;
+}
+
+.tssr-compte-menu.is-open {
+  opacity: 1;
+  visibility: visible;
+  transform: none;
+}
+
+/* petit écran : le panneau se cale sur le bord droit de l'écran */
+@media screen and (max-width: 44.9375em) {
+  .tssr-compte-menu {
+    position: fixed;
+    top: 3rem;
+    right: 0.5rem;
+  }
+}
+
+.tssr-compte-titre {
+  margin: 0 0 0.5rem;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--md-default-fg-color--light);
+}
+
+.tssr-compte-intro,
+.tssr-compte-qui,
+.tssr-compte-statut {
+  margin: 0 0 0.6rem;
+}
+
+.tssr-compte-qui strong {
+  word-break: break-all;
+}
+
+.tssr-compte-statut {
+  color: var(--md-default-fg-color--light);
+}
+
+.tssr-compte-statut.is-erreur {
+  color: #ef4444;
+}
+
+.tssr-compte-resume {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  margin: 0 0 0.7rem;
+}
+
+.tssr-compte-resume div {
+  padding: 0.4rem 0.5rem;
+  border-radius: 10px;
+  background: var(--md-code-bg-color);
+}
+
+.tssr-compte-resume b {
+  display: block;
+  font-size: 0.9rem;
+}
+
+.tssr-compte-resume span {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.6rem;
+}
+
+.tssr-compte-form {
+  display: grid;
+  gap: 0.5rem;
+  margin: 0 0 0.5rem;
+}
+
+.tssr-compte-form label {
+  display: grid;
+  gap: 0.2rem;
+  font-weight: 700;
+}
+
+.tssr-compte-form input {
+  padding: 0.45rem 0.6rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 10px;
+  background: var(--md-code-bg-color);
+  color: var(--md-default-fg-color);
+  font: inherit;
+  font-weight: 400;
+}
+
+.tssr-compte-form input:focus {
+  outline: 2px solid var(--md-accent-fg-color);
+  outline-offset: 1px;
+}
+
+.tssr-compte-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 0.5rem;
+}
+
+.tssr-compte-form[hidden] {
+  display: none;
+}
+
+/* boutons : les styles .md-button du thème ne s'appliquent que dans le contenu */
+.tssr-compte .md-button {
+  display: inline-block;
+  margin: 0;
+  padding: 0.4em 0.95em;
+  border: 1px solid var(--md-accent-fg-color);
+  border-radius: 12px;
+  background: transparent;
+  color: var(--md-accent-fg-color);
+  font: inherit;
+  font-size: 0.68rem;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background-color 0.15s ease, color 0.15s ease, transform 0.1s ease;
+}
+
+.tssr-compte .md-button:hover {
+  background: color-mix(in srgb, var(--md-accent-fg-color) 15%, transparent);
+}
+
+.tssr-compte .md-button--primary {
+  background: var(--md-accent-fg-color);
+  color: var(--md-accent-bg-color, #fff);
+}
+
+.tssr-compte .md-button--primary:hover {
+  background: var(--md-accent-fg-color);
+  filter: brightness(1.1);
+}
+
+.tssr-compte .md-button:active {
+  transform: translateY(1px);
+}
+
+.tssr-compte .md-button:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.tssr-compte-form > .md-button {
+  justify-self: start;
+}
+
+.tssr-compte-lien {
+  justify-self: start;
+  padding: 0;
+  color: var(--md-accent-fg-color);
+  font: inherit;
+  cursor: pointer;
+  text-decoration: underline;
+}
+
+.tssr-compte-case {
+  display: flex;
+  gap: 0.4rem;
+  align-items: flex-start;
+  margin: 0.3rem 0 0.5rem;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.62rem;
+}
+
+.tssr-compte-sortie {
+  width: 100%;
+}
+
+.tssr-compte-msg {
+  margin: 0.4rem 0 0;
+  min-height: 0;
+}
+
+.tssr-compte-msg:empty {
+  display: none;
+}
+
+.tssr-compte-msg.is-erreur { color: #ef4444; }
+.tssr-compte-msg.is-ok { color: #16a34a; }
+
+.tssr-compte-bandeau {
+  position: fixed;
+  left: 50%;
+  bottom: 1.2rem;
+  z-index: 50;
+  display: flex;
+  gap: 0.7rem;
+  align-items: center;
+  max-width: calc(100vw - 2rem);
+  padding: 0.6rem 0.8rem 0.6rem 1rem;
+  border-radius: 14px;
+  border: 1px solid var(--tssr-glass-border, rgba(255, 255, 255, 0.12));
+  background: var(--md-default-bg-color);
+  box-shadow: 0 18px 40px -12px rgba(0, 0, 0, 0.55);
+  color: var(--md-default-fg-color);
+  font-size: 0.7rem;
+  transform: translateX(-50%);
+}
+
+.tssr-compte-bandeau .md-button {
+  margin: 0;
+  padding: 0.3em 0.8em;
+  font-size: 0.65rem;
+  white-space: nowrap;
+}
+
+.tssr-compte-fermer {
+  color: var(--md-default-fg-color--light);
+  cursor: pointer;
+}
+
+/* ---------- 2. Suivi des TP ---------- */
+.md-typeset .tssr-suivi-tp,
+.md-typeset .tssr-suivi-tableau {
+  margin: 1.2em 0;
+  padding: 0.9rem 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-left: 4px solid #94a3b8;
+  background: var(--md-code-bg-color);
+}
+
+.md-typeset .tssr-suivi-tp[data-etat="ok"] { border-left-color: #22c55e; }
+.md-typeset .tssr-suivi-tp[data-etat="aide"] { border-left-color: #f59e0b; }
+.md-typeset .tssr-suivi-tp[data-etat="echec"] { border-left-color: #ef4444; }
+.md-typeset .tssr-suivi-tableau { border-left-color: var(--md-accent-fg-color); }
+
+.md-typeset .tssr-suivi-tete {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.md-typeset .tssr-suivi-tete span {
+  color: var(--md-default-fg-color--light);
+  font-size: 0.75rem;
+}
+
+.md-typeset .tssr-suivi-prochaine.is-due {
+  color: #ef4444;
+  font-weight: 700;
+}
+
+.md-typeset .tssr-suivi-aide {
+  margin: 0.4em 0 0.6em;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.72rem;
+}
+
+.md-typeset .tssr-suivi-boutons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+
+.md-typeset .tssr-suivi-btn {
+  margin: 0;
+  padding: 0.35em 0.9em;
+  font-size: 0.7rem;
+}
+
+.md-typeset .tssr-suivi-histo {
+  margin: 0.7em 0 0;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.68rem;
+}
+
+.md-typeset .tssr-suivi-annuler {
+  margin-left: 0.15rem;
+  color: var(--md-default-fg-color--lighter);
+  cursor: pointer;
+}
+
+.md-typeset .tssr-suivi-annuler:hover { color: #ef4444; }
+
+.md-typeset .tssr-suivi-barre {
+  display: flex;
+  height: 0.6rem;
+  margin: 0.7em 0 0.4em;
+  overflow: hidden;
+  border-radius: 99px;
+  background: var(--md-default-fg-color--lightest);
+}
+
+.md-typeset .tssr-suivi-barre span { transition: width 0.5s ease; }
+.md-typeset .tssr-suivi-barre .is-ok { background: #22c55e; }
+.md-typeset .tssr-suivi-barre .is-aide { background: #f59e0b; }
+.md-typeset .tssr-suivi-barre .is-echec { background: #ef4444; }
+
+.md-typeset .tssr-suivi-legende {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem 1rem;
+  margin: 0;
+  font-size: 0.7rem;
+}
+
+.md-typeset .tssr-suivi-due {
+  margin: 0.7em 0 0;
+  font-size: 0.75rem;
+}
+
+.md-typeset .tssr-suivi-due.is-calme {
+  color: var(--md-default-fg-color--light);
+}
+
+.md-typeset .tssr-suivi-pastille {
+  display: inline-block;
+  width: 0.6rem;
+  height: 0.6rem;
+  margin-right: 0.45rem;
+  border-radius: 50%;
+  background: #94a3b8;
+  vertical-align: 0.1em;
+}
+
+.md-typeset .tssr-suivi-pastille.is-jamais { background: transparent; box-shadow: inset 0 0 0 2px #94a3b8; }
+.md-typeset .tssr-suivi-pastille.is-ok { background: #22c55e; }
+.md-typeset .tssr-suivi-pastille.is-aide { background: #f59e0b; }
+.md-typeset .tssr-suivi-pastille.is-echec { background: #ef4444; }
+
+.md-typeset .tssr-suivi-pastille.is-due {
+  animation: tssr-suivi-pulse 1.6s ease-in-out infinite;
+}
+
+@keyframes tssr-suivi-pulse {
+  50% { box-shadow: 0 0 0 5px rgba(239, 68, 68, 0.25); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .tssr-compte-btn,
+  .tssr-compte-menu,
+  .md-typeset .tssr-suivi-barre span { transition: none; }
+  .md-typeset .tssr-suivi-pastille.is-due { animation: none; }
+}
