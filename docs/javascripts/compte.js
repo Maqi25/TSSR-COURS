@@ -100,11 +100,10 @@
 
   function api(chemin, options) {
     options = options || {};
-    var headers = {
-      apikey: CFG.anonKey,
-      "Content-Type": "application/json",
-      Authorization: "Bearer " + (options.jeton || CFG.anonKey),
-    };
+    // la clé du projet va dans « apikey » ; « Authorization » ne porte que le jeton
+    // de l'utilisateur connecté (les clés « sb_publishable_… » n'y sont pas acceptées)
+    var headers = { apikey: CFG.anonKey, "Content-Type": "application/json" };
+    if (options.jeton) headers.Authorization = "Bearer " + options.jeton;
     if (options.prefer) headers.Prefer = options.prefer;
     return fetch(URL_API + chemin, {
       method: options.method || "GET",

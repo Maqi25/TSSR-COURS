@@ -16,6 +16,6 @@
  * ---------------------------------------------------------------------
  */
 window.TSSR_SUPABASE = {
-  url: "",      // ex. "https://abcdefghijkl.supabase.co"
-  anonKey: "",  // ex. "eyJhbGciOi..." ou "sb_publishable_..."
+  url: "https://hnwvxmlwtdtvbgjvteeo.supabase.co",
+  anonKey: "sb_publishable_Ot-o1YsK8GRou0y1ty0z9g_TdIoDnkd",
 };
