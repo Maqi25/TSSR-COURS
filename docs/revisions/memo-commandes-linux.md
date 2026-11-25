@@ -68,9 +68,11 @@ Debian / Ubuntu : `adduser` est souvent interactif. BSD et autres Unix peuvent a
 | `ps` | Instantané des processus | `ps aux` ; `ps -ef` |
 | `top` / `htop` | Activité CPU / mémoire en temps réel | `top` |
 | `pgrep` / `pkill` | Rechercher un processus / envoyer un signal par nom | `pgrep -a sshd` |
-| `kill` | Envoyer un signal ; **TERM d'abord, KILL en dernier** | `kill -TERM 1234` |
+| `kill` | Envoyer un signal : TERM (15, défaut) → HUP (1, raccrocher) → **KILL (9) en dernier** | `kill -HUP 1234` |
 | `nice` / `renice` | Ajuster la priorité de planification | `nice -n 10 commande` |
-| `free` / `uptime` | Mémoire disponible / durée et charge | `free -h` ; `uptime` |
+| `free` / `uptime` | Mémoire : la vraie RAM libre = colonne **disponible** / durée et charge | `free -h` ; `uptime` |
+| `lscpu` / `lsmem` | Modèle et cœurs du processeur / blocs de mémoire | `lscpu` ; `lsmem -a` |
+| `crontab` | Tâches planifiées d'un utilisateur : `m h jdm mois jds commande` | `crontab -e` ; `crontab -l` |
 | `lsof` | Lister les fichiers ouverts (si installé) | `sudo lsof -i :22` |
 
 La charge (*load average*) n'est pas un pourcentage CPU. Vérifier PID et propriétaire avant `kill`.
@@ -153,7 +155,8 @@ Diagnostic par couches : **interface → adresse / route → connectivité IP �
 | `journalctl -f` | Suivre les nouveaux événements | `sudo journalctl -f` |
 | `dmesg` | Messages du noyau ; `-T` dates lisibles | `dmesg -T | tail` |
 | `/var/log` | Journaux texte classiques, selon configuration | `sudo less /var/log/syslog` |
-| `logger` | Écrire un message dans le journal système | `logger "test TSSR"` |
+| `logger` | Écrire un message dans le journal ; `-p facility.priorité` | `logger -p cron.warning "test TSSR"` |
+| `journalctl --dmesg` | Messages du noyau seulement (disques, pilotes) | `journalctl -k \| grep sda` |
 | `last` / `lastb` | Connexions / échecs, si journaux présents | `last -n 10` |
 
 Surveiller horodatage, unité concernée et période ; permissions et rotation des journaux varient.

@@ -78,6 +78,36 @@ Tous tes TP, rangés par **cours** puis par **module**. Utilise la recherche ou 
     "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-des-permissions/"
   },
   {
+    "title": "TP - Gestion de la journalisation",
+    "description": "Chercher les ouvertures de session et les infos du disque dans les journaux, configurer rsyslog (cron, avertissements) et tester avec logger.",
+    "course": "Cours 4 - Administration d'une distribution GNU/Linux",
+    "courseHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/",
+    "module": "Module 12 : Maintenance d'un système en production",
+    "moduleHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-12-maintenance-d-un-systeme-en-production/",
+    "tags": ["rsyslog", "journalctl", "logger"],
+    "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-de-la-journalisation/"
+  },
+  {
+    "title": "TP - Gestion de la planification des tâches",
+    "description": "Crontab utilisateur (archive tar mise à jour, compression hebdomadaire) et crontab système (relevé des processus le mardi).",
+    "course": "Cours 4 - Administration d'une distribution GNU/Linux",
+    "courseHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/",
+    "module": "Module 12 : Maintenance d'un système en production",
+    "moduleHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-12-maintenance-d-un-systeme-en-production/",
+    "tags": ["cron", "crontab", "tar"],
+    "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-de-la-planification-des-taches/"
+  },
+  {
+    "title": "TP - Informations sur le système",
+    "description": "Lire la mémoire (free), le processeur (lscpu), compter les démons, lister ses processus et arrêter un shell avec le bon signal.",
+    "course": "Cours 4 - Administration d'une distribution GNU/Linux",
+    "courseHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/",
+    "module": "Module 12 : Maintenance d'un système en production",
+    "moduleHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-12-maintenance-d-un-systeme-en-production/",
+    "tags": ["free", "ps", "kill"],
+    "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-informations-sur-le-systeme/"
+  },
+  {
     "title": "TP - Conversion en binaire",
     "description": "Convertir des octets du décimal au binaire et inversement (correction type).",
     "course": "Cours 1 - Bases des réseaux",
