@@ -347,6 +347,35 @@
     ui.bouton.classList.toggle("a-avatar", !!n);
   }
 
+  // clic sur l'avatar : il rebondit, content, et une bulle 😄 s'envole avec quelques étincelles
+  var HUMEURS = ["😄", "😊", "😁", "🤩", "😎"];
+  function reagir() {
+    var b = ui.bouton;
+    b.classList.remove("is-content");
+    void b.offsetWidth;                 // relance l'animation même sur des clics rapprochés
+    b.classList.add("is-content");
+    clearTimeout(b._minuterie);
+    b._minuterie = setTimeout(function () { b.classList.remove("is-content"); }, 900);
+    if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    var bulle = document.createElement("span");
+    bulle.className = "tssr-compte-humeur";
+    bulle.setAttribute("aria-hidden", "true");
+    bulle.textContent = HUMEURS[Math.floor(Math.random() * HUMEURS.length)];
+    b.appendChild(bulle);
+    for (var i = 0; i < 5; i++) {
+      var e = document.createElement("span");
+      e.className = "tssr-compte-etincelle";
+      e.setAttribute("aria-hidden", "true");
+      var angle = (-150 + i * 30) * Math.PI / 180;
+      e.style.setProperty("--dx", Math.round(Math.cos(angle) * 26) + "px");
+      e.style.setProperty("--dy", Math.round(Math.sin(angle) * 26) + "px");
+      b.appendChild(e);
+    }
+    setTimeout(function () {
+      b.querySelectorAll(".tssr-compte-humeur, .tssr-compte-etincelle").forEach(function (n) { n.remove(); });
+    }, 1100);
+  }
+
   function heure() { return new Date().toLocaleTimeString("fr-FR", { hour: "2-digit", minute: "2-digit" }); }
 
   function statut(texte, erreur) {
@@ -533,6 +562,7 @@
 
     ui.bouton.addEventListener("click", function (e) {
       e.stopPropagation();
+      if (avatarChoisi()) reagir();
       ouvrir(!ui.menu.classList.contains("is-open"));
     });
     ui.menu.addEventListener("click", function (e) { e.stopPropagation(); });
