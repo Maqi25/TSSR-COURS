@@ -27,14 +27,25 @@
 
 === "🧮 La méthode"
 
-    Pour savoir si **X peut parler à Y**, X applique **son propre masque** à l'adresse de Y :
+    **Le principe** : un poste ne connaît que **son adresse, son masque et sa passerelle**. Pour savoir si **X peut envoyer à Y**, on se met **à la place de X** et on se pose 4 questions dans l'ordre :
 
-    - Y est **dans le réseau de X** → X envoie **directement** (ARP).
-    - Y est **hors du réseau de X** → X envoie à **sa passerelle**. Si la passerelle est joignable et connaît le réseau de Y → **P** ; sinon → **F**.
+    | # | Question (vue par X) | Si oui | Si non |
+    |---|---|---|---|
+    | 1 | Avec **mon** masque, Y est-il dans **mon** réseau ? | Envoi **direct** (ARP) → question 2 | → question 3 |
+    | 2 | Y est-il **physiquement** sur le même segment que moi ? | **V** | **F** (l'ARP ne trouve personne) |
+    | 3 | Ma **passerelle** est-elle dans **mon** réseau (et existe-t-elle) ? | J'envoie au routeur → question 4 | **F** |
+    | 4 | Le **routeur** a-t-il une interface (ou une route) vers le réseau de Y ? | **P** | **F** (le routeur jette le paquet) |
 
-    Pour qu'il y ait **dialogue**, il faut que **la réponse** revienne aussi : Y refait le même calcul avec **son** masque.
+    ⚠️ Ce tableau dit **qui peut envoyer**. Pour un **dialogue** (partie A), il faut aussi que **la réponse** revienne : on refait les 4 questions **à la place de Y**, avec **son** masque.
+
+    **Exemple pas à pas** (partie A, A → D) : A (172.16.10.10/16) calcule que D (172.16.11.100) est dans 172.16.0.0/16 → envoi direct, D le reçoit. Mais D (/24) calcule que A n'est **pas** dans 172.16.11.0/24 → il voudrait passer par une passerelle, qu'il n'a pas → **pas de réponse**. A **envoie**, mais il n'y a **pas de dialogue**.
 
     **Résumé de route** : on écrit les réseaux en binaire et on garde les bits **communs** à tous → c'est la longueur du préfixe.
+
+    1. Écrire en binaire l'octet qui **change** (ex. 132 à 135).
+    2. Compter les bits **identiques** au début : 132 = 100001**00**, 135 = 100001**11** → 6 bits communs.
+    3. Préfixe = bits des octets fixes + bits communs : 8 + 8 + **6** = **/22**.
+    4. Adresse du résumé = les bits communs suivis de **0** : 10000100 = **132** → 212.56.132.0/22.
 
 === "✅ Corrigé expliqué"
 
@@ -59,8 +70,15 @@
     | **D** | P | F | P | V | F |
     | **E** | P | F | P | V | V |
 
-    - **B** (192.168.1.35) est branché sur le réseau 1 mais a une adresse du réseau 2 et une passerelle 10.0.0.254 hors de son réseau → il ne peut **rien** joindre.
-    - **E** (192.168.2.2/16) n'est dans aucun réseau connu du routeur → **personne** ne peut lui répondre, mais lui peut envoyer.
+    Le routeur relie **10.0.0.0/8** (réseau 1, interface X) et **192.168.1.0/24** (réseau 2, interface Y).
+
+    | Poste | Son réseau (selon **son** masque) | Passerelle OK ? | Conséquence |
+    |---|---|---|---|
+    | **A** 10.11.2.1/8 | 10.0.0.0/8 | ✅ 10.0.0.254 | **V** vers C (même /8, même segment) · **P** vers D · **F** vers B (192.168.1.35 passe par le routeur, qui l'envoie sur le réseau 2 où B n'est pas) et vers E (192.168.2.x inconnu du routeur) |
+    | **B** 192.168.1.35/8 | 192.0.0.0/8 | ❌ 10.0.0.254 hors de 192.0.0.0/8 | Mauvaise adresse (celle du réseau 2) sur le réseau 1 : **F partout**. Même vers D (« local » pour lui), l'ARP part sur le réseau 1, où D n'est pas |
+    | **C** 10.0.2.4/16 | 10.0.0.0/16 | ✅ 10.0.0.254 | A (10.11.x) est **hors** de son /16 → passe par le routeur → **P** (alors que A → C est **V** : les masques différents donnent des chemins différents) · **P** vers D |
+    | **D** 192.168.1.123/24 | 192.168.1.0/24 | ✅ 192.168.1.254 | **P** vers A et C · **F** vers E : 192.168.2.2 est hors de son /24, et le routeur ne connaît pas 192.168.2.0 |
+    | **E** 192.168.2.2/16 | 192.168.0.0/16 | ✅ 192.168.1.254 | **V** vers D (dans son /16, même segment) · **P** vers A et C. Mais **personne ne peut lui répondre** : pour les autres, 192.168.2.2 n'appartient à aucun réseau connu |
 
     **C. Trois réseaux, un routeur**
 
@@ -73,7 +91,16 @@
     | **E** | F | P | F | V | V | P |
     | **F** | F | P | F | F | F | V |
 
-    Presque tout est faux à cause d'erreurs de configuration volontaires : A est en 192.**167**.5.1, B a une passerelle hors de son réseau, C et D sont du mauvais côté ou ont une passerelle qui n'existe pas. Seuls **E** et **F** sont bien configurés.
+    Presque tout est faux à cause d'erreurs de configuration volontaires. Le routeur relie **192.168.5.0/24** (réseau 1), **172.20.0.0/16** (réseau 2) et **172.19.0.0/16** (réseau 3).
+
+    | Poste | L'erreur | Conséquence |
+    |---|---|---|
+    | **A** 192.**167**.5.1/24 | Adresse hors du réseau 1 (192.**168**.5) ; passerelle 192.168.5.254 hors de **son** réseau | Ne joint personne : **F partout** |
+    | **B** 192.168.5.35/24 | Passerelle **172.20.0.254** hors de son réseau | Aucun autre poste dans 192.168.5.0/24 → **F partout** |
+    | **C** 172.20.1.4/16 | Branché sur le **réseau 1** avec une adresse du réseau 2 ; passerelle hors de son réseau | Ses voisins « locaux » (172.20.x) sont sur un autre segment → **F partout** |
+    | **D** 172.20.1.123/**24** | Passerelle **172.20.1.254** qui **n'existe pas** (le routeur est en 172.20.0.254) | E (172.20.0.7) est hors de son /24 → passerelle introuvable → **F partout** |
+    | **E** 172.20.0.7/16 | ✅ bien configuré | **V** vers D (même /16, même segment) · **P** vers B (192.168.5.0 connu du routeur) et vers F (172.19.0.0 connu) · **F** vers A (192.167 inconnu) et vers C (local pour E, mais C est sur le réseau 1) |
+    | **F** 172.19.2.2/**8** | Masque trop large : tout 172.x.x.x lui semble local | **P** vers B seulement · **F** vers C, D, E (172.20.x « local » → ARP sur le réseau 3, où ils ne sont pas) et vers A |
 
     **D. Routes statiques minimales** (format : réseau/masque → routeur suivant)
 
@@ -89,6 +116,18 @@
     | R8 | 13.107.0.0/17 → R7 · 13.107.128.0/18 → R7 |
 
     L'astuce : on **regroupe** tout ce qui est du même côté en un seul gros préfixe (/17, /18) au lieu d'une route par réseau. *(L'énoncé écrit « 131.107 » mais le schéma utilise 13.107.)*
+
+    **Comment trouver les routes de R1, pas à pas** :
+
+    1. R1 est branché sur **13.107.0.0/20** et **13.107.16.0/20** : il les connaît déjà, **aucune route** à ajouter pour eux.
+    2. Tous les autres réseaux sont **à droite**, donc derrière **R2**.
+    3. On cherche les **plus gros blocs** du tableau de découpage qui ne contiennent **que** des réseaux de droite :
+        - 13.107.32.0/**19** (son voisin 13.107.0.0/19 contient les réseaux de R1, on ne peut pas monter plus haut) ;
+        - 13.107.64.0/**18** (64.0 et 96.0) ;
+        - 13.107.128.0/**17** (toute la seconde moitié).
+    4. Résultat : **3 routes** au lieu de 7.
+
+    Même raisonnement pour chaque routeur : les réseaux **à gauche** vont vers le routeur de gauche, ceux **à droite** vers le routeur de droite, toujours avec les plus gros blocs possibles.
 
     **E. Résumés de routes**
 

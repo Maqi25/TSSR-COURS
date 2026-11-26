@@ -40,6 +40,15 @@
     - **Diffusion** : on garde les mêmes octets, on met **255** ailleurs.
     - **Hôtes** : 2^(bits hôte) − 2 (on retire l'adresse réseau et la diffusion).
 
+    **Exemple pas à pas** : 152.91.10.150 / 255.255.0.0
+
+    1. Le masque vaut 255 sur les **2 premiers octets** → la partie réseau est **152.91**.
+    2. **Réseau** : on garde 152.91 et on met 0 ailleurs → **152.91.0.0**.
+    3. **Diffusion** : on garde 152.91 et on met 255 ailleurs → **152.91.255.255**.
+    4. **Hôtes** : il reste 2 octets = 16 bits pour les hôtes → 2¹⁶ − 2 = **65 534**.
+
+    Les masques de ce TP sont les **masques par défaut** des classes : 1er octet 1-126 → classe A (/8) · 128-191 → classe B (/16) · 192-223 → classe C (/24). Voir le [TP Les classes IPv4](tp-les-classes-ipv4.md).
+
 === "✅ Corrigé expliqué"
 
     | Adresse | @ réseau | Nb hôtes | @ diffusion |
