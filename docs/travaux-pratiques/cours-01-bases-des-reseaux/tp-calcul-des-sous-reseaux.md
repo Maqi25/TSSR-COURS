@@ -17,11 +17,18 @@
 
 === "🧮 La méthode"
 
-    **Les formules**
+    **Les 3 formules à connaître**
 
     - Nb de **sous-réseaux** = 2^(bits empruntés)
-    - Nb d'**hôtes** par sous-réseau = 2^(bits hôte) − 2
-    - **Pas** (taille d'un bloc) = 256 − valeur du masque dans l'octet « intéressant »
+    - Nb d'**hôtes** par sous-réseau = 2^(bits hôte) − 2 (on retire l'adresse réseau et la diffusion)
+    - **Pas** (taille d'un bloc) = 256 − valeur du masque dans l'**octet intéressant** (le dernier octet du masque qui n'est ni 255 ni 0)
+
+    | CIDR (dans l'octet) | /…1 | /…2 | /…3 | /…4 | /…5 | /…6 | /…7 | /…8 |
+    |---|---|---|---|---|---|---|---|---|
+    | Valeur du masque | 128 | 192 | 224 | 240 | 248 | 252 | 254 | 255 |
+    | Pas | 128 | 64 | 32 | 16 | 8 | 4 | 2 | 1 |
+
+    Exemples : /25, /17 et /9 donnent tous un masque à **128** (dans le 4e, 3e et 2e octet) ; /20 → 255.255.**240**.0 ; /11 → 255.**224**.0.0.
 
     | CIDR | /25 | /26 | /27 | /28 | /29 | /30 |
     |---|---|---|---|---|---|---|
@@ -29,9 +36,61 @@
     | Pas | 128 | 64 | 32 | 16 | 8 | 4 |
     | Hôtes | 126 | 62 | 30 | 14 | 6 | 2 |
 
-    **Adresse valide pour un hôte ?** On calcule le bloc qui la contient : si elle tombe **pile sur le début** (réseau) ou **la fin** (diffusion) du bloc → **NON**.
+    ---
 
-    **Découpage VLSM** : on range les besoins **du plus gros au plus petit**, et on prend à chaque fois le premier bloc libre de la bonne taille.
+    **A · Une adresse est-elle valide pour un hôte ? (méthode du pas)**
+
+    1. Trouver l'**octet intéressant** et le **pas** : 192.0.35.12 /26 → 4e octet, masque 192, pas = 256 − 192 = **64**.
+    2. Lister les **débuts de blocs** de ce pas : 0, **64**, 128, 192.
+    3. Le bloc qui contient la valeur (12) commence à **0** → **réseau 192.0.35.0**.
+    4. **Diffusion** = début du bloc suivant − 1 = 64 − 1 → **192.0.35.63**.
+    5. Les octets **après** l'octet intéressant valent **0** pour le réseau et **255** pour la diffusion.
+    6. L'adresse est valide **si elle n'est ni le réseau ni la diffusion**.
+
+    Exemple sur le 3e octet : 120.146.80.1 /20 → masque 255.255.240.0, pas 16 → blocs 64, **80**, 96 → réseau **120.146.80.0**, diffusion **120.146.95.255** (96 − 1 = 95, puis 255).
+
+    ---
+
+    **B · Trouver le masque pour N sous-réseaux**
+
+    1. Partir du **masque de classe** : A = /8, B = /16, C = /24.
+    2. Chercher la plus petite puissance de 2 **≥ N** : 2ⁿ ≥ N → on **emprunte n bits**.
+    3. Nouveau masque = masque de classe + n.
+
+    Exemple : ≈ 2020 sous-réseaux dans 10.0.0.0 (classe A, /8) → 2¹¹ = 2048 ≥ 2020 → **/8 + 11 = /19**.
+
+    Pour un nombre d'**hôtes** : chercher h bits tels que 2ʰ − 2 ≥ hôtes, puis masque = **32 − h**. Ex. 2 adresses (point à point) → 2² − 2 = 2 → /30.
+
+    ---
+
+    **C · Masque pour N segments de H hôtes : la double vérification**
+
+    1. Bits **réseau** : plus petit n avec 2ⁿ ≥ N segments.
+    2. Bits **hôte** restants = 32 − (masque de classe + n).
+    3. **Vérifier** : 2^(bits hôte) − 2 ≥ H ? Si non → impossible avec ce réseau (cas « X » de la partie B).
+
+    Exemple, scénario 1 : 5 segments de 25 hôtes dans 192.177.4.0 (classe C, /24) → 2³ = 8 ≥ 5 → **/27** → 5 bits hôte → 2⁵ − 2 = **30 ≥ 25** ✅.
+
+    ---
+
+    **D et E · Découpage VLSM (masques de tailles différentes)**
+
+    1. Pour chaque besoin, prendre le **plus petit bloc** qui suffit : 115 postes → /25 (126) ; 58 → /26 (62) ; 25 → /27 (30) ; 12 → /28 (14) ; 5 → /29 (6).
+    2. Ranger les besoins **du plus gros au plus petit**.
+    3. Placer chaque bloc sur la **première adresse libre**, en partant de .0. Un bloc commence toujours sur un **multiple de son pas** (un /27 commence à 0, 32, 64…).
+    4. Le bloc suivant commence **là où le précédent finit** : .0/25 → le suivant démarre à .128.
+
+    Exemple 195.220.12.0/24 : **.0/25** (115) → **.128/26** (58) → **.192/27** (25) → **.224/28** (12) → **.240/29** et **.248/29** (5 et 5). Le /24 est rempli exactement.
+
+    ---
+
+    **F · Trouver les segments inutilisés**
+
+    1. Dessiner le **tableau de découpage** (/24 → /25 → /26…) et colorier les blocs utilisés.
+    2. Un bloc est **libre** s'il n'est ni utilisé, ni **à l'intérieur** d'un bloc utilisé, ni **découpé** en blocs utilisés.
+    3. Regrouper les morceaux libres voisins en **un seul bloc** quand c'est possible (deux /28 voisins et alignés = un /27).
+
+    Méthode rapide pour un « réseau de classe C » sans adresses : additionner les tailles utilisées (/26 = 64, /27 = 32, /28 = 16), retirer de 256, puis découper le reste en puissances de 2.
 
 === "✅ Corrigé expliqué"
 
@@ -131,3 +190,17 @@
     | 6 · classe C | 1×/26 + 1×/28 = 80 adresses | **deux /26 + un /27 + un /28** (176 adresses) |
 
     *Astuce* : additionne les tailles des blocs utilisés (64, 32, 16…), retire-les de 256, puis découpe le reste en blocs de puissances de 2.
+
+    *Exemple détaillé, réseau 2* : le /25 utilisé prend .0 à .127. Dans la 2e moitié (.128/25) : .128/27 et .160/27 sont pris → le /26 .128 est plein. Le /26 .192 contient .224/28 (pris) : il reste **.192/27** (32 adresses) et **.240/28** (16 adresses).
+
+    **Erreurs fréquentes** (relevées dans des copies de ce TP)
+
+    | Erreur | Exemple | La bonne réponse |
+    |---|---|---|
+    | Recopier l'adresse comme adresse **réseau** | 192.0.35.12 /26 → « réseau 192.0.35.12 » | Le réseau est le **début du bloc** : 192.0.35.**0** |
+    | **Inverser** réseau et diffusion | 120.80.1.0 /11 → « réseau 120.80.1.0, diffusion 120.64.0.0 » | Réseau 120.**64**.0.0, diffusion 120.**95**.255.255 |
+    | Oublier les octets **après** l'octet intéressant | 120.146.80.1 /20 → diffusion « 120.146.0 » | Après l'octet intéressant : **0** (réseau) ou **255** (diffusion) → 120.146.95.**255** |
+    | Écrire une **adresse** dans la colonne masque | 172.16.32.0 /25 → masque « 172.16.32.128 » | Le masque d'un /25 est **255.255.255.128** |
+    | Oublier l'**octet intéressant** dans l'écriture | 210.71.10.128 /28 → « 210.71.128 » | Toujours **4 octets** : 210.71.**10**.128 |
+    | Dire « .0 = toujours invalide » | 120.80.1.0 /11 | **Valide** : avec un /11, le réseau est 120.64.0.0 ; .0 au dernier octet n'est pas forcément le réseau |
+    | Masque hors limites | 10.0.0.0 « /119 » | Un masque va de **/0 à /32** : ici **/19** |
