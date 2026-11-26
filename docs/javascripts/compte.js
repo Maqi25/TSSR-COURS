@@ -32,6 +32,7 @@
     "tssr-qcm-examen-profils",
     "tssr-qcm-examen-meilleurs",
     "tssr-qcm-examen-vues",
+    "tssr-quiz-suivi",
     "tssr-planning-revision",
     "tssr-visited-pages",
     "tssr-recent-pages",
@@ -459,10 +460,16 @@
     var tent = (p && p.tentatives) || [];
     var der = tent.slice(-5).map(function (t) { return t.pct; });
     var moy = der.length ? Math.round(der.reduce(function (a, b) { return a + b; }, 0) / der.length) : null;
+    // quiz des modules, fiches et cours (quiz.js), pour le même profil
+    var quiz = (lireJSON("tssr-quiz-suivi", {})[p ? p.id : "local"]) || {};
+    var faits = Object.keys(quiz).map(function (k) { return quiz[k].essais || []; }).filter(function (e) { return e.length; });
+    var moyQ = faits.length ? Math.round(faits.reduce(function (s, e) { var d = e[e.length - 1]; return s + d.score / d.total; }, 0) / faits.length * 100) : null;
     return '<div class="tssr-compte-resume">' +
       "<div><b>🛠️ " + ids.length + "</b><span>TP refait" + (ids.length > 1 ? "s" : "") + " · " + maitrises + " maîtrisé" + (maitrises > 1 ? "s" : "") + "</span></div>" +
       "<div><b>🎯 " + tent.length + "</b><span>QCM passé" + (tent.length > 1 ? "s" : "") +
       (moy !== null ? " · moy. " + moy + " %" : "") + "</span></div>" +
+      '<div class="is-large"><b>🧠 ' + faits.length + "</b><span>quiz fait" + (faits.length > 1 ? "s" : "") + " (modules, fiches, cours)" +
+      (moyQ !== null ? " · moy. " + moyQ + " %" : "") + "</span></div>" +
       "</div>";
   }
 

@@ -324,6 +324,10 @@
   font-size: 0.9rem;
 }
 
+.tssr-compte-resume .is-large {
+  grid-column: 1 / -1;
+}
+
 .tssr-compte-resume span {
   color: var(--md-default-fg-color--light);
   font-size: 0.6rem;
@@ -601,3 +605,91 @@
   .md-typeset .tssr-suivi-barre span { transition: none; }
   .md-typeset .tssr-suivi-pastille.is-due { animation: none; }
 }
+
+/* ---------- 3. Quiz : historique, explications, quiz du cours (quiz.js, quiz-cours.js) ---------- */
+.md-typeset .tssr-quiz-histo {
+  margin: 0.6em 0 0;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.72rem;
+}
+
+.md-typeset .tssr-quiz-histo:empty { display: none; }
+
+.md-typeset .tssr-quiz-expl {
+  margin: 0.5em 0 0;
+  padding: 0.5em 0.7em;
+  border-left: 3px solid var(--md-accent-fg-color);
+  border-radius: 0 8px 8px 0;
+  background: var(--md-code-bg-color);
+  font-size: 0.72rem;
+}
+
+.md-typeset .tssr-quiz-cours {
+  margin: 1.5em 0;
+  padding: 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-left: 4px solid var(--md-accent-fg-color);
+  background: var(--md-code-bg-color);
+}
+
+.md-typeset .tssr-quiz-cours-tete p {
+  margin: 0.3em 0 0.8em;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.75rem;
+}
+
+.md-typeset .tssr-quiz-cours-niveaux {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.6rem;
+}
+
+@media screen and (max-width: 40em) {
+  .md-typeset .tssr-quiz-cours-niveaux { grid-template-columns: 1fr; }
+}
+
+.md-typeset .tssr-quiz-niveau {
+  display: grid;
+  gap: 0.25rem;
+  padding: 0.7rem 0.8rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 12px;
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  font: inherit;
+  text-align: left;
+  cursor: pointer;
+  transition: transform 0.15s ease, border-color 0.15s ease, box-shadow 0.15s ease;
+}
+
+.md-typeset .tssr-quiz-niveau b { font-size: 0.8rem; }
+.md-typeset .tssr-quiz-niveau span { color: var(--md-default-fg-color--light); font-size: 0.66rem; }
+.md-typeset .tssr-quiz-niveau:hover { transform: translateY(-2px); }
+.md-typeset .tssr-quiz-niveau.is-debutant:hover, .md-typeset .tssr-quiz-niveau.is-debutant.is-actif { border-color: #22c55e; box-shadow: 0 0 0 1px #22c55e; }
+.md-typeset .tssr-quiz-niveau.is-intermediaire:hover, .md-typeset .tssr-quiz-niveau.is-intermediaire.is-actif { border-color: #f59e0b; box-shadow: 0 0 0 1px #f59e0b; }
+.md-typeset .tssr-quiz-niveau.is-confirme:hover, .md-typeset .tssr-quiz-niveau.is-confirme.is-actif { border-color: #ef4444; box-shadow: 0 0 0 1px #ef4444; }
+.md-typeset .tssr-quiz-niveau:disabled { opacity: 0.6; cursor: wait; }
+
+.md-typeset .tssr-quiz-cours-info {
+  margin: 1em 0 0.3em;
+  font-weight: 700;
+  font-size: 0.75rem;
+}
+
+.md-typeset .tssr-quiz-chrono {
+  position: sticky;
+  top: 3.5rem;
+  z-index: 2;
+  display: inline-block;
+  margin: 0 0 0.5em;
+  padding: 0.2em 0.7em;
+  border-radius: 99px;
+  background: var(--md-default-bg-color);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+}
+
+.md-typeset .tssr-quiz-chrono.is-urgent { color: #ef4444; }
+.md-typeset .tssr-quiz-verdict { font-weight: 700; }
