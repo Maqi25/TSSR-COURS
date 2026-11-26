@@ -88,24 +88,14 @@ Tous tes TP, rangés par **cours** puis par **module**. Utilise la recherche ou 
     "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-de-la-journalisation/"
   },
   {
-    "title": "TP - Gestion de la planification des tâches",
-    "description": "Crontab utilisateur (archive tar mise à jour, compression hebdomadaire) et crontab système (relevé des processus le mardi).",
+    "title": "TP - Gestion de la planification des tâches (cron)",
+    "description": "TP ENI et TP guidé réunis : crontab utilisateur (archive tar, df, ps, journal chaque minute), /etc/crontab (processus, mémoire), exercice en autonomie corrigé.",
     "course": "Cours 4 - Administration d'une distribution GNU/Linux",
     "courseHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/",
     "module": "Module 12 : Maintenance d'un système en production",
     "moduleHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-12-maintenance-d-un-systeme-en-production/",
-    "tags": ["cron", "crontab", "tar"],
+    "tags": ["cron", "crontab", "tar", "journalctl"],
     "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-de-la-planification-des-taches/"
-  },
-  {
-    "title": "TP - Automatisation et planification (crontab)",
-    "description": "TP guidé Debian 12 : tâches toutes les 5, 10, 15 minutes ou chaque minute, crontab utilisateur et /etc/crontab, observation avec tail -f et journalctl.",
-    "course": "Cours 4 - Administration d'une distribution GNU/Linux",
-    "courseHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/",
-    "module": "Module 12 : Maintenance d'un système en production",
-    "moduleHref": "../cours/cours-04-administration-d-une-distribution-gnu-linux/module-12-maintenance-d-un-systeme-en-production/",
-    "tags": ["cron", "crontab", "journalctl"],
-    "href": "cours-04-administration-d-une-distribution-gnu-linux/tp-automatisation-et-planification-crontab/"
   },
   {
     "title": "TP - Informations sur le système",
