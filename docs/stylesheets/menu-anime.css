@@ -166,14 +166,18 @@
 .md-header__source .md-source__icon {
   width: 2rem;
   height: 2rem;
-  background: url("../assets/images/chat-noir.svg") center 60% / 82% no-repeat, #fff;
+  background: url("../assets/images/chat-noir.svg") center 60% / 82% no-repeat;
+  background-color: #fff;
   border-radius: 50%;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.35), inset 0 -2px 4px rgba(0, 0, 0, 0.08);
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), background-color 0.3s ease, box-shadow 0.3s ease;
 }
 .md-header__source .md-source__icon svg { display: none; }
+/* au survol : le cadre prend la couleur du thème choisi (bouton 🎨) */
 .md-header__source .md-source:hover .md-source__icon {
   transform: translateY(-3px) rotate(-6deg) scale(1.12);
+  background-color: var(--md-accent-fg-color);
+  box-shadow: 0 4px 14px -2px var(--md-accent-fg-color), inset 0 -2px 4px rgba(0, 0, 0, 0.12);
 }
 .md-header__source .md-source:active .md-source__icon {
   transform: scale(0.9);
