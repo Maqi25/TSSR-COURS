@@ -31,6 +31,7 @@
     "tssr-suivi-tp",
     "tssr-qcm-examen-profils",
     "tssr-qcm-examen-meilleurs",
+    "tssr-qcm-examen-vues",
     "tssr-planning-revision",
     "tssr-visited-pages",
     "tssr-recent-pages",

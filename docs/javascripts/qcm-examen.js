@@ -327,10 +327,37 @@
     };
   }
 
+  /* ---------- questions déjà vues, par profil (pour varier les tirages) ---------- */
+  var VUES_KEY = "tssr-qcm-examen-vues";        // { idProfil: { "énoncé": "date de dernière apparition" } }
+  function lireVues(idProfil) {
+    try { return (JSON.parse(localStorage.getItem(VUES_KEY)) || {})[idProfil] || {}; } catch (e) { return {}; }
+  }
+  function noterVues(idProfil, questions) {
+    if (!idProfil) return;
+    try {
+      var toutes = JSON.parse(localStorage.getItem(VUES_KEY)) || {};
+      var v = toutes[idProfil] || {};
+      var maintenant = new Date().toISOString();
+      questions.forEach(function (q) { v[q.q] = maintenant; });
+      toutes[idProfil] = v;
+      localStorage.setItem(VUES_KEY, JSON.stringify(toutes));
+    } catch (e) { /* stockage indisponible : le tirage reste simplement aléatoire */ }
+  }
+
+  // ordre de priorité : jamais vues (au hasard), puis vues il y a le plus longtemps
+  function parFraicheur(questions, vues) {
+    var jamais = shuffle(questions.filter(function (q) { return !vues[q.q]; }));
+    var dejaVues = shuffle(questions.filter(function (q) { return vues[q.q]; }))
+      .sort(function (x, y) { return vues[x.q] < vues[y.q] ? -1 : vues[x.q] > vues[y.q] ? 1 : 0; });
+    return jamais.concat(dejaVues);
+  }
+
   function tirer(banque, comps, nb) {
+    var profil = lireProfil();
+    var vues = profil ? lireVues(profil.id) : {};
     var parComp = {};
     comps.forEach(function (c) {
-      parComp[c] = shuffle(banque.filter(function (q) { return q.c === c; }));
+      parComp[c] = parFraicheur(banque.filter(function (q) { return q.c === c; }), vues);
     });
     // quotas équilibrés entre compétences
     var quotas = {}, base = Math.floor(nb / comps.length), reste = nb % comps.length;
@@ -936,6 +963,7 @@
         profil.tentatives.push(tentative);
         if (profil.tentatives.length > MAX_TENTATIVES) profil.tentatives = profil.tentatives.slice(-MAX_TENTATIVES);
         var enregistre = ecrireProfil(profil);
+        noterVues(profil.id, examen.questions);   // le prochain tirage privilégiera d'autres questions
 
         var res = el("div", "qcm-resultat");
         if (tempsEcoule) res.appendChild(el("p", "qcm-alerte", "⏰ Temps écoulé : ta copie a été rendue automatiquement."));

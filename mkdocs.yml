@@ -63,7 +63,7 @@ extra_css:
 extra_javascript:
   # compte en premier : il doit voir toutes les écritures des autres scripts
   - javascripts/compte-config.js?v=20261125-2
-  - javascripts/compte.js?v=20261126-1
+  - javascripts/compte.js?v=20261126-2
   - javascripts/mermaid-survol.js?v=20261121-1
   - javascripts/theme.js?v=20261123-2
   - javascripts/icones.js?v=20261105-3
@@ -77,7 +77,9 @@ extra_javascript:
   - javascripts/retro.js?v=20261105-4
   - javascripts/tableaux-mobile.js?v=20261108-1
   - javascripts/qcm-examen-banque.js?v=20261121-1
-  - javascripts/qcm-examen.js?v=20261121-1
+  - javascripts/qcm-examen-banque-2.js?v=20261126-1
+  - javascripts/qcm-examen-banque-3.js?v=20261126-1
+  - javascripts/qcm-examen.js?v=20261126-1
   - javascripts/menu-anime.js?v=20261123-1
   - javascripts/methodologie.js?v=20261123-2
   - javascripts/suivi-tp.js?v=20261125-1
