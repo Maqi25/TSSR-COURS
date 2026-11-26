@@ -19,18 +19,18 @@
 
     ```bash
     # 1. Ouvertures de session → /adm/sessions.txt
-    ls -lrt /var/log | tail -n 5                  # les journaux modifiés en dernier
+    # Debian 12 : pas de /var/log/auth.log par défaut, tout est dans journald
     mkdir -p /adm
-    grep "session opened" /var/log/auth.log | grep -v CRON > /adm/sessions.txt
+    journalctl | grep "session opened" | grep -v CRON > /adm/sessions.txt
     head -n 3 /adm/sessions.txt
-    # sans rsyslog (pas de auth.log) :
-    # journalctl | grep "session opened" | grep -v CRON > /adm/sessions.txt
+    # (avec rsyslog installé : grep "session opened" /var/log/auth.log | grep -v CRON)
 
     # 2. Le disque sda
     journalctl --dmesg | grep sda                 # messages du noyau seulement
     # → [sda] 20971520 512-byte logical blocks: (10.7 GB/10.0 GiB)
 
-    # 3 à 5. Configurer rsyslog
+    # 3 à 5. Installer puis configurer rsyslog (absent de Debian 12)
+    apt install rsyslog
     mkdir -p /adm/logs
     nano /etc/rsyslog.conf                        # voir les lignes ci-dessous
     rsyslogd -N1                                  # vérifie la syntaxe
@@ -58,7 +58,7 @@
 
     **1. Les ouvertures de session**
 
-    **`ls -lrt /var/log`** trie les journaux par date (**`-t`**), du plus ancien au plus récent (**`-r`**) : les derniers modifiés apparaissent en bas. On repère **`auth.log`**, le journal des **authentifications**.
+    Sur **Debian 12**, les messages sont dans **journald**, lu avec **`journalctl`** (qui affiche tout le journal, du plus ancien au plus récent). Sur les versions précédentes, ou avec rsyslog installé, on les trouve aussi en texte dans **`/var/log/auth.log`**, le journal des **authentifications** (le corrigé ENI le repère avec `ls -lrt /var/log`, qui trie les fichiers par date).
 
     | Étape | Rôle |
     |---|---|
@@ -66,8 +66,10 @@
     | **`grep -v CRON`** | **`-v`** inverse le filtre : retire les sessions ouvertes **automatiquement** par cron toutes les heures |
     | **`> /adm/sessions.txt`** | redirige le résultat dans le fichier (**`>>`** ajouterait à la fin au lieu de remplacer) |
 
-    !!! info "Pas de `/var/log/auth.log` ?"
-        Depuis Debian 12, **rsyslog n'est plus installé par défaut** : les journaux sont seulement dans **journald**. On lit alors avec `journalctl`, ou on installe rsyslog (`apt install rsyslog`), indispensable pour la suite du TP.
+    !!! info "Debian 12 : journald seul par défaut"
+        Depuis Debian 12, **rsyslog n'est plus installé** : `/var/log/auth.log`, `/var/log/syslog` et les autres fichiers texte n'existent pas. Le journal de **systemd-journald** est conservé dans **`/var/log/journal/`** (format binaire, lu avec `journalctl`).
+        Pour la partie II, il faut donc d'abord **`apt install rsyslog`**. rsyslog ne contiendra que les messages **à partir de son installation** : pour l'historique (partie I), on reste sur `journalctl`.
+        Filtres utiles : `journalctl -u ssh` (un service), `journalctl -b` (depuis le démarrage), `journalctl -p warning` (avertissements et plus grave), `journalctl --since today`.
 
     **2. Le disque sda**
 
@@ -89,7 +91,7 @@
     | **`.*`** | toutes les priorités | `cron.*` |
     | **`-`** devant le chemin | écriture différée (plus rapide, risque de perte en cas de crash) | `-/var/log/syslog` |
 
-    - **Activer cron** : sur Debian, la ligne `#cron.* /var/log/cron.log` existe mais est **commentée**. On retire le `#` et on remplace le chemin par **`/adm/logs/cron.log`**.
+    - **Activer cron** : dans le `rsyslog.conf` livré par Debian, la ligne `#cron.* /var/log/cron.log` existe mais est **commentée**. On retire le `#` et on remplace le chemin par **`/adm/logs/cron.log`**.
     - **Avertissements** : on ajoute **`*.=warning /adm/logs/warnings.log`**. Avec `*.warning` (sans `=`), le fichier recevrait aussi toutes les erreurs.
     - Le dossier **`/adm/logs`** doit exister, puis on **redémarre rsyslog** pour qu'il relise sa configuration. `rsyslogd -N1` vérifie la syntaxe avant.
 

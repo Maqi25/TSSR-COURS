@@ -54,6 +54,10 @@
 
 === "✅ Corrigé expliqué"
 
+    !!! warning "Debian 12 : `su -` et pas `su`"
+        Les commandes d'administration (`useradd`, `groupadd`, `usermod`…) sont dans **`/usr/sbin`**. Sur Debian 12, **`su`** tout seul garde le PATH de l'utilisateur, qui ne contient pas `/usr/sbin` → *« useradd : commande introuvable »*. Il faut **`su -`** (avec le tiret), qui ouvre un vrai environnement root.
+        Autre différence : sans `-s`, `useradd` donne le shell **`/bin/sh`** (réglage de `/etc/default/useradd`), d'où l'option `-s /bin/bash`. La commande **`adduser`**, propre à Debian, est interactive et fait tout d'un coup (home, groupe, mot de passe).
+
     **0. Créer les groupes avant les comptes**
 
     `useradd` refuse un groupe qui n'existe pas. On crée donc **admin**, **stagiaires**, **documentation** et **vip** avec **`groupadd`**.

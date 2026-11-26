@@ -61,10 +61,12 @@
     **`/etc/apt/sources.list`** (partie II) :
 
     ```text
-    deb http://ftp.fr.debian.org/debian/ bookworm main
-    deb http://ftp.fr.debian.org/debian/ bookworm-updates main
-    deb http://security.debian.org/debian-security bookworm-security main
+    deb http://deb.debian.org/debian/ bookworm main non-free-firmware
+    deb http://deb.debian.org/debian/ bookworm-updates main non-free-firmware
+    deb http://security.debian.org/debian-security bookworm-security main non-free-firmware
     ```
+
+    `deb.debian.org` choisit tout seul un miroir proche (`ftp.fr.debian.org` marche aussi). **`non-free-firmware`** est la section des **micrologiciels** (Wi-Fi, cartes graphiques…), nouvelle dans Debian 12 et ajoutée par défaut par l'installateur.
 
     **`/etc/vim/vimrc.local`** :
 
@@ -82,7 +84,7 @@
     **1-2. Software & Updates**
 
     On le trouve en tapant *software* dans le menu GNOME.
-    - Onglet **Debian Software** : le dépôt principal **`main`** est coché. On peut aussi cocher `contrib` et `non-free`.
+    - Onglet **Debian Software** : le dépôt principal **`main`** est coché, ainsi que **`non-free-firmware`** sur Debian 12 (micrologiciels). On peut aussi cocher `contrib` et `non-free`.
     - Onglet **Updates** : les dépôts **`…-security`** (sécurité) et **`…-updates`** (mises à jour recommandées).
     - Onglet **Other Software** : **décocher** les lignes **`cdrom:[Debian GNU/Linux …]`**, sinon apt réclame le DVD à chaque installation.
 

@@ -38,7 +38,8 @@
     mount -t ext4 /dev/vgsystem/lvvar /var
     systemctl isolate graphical.target
     findmnt /var
-    tail -n 4 /var/log/auth.log               # les logs s'écrivent bien
+    journalctl -n 4                           # les logs s'écrivent bien (Debian 12)
+    du -sh /var/log/journal                   # le journal est bien sur le nouveau /var
 
     # 4. Montage automatique
     nano /etc/fstab                           # ajouter la ligne ci-dessous
@@ -79,7 +80,7 @@
     | **Montage temporaire** sur `/mnt/var` | On ne peut pas copier /var « sur lui-même » : on monte le nouveau LV ailleurs le temps de la copie |
     | **`cp -rpv`** | **`-r`** récursif, **`-p`** préserve droits, propriétaires et dates, **`-v`** affiche la progression |
     | **`umount`** puis **`mount … /var`** | Le LV prend la place de /var. L'ancien contenu reste caché **dessous**, sur la partition racine |
-    | **`isolate graphical.target`** | On relance l'interface et on vérifie que les logs s'écrivent (`tail /var/log/auth.log`) |
+    | **`isolate graphical.target`** | On relance l'interface et on vérifie que les logs s'écrivent : `journalctl -n 4` sur Debian 12 (pas de rsyslog, donc pas de `/var/log/auth.log` ; le corrigé ENI utilise `tail /var/log/auth.log`) |
 
     !!! tip "Copie plus sûre"
         `cp -rpv /var/*` **oublie les fichiers cachés** (qui commencent par un point) à la racine de /var. Une copie complète : **`cp -a /var/. /mnt/var/`** (`-a` = récursif + tout préserver, y compris les liens) ou **`rsync -aAX /var/ /mnt/var/`**.

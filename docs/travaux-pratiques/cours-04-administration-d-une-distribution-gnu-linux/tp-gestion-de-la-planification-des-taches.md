@@ -27,7 +27,7 @@
     nano /etc/crontab                         # ajouter la ligne ci-dessous
 
     # Vérifier que les tâches tournent
-    grep CRON /var/log/syslog | tail          # ou : journalctl -u cron
+    journalctl -u cron -n 20                  # Debian 12 (sans rsyslog : pas de /var/log/syslog)
     tar -tvf /srv/depot/francois.tar | head   # contenu de l'archive
     head -n 5 /var/log/procstatus.log
     ```
@@ -110,4 +110,4 @@
         - cron a un **PATH réduit** (`/usr/bin:/bin`) : en cas de doute, écrire le chemin complet des commandes (`/usr/bin/tar`).
         - Le caractère **`%`** a un sens spécial dans une crontab (retour à la ligne) : l'écrire **`\%`**, par exemple dans `date +\%F`.
         - Une crontab doit **finir par une ligne vide**, sinon la dernière tâche peut être ignorée.
-        - Pour tester une ligne, régler une heure proche, puis regarder les journaux (`grep CRON /var/log/syslog`).
+        - Pour tester une ligne, régler une heure proche, puis regarder les journaux : **`journalctl -u cron`** sur Debian 12 (`grep CRON /var/log/syslog` si rsyslog est installé). Une ligne `(CRON) info (No MTA installed, discarding output)` signifie que la tâche a **affiché quelque chose** et que, faute de serveur mail, cette sortie est jetée : c'est le cas du `-v` de tar.
