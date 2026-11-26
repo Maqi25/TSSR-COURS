@@ -290,6 +290,7 @@ nav:
           - "TP - Gestion des permissions": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-des-permissions.md
           - "TP - Gestion de la journalisation": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-de-la-journalisation.md
           - "TP - Gestion de la planification des tâches": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-gestion-de-la-planification-des-taches.md
+          - "TP - Automatisation et planification (crontab)": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-automatisation-et-planification-crontab.md
           - "TP - Informations sur le système": travaux-pratiques/cours-04-administration-d-une-distribution-gnu-linux/tp-informations-sur-le-systeme.md
   - Révisions:
       - revisions/index.md

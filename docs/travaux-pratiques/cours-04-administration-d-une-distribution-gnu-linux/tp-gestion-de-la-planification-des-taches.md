@@ -21,7 +21,9 @@
     crontab -l                                # vérifier
     exit
 
-    # (ou, depuis root : crontab -u francois -e)
+    # ou, en restant root :
+    crontab -u francois -e                    # -u : la table d'un autre utilisateur
+    crontab -u francois -l
 
     # 3. Crontab système
     nano /etc/crontab                         # ajouter la ligne ci-dessous
@@ -46,7 +48,7 @@
 
     ```text
     # 3. Toutes les 30 min le mardi : état des processus
-    */30 *  *   *    2  root  (date; ps aux) >> /var/log/procstatus.log
+    */30 *  *   *    2  root  (date; ps faux) >> /var/log/procstatus.log
     ```
 
 === "✅ Corrigé expliqué"
@@ -102,9 +104,27 @@
 
     **`*/30 * * * 2 root`** : aux minutes 0 et 30 de chaque heure, le **mardi (2)**, exécuté par **root**.
 
-    - **`ps aux`** liste **tous** les processus (**a** : de tous les utilisateurs, **u** : format détaillé avec **%CPU**, **%MEM**, **x** : même ceux sans terminal). Le corrigé ENI met `ps -faux`, qui fonctionne mais mélange deux syntaxes ; `ps faux` (sans tiret) affiche en plus l'**arbre** des processus.
-    - **`date`** horodate chaque relevé, pour s'y retrouver dans le fichier.
-    - **`>>`** **ajoute** à la fin du fichier (« de façon durable ») ; avec `>`, chaque relevé effacerait le précédent.
+    Décomposition de **`(date; ps faux) >> /var/log/procstatus.log`** :
+
+    | Élément | Rôle |
+    |---|---|
+    | **`( … )`** | **sous-shell** : regroupe les deux commandes pour que **leurs deux sorties** partent ensemble dans le fichier |
+    | **`date`** | horodate chaque relevé, pour s'y retrouver dans le fichier |
+    | **`;`** | enchaîne les commandes **quel que soit** le résultat (`&&` : seulement si la 1re réussit) |
+    | **`ps faux`** | tous les processus, en **arborescence** (détail des lettres ci-dessous) |
+    | **`>>`** | **ajoute** à la fin du fichier (« de façon durable ») ; `>` effacerait le relevé précédent |
+
+    | Lettre de `ps faux` | Sens |
+    |---|---|
+    | **f** | *forest* : **arborescence** parent → enfants |
+    | **a** | processus de **tous** les utilisateurs |
+    | **u** | format orienté utilisateur : USER, **%CPU**, **%MEM**… |
+    | **x** | aussi les processus **sans terminal** (les démons) |
+
+    `ps faux` est en syntaxe **BSD**, **sans tiret**. Le corrigé ENI écrit `ps -faux` : sur Debian, `ps` affiche alors un **avertissement** (*bad ps syntax, perhaps a bogus '-'?*) avant de deviner ce qu'on voulait.
+
+    **Question type d'examen** : dans `/etc/crontab`, lancer `/usr/local/bin/backup.sh` tous les jours à 23 h 15 →
+    `15 23 * * * root /usr/local/bin/backup.sh` (6 champs : 5 de temps + l'utilisateur).
 
     !!! warning "Pièges classiques de cron"
         - cron a un **PATH réduit** (`/usr/bin:/bin`) : en cas de doute, écrire le chemin complet des commandes (`/usr/bin/tar`).

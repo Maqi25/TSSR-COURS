@@ -45,6 +45,8 @@
 
     # 4. Mes processus, en détail
     ps -fu $USER                              # ou : ps ux
+    ps faux                                   # tous les processus en arborescence
+    pstree -p                                 # arbre compact avec les PID (apt install psmisc)
 
     # 5. Les connexions SSH dans un fichier
     ps -ef | grep sshd | grep -v grep > liste-putty.txt
@@ -62,6 +64,11 @@
     kill -HUP 954                             # SIGHUP (1) : « raccrocher », la session se ferme
     # en dernier recours : kill -KILL 954     # SIGKILL (9) : impossible à ignorer
     ps -p 954 || echo "terminé"               # vérifier
+
+    # Autre méthode (corrigé Debian 12 du formateur) : viser la connexion SSH, pas le shell
+    ps -ef | grep sshd | grep -v grep         # repérer « sshd: <login>@pts/1 »
+    kill 1710                                 # SIGTERM suffit : sshd l'accepte, la session se ferme
+    # si elle résiste : kill -9 1710
     ```
 
 === "✅ Corrigé expliqué"
@@ -107,9 +114,22 @@
 
     **`ps -fu $USER`** : **`-u`** filtre sur un utilisateur, **`-f`** donne le format complet (UID, PID, **PPID** = processus parent, heure, terminal, commande). Pour une connexion SSH, on voit la chaîne : `sshd: camille@pts/0` → `-bash` → `ps`.
 
+    **`ps faux`** et **`pstree -p`** montrent les processus en **arbre** : chacun sous son **parent** (PPID). Tout en haut, **PID 1 = systemd**, le premier processus lancé au démarrage. `pstree` est dans le paquet **psmisc** ; ne pas confondre avec `tree`, qui affiche l'arborescence des **fichiers**.
+
     **5. Les connexions PuTTY**
 
     Chaque connexion SSH crée des processus **`sshd`** (un par connexion, plus le service qui écoute). `ps -ef | grep sshd` les liste ; **`grep -v grep`** retire la ligne du `grep` lui-même ; **`>`** écrit le tout dans un fichier. **`pgrep -a sshd`** fait la même chose en une commande, sans faux positif.
+
+    La hiérarchie d'une connexion, vue dans `ps faux` :
+
+    ```text
+    systemd (PID 1)
+    └─ sshd [listener]          le démon qui écoute sur le port 22 (root)
+       └─ sshd: allen [priv]    vérifie l'authentification (root)
+          └─ sshd: allen@pts/0  la session de l'utilisateur (allen)
+             └─ -bash           son shell
+                └─ ps faux
+    ```
 
     **6. Le PID du shell de la 2e session**
 
@@ -120,9 +140,18 @@
     | Signal | N° | Commande | Effet |
     |---|---|---|---|
     | **SIGTERM** | 15 | `kill PID` (**par défaut**) | demande **poliment** de s'arrêter ; le programme peut l'**ignorer** |
-    | **SIGHUP** | 1 | `kill -HUP PID` ou `kill -1` | « **raccrocher** » : le terminal est fermé ; un shell interactif se termine proprement |
+    | **SIGHUP** | 1 | `kill -HUP PID` ou `kill -1` | « **raccrocher** » : un **shell** se termine proprement ; un **démon** (sshd, rsyslogd…) **relit sa configuration** sans s'arrêter |
     | **SIGKILL** | 9 | `kill -KILL PID` ou `kill -9` | arrêt **immédiat** par le noyau, **impossible** à ignorer, aucun nettoyage |
 
     - **Étape 7** : un **bash interactif ignore SIGTERM**. `kill 954` ne fait donc rien, la 2e session reste ouverte.
     - **Étape 8** : **SIGHUP** est le signal **adapté** : c'est celui qu'envoie le système quand une connexion se coupe, le shell se ferme proprement (sauvegarde de l'historique, arrêt de ses processus enfants). **SIGKILL** marche aussi, mais **en dernier recours**, car il ne laisse aucune chance au programme de faire le ménage.
+    - **Autre méthode, celle du corrigé Debian 12 du formateur** : au lieu du shell, on vise le processus **`sshd: allen@pts/1`** de la 2e connexion. Lui **accepte SIGTERM** : `kill PID` coupe la connexion, et le shell, privé de son terminal, reçoit SIGHUP et se ferme. On vérifie avec `ps -ef | grep sshd | grep -v grep` : il ne reste que le *listener* et la 1re session.
     - Un utilisateur ne peut envoyer de signal **qu'à ses propres processus**. root peut viser n'importe lequel, d'où l'importance de **vérifier le PID** avant (`ps -p PID -o pid,tty,cmd`).
+    - Viser par **nom** plutôt que par PID : **`pkill nom`** ou **`killall nom`** (tous les processus de ce nom, à manier avec prudence).
+
+    !!! tip "À savoir expliquer à l'oral"
+        1. **PID / PPID** : identifiant du processus / de son parent ; **PID 1 = systemd**.
+        2. **Démon** : processus d'arrière-plan sans terminal, nom finissant souvent par **d** (sshd, rsyslogd, udevd).
+        3. **SIGTERM vs SIGKILL** : demander poliment (le programme range ses affaires) vs forcer (arrêt brutal par le noyau).
+        4. **`>` vs `>>`** : écraser vs ajouter à la fin.
+        5. **RAM disponible ≠ RAM libre** : le cache disque est rendu dès qu'un programme en a besoin.
