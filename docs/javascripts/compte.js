@@ -33,6 +33,9 @@
     "tssr-qcm-examen-meilleurs",
     "tssr-qcm-examen-vues",
     "tssr-quiz-suivi",
+    "tssr-activite",
+    "tssr-tableau-reglages",
+    "tssr-tableau-historique",
     "tssr-planning-revision",
     "tssr-visited-pages",
     "tssr-recent-pages",
@@ -293,6 +296,27 @@
     });
   }
 
+  // RGPD : supprime toutes les données de révision, sur le compte puis dans ce navigateur
+  function supprimerDonnees() {
+    var s = session();
+    if (!s) return Promise.reject(new Error("Non connecté"));
+    enAttente = {};
+    clearTimeout(minuterie);
+    return jeton().then(function (j) {
+      return api("/rest/v1/user_data?user_id=eq." + encodeURIComponent(s.user.id), { method: "DELETE", jeton: j, prefer: "return=minimal" });
+    }).then(function () {
+      applique = true;
+      CLES.forEach(function (k) { orig.remove.call(localStorage, k); });
+      applique = false;
+      orig.remove.call(localStorage, META_KEY);
+      statut("🗑️ Données supprimées à " + heure());
+    });
+  }
+  window.TSSRCompte = {
+    connecte: function () { return !!session(); },
+    supprimerDonnees: supprimerDonnees,
+  };
+
   function motDePasseOublie(email) {
     return api("/auth/v1/recover?redirect_to=" + encodeURIComponent(adresseRetour()), {
       method: "POST", body: { email: email },
@@ -464,19 +488,27 @@
     var quiz = (lireJSON("tssr-quiz-suivi", {})[p ? p.id : "local"]) || {};
     var faits = Object.keys(quiz).map(function (k) { return quiz[k].essais || []; }).filter(function (e) { return e.length; });
     var moyQ = faits.length ? Math.round(faits.reduce(function (s, e) { var d = e[e.length - 1]; return s + d.score / d.total; }, 0) / faits.length * 100) : null;
+    // tuile colorée : icône, compteur animé (data-compte), légende, petite barre de score
+    function tuile(cls, i, icone, n, legende, pct) {
+      return '<div class="tssr-tuile-c ' + cls + '" style="--i:' + i + '">' +
+        '<b><span class="tssr-tuile-ico" aria-hidden="true">' + icone + '</span><span data-compte="' + n + '">' + n + "</span></b>" +
+        "<span>" + legende + "</span>" +
+        (pct !== null && pct !== undefined ? '<i class="tssr-tuile-barre" style="--v:' + pct + '%" aria-hidden="true"></i>' : "") +
+        "</div>";
+    }
     return '<div class="tssr-compte-resume">' +
-      "<div><b>🛠️ " + ids.length + "</b><span>TP refait" + (ids.length > 1 ? "s" : "") + " · " + maitrises + " maîtrisé" + (maitrises > 1 ? "s" : "") + "</span></div>" +
-      "<div><b>🎯 " + tent.length + "</b><span>QCM passé" + (tent.length > 1 ? "s" : "") +
-      (moy !== null ? " · moy. " + moy + " %" : "") + "</span></div>" +
-      '<div class="is-large"><b>🧠 ' + faits.length + "</b><span>quiz fait" + (faits.length > 1 ? "s" : "") + " (modules, fiches, cours)" +
-      (moyQ !== null ? " · moy. " + moyQ + " %" : "") + "</span></div>" +
+      tuile("is-tp", 0, "🛠️", ids.length, "TP refait" + (ids.length > 1 ? "s" : "") + " · " + maitrises + " maîtrisé" + (maitrises > 1 ? "s" : ""), ids.length ? Math.round(maitrises / ids.length * 100) : null) +
+      tuile("is-qcm", 1, "🎯", tent.length, "QCM passé" + (tent.length > 1 ? "s" : "") + (moy !== null ? " · moy. " + moy + " %" : ""), moy) +
+      tuile("is-quiz is-large", 2, "🧠", faits.length, "quiz fait" + (faits.length > 1 ? "s" : "") + " (modules, fiches, cours)" + (moyQ !== null ? " · moy. " + moyQ + " %" : ""), moyQ) +
       "</div>";
   }
 
   function vueConnecte() {
     var s = session();
+    var h = new Date().getHours();
+    var salut = h < 6 ? "Bonne nuit" : h < 18 ? "Bonjour" : "Bonsoir";
     ui.corps.innerHTML =
-      '<p class="tssr-compte-titre">Mon compte</p>' +
+      '<div class="tssr-compte-banniere"><span class="tssr-compte-titre">Mon compte</span><span class="tssr-compte-salut">' + salut + ' <span class="tssr-compte-main" aria-hidden="true">👋</span></span></div>' +
       '<div class="tssr-compte-profil">' +
       '<button type="button" class="tssr-compte-avatar" data-action="avatar" title="Changer d\'avatar">' +
       imgAvatar(avatarChoisi(), "Mon avatar") + '<span aria-hidden="true">✏️</span></button>' +
@@ -492,6 +524,7 @@
       })() +
       "</div></div>" +
       resumeHTML() +
+      '<button type="button" class="tssr-compte-tdb" data-action="tdb"><span aria-hidden="true">📊</span> Mon tableau de bord <span class="tssr-compte-fleche" aria-hidden="true">→</span></button>' +
       '<div class="tssr-compte-actions">' +
       '<button type="button" class="md-button md-button--primary" data-action="sync">🔄 Synchroniser</button>' +
       '<button type="button" class="md-button" data-action="mdp">🔑 Mot de passe</button>' +
@@ -519,6 +552,26 @@
         majBouton();
         vueConnecte();
       });
+    });
+
+    // compteurs qui « montent » jusqu'à leur valeur à l'ouverture du panneau
+    if (!matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      ui.corps.querySelectorAll("[data-compte]").forEach(function (n) {
+        var cible = Number(n.dataset.compte), t0 = performance.now(), duree = 700;
+        if (!cible) return;
+        n.textContent = "0";
+        (function pas(t) {
+          var k = Math.min(1, (t - t0) / duree);
+          n.textContent = String(Math.round(cible * (1 - Math.pow(1 - k, 3))));
+          if (k < 1) requestAnimationFrame(pas);
+        })(t0);
+      });
+    }
+
+    // le tableau de bord s'ouvre en grand panneau, depuis le compte
+    ui.corps.querySelector('[data-action="tdb"]').addEventListener("click", function () {
+      ouvrir(false);
+      if (window.TSSRTableauDeBord) window.TSSRTableauDeBord.ouvrir();
     });
 
     ui.corps.querySelector('[data-action="sync"]').addEventListener("click", function () {

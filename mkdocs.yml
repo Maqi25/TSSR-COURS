@@ -58,12 +58,14 @@ extra_css:
   - stylesheets/qcm-examen.css?v=20261121-1
   - stylesheets/menu-anime.css?v=20261126-1
   - stylesheets/methodologie.css?v=20261123-1
-  - stylesheets/compte.css?v=20261126-2
+  - stylesheets/compte.css?v=20261127-1
+  - stylesheets/tableau-de-bord.css?v=20261127-4
 
 extra_javascript:
   # compte en premier : il doit voir toutes les écritures des autres scripts
   - javascripts/compte-config.js?v=20261125-2
-  - javascripts/compte.js?v=20261126-3
+  - javascripts/compte.js?v=20261127-2
+  - javascripts/activite.js?v=20261127-1
   - javascripts/mermaid-survol.js?v=20261121-1
   - javascripts/theme.js?v=20261123-2
   - javascripts/icones.js?v=20261105-3
@@ -84,6 +86,7 @@ extra_javascript:
   - javascripts/menu-anime.js?v=20261123-1
   - javascripts/methodologie.js?v=20261123-2
   - javascripts/suivi-tp.js?v=20261125-1
+  - javascripts/tableau-de-bord.js?v=20261127-3
 
 markdown_extensions:
   - attr_list
