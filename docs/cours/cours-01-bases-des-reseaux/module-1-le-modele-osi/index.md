@@ -242,10 +242,10 @@ Comme des **poupées russes** : chaque couche emballe le colis de la couche du d
 ```mermaid
 sequenceDiagram
     participant PC as 💻 Ton PC
-    participant Box as 📦 Box / passerelle
+    participant GW as 📦 Box / passerelle
     participant Web as 🌐 Serveur web
-    PC->>Box: ARP : « Quelle est ta MAC ? » (couche 2/3)
-    Box-->>PC: « Voici ma MAC »
+    PC->>GW: ARP : « Quelle est ta MAC ? » (couche 2/3)
+    GW-->>PC: « Voici ma MAC »
     PC->>Web: Trame vers la MAC de la box, paquet vers l'IP du serveur,<br/>segment TCP du port 51000 vers le port 443
     Web-->>PC: Réponse du port 443 vers le port 51000
     Note over PC,Web: TLS chiffre l'échange (couche 6),<br/>le navigateur affiche la page (couche 7)

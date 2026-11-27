@@ -28,3 +28,9 @@ Un **examen blanc** calqué sur le [référentiel TSSR 2026](../referentiel/inde
 <div id="qcm-examen"></div>
 
 <noscript>Active JavaScript pour lancer le QCM.</noscript>
+
+<!-- Moteur et banque du QCM examen : chargés seulement sur les pages du QCM (allège les autres pages) -->
+<script src="../javascripts/qcm-examen-banque.js?v=20261121-1"></script>
+<script src="../javascripts/qcm-examen-banque-2.js?v=20261126-1"></script>
+<script src="../javascripts/qcm-examen-banque-3.js?v=20261126-1"></script>
+<script src="../javascripts/qcm-examen.js?v=20261126-1"></script>
