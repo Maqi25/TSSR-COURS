@@ -36,6 +36,7 @@
     "tssr-activite",
     "tssr-tableau-reglages",
     "tssr-tableau-historique",
+    "tssr-postits",
     "tssr-planning-revision",
     "tssr-visited-pages",
     "tssr-recent-pages",
@@ -503,6 +504,18 @@
       "</div>";
   }
 
+  // les 3 derniers post-its (postit.js) avec un lien pour reprendre
+  function postitsHTML() {
+    var l = lireJSON("tssr-postits", []);
+    if (!Array.isArray(l) || !l.length) return "";
+    var esc = function (t) { var d = document.createElement("div"); d.textContent = t || ""; return d.innerHTML; };
+    var lienDe = function (p) { return p.url + "?reprendre=1" + (p.ancre ? "#" + encodeURIComponent(p.ancre) : ""); };
+    return '<div class="tssr-compte-postits"><p>📌 Mes post-its (' + l.length + ")</p>" +
+      l.slice(0, 3).map(function (p) {
+        return '<a href="' + esc(lienDe(p)) + '">' + esc(p.titre) + "<span>" + esc(p.note || p.section || "Reprendre ici") + " →</span></a>";
+      }).join("") + "</div>";
+  }
+
   function vueConnecte() {
     var s = session();
     var h = new Date().getHours();
@@ -524,6 +537,7 @@
       })() +
       "</div></div>" +
       resumeHTML() +
+      postitsHTML() +
       '<button type="button" class="tssr-compte-tdb" data-action="tdb"><span aria-hidden="true">📊</span> Mon tableau de bord <span class="tssr-compte-fleche" aria-hidden="true">→</span></button>' +
       '<div class="tssr-compte-actions">' +
       '<button type="button" class="md-button md-button--primary" data-action="sync">🔄 Synchroniser</button>' +

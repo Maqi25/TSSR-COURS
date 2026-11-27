@@ -1,0 +1,238 @@
+/* ==========================================================================
+   postit.css · post-it « reprendre là où j'en étais » (postit.js)
+   ========================================================================== */
+
+/* ---------- le post-it dans la page ---------- */
+.md-typeset .tssr-postit {
+  --pi: #fde68a;
+  --pi-encre: #3b2f00;
+  position: relative;
+  float: right;
+  clear: right;
+  width: 14rem;
+  max-width: 45%;
+  margin: 0.2rem 0 1rem 1.2rem;
+  padding: 0.9rem 0.85rem 0.6rem;
+  border-radius: 2px 2px 14px 2px;
+  background: linear-gradient(180deg, color-mix(in srgb, var(--pi) 92%, #fff), var(--pi));
+  color: var(--pi-encre);
+  box-shadow: 0 10px 18px -8px rgba(0, 0, 0, 0.55), inset 0 -10px 18px -14px rgba(0, 0, 0, 0.35);
+  transform: rotate(1.6deg);
+  font-size: 0.72rem;
+  line-height: 1.4;
+}
+
+/* le petit ruban adhésif */
+.md-typeset .tssr-postit::before {
+  content: "";
+  position: absolute;
+  top: -0.55rem;
+  left: 50%;
+  width: 3.6rem;
+  height: 1.1rem;
+  margin-left: -1.8rem;
+  background: rgba(255, 255, 255, 0.45);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+  transform: rotate(-3deg);
+}
+
+.md-typeset .tssr-postit.is-rose { --pi: #fbcfe8; --pi-encre: #4a1033; }
+.md-typeset .tssr-postit.is-vert { --pi: #bbf7d0; --pi-encre: #0b3b1f; }
+.md-typeset .tssr-postit.is-bleu { --pi: #bfdbfe; --pi-encre: #0c2a52; }
+
+.md-typeset .tssr-postit strong { display: block; font-size: 0.78rem; }
+.md-typeset .tssr-postit p { margin: 0.35em 0; white-space: pre-wrap; word-wrap: break-word; }
+.md-typeset .tssr-postit small { opacity: 0.7; font-size: 0.62rem; }
+
+.md-typeset .tssr-postit-retirer {
+  position: absolute;
+  top: 0.3rem;
+  right: 0.35rem;
+  width: 1.3rem;
+  height: 1.3rem;
+  border-radius: 50%;
+  color: var(--pi-encre);
+  font-size: 0.7rem;
+  cursor: pointer;
+  opacity: 0.55;
+}
+
+.md-typeset .tssr-postit-retirer:hover,
+.md-typeset .tssr-postit-retirer:focus-visible { opacity: 1; background: rgba(0, 0, 0, 0.08); }
+
+/* animations : coller, retrouver, décoller */
+.md-typeset .tssr-postit.is-colle { animation: tssr-pi-colle 0.55s cubic-bezier(0.2, 1.4, 0.4, 1); }
+.md-typeset .tssr-postit.is-retrouve { animation: tssr-pi-retrouve 0.9s ease 0.2s 2; }
+.md-typeset .tssr-postit.is-decolle { animation: tssr-pi-decolle 0.35s ease forwards; }
+
+@keyframes tssr-pi-colle {
+  0% { opacity: 0; transform: translateY(-28px) rotate(-8deg) scale(1.15); }
+  70% { opacity: 1; transform: translateY(2px) rotate(3deg) scale(0.98); }
+  100% { transform: rotate(1.6deg); }
+}
+
+@keyframes tssr-pi-retrouve {
+  0%, 100% { transform: rotate(1.6deg); }
+  20% { transform: rotate(-3deg) scale(1.04); }
+  40% { transform: rotate(4deg) scale(1.04); }
+  60% { transform: rotate(-2deg); }
+}
+
+@keyframes tssr-pi-decolle {
+  to { opacity: 0; transform: translate(30px, -16px) rotate(14deg) scale(0.9); }
+}
+
+@media screen and (max-width: 44.9375em) {
+  .md-typeset .tssr-postit { float: none; width: auto; max-width: none; margin: 0.4rem 0 1rem; }
+}
+
+/* ---------- bouton flottant ---------- */
+.tssr-postit-btn {
+  position: fixed;
+  right: 1.2rem;
+  bottom: 1.2rem;
+  z-index: 40;
+  display: grid;
+  place-items: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #fde68a, #fbbf24);
+  box-shadow: 0 10px 22px -8px rgba(0, 0, 0, 0.6);
+  font-size: 1.35rem;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.tssr-postit-btn:hover { transform: rotate(-10deg) scale(1.08); }
+.tssr-postit-btn:focus-visible { outline: 3px solid var(--md-accent-fg-color); outline-offset: 2px; }
+
+/* pastille quand la page a déjà un post-it */
+.tssr-postit-btn.a-postit::after {
+  content: "";
+  position: absolute;
+  top: 0.15rem;
+  right: 0.15rem;
+  width: 0.7rem;
+  height: 0.7rem;
+  border-radius: 50%;
+  background: #ef4444;
+  box-shadow: 0 0 0 2px var(--md-default-bg-color);
+}
+
+/* ---------- petit formulaire ---------- */
+.tssr-postit-panneau {
+  position: fixed;
+  right: 1.2rem;
+  bottom: 4.8rem;
+  z-index: 40;
+  width: min(19rem, calc(100vw - 2rem));
+  padding: 0.9rem;
+  border-radius: 16px;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  background: var(--md-default-bg-color);
+  color: var(--md-default-fg-color);
+  box-shadow: 0 24px 50px -18px rgba(0, 0, 0, 0.65);
+  font-size: 0.72rem;
+  animation: tssr-pi-panneau 0.2s ease;
+}
+
+.tssr-postit-panneau[hidden] { display: none; }
+
+@keyframes tssr-pi-panneau { from { opacity: 0; transform: translateY(8px); } }
+
+.tssr-postit-panneau form { display: grid; gap: 0.55rem; }
+
+.tssr-postit-info {
+  margin: 0;
+  color: var(--md-default-fg-color--light);
+  font-size: 0.66rem;
+}
+
+.tssr-postit-panneau textarea {
+  width: 100%;
+  padding: 0.45rem 0.55rem;
+  border: 1px solid var(--md-default-fg-color--lightest);
+  border-radius: 10px;
+  background: var(--md-code-bg-color);
+  color: var(--md-default-fg-color);
+  font: inherit;
+  resize: vertical;
+}
+
+.tssr-postit-couleurs { display: flex; gap: 0.4rem; flex-wrap: wrap; }
+
+.tssr-postit-couleurs label {
+  display: flex;
+  gap: 0.25rem;
+  align-items: center;
+  padding: 0.2rem 0.55rem;
+  border-radius: 99px;
+  font-size: 0.64rem;
+  font-weight: 700;
+  color: #1f2937;
+  cursor: pointer;
+}
+
+.tssr-postit-couleurs input { margin: 0; accent-color: #1f2937; }
+.tssr-postit-couleurs .is-jaune { background: #fde68a; }
+.tssr-postit-couleurs .is-rose { background: #fbcfe8; }
+.tssr-postit-couleurs .is-vert { background: #bbf7d0; }
+.tssr-postit-couleurs .is-bleu { background: #bfdbfe; }
+
+.tssr-postit-actions { display: flex; gap: 0.4rem; }
+
+.tssr-postit-panneau .md-button {
+  margin: 0;
+  padding: 0.35em 0.9em;
+  border: 1px solid var(--md-accent-fg-color);
+  border-radius: 10px;
+  background: transparent;
+  color: var(--md-accent-fg-color);
+  font: inherit;
+  font-weight: 700;
+  font-size: 0.68rem;
+  cursor: pointer;
+}
+
+.tssr-postit-panneau .md-button--primary { background: var(--md-accent-fg-color); color: var(--md-accent-bg-color, #fff); }
+
+/* ---------- liste « Mes post-its » dans la carte du compte ---------- */
+.tssr-compte-postits {
+  margin: 0 0 0.7rem;
+  padding: 0.55rem 0.6rem;
+  border-radius: 12px;
+  background: linear-gradient(135deg, rgba(253, 230, 138, 0.18), rgba(251, 191, 36, 0.06));
+  border: 1px solid rgba(251, 191, 36, 0.35);
+}
+
+.tssr-compte-postits p {
+  margin: 0 0 0.3rem;
+  font-weight: 800;
+  font-size: 0.68rem;
+}
+
+.tssr-compte-postits a {
+  display: block;
+  padding: 0.25rem 0;
+  color: var(--md-default-fg-color);
+  font-size: 0.68rem;
+  text-decoration: none;
+  border-top: 1px solid var(--md-default-fg-color--lightest);
+}
+
+.tssr-compte-postits a:first-of-type { border-top: 0; }
+.tssr-compte-postits a:hover { color: var(--md-accent-fg-color); }
+.tssr-compte-postits a span { display: block; color: var(--md-default-fg-color--light); font-size: 0.6rem; }
+
+@media (prefers-reduced-motion: reduce) {
+  .md-typeset .tssr-postit.is-colle,
+  .md-typeset .tssr-postit.is-retrouve,
+  .tssr-postit-panneau { animation: none; }
+  .tssr-postit-btn:hover { transform: none; }
+}
+
+/* post-it dans « Reprendre où j'en étais » (accueil) */
+.md-typeset .tssr-home-recent-item.is-postit .tssr-home-recent-icon {
+  background: linear-gradient(135deg, #fde68a, #fbbf24);
+}

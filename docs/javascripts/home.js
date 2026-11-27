@@ -247,6 +247,35 @@
     return "✨";
   }
 
+  // Post-its du compte connecté (postit.js) en tête de « Reprendre » (2 au plus)
+  function renderPostits() {
+    var box = document.querySelector("[data-home-recent]");
+    if (!box || !window.TSSRPostit || !(window.TSSRCompte && window.TSSRCompte.connecte())) return;
+    var liste = window.TSSRPostit.liste().slice(0, 2);
+    liste.reverse().forEach(function (p) {
+      var a = document.createElement("a");
+      a.className = "tssr-home-recent-item is-postit";
+      a.href = window.TSSRPostit.lien(p);
+      var icon = document.createElement("span");
+      icon.className = "tssr-home-recent-icon";
+      icon.textContent = "📌";
+      var text = document.createElement("span");
+      var b = document.createElement("b");
+      b.textContent = p.titre;
+      var small = document.createElement("small");
+      small.textContent = "Post-it" + (p.note ? " · " + p.note : p.section ? " · " + p.section : "");
+      text.appendChild(b);
+      text.appendChild(small);
+      var chev = document.createElement("span");
+      chev.className = "tssr-home-chevron";
+      chev.textContent = "›";
+      a.appendChild(icon);
+      a.appendChild(text);
+      a.appendChild(chev);
+      box.insertBefore(a, box.firstChild);
+    });
+  }
+
   function renderRecent() {
     var box = document.querySelector("[data-home-recent]");
     if (!box) return;
@@ -467,6 +496,7 @@
     updateProgress();
     renderRecent();
     suggestNext(markSeenModules());
+    renderPostits();
     setupEntrance();
     setupTilt();
     setupProverbe();
